@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Talk - Premium Font System</title>
+    
+    <!-- Import Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Merriweather:ital,wght@0,400;0,500;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Alegreya:ital,wght@0,400;0,500;0,600;1,400&family=Cardo:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            color: #4A4A4A;
+            line-height: 1.6;
+            padding: 24px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 32px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+        }
+        
+        .finalized-section {
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 20px;
+            margin-bottom: 48px;
+        }
+        
+        .finalized-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .finalized-fonts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        .finalized-font {
+            background: rgba(255,255,255,0.15);
+            padding: 24px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .font-showcase {
+            margin-bottom: 48px;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: #87A96B;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .section-subtitle {
+            font-family: 'Crimson Pro', serif;
+            font-size: 18px;
+            color: #6B6B6B;
+            text-align: center;
+            margin-bottom: 32px;
+            font-style: italic;
+        }
+        
+        .font-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+            gap: 32px;
+        }
+        
+        .font-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            border: 1px solid #F0F0F0;
+        }
+        
+        .font-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 500;
+            color: #87A96B;
+            margin-bottom: 8px;
+        }
+        
+        .font-category {
+            font-family: 'Crimson Pro', serif;
+            font-size: 14px;
+            color: #6B6B6B;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .font-sample {
+            margin-bottom: 20px;
+        }
+        
+        .usage-note {
+            background: #F7F5F3;
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid #87A96B;
+            font-family: 'Crimson Pro', serif;
+            font-size: 14px;
+            color: #6B6B6B;
+        }
+        
+        .personality-badge {
+            display: inline-block;
+            background: #D4A5A5;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        /* Font Styles */
+        .crimson { font-family: 'Crimson Pro', serif; }
+        .lora { font-family: 'Lora', serif; }
+        .playfair { font-family: 'Playfair Display', serif; }
+        .source-serif { font-family: 'Source Serif Pro', serif; }
+        .merriweather { font-family: 'Merriweather', serif; }
+        .libre-baskerville { font-family: 'Libre Baskerville', serif; }
+        .eb-garamond { font-family: 'EB Garamond', serif; }
+        .spectral { font-family: 'Spectral', serif; }
+        .alegreya { font-family: 'Alegreya', serif; }
+        .cardo { font-family: 'Cardo', serif; }
+        
+        .app-preview {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-top: 48px;
+        }
+        
+        .preview-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        
+        .app-mockup {
+            background: #F7F5F3;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .recommendations {
+            background: linear-gradient(135deg, #C8B5D1 0%, #D4A5A5 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 20px;
+            margin-top: 48px;
+        }
+        
+        .rec-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .rec-content {
+            font-family: 'Crimson Pro', serif;
+            font-size: 16px;
+            line-height: 1.7;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="playfair" style="font-size: 36px; color: #87A96B; margin-bottom: 16px;">Future Talk</h1>
+            <p class="crimson" style="font-size: 18px; color: #6B6B6B; font-style: italic;">Premium Font System for Thoughtful Communication</p>
+        </div>
+        
+        <!-- Finalized Fonts Section -->
+        <div class="finalized-section">
+            <h2 class="finalized-title">✨ Your Chosen Fonts</h2>
+            <div class="finalized-fonts">
+                <div class="finalized-font">
+                    <h3 class="crimson" style="font-size: 20px; margin-bottom: 8px;">Crimson Pro</h3>
+                    <p class="crimson" style="font-size: 16px; margin-bottom: 12px; font-style: italic;">"I'm sending this to you from 2024, hoping by the time you read this, we'll have built that treehouse..."</p>
+                    <p style="font-size: 14px; opacity: 0.9;">Perfect for personal messages & reading content</p>
+                </div>
+                
+                <div class="finalized-font">
+                    <h3 class="playfair" style="font-size: 20px; margin-bottom: 8px;">Playfair Display</h3>
+                    <p class="playfair" style="font-size: 18px; margin-bottom: 12px;">Connection Stones</p>
+                    <p style="font-size: 14px; opacity: 0.9;">Elegant headings & special moments</p>
+                </div>
+                
+                <div class="finalized-font">
+                    <h3 class="lora" style="font-size: 20px; margin-bottom: 8px;">Lora</h3>
+                    <p class="lora" style="font-size: 16px; margin-bottom: 12px;">She found herself in a walled garden that had been locked for ten years...</p>
+                    <p style="font-size: 14px; opacity: 0.9;">Beautiful for book reading & long content</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Primary UI Font Options -->
+        <div class="font-showcase">
+            <h2 class="section-title">Rich Primary UI Font Options</h2>
+            <p class="section-subtitle">Sophisticated alternatives to basic fonts - each with its own personality</p>
+            
+            <div class="font-grid">
+                <!-- Source Serif Pro -->
+                <div class="font-card">
+                    <div class="personality-badge">Warm Professional</div>
+                    <h3 class="font-name">Source Serif Pro</h3>
+                    <p class="font-category">Primary UI & Navigation</p>
+                    
+                    <div class="font-sample">
+                        <h4 class="source-serif" style="font-size: 20px; font-weight: 500; margin-bottom: 8px;">Send Time Capsule</h4>
+                        <p class="source-serif" style="font-size: 16px; font-weight: 400; margin-bottom: 8px;">Choose delivery date and recipient</p>
+                        <p class="source-serif" style="font-size: 14px; font-weight: 400; color: #6B6B6B;">Settings • Navigation • Form labels</p>
+                    </div>
+                    
+                    <div class="usage-note">
+                        <strong>Personality:</strong> Professional yet warm, excellent readability. Made by Adobe, works beautifully for UI while maintaining sophistication.
+                    </div>
+                </div>
+                
+                <!-- Merriweather -->
+                <div class="font-card">
+                    <div class="personality-badge">Cozy & Readable</div>
+                    <h3 class="font-name">Merriweather</h3>
+                    <p class="font-category">Primary UI & Interface</p>
+                    
+                    <div class="font-sample">
+                        <h4 class="merriweather" style="font-size: 20px; font-weight: 500; margin-bottom: 8px;">Social Battery: Green</h4>
+                        <p class="merriweather" style="font-size: 16px; font-weight: 400; margin-bottom: 8px;">You're feeling energized today</p>
+                        <p class="merriweather" style="font-size: 14px; font-weight: 400; color: #6B6B6B;">Buttons • Menu items • Descriptions</p>
+                    </div>
+                    
+                    <div class="usage-note">
+                        <strong>Personality:</strong> Extremely readable serif designed for screens. Feels like home - cozy, approachable, trustworthy.
+                    </div>
+                </div>
+                
+                <!-- Libre Baskerville -->
+                <div class="font-card">
+                    <div class="personality-badge">Classic Elegance</div>
+                    <h3 class="font-name">Libre Baskerville</h3>
+                    <p class="font-category">Primary UI with Literary Feel</p>
+                    
+                    <div class="font-sample">
+                        <h4 class="libre-baskerville" style="font-size: 20px; font-weight: 400; margin-bottom: 8px;">Connection Stones</h4>
+                        <p class="libre-baskerville" style="font-size: 16px; font-weight: 400; margin-bottom: 8px;">Touch to send comfort across distance</p>
+                        <p class="libre-baskerville" style="font-size: 14px; font-weight: 400; color: #6B6B6B;">Navigation • Settings • Feature descriptions</p>
+                    </div>
+                    
+                    <div class="usage-note">
+                        <strong>Personality:</strong> Classic, literary feel. Like reading a beautiful book - sophisticated without being pretentious.
+                    </div>
+                </div>
+                
+                <!-- EB Garamond -->
+                <div class="font-card">
+                    <div class="personality-badge">Sophisticated Vintage</div>
+                    <h3 class="font-name">EB Garamond</h3>
+                    <p class="font-category">Premium UI Experience</p>
+                    
+                    <div class="font-sample">
+                        <h4 class="eb-garamond" style="font-size: 20px; font-weight: 500; margin-bottom: 8px;">Parallel Reading</h4>
+                        <p class="eb-garamond" style="font-size: 16px; font-weight: 400; margin-bottom: 8px;">Read together in perfect synchronization</p>
+                        <p class="eb-garamond" style="font-size: 14px; font-weight: 400; color: #6B6B6B;">UI elements • Premium features • Descriptions</p>
+                    </div>
+                    
+                    <div class="usage-note">
+                        <strong>Personality:</strong> Timeless, sophisticated. Feels like a luxury experience - perfect for premium features.
+                    </div>
+                </div>
+                
+                <!-- Spectral -->
+                <div class="font-card">
+                    <div class="personality-badge">Modern Literary</div>
+                    <h3 class="font-name">Spectral</h3>
+                    <p class="font-category">Contemporary UI with Character</p>
+                    
+                    <div class="font-sample">
+                        <h4 class="spectral" style="font-size: 20px; font-weight: 500; margin-bottom: 8px;">Anonymous Messages</h4>
+                        <p class="spectral" style="font-size: 16px; font-weight: 400; margin-bottom: 8px;">Send without revealing your identity</p>
+                        <p class="spectral" style="font-size: 14px; font-weight: 400; color: #6B6B6B;">Modern serif designed for digital reading</p>
+                    </div>
+                    
+                    <div class="usage-note">
+                        <strong>Personality:</strong> Modern serif with character. Designed specifically for digital reading, very unique.
+                    </div>
+                </div>
+                
+                <!-- Alegreya -->
+                <div class="font-card">
+                    <div class="personality-badge">Warm Humanist</div>
+                    <h3 class="font-name">Alegreya</h3>
+                    <p class="font-category">Friendly UI with Personality</p>
+                    
+                    <div class="font-sample">
+                        <h4 class="alegreya" style="font-size: 20px; font-weight: 500; margin-bottom: 8px;">Worry Stones</h4>
+                        <p class="alegreya" style="font-size: 16px; font-weight: 400; margin-bottom: 8px;">Create your personal comfort object</p>
+                        <p class="alegreya" style="font-size: 14px; font-weight: 400; color: #6B6B6B;">Warm, approachable, distinctive character</p>
+                    </div>
+                    
+                    <div class="usage-note">
+                        <strong>Personality:</strong> Warm, humanist feel. Has character without being distracting - feels like a friendly conversation.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="app-preview">
+            <h2 class="preview-header">Font System in Action</h2>
+            
+            <div class="app-mockup">
+                <h3 class="playfair" style="font-size: 26px; color: #87A96B; margin-bottom: 8px;">Time Capsules</h3>
+                <p class="source-serif" style="font-size: 14px; color: #6B6B6B; margin-bottom: 24px;">Your future messages</p>
+                
+                <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 16px; border-left: 4px solid #D4A5A5;">
+                    <p class="source-serif" style="font-size: 12px; color: #6B6B6B; margin-bottom: 8px;">TO: future-me@example.com • DELIVERS: Dec 25, 2025</p>
+                    <p class="crimson" style="font-size: 16px; font-style: italic; line-height: 1.6;">"I hope by Christmas next year, you've learned to be kinder to yourself. Remember that progress isn't always visible, but it's always happening..."</p>
+                </div>
+                
+                <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #87A96B;">
+                    <p class="source-serif" style="font-size: 14px; color: #87A96B; font-weight: 500; margin-bottom: 8px;">📚 Alex is reading with you</p>
+                    <p class="lora" style="font-size: 15px; line-height: 1.7;">"The most beautiful thing about reading together is sharing the silence between the words, where understanding lives and grows in the space we create together."</p>
+                </div>
+                
+                <div style="background: #F7F5F3; padding: 16px; border-radius: 8px; margin-top: 16px;">
+                    <p class="playfair" style="font-size: 18px; color: #87A96B; margin-bottom: 8px;">Connection Stones</p>
+                    <p class="source-serif" style="font-size: 14px; color: #6B6B6B;">Sarah is touching her comfort stone. Touch yours to send comfort back.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="recommendations">
+            <h2 class="rec-title">My Top Recommendation</h2>
+            <div class="rec-content">
+                <p style="font-size: 18px; margin-bottom: 24px;">Based on Future Talk's warm, introvert-friendly philosophy, I recommend <strong>Source Serif Pro</strong> as your primary UI font.</p>
+                
+                <p style="margin-bottom: 16px;">It perfectly balances <strong>professional readability</strong> with <strong>warm personality</strong> - sophisticated enough for premium features, approachable enough for daily use, and unique enough to set you apart from apps using basic sans-serifs.</p>
+                
+                <p><strong>Your Final Font System:</strong><br>
+                Primary UI: Source Serif Pro • Personal Content: Crimson Pro • Headings: Playfair Display • Reading: Lora</p>
+            </div>
+        </div>
+        
+        <div style="margin-top: 48px; text-align: center;">
+            <p class="crimson" style="color: #6B6B6B; font-size: 14px; font-style: italic;">💚 Designed for thoughtful, introvert-friendly communication</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -272,7 +272,7 @@ class _DashboardFABState extends State<DashboardFAB>
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.sageGreen.withValues(alpha: 0.4),
+                          color: AppColors.sageGreen.withOpacity( 0.4),
                           blurRadius: _shadowAnimation.value,
                           offset: Offset(0, _shadowAnimation.value / 2),
                         ),

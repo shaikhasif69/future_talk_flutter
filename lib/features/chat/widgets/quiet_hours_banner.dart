@@ -34,13 +34,13 @@ class QuietHoursBanner extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.dustyRose.withValues(alpha: 0.1),
-            AppColors.lavenderMist.withValues(alpha: 0.1),
+            AppColors.dustyRose.withOpacity( 0.1),
+            AppColors.lavenderMist.withOpacity( 0.1),
           ],
         ),
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
         border: Border.all(
-          color: AppColors.dustyRose.withValues(alpha: 0.2),
+          color: AppColors.dustyRose.withOpacity( 0.2),
           width: 1.0,
         ),
       ),
@@ -51,7 +51,7 @@ class QuietHoursBanner extends StatelessWidget {
             width: 32.0,
             height: 32.0,
             decoration: BoxDecoration(
-              color: AppColors.dustyRose.withValues(alpha: 0.2),
+              color: AppColors.dustyRose.withOpacity( 0.2),
               shape: BoxShape.circle,
             ),
             child: const Icon(
@@ -62,7 +62,7 @@ class QuietHoursBanner extends StatelessWidget {
           ).animate(onPlay: (controller) => controller.repeat())
               .shimmer(
                 duration: const Duration(seconds: 2),
-                color: AppColors.pearlWhite.withValues(alpha: 0.3),
+                color: AppColors.pearlWhite.withOpacity( 0.3),
               ),
           
           const SizedBox(width: AppDimensions.spacingM),
@@ -157,10 +157,10 @@ class CompactQuietHoursIndicator extends StatelessWidget {
         vertical: 2.0,
       ),
       decoration: BoxDecoration(
-        color: AppColors.dustyRose.withValues(alpha: 0.1),
+        color: AppColors.dustyRose.withOpacity( 0.1),
         borderRadius: BorderRadius.circular(AppDimensions.radiusS),
         border: Border.all(
-          color: AppColors.dustyRose.withValues(alpha: 0.3),
+          color: AppColors.dustyRose.withOpacity( 0.3),
           width: 0.5,
         ),
       ),
@@ -170,13 +170,13 @@ class CompactQuietHoursIndicator extends StatelessWidget {
           Icon(
             Icons.nightlight_round,
             size: 12.0,
-            color: AppColors.dustyRose.withValues(alpha: 0.8),
+            color: AppColors.dustyRose.withOpacity( 0.8),
           ),
           const SizedBox(width: 4.0),
           Text(
             'Quiet',
             style: TextStyle(
-              color: AppColors.dustyRose.withValues(alpha: 0.8),
+              color: AppColors.dustyRose.withOpacity( 0.8),
               fontSize: 11.0,
               fontWeight: FontWeight.w500,
             ),
@@ -217,12 +217,12 @@ class _QuietHoursToggleCardState extends State<QuietHoursToggleCard> {
       padding: const EdgeInsets.all(AppDimensions.paddingL),
       decoration: BoxDecoration(
         color: widget.isActive 
-            ? AppColors.dustyRose.withValues(alpha: 0.05)
+            ? AppColors.dustyRose.withOpacity( 0.05)
             : AppColors.pearlWhite,
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
         border: Border.all(
           color: widget.isActive 
-              ? AppColors.dustyRose.withValues(alpha: 0.2)
+              ? AppColors.dustyRose.withOpacity( 0.2)
               : AppColors.whisperGray,
           width: 1.0,
         ),
@@ -238,8 +238,8 @@ class _QuietHoursToggleCardState extends State<QuietHoursToggleCard> {
                 height: 40.0,
                 decoration: BoxDecoration(
                   color: widget.isActive 
-                      ? AppColors.dustyRose.withValues(alpha: 0.2)
-                      : AppColors.softCharcoalLight.withValues(alpha: 0.1),
+                      ? AppColors.dustyRose.withOpacity( 0.2)
+                      : AppColors.softCharcoalLight.withOpacity( 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -291,7 +291,7 @@ class _QuietHoursToggleCardState extends State<QuietHoursToggleCard> {
             Container(
               padding: const EdgeInsets.all(AppDimensions.spacingM),
               decoration: BoxDecoration(
-                color: AppColors.dustyRose.withValues(alpha: 0.05),
+                color: AppColors.dustyRose.withOpacity( 0.05),
                 borderRadius: BorderRadius.circular(AppDimensions.radiusM),
               ),
               child: Row(
@@ -299,13 +299,13 @@ class _QuietHoursToggleCardState extends State<QuietHoursToggleCard> {
                   Icon(
                     Icons.schedule,
                     size: 16.0,
-                    color: AppColors.dustyRose.withValues(alpha: 0.8),
+                    color: AppColors.dustyRose.withOpacity( 0.8),
                   ),
                   const SizedBox(width: AppDimensions.spacingS),
                   Text(
                     'Active from ${widget.startTime} to ${widget.endTime}',
                     style: AppTextStyles.labelMedium.copyWith(
-                      color: AppColors.dustyRose.withValues(alpha: 0.8),
+                      color: AppColors.dustyRose.withOpacity( 0.8),
                       fontWeight: FontWeight.w500,
                     ),
                   ),

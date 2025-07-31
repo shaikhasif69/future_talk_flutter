@@ -255,13 +255,13 @@ class ChatConversation {
   List<Color> get avatarGradient {
     if (isIndividual && otherParticipant != null) {
       final baseColor = otherParticipant!.avatarColor;
-      return [baseColor, baseColor.withValues(alpha: 0.7)];
+      return [baseColor, baseColor.withOpacity( 0.7)];
     }
     if (avatarColor != null) {
-      return [avatarColor!, avatarColor!.withValues(alpha: 0.7)];
+      return [avatarColor!, avatarColor!.withOpacity( 0.7)];
     }
     // Default gradient
-    return [Colors.grey, Colors.grey.withValues(alpha: 0.7)];
+    return [Colors.grey, Colors.grey.withOpacity( 0.7)];
   }
 
   /// Get social battery status for individual chats

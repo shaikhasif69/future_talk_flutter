@@ -364,7 +364,7 @@ class _FriendStatusItemState extends State<FriendStatusItem>
             ),
             boxShadow: [
               BoxShadow(
-                color: widget.friend.batteryColor.withValues(alpha: 0.2),
+                color: widget.friend.batteryColor.withOpacity( 0.2),
                 blurRadius: _isHovered ? 8 : 4,
                 offset: const Offset(0, 2),
               ),

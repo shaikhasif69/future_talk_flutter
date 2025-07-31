@@ -129,7 +129,7 @@ class _ChatFloatingActionButtonState extends State<ChatFloatingActionButton>
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.sageGreen.withValues(alpha: 0.4),
+                    color: AppColors.sageGreen.withOpacity( 0.4),
                     blurRadius: _isPressed ? 8.0 : 16.0,
                     spreadRadius: _isPressed ? 0.0 : 2.0,
                     offset: Offset(0, _isPressed ? 2.0 : 4.0),
@@ -319,7 +319,7 @@ class _ExpandableChatFABState extends State<ExpandableChatFAB>
             borderRadius: BorderRadius.circular(AppDimensions.radiusM),
             boxShadow: [
               BoxShadow(
-                color: AppColors.softCharcoal.withValues(alpha: 0.1),
+                color: AppColors.softCharcoal.withOpacity( 0.1),
                 blurRadius: 8.0,
                 offset: const Offset(0, 2),
               ),
@@ -352,7 +352,7 @@ class _ExpandableChatFABState extends State<ExpandableChatFAB>
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.sageGreen.withValues(alpha: 0.2),
+                    color: AppColors.sageGreen.withOpacity( 0.2),
                     blurRadius: 8.0,
                     offset: const Offset(0, 2),
                   ),
@@ -430,7 +430,7 @@ class _ChatSpeedDialFABState extends State<ChatSpeedDialFAB>
             child: GestureDetector(
               onTap: _toggle,
               child: Container(
-                color: AppColors.softCharcoal.withValues(alpha: 0.1),
+                color: AppColors.softCharcoal.withOpacity( 0.1),
               ),
             ),
           ).animate().fadeIn(),

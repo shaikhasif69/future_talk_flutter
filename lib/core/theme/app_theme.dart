@@ -57,7 +57,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.warmCream,
       
       // ==================== APP BAR THEME ====================
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: AppColors.warmCream,
         foregroundColor: AppColors.softCharcoal,
         elevation: AppDimensions.appBarElevation,
@@ -66,7 +66,7 @@ class AppTheme {
         titleTextStyle: AppTextStyles.headlineMedium,
         centerTitle: false,
         toolbarHeight: AppDimensions.appBarHeight,
-        systemOverlayStyle: SystemUiOverlayStyle(
+        systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.dark,
           statusBarBrightness: Brightness.light,
@@ -233,7 +233,7 @@ class AppTheme {
       ),
       
       // ==================== BOTTOM NAVIGATION BAR THEME ====================
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: AppColors.warmCreamAlt,
         selectedItemColor: AppColors.sageGreen,
         unselectedItemColor: AppColors.softCharcoalLight,
@@ -271,7 +271,7 @@ class AppTheme {
       ),
       
       // ==================== LIST TILE THEME ====================
-      listTileTheme: const ListTileThemeData(
+      listTileTheme: ListTileThemeData(
         contentPadding: EdgeInsets.symmetric(
           horizontal: AppDimensions.listItemPadding,
         ),
@@ -287,7 +287,7 @@ class AppTheme {
       ),
       
       // ==================== TEXT THEME ====================
-      textTheme: const TextTheme(
+      textTheme: TextTheme(
         displayLarge: AppTextStyles.displayLarge,
         displayMedium: AppTextStyles.displayMedium,
         displaySmall: AppTextStyles.displaySmall,

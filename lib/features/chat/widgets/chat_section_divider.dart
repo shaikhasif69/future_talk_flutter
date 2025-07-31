@@ -46,8 +46,8 @@ class ChatSectionDivider extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.softCharcoalLight.withValues(alpha: 0.2),
-                      AppColors.softCharcoalLight.withValues(alpha: 0.05),
+                      AppColors.softCharcoalLight.withOpacity( 0.2),
+                      AppColors.softCharcoalLight.withOpacity( 0.05),
                       Colors.transparent,
                     ],
                   ),
@@ -113,13 +113,13 @@ class ChatSectionDividerWithCount extends StatelessWidget {
                   vertical: 1.0,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.softCharcoalLight.withValues(alpha: 0.1),
+                  color: AppColors.softCharcoalLight.withOpacity( 0.1),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Text(
                   count.toString(),
                   style: TextStyle(
-                    color: AppColors.softCharcoalLight.withValues(alpha: 0.8),
+                    color: AppColors.softCharcoalLight.withOpacity( 0.8),
                     fontSize: 10.0,
                     fontWeight: FontWeight.w600,
                   ),
@@ -137,8 +137,8 @@ class ChatSectionDividerWithCount extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.softCharcoalLight.withValues(alpha: 0.2),
-                      AppColors.softCharcoalLight.withValues(alpha: 0.05),
+                      AppColors.softCharcoalLight.withOpacity( 0.2),
+                      AppColors.softCharcoalLight.withOpacity( 0.05),
                       Colors.transparent,
                     ],
                   ),
@@ -280,13 +280,13 @@ class _ExpandableChatSectionDividerState
                         vertical: 1.0,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.softCharcoalLight.withValues(alpha: 0.1),
+                        color: AppColors.softCharcoalLight.withOpacity( 0.1),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: Text(
                         widget.count.toString(),
                         style: TextStyle(
-                          color: AppColors.softCharcoalLight.withValues(alpha: 0.8),
+                          color: AppColors.softCharcoalLight.withOpacity( 0.8),
                           fontSize: 10.0,
                           fontWeight: FontWeight.w600,
                         ),
@@ -305,8 +305,8 @@ class _ExpandableChatSectionDividerState
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          AppColors.softCharcoalLight.withValues(alpha: 0.2),
-                          AppColors.softCharcoalLight.withValues(alpha: 0.05),
+                          AppColors.softCharcoalLight.withOpacity( 0.2),
+                          AppColors.softCharcoalLight.withOpacity( 0.05),
                           Colors.transparent,
                         ],
                       ),
@@ -341,7 +341,7 @@ class MinimalChatSectionDivider extends StatelessWidget {
       child: Text(
         title.toUpperCase(),
         style: AppTextStyles.labelSmall.copyWith(
-          color: AppColors.softCharcoalLight.withValues(alpha: 0.7),
+          color: AppColors.softCharcoalLight.withOpacity( 0.7),
           fontWeight: FontWeight.w500,
           letterSpacing: 1.0,
         ),

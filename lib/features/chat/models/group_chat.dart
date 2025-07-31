@@ -284,7 +284,7 @@ class GroupChat extends ChatConversation {
   @override
   List<Color> get avatarGradient {
     if (avatarColor != null) {
-      return [avatarColor!, avatarColor!.withValues(alpha: 0.7)];
+      return [avatarColor!, avatarColor!.withOpacity( 0.7)];
     }
 
     // Use colors from first few members
@@ -293,7 +293,7 @@ class GroupChat extends ChatConversation {
       if (colors.length >= 2) {
         return [colors[0], colors[1]];
       } else if (colors.length == 1) {
-        return [colors[0], colors[0].withValues(alpha: 0.7)];
+        return [colors[0], colors[0].withOpacity( 0.7)];
       }
     }
 

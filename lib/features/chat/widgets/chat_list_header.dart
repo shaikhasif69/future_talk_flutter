@@ -25,10 +25,10 @@ class ChatListHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.pearlWhite.withValues(alpha: 0.95),
+        color: AppColors.pearlWhite.withOpacity( 0.95),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softCharcoal.withValues(alpha: 0.05),
+            color: AppColors.softCharcoal.withOpacity( 0.05),
             blurRadius: 8.0,
             offset: const Offset(0, 1),
           ),
@@ -113,9 +113,8 @@ class ChatListHeader extends StatelessWidget {
                       ),
                       child: Text(
                         '${provider.totalUnreadCount}',
-                        style: const TextStyle(
+                        style: AppTextStyles.labelSmall.copyWith(
                           color: AppColors.pearlWhite,
-                          fontSize: 11.0,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -189,7 +188,7 @@ class ChatListHeader extends StatelessWidget {
             width: 40.0,
             height: 40.0,
             decoration: BoxDecoration(
-              color: AppColors.sageGreen.withValues(alpha: 0.1),
+              color: AppColors.sageGreen.withOpacity( 0.1),
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
             ),
             child: Icon(
@@ -216,25 +215,27 @@ class ChatListHeader extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
         ),
-        title: const Text(
+        title: Text(
           'Create Group',
-          style: TextStyle(
+          style: AppTextStyles.headlineMedium.copyWith(
             color: AppColors.softCharcoal,
             fontWeight: FontWeight.w600,
           ),
         ),
-        content: const Text(
+        content: Text(
           'Group creation feature coming soon! This will let you create book clubs, game nights, and other interest-based groups.',
-          style: TextStyle(
+          style: AppTextStyles.bodyMedium.copyWith(
             color: AppColors.softCharcoalLight,
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
+            child: Text(
               'Got it',
-              style: TextStyle(color: AppColors.sageGreen),
+              style: AppTextStyles.button.copyWith(
+                color: AppColors.sageGreen,
+              ),
             ),
           ),
         ],
@@ -280,14 +281,14 @@ class ChatListHeader extends StatelessWidget {
                   provider.isQuietHours 
                       ? 'Disable quiet hours' 
                       : 'Enable quiet hours',
+                  style: AppTextStyles.bodyMedium,
                 ),
                 subtitle: Text(
                   provider.isQuietHours
                       ? 'Allow all notifications'
                       : 'Gentle notifications only',
-                  style: const TextStyle(
+                  style: AppTextStyles.labelMedium.copyWith(
                     color: AppColors.softCharcoalLight,
-                    fontSize: 12.0,
                   ),
                 ),
                 onTap: () {
@@ -296,32 +297,36 @@ class ChatListHeader extends StatelessWidget {
                 },
               ),
               
-              const ListTile(
-                leading: Icon(
+              ListTile(
+                leading: const Icon(
                   Icons.archive_outlined,
                   color: AppColors.softCharcoal,
                 ),
-                title: Text('Archived chats'),
+                title: Text(
+                  'Archived chats',
+                  style: AppTextStyles.bodyMedium,
+                ),
                 subtitle: Text(
                   'View archived conversations',
-                  style: TextStyle(
+                  style: AppTextStyles.labelMedium.copyWith(
                     color: AppColors.softCharcoalLight,
-                    fontSize: 12.0,
                   ),
                 ),
               ),
               
-              const ListTile(
-                leading: Icon(
+              ListTile(
+                leading: const Icon(
                   Icons.settings_outlined,
                   color: AppColors.softCharcoal,
                 ),
-                title: Text('Chat settings'),
+                title: Text(
+                  'Chat settings',
+                  style: AppTextStyles.bodyMedium,
+                ),
                 subtitle: Text(
                   'Manage notifications and preferences',
-                  style: TextStyle(
+                  style: AppTextStyles.labelMedium.copyWith(
                     color: AppColors.softCharcoalLight,
-                    fontSize: 12.0,
                   ),
                 ),
               ),

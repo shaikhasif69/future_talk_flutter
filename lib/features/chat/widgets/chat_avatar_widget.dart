@@ -40,13 +40,13 @@ class ChatAvatarWidget extends StatelessWidget {
                   end: Alignment.bottomRight,
                   colors: [
                     participant.avatarColor,
-                    participant.avatarColor.withValues(alpha: 0.7),
+                    participant.avatarColor.withOpacity( 0.7),
                   ],
                 ),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: participant.avatarColor.withValues(alpha: 0.2),
+                    color: participant.avatarColor.withOpacity( 0.2),
                     blurRadius: 8.0,
                     spreadRadius: 1.0,
                     offset: const Offset(0, 2),
@@ -139,7 +139,7 @@ class GroupAvatarWidget extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: conversation.avatarGradient.first.withValues(alpha: 0.2),
+                    color: conversation.avatarGradient.first.withOpacity( 0.2),
                     blurRadius: 8.0,
                     spreadRadius: 1.0,
                     offset: const Offset(0, 2),
@@ -434,7 +434,7 @@ class ParticipantAvatarGrid extends StatelessWidget {
                 end: Alignment.bottomRight,
                 colors: [
                   participant.avatarColor,
-                  participant.avatarColor.withValues(alpha: 0.7),
+                  participant.avatarColor.withOpacity( 0.7),
                 ],
               ),
               shape: BoxShape.circle,

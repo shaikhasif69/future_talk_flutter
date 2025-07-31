@@ -31,7 +31,7 @@ class SplashLogo extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppDimensions.logoRadius),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.sageGreen.withValues(alpha: 0.3),
+                    color: AppColors.sageGreen.withOpacity( 0.3),
                     blurRadius: 24.0,
                     offset: const Offset(0, 8),
                   ),
@@ -46,7 +46,7 @@ class SplashLogo extends StatelessWidget {
             .animate(onPlay: (controller) => controller.repeat())
             .shimmer(
               duration: Duration(milliseconds: 2000),
-              color: AppColors.pearlWhite.withValues(alpha: 0.3),
+              color: AppColors.pearlWhite.withOpacity( 0.3),
             )
             .then()
             .animate(onPlay: (controller) => controller.repeat())

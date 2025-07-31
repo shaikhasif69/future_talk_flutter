@@ -120,11 +120,11 @@ class _ChatItemTileState extends State<ChatItemTile>
         padding: const EdgeInsets.all(AppDimensions.paddingM),
         decoration: BoxDecoration(
           color: _isPressed 
-              ? AppColors.sageGreen.withValues(alpha: 0.05)
+              ? AppColors.sageGreen.withOpacity( 0.05)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(AppDimensions.radiusL),
           border: _isPressed ? Border.all(
-            color: AppColors.sageGreen.withValues(alpha: 0.1),
+            color: AppColors.sageGreen.withOpacity( 0.1),
             width: 1.0,
           ) : null,
         ),
@@ -179,7 +179,7 @@ class _ChatItemTileState extends State<ChatItemTile>
                     Icon(
                       Icons.push_pin,
                       size: 12.0,
-                      color: AppColors.sageGreen.withValues(alpha: 0.7),
+                      color: AppColors.sageGreen.withOpacity( 0.7),
                     ),
                     const SizedBox(width: 4.0),
                   ],
@@ -210,15 +210,13 @@ class _ChatItemTileState extends State<ChatItemTile>
                         vertical: 2.0,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.lavenderMist.withValues(alpha: 0.2),
+                        color: AppColors.lavenderMist.withOpacity( 0.2),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: Text(
                         widget.conversation.memberCountText,
-                        style: const TextStyle(
+                        style: AppTextStyles.labelSmall.copyWith(
                           color: AppColors.softCharcoalLight,
-                          fontSize: 11.0,
-                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
@@ -314,18 +312,17 @@ class _ChatItemTileState extends State<ChatItemTile>
       padding: const EdgeInsets.symmetric(horizontal: 6.0),
       decoration: BoxDecoration(
         color: shouldShowGentle 
-            ? AppColors.sageGreen.withValues(alpha: 0.2)
+            ? AppColors.sageGreen.withOpacity( 0.2)
             : AppColors.sageGreen,
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Center(
         child: Text(
           widget.conversation.unreadCountText,
-          style: TextStyle(
+          style: AppTextStyles.labelSmall.copyWith(
             color: shouldShowGentle 
                 ? AppColors.sageGreen
                 : AppColors.pearlWhite,
-            fontSize: 11.0,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -346,7 +343,7 @@ class _ChatItemTileState extends State<ChatItemTile>
           Icon(
             Icons.volume_off,
             size: 16.0,
-            color: AppColors.softCharcoalLight.withValues(alpha: 0.7),
+            color: AppColors.softCharcoalLight.withOpacity( 0.7),
           ),
         
         // Social battery quick indicator (for individual chats)
@@ -433,15 +430,14 @@ class CompactChatItemTile extends StatelessWidget {
                   child: conversation.isIndividual
                       ? Text(
                           conversation.otherParticipant?.initials ?? '?',
-                          style: const TextStyle(
+                          style: AppTextStyles.bodyMedium.copyWith(
                             color: AppColors.pearlWhite,
-                            fontSize: 14.0,
                             fontWeight: FontWeight.w600,
                           ),
                         )
                       : Text(
                           conversation.avatarEmoji ?? '👥',
-                          style: const TextStyle(fontSize: 16.0),
+                          style: AppTextStyles.bodyMedium,
                         ),
                 ),
               ),

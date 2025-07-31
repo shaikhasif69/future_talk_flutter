@@ -66,7 +66,7 @@ class FTSlideContainer extends StatelessWidget {
           )
           .shimmer(
             duration: Duration(milliseconds: 1500),
-            color: AppColors.pearlWhite.withValues(alpha: 0.3),
+            color: AppColors.pearlWhite.withOpacity( 0.3),
           ),
           
           const SizedBox(height: AppDimensions.spacingXXXL),

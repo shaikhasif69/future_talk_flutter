@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
+import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/widgets/animations/ft_stagger_animation.dart';
 import '../../../shared/widgets/ft_button.dart';
 import '../providers/chat_list_provider.dart';
@@ -186,20 +187,19 @@ class _ChatListScreenState extends State<ChatListScreen> {
   }
 
   Widget _buildLoadingState() {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(
+          const CircularProgressIndicator(
             strokeWidth: 2.0,
             valueColor: AlwaysStoppedAnimation<Color>(AppColors.sageGreen),
           ),
-          SizedBox(height: AppDimensions.spacingM),
+          const SizedBox(height: AppDimensions.spacingM),
           Text(
             'Loading conversations...',
-            style: TextStyle(
+            style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.softCharcoalLight,
-              fontSize: 14.0,
             ),
           ),
         ],
@@ -228,11 +228,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
               ),
             ),
             const SizedBox(height: AppDimensions.spacingXL),
-            const Text(
+            Text(
               'No conversations yet',
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w500,
+              style: AppTextStyles.headlineSmall.copyWith(
                 color: AppColors.softCharcoal,
               ),
             ),
@@ -241,8 +239,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
               _chatProvider.searchQuery.isNotEmpty
                   ? 'No conversations match your search'
                   : 'Start a conversation to connect with friends',
-              style: const TextStyle(
-                fontSize: 14.0,
+              style: AppTextStyles.bodyMedium.copyWith(
                 color: AppColors.softCharcoalLight,
               ),
               textAlign: TextAlign.center,
@@ -339,7 +336,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
                 conversation.isPinned ? Icons.push_pin : Icons.push_pin_outlined,
                 color: AppColors.sageGreen,
               ),
-              title: Text(conversation.isPinned ? 'Unpin' : 'Pin'),
+              title: Text(
+                conversation.isPinned ? 'Unpin' : 'Pin',
+                style: AppTextStyles.bodyMedium,
+              ),
               onTap: () {
                 _chatProvider.togglePin(conversation.id);
                 Navigator.pop(context);
@@ -353,7 +353,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     : Icons.volume_off_outlined,
                 color: AppColors.softCharcoal,
               ),
-              title: Text(conversation.isMuted ? 'Unmute' : 'Mute'),
+              title: Text(
+                conversation.isMuted ? 'Unmute' : 'Mute',
+                style: AppTextStyles.bodyMedium,
+              ),
               onTap: () {
                 _chatProvider.toggleMute(conversation.id);
                 Navigator.pop(context);
@@ -366,7 +369,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   Icons.mark_chat_read_outlined,
                   color: AppColors.sageGreen,
                 ),
-                title: const Text('Mark as read'),
+                title: Text(
+                  'Mark as read',
+                  style: AppTextStyles.bodyMedium,
+                ),
                 onTap: () {
                   _chatProvider.markAsRead(conversation.id);
                   Navigator.pop(context);
