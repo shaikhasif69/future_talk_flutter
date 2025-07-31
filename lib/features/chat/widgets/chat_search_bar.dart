@@ -161,16 +161,8 @@ class _ChatSearchBarState extends State<ChatSearchBar>
       builder: (context, child) {
         return Container(
           decoration: BoxDecoration(
-            color: _isFocused 
-                ? AppColors.pearlWhite 
-                : AppColors.sageGreen.withOpacity(0.05),
+            color: AppColors.pearlWhite,
             borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-            border: Border.all(
-              color: _isFocused 
-                  ? AppColors.sageGreen
-                  : AppColors.sageGreen.withOpacity(0.1),
-              width: _isFocused ? 2.0 : 1.0,
-            ),
             boxShadow: _isFocused ? [
               BoxShadow(
                 color: AppColors.sageGreen.withOpacity(0.1),
@@ -192,9 +184,7 @@ class _ChatSearchBarState extends State<ChatSearchBar>
                   child: Icon(
                     Icons.search,
                     size: 20.0,
-                    color: _isFocused 
-                        ? AppColors.sageGreen
-                        : AppColors.softCharcoalLight,
+                    color: AppColors.sageGreen,
                   ),
                 ).animate().scale(
                   begin: const Offset(1.0, 1.0),

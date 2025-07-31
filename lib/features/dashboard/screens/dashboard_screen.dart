@@ -140,6 +140,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
   Widget build(BuildContext context) {
     final dashboardData = ref.watch(dashboardProvider);
     
+    // Set context for navigation in dashboard provider
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(dashboardProvider.notifier).setContext(context);
+    });
+    
     return Scaffold(
       backgroundColor: AppColors.warmCream,
       body: dashboardData.when(

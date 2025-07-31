@@ -5,6 +5,7 @@ import '../features/auth/screens/onboarding_screen.dart';
 import '../features/auth/screens/sign_up_screen.dart';
 import '../features/auth/screens/sign_in_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
+import '../features/chat/screens/chat_list_screen.dart';
 
 /// Future Talk's routing configuration using GoRouter
 /// Handles navigation between authentication screens with smooth transitions
@@ -17,11 +18,11 @@ class AppRouter {
     debugLogDiagnostics: true,
     routes: [
       // ==================== SPLASH ROUTE ====================
-      GoRoute(
-        path: '/splash',
-        name: 'splash',
-        builder: (context, state) => const SplashScreen(),
-      ),
+      // GoRoute(
+      //   path: '/splash',
+      //   name: 'splash',
+      //   builder: (context, state) => const SplashScreen(),
+      // ),
 
       // ==================== ONBOARDING ROUTE ====================
       GoRoute(
@@ -49,6 +50,13 @@ class AppRouter {
         path: '/dashboard',
         name: 'dashboard',
         builder: (context, state) => const DashboardScreen(),
+      ),
+
+      // ==================== CHAT ROUTES ====================
+      GoRoute(
+        path: '/splash',
+        name: 'chat',
+        builder: (context, state) => const ChatListScreen(),
       ),
     ],
 
@@ -102,6 +110,7 @@ class Routes {
   static const String signUp = '/sign_up';
   static const String signIn = '/sign_in';
   static const String dashboard = '/dashboard';
+  static const String chat = '/chat';
 }
 
 /// Navigation extensions for easy routing
@@ -120,6 +129,9 @@ extension AppNavigation on BuildContext {
 
   /// Navigate to dashboard
   void goToDashboard() => go(Routes.dashboard);
+
+  /// Navigate to chat list
+  void goToChat() => go(Routes.chat);
 
   /// Push sign up screen
   void pushSignUp() => push(Routes.signUp);

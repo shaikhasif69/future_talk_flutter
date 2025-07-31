@@ -1,11 +1,22 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../models/dashboard_data.dart';
 import '../models/friend_status.dart';
 
 /// Provider for dashboard data state
 class DashboardNotifier extends StateNotifier<AsyncValue<DashboardData>> {
+  BuildContext? _context;
+  
   DashboardNotifier() : super(const AsyncValue.loading()) {
     _loadDashboardData();
+  }
+
+  /// Set context for navigation
+  void setContext(BuildContext context) {
+    _context = context;
+    // Update quick actions with new context
+    updateQuickActions();
   }
 
   Future<void> _loadDashboardData() async {
@@ -13,17 +24,91 @@ class DashboardNotifier extends StateNotifier<AsyncValue<DashboardData>> {
       // Simulate API call delay
       await Future.delayed(const Duration(milliseconds: 800));
       
-      final data = DashboardData.createMockData();
+      final mockData = DashboardData.createMockData();
+      final data = mockData.copyWith(
+        quickActions: _createQuickActionsWithNavigation(),
+      );
+      print('Loading dashboard data with ${data.quickActions.length} quick actions');
       state = AsyncValue.data(data);
     } catch (error, stackTrace) {
       state = AsyncValue.error(error, stackTrace);
     }
   }
 
+  /// Create quick actions with proper navigation callbacks
+  List<QuickAction> _createQuickActionsWithNavigation() {
+    return [
+      QuickAction(
+        id: '1',
+        title: 'Time Capsule',
+        subtitle: 'Send to future',
+        icon: '💌',
+        isPremium: false,
+        onTap: () {
+          // TODO: Navigate to time capsule screen when created
+          print('Navigate to Time Capsule');
+        },
+      ),
+      QuickAction(
+        id: '2',
+        title: 'Start Chat',
+        subtitle: 'Gentle conversation',
+        icon: '💬',
+        isPremium: false,
+        onTap: () {
+          print('Chat button tapped! Context: $_context');
+          if (_context != null) {
+            print('Navigating to /chat');
+            _context!.go('/chat');
+          } else {
+            print('Context is null - cannot navigate');
+          }
+        },
+      ),
+      QuickAction(
+        id: '3',
+        title: 'Touch Stone',
+        subtitle: 'Connect hearts',
+        icon: '🪨',
+        isPremium: true,
+        onTap: () {
+          // TODO: Navigate to connection stones when created
+          print('Navigate to Connection Stones');
+        },
+      ),
+      QuickAction(
+        id: '4',
+        title: 'Reading Mode',
+        subtitle: 'Parallel reading',
+        icon: '📖',
+        isPremium: true,
+        onTap: () {
+          // TODO: Navigate to parallel reading when created
+          print('Navigate to Parallel Reading');
+        },
+      ),
+    ];
+  }
+
   /// Refresh dashboard data
   Future<void> refresh() async {
     state = const AsyncValue.loading();
     await _loadDashboardData();
+  }
+
+  /// Update quick actions when context changes
+  void updateQuickActions() {
+    print('Updating quick actions with context: $_context');
+    state.whenData((data) {
+      final newActions = _createQuickActionsWithNavigation();
+      print('Created ${newActions.length} quick actions');
+      state = AsyncValue.data(
+        data.copyWith(
+          quickActions: newActions,
+          lastUpdated: DateTime.now(),
+        ),
+      );
+    });
   }
 
   /// Update user's social battery level
