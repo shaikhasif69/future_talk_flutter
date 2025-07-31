@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/app_dimensions.dart';
-import '../../../core/constants/app_durations.dart';
+import '../../../routing/app_router.dart';
+import '../../../shared/widgets/layouts/ft_auth_scaffold.dart';
+import '../../../shared/widgets/forms/ft_form_header.dart';
+import '../../../shared/widgets/forms/ft_social_login_section.dart';
 import '../../../shared/widgets/ft_button.dart';
 import '../../../shared/widgets/ft_input.dart';
 import '../../../shared/widgets/ft_card.dart';
-import '../../../routing/app_router.dart';
+import '../../../shared/widgets/animations/ft_stagger_animation.dart';
 
 /// Future Talk's Premium Sign In Screen
 /// Features secure authentication with elegant validation and smooth animations
@@ -19,7 +21,7 @@ class SignInScreen extends StatefulWidget {
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMixin {
+class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _scrollController = ScrollController();
   
@@ -31,10 +33,6 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
   final _emailFocus = FocusNode();
   final _passwordFocus = FocusNode();
   
-  // Animation controllers
-  late AnimationController _fadeController;
-  late AnimationController _slideController;
-  
   // Form state
   bool _isLoading = false;
   bool _rememberMe = false;
@@ -45,20 +43,6 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
   void initState() {
     super.initState();
     
-    _fadeController = AnimationController(
-      duration: AppDurations.medium,
-      vsync: this,
-    );
-    
-    _slideController = AnimationController(
-      duration: AppDurations.slow,
-      vsync: this,
-    );
-    
-    // Start animations
-    _fadeController.forward();
-    _slideController.forward();
-    
     // Add listeners for real-time validation
     _emailController.addListener(_validateEmail);
     _passwordController.addListener(_validatePassword);
@@ -66,18 +50,11 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
 
   @override
   void dispose() {
-    _formKey.currentState?.dispose();
     _scrollController.dispose();
-    
     _emailController.dispose();
     _passwordController.dispose();
-    
     _emailFocus.dispose();
     _passwordFocus.dispose();
-    
-    _fadeController.dispose();
-    _slideController.dispose();
-    
     super.dispose();
   }
 
@@ -228,366 +205,146 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.warmCream,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Header with back button
-            _buildHeader(),
-            
-            // Scrollable form content
-            Expanded(
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                padding: const EdgeInsets.all(AppDimensions.screenPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Welcome section
-                    _buildWelcomeSection(),
-                    
-                    const SizedBox(height: AppDimensions.spacingXXXL),
-                    
-                    // Sign in form
-                    _buildSignInForm(),
-                    
-                    const SizedBox(height: AppDimensions.spacingXXL),
-                    
-                    // Social login section
-                    _buildSocialLoginSection(),
-                    
-                    const SizedBox(height: AppDimensions.spacingXXL),
-                    
-                    // Sign up link
-                    _buildSignUpLink(),
-                    
-                    const SizedBox(height: AppDimensions.spacingXXL),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+    return FTAuthScaffold(
+      scrollController: _scrollController,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Welcome section
+          FTFormHeader(
+            title: 'Welcome Back',
+            description: 'Sign in to continue your mindful communication journey',
+          ),
+          
+          const SizedBox(height: AppDimensions.spacingXXXL),
+          
+          // Sign in form
+          _buildSignInForm(),
+          
+          const SizedBox(height: AppDimensions.spacingXXL),
+          
+          // Social login section
+          FTSocialLoginSection(
+            animationDelay: const Duration(milliseconds: 1000),
+          ),
+          
+          const SizedBox(height: AppDimensions.spacingXXL),
+          
+          // Sign up link
+          _buildSignUpLink(),
+          
+          const SizedBox(height: AppDimensions.spacingXXL),
+        ],
       ),
     );
   }
 
-  Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppDimensions.screenPadding,
-        vertical: AppDimensions.spacingM,
-      ),
-      child: Row(
-        children: [
-          FTButton.text(
-            text: 'Back',
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Icons.arrow_back,
-            size: FTButtonSize.small,
-          ),
-        ],
-      ),
-    )
-        .animate()
-        .fadeIn(duration: AppDurations.medium)
-        .slideY(
-          begin: -0.2,
-          end: 0.0,
-          duration: AppDurations.medium,
-          curve: Curves.easeOutCubic,
-        );
-  }
 
-  Widget _buildWelcomeSection() {
-    return Column(
-      children: [
-        // Logo
-        Container(
-          width: AppDimensions.logoMedium,
-          height: AppDimensions.logoMedium,
-          decoration: BoxDecoration(
-            gradient: AppColors.primaryGradient,
-            borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.cardShadow,
-                blurRadius: 12.0,
-                offset: const Offset(0, 6),
+  Widget _buildSignInForm() {
+    return FTStaggerAnimation(
+      delay: const Duration(milliseconds: 500),
+      child: FTCard(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Email/Username field
+              FTStaggerAnimation(
+                delay: const Duration(milliseconds: 600),
+                child: FTInput(
+                  label: 'Email or Username',
+                  hint: 'Enter your email or username',
+                  controller: _emailController,
+                  focusNode: _emailFocus,
+                  prefixIcon: Icons.email_outlined,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                  errorText: _emailError,
+                  onSubmitted: (_) => _passwordFocus.requestFocus(),
+                ),
+              ),
+              
+              const SizedBox(height: AppDimensions.formFieldSpacing),
+              
+              // Password field
+              FTStaggerAnimation(
+                delay: const Duration(milliseconds: 700),
+                child: FTInput.password(
+                  controller: _passwordController,
+                  focusNode: _passwordFocus,
+                  errorText: _passwordError,
+                  onSubmitted: (_) => _handleSignIn(),
+                ),
+              ),
+              
+              const SizedBox(height: AppDimensions.spacingL),
+              
+              // Remember me and forgot password row
+              FTStaggerAnimation(
+                delay: const Duration(milliseconds: 800),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Remember me checkbox
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: _rememberMe,
+                          onChanged: (value) {
+                            setState(() => _rememberMe = value ?? false);
+                            HapticFeedback.selectionClick();
+                          },
+                          activeColor: AppColors.sageGreen,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4.0),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() => _rememberMe = !_rememberMe);
+                            HapticFeedback.selectionClick();
+                          },
+                          child: Text(
+                            'Remember me',
+                            style: AppTextStyles.bodyMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                    
+                    // Forgot password link
+                    GestureDetector(
+                      onTap: _handleForgotPassword,
+                      child: Text(
+                        'Forgot Password?',
+                        style: AppTextStyles.link,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: AppDimensions.spacingXXL),
+              
+              // Sign In button
+              FTStaggerAnimation(
+                delay: const Duration(milliseconds: 900),
+                child: FTButton.primary(
+                  text: 'Sign In',
+                  onPressed: _isFormValid ? _handleSignIn : null,
+                  isLoading: _isLoading,
+                  icon: Icons.login,
+                  iconPosition: FTButtonIconPosition.right,
+                ),
               ),
             ],
           ),
-          child: const Icon(
-            Icons.message_rounded,
-            color: AppColors.pearlWhite,
-            size: 40.0,
-          ),
-        )
-            .animate()
-            .scale(
-              duration: AppDurations.slow,
-              curve: Curves.elasticOut,
-            )
-            .shimmer(
-              duration: Duration(milliseconds: 1500),
-              color: AppColors.pearlWhite.withValues(alpha: 0.3),
-            ),
-        
-        const SizedBox(height: AppDimensions.spacingXL),
-        
-        Text(
-          'Welcome Back',
-          style: AppTextStyles.displayMedium,
-          textAlign: TextAlign.center,
-        )
-            .animate()
-            .fadeIn(
-              duration: AppDurations.medium,
-              delay: Duration(milliseconds: 200),
-            )
-            .slideY(
-              begin: 0.3,
-              end: 0.0,
-              duration: AppDurations.medium,
-              delay: Duration(milliseconds: 200),
-              curve: Curves.easeOutCubic,
-            ),
-        
-        const SizedBox(height: AppDimensions.spacingM),
-        
-        Text(
-          'Sign in to continue your mindful communication journey',
-          style: AppTextStyles.bodyLarge.copyWith(height: 1.5),
-          textAlign: TextAlign.center,
-        )
-            .animate()
-            .fadeIn(
-              duration: AppDurations.medium,
-              delay: Duration(milliseconds: 400),
-            )
-            .slideY(
-              begin: 0.3,
-              end: 0.0,
-              duration: AppDurations.medium,
-              delay: Duration(milliseconds: 400),
-              curve: Curves.easeOutCubic,
-            ),
-      ],
+        ),
+      ),
     );
   }
 
-  Widget _buildSignInForm() {
-    return FTCard(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Email/Username field
-            FTInput(
-              label: 'Email or Username',
-              hint: 'Enter your email or username',
-              controller: _emailController,
-              focusNode: _emailFocus,
-              prefixIcon: Icons.email_outlined,
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              errorText: _emailError,
-              onSubmitted: (_) => _passwordFocus.requestFocus(),
-            )
-                .animate()
-                .fadeIn(
-                  duration: AppDurations.medium,
-                  delay: Duration(milliseconds: 600),
-                )
-                .slideX(
-                  begin: 0.2,
-                  end: 0.0,
-                  duration: AppDurations.medium,
-                  delay: Duration(milliseconds: 600),
-                  curve: Curves.easeOutCubic,
-                ),
-            
-            const SizedBox(height: AppDimensions.formFieldSpacing),
-            
-            // Password field
-            FTInput.password(
-              controller: _passwordController,
-              focusNode: _passwordFocus,
-              errorText: _passwordError,
-              onSubmitted: (_) => _handleSignIn(),
-            )
-                .animate()
-                .fadeIn(
-                  duration: AppDurations.medium,
-                  delay: Duration(milliseconds: 700),
-                )
-                .slideX(
-                  begin: 0.2,
-                  end: 0.0,
-                  duration: AppDurations.medium,
-                  delay: Duration(milliseconds: 700),
-                  curve: Curves.easeOutCubic,
-                ),
-            
-            const SizedBox(height: AppDimensions.spacingL),
-            
-            // Remember me and forgot password row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Remember me checkbox
-                Row(
-                  children: [
-                    Checkbox(
-                      value: _rememberMe,
-                      onChanged: (value) {
-                        setState(() => _rememberMe = value ?? false);
-                        HapticFeedback.selectionClick();
-                      },
-                      activeColor: AppColors.sageGreen,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() => _rememberMe = !_rememberMe);
-                        HapticFeedback.selectionClick();
-                      },
-                      child: Text(
-                        'Remember me',
-                        style: AppTextStyles.bodyMedium,
-                      ),
-                    ),
-                  ],
-                ),
-                
-                // Forgot password link
-                GestureDetector(
-                  onTap: _handleForgotPassword,
-                  child: Text(
-                    'Forgot Password?',
-                    style: AppTextStyles.link,
-                  ),
-                ),
-              ],
-            )
-                .animate()
-                .fadeIn(
-                  duration: AppDurations.medium,
-                  delay: Duration(milliseconds: 800),
-                )
-                .slideY(
-                  begin: 0.2,
-                  end: 0.0,
-                  duration: AppDurations.medium,
-                  delay: Duration(milliseconds: 800),
-                  curve: Curves.easeOutCubic,
-                ),
-            
-            const SizedBox(height: AppDimensions.spacingXXL),
-            
-            // Sign In button
-            FTButton.primary(
-              text: 'Sign In',
-              onPressed: _isFormValid ? _handleSignIn : null,
-              isLoading: _isLoading,
-              icon: Icons.login,
-              iconPosition: FTButtonIconPosition.right,
-            )
-                .animate()
-                .fadeIn(
-                  duration: AppDurations.medium,
-                  delay: Duration(milliseconds: 900),
-                )
-                .slideY(
-                  begin: 0.2,
-                  end: 0.0,
-                  duration: AppDurations.medium,
-                  delay: Duration(milliseconds: 900),
-                  curve: Curves.easeOutCubic,
-                ),
-          ],
-        ),
-      ),
-    )
-        .animate()
-        .fadeIn(
-          duration: AppDurations.slow,
-          delay: Duration(milliseconds: 500),
-        )
-        .slideY(
-          begin: 0.1,
-          end: 0.0,
-          duration: AppDurations.slow,
-          delay: Duration(milliseconds: 500),
-          curve: Curves.easeOutCubic,
-        );
-  }
-
-  Widget _buildSocialLoginSection() {
-    return Column(
-      children: [
-        // Divider with "or"
-        Row(
-          children: [
-            const Expanded(child: Divider(color: AppColors.whisperGray)),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimensions.spacingM),
-              child: Text(
-                'or continue with',
-                style: AppTextStyles.labelMedium,
-              ),
-            ),
-            const Expanded(child: Divider(color: AppColors.whisperGray)),
-          ],
-        ),
-        
-        const SizedBox(height: AppDimensions.spacingXL),
-        
-        // Social login buttons
-        Row(
-          children: [
-            Expanded(
-              child: FTButton.outlined(
-                text: 'Google',
-                onPressed: () {
-                  HapticFeedback.selectionClick();
-                  // TODO: Implement Google login
-                },
-                icon: Icons.g_mobiledata,
-              ),
-            ),
-            const SizedBox(width: AppDimensions.spacingM),
-            Expanded(
-              child: FTButton.outlined(
-                text: 'Apple',
-                onPressed: () {
-                  HapticFeedback.selectionClick();
-                  // TODO: Implement Apple login
-                },
-                icon: Icons.apple,
-              ),
-            ),
-          ],
-        ),
-      ],
-    )
-        .animate()
-        .fadeIn(
-          duration: AppDurations.medium,
-          delay: Duration(milliseconds: 1000),
-        )
-        .slideY(
-          begin: 0.2,
-          end: 0.0,
-          duration: AppDurations.medium,
-          delay: Duration(milliseconds: 1000),
-          curve: Curves.easeOutCubic,
-        );
-  }
 
   Widget _buildSignUpLink() {
     return Center(
@@ -612,18 +369,6 @@ class _SignInScreenState extends State<SignInScreen> with TickerProviderStateMix
         ),
         textAlign: TextAlign.center,
       ),
-    )
-        .animate()
-        .fadeIn(
-          duration: AppDurations.medium,
-          delay: Duration(milliseconds: 1100),
-        )
-        .slideY(
-          begin: 0.2,
-          end: 0.0,
-          duration: AppDurations.medium,
-          delay: Duration(milliseconds: 1100),
-          curve: Curves.easeOutCubic,
-        );
+    );
   }
 }

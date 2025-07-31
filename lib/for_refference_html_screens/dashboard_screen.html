@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Talk - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Nunito+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            color: #4A4A4A;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #FEFEFE;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 30px 80px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, #F7F5F3, #FEFEFE);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .time { color: #4A4A4A; }
+        .battery { 
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #87A96B;
+        }
+
+        /* App Header */
+        .app-header {
+            background: linear-gradient(135deg, #F7F5F3, #FEFEFE);
+            padding: 16px 24px 20px;
+            border-bottom: 1px solid rgba(135, 169, 107, 0.1);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .greeting {
+            flex: 1;
+        }
+
+        .greeting h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #4A4A4A;
+            margin-bottom: 4px;
+        }
+
+        .greeting p {
+            font-size: 14px;
+            color: #6B6B6B;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .search-btn, .notification-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(135, 169, 107, 0.1);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .search-btn:hover, .notification-btn:hover {
+            background: rgba(135, 169, 107, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Social Battery Widget */
+        .social-battery {
+            background: linear-gradient(135deg, rgba(135, 169, 107, 0.1), rgba(200, 181, 209, 0.1));
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid rgba(135, 169, 107, 0.2);
+        }
+
+        .battery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .battery-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4A4A4A;
+        }
+
+        .battery-level {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .battery-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #87A96B;
+            animation: batteryPulse 2s ease-in-out infinite;
+        }
+
+        .battery-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .battery-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(135, 169, 107, 0.3);
+            background: rgba(135, 169, 107, 0.05);
+            font-size: 12px;
+            color: #4A4A4A;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .battery-btn.active {
+            background: #87A96B;
+            color: white;
+            border-color: #87A96B;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 24px;
+            height: calc(100% - 44px - 120px - 80px);
+            overflow-y: auto;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4A4A4A;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .action-card {
+            background: linear-gradient(135deg, #FEFEFE, #F7F5F3);
+            border-radius: 16px;
+            padding: 20px 16px;
+            text-align: center;
+            border: 1px solid rgba(135, 169, 107, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(135, 169, 107, 0.15);
+            border-color: rgba(135, 169, 107, 0.3);
+        }
+
+        .action-card.premium {
+            background: linear-gradient(135deg, rgba(200, 181, 209, 0.1), rgba(135, 169, 107, 0.1));
+            border-color: rgba(200, 181, 209, 0.3);
+        }
+
+        .action-card.premium::before {
+            content: '✨';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 12px;
+        }
+
+        .action-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .action-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 4px;
+        }
+
+        .action-subtitle {
+            font-size: 12px;
+            color: #6B6B6B;
+        }
+
+        /* Recent Activity */
+        .recent-activity {
+            margin-bottom: 32px;
+        }
+
+        .activity-item {
+            background: #FEFEFE;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(135, 169, 107, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .activity-item:hover {
+            background: rgba(135, 169, 107, 0.02);
+            border-color: rgba(135, 169, 107, 0.2);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.capsule {
+            background: linear-gradient(135deg, #C8B5D1, #B8D4E3);
+        }
+
+        .activity-icon.touch {
+            background: linear-gradient(135deg, #D4A5A5, #F4C2A1);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 2px;
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: #6B6B6B;
+        }
+
+        /* Friends Status */
+        .friends-status {
+            margin-bottom: 32px;
+        }
+
+        .friend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: #FEFEFE;
+            border-radius: 12px;
+            border: 1px solid rgba(135, 169, 107, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .friend-item:hover {
+            background: rgba(135, 169, 107, 0.02);
+        }
+
+        .friend-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #87A96B, #C8B5D1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+            position: relative;
+        }
+
+        .friend-battery {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #FEFEFE;
+        }
+
+        .battery-green { background: #87A96B; }
+        .battery-yellow { background: #F4C2A1; }
+        .battery-red { background: #D4A5A5; }
+
+        .friend-info {
+            flex: 1;
+        }
+
+        .friend-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4A4A4A;
+        }
+
+        .friend-status {
+            font-size: 12px;
+            color: #6B6B6B;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(135, 169, 107, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 8px 24px 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 8px;
+            border-radius: 12px;
+        }
+
+        .nav-item.active {
+            background: rgba(135, 169, 107, 0.1);
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            color: #6B6B6B;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active .nav-icon {
+            color: #87A96B;
+            transform: scale(1.1);
+        }
+
+        .nav-label {
+            font-size: 10px;
+            color: #6B6B6B;
+            font-weight: 500;
+        }
+
+        .nav-item.active .nav-label {
+            color: #87A96B;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: absolute;
+            bottom: 100px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #87A96B, #7A9761);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(135, 169, 107, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 12px 32px rgba(135, 169, 107, 0.5);
+        }
+
+        /* Animations */
+        @keyframes batteryPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-content > * {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .main-content > *:nth-child(2) { animation-delay: 0.1s; }
+        .main-content > *:nth-child(3) { animation-delay: 0.2s; }
+        .main-content > *:nth-child(4) { animation-delay: 0.3s; }
+
+        /* Scrollbar */
+        .main-content::-webkit-scrollbar {
+            width: 2px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: rgba(135, 169, 107, 0.3);
+            border-radius: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="time">9:41</div>
+            <div class="battery">100% 🔋</div>
+        </div>
+
+        <!-- App Header -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="greeting">
+                    <h1>Good morning, Alex</h1>
+                    <p>Your sanctuary awaits</p>
+                </div>
+                <div class="header-actions">
+                    <button class="search-btn">🔍</button>
+                    <button class="notification-btn">🔔</button>
+                </div>
+            </div>
+
+            <!-- Social Battery Widget -->
+            <div class="social-battery">
+                <div class="battery-header">
+                    <div class="battery-title">Your Social Battery</div>
+                    <div class="battery-level">
+                        <div class="battery-indicator"></div>
+                        <span>Energized</span>
+                    </div>
+                </div>
+                <div class="battery-controls">
+                    <button class="battery-btn active">🟢 Ready</button>
+                    <button class="battery-btn">🟡 Selective</button>
+                    <button class="battery-btn">🔴 Recharging</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h2 class="section-title">
+                    ⚡ Quick Actions
+                </h2>
+                <div class="actions-grid">
+                    <div class="action-card">
+                        <span class="action-icon">💌</span>
+                        <div class="action-title">Time Capsule</div>
+                        <div class="action-subtitle">Send to future</div>
+                    </div>
+                    <div class="action-card">
+                        <span class="action-icon">💬</span>
+                        <div class="action-title">Start Chat</div>
+                        <div class="action-subtitle">Gentle conversation</div>
+                    </div>
+                    <div class="action-card premium">
+                        <span class="action-icon">🪨</span>
+                        <div class="action-title">Touch Stone</div>
+                        <div class="action-subtitle">Connect hearts</div>
+                    </div>
+                    <div class="action-card premium">
+                        <span class="action-icon">📚</span>
+                        <div class="action-title">Read Together</div>
+                        <div class="action-subtitle">Sync reading</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <h2 class="section-title">
+                    🕒 Recent Activity
+                </h2>
+                <div class="activity-item">
+                    <div class="activity-icon capsule">💌</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Time capsule delivered to Sarah</div>
+                        <div class="activity-time">2 hours ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon touch">🪨</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Morgan touched your comfort stone</div>
+                        <div class="activity-time">4 hours ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon capsule">📖</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Reading session with Jamie started</div>
+                        <div class="activity-time">Yesterday</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Friends Status -->
+            <div class="friends-status">
+                <h2 class="section-title">
+                    👥 Friends
+                </h2>
+                <div class="friend-item">
+                    <div class="friend-avatar">
+                        S
+                        <div class="friend-battery battery-green"></div>
+                    </div>
+                    <div class="friend-info">
+                        <div class="friend-name">Sarah Chen</div>
+                        <div class="friend-status">Ready to chat</div>
+                    </div>
+                </div>
+                <div class="friend-item">
+                    <div class="friend-avatar" style="background: linear-gradient(135deg, #D4A5A5, #F4C2A1);">
+                        M
+                        <div class="friend-battery battery-yellow"></div>
+                    </div>
+                    <div class="friend-info">
+                        <div class="friend-name">Morgan Kim</div>
+                        <div class="friend-status">Selective responses</div>
+                    </div>
+                </div>
+                <div class="friend-item">
+                    <div class="friend-avatar" style="background: linear-gradient(135deg, #B8D4E3, #C8B5D1);">
+                        J
+                        <div class="friend-battery battery-red"></div>
+                    </div>
+                    <div class="friend-info">
+                        <div class="friend-name">Jamie Rivera</div>
+                        <div class="friend-status">Quietly recharging</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="fab">+</button>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">💌</div>
+                <div class="nav-label">Capsules</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">💬</div>
+                <div class="nav-label">Chat</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Profile</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add gentle interactions
+        document.querySelectorAll('.action-card, .activity-item, .friend-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Social battery controls
+        document.querySelectorAll('.battery-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.battery-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const indicator = document.querySelector('.battery-indicator');
+                const level = document.querySelector('.battery-level span');
+                
+                if (this.textContent.includes('Ready')) {
+                    indicator.style.background = '#87A96B';
+                    level.textContent = 'Energized';
+                } else if (this.textContent.includes('Selective')) {
+                    indicator.style.background = '#F4C2A1';
+                    level.textContent = 'Selective';
+                } else {
+                    indicator.style.background = '#D4A5A5';
+                    level.textContent = 'Recharging';
+                }
+            });
+        });
+
+        // FAB interaction
+        document.querySelector('.fab').addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+
+        // Bottom nav interactions
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
