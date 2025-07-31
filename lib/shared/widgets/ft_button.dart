@@ -203,7 +203,7 @@ class _FTButtonState extends State<FTButton> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
+    Widget button = MouseRegion(
       onEnter: _handleHoverEnter,
       onExit: _handleHoverExit,
       child: GestureDetector(
@@ -222,20 +222,30 @@ class _FTButtonState extends State<FTButton> with TickerProviderStateMixin {
         ),
       ),
     );
+
+    // If no explicit width is provided, make the button intrinsic to its content
+    if (widget.width == null) {
+      return IntrinsicWidth(child: button);
+    }
+    
+    return button;
   }
 
   Widget _buildButtonContent() {
     final buttonConfig = _getButtonConfig();
     
     return Container(
-      width: widget.width ?? double.infinity,
+      width: widget.width,
       height: widget.height ?? buttonConfig.height,
+      constraints: widget.width == null 
+          ? null 
+          : BoxConstraints(minWidth: 0, maxWidth: widget.width!),
       decoration: _buildButtonDecoration(buttonConfig),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(AppDimensions.buttonRadius),
-          onTap: _isEnabled ? () {} : null, // Handled by gesture detector
+          onTap: null, // Handled by gesture detector
           child: Container(
             padding: EdgeInsets.symmetric(
               horizontal: buttonConfig.paddingHorizontal,
