@@ -4,6 +4,7 @@ import '../features/auth/screens/splash_screen.dart';
 import '../features/auth/screens/onboarding_screen.dart';
 import '../features/auth/screens/sign_up_screen.dart';
 import '../features/auth/screens/sign_in_screen.dart';
+import '../features/dashboard/screens/dashboard_screen.dart';
 
 /// Future Talk's routing configuration using GoRouter
 /// Handles navigation between authentication screens with smooth transitions
@@ -43,16 +44,11 @@ class AppRouter {
         builder: (context, state) => const SignInScreen(),
       ),
 
-      // ==================== MAIN APP ROUTES (Placeholder) ====================
-      // These will be implemented when creating the main app screens
+      // ==================== MAIN APP ROUTES ====================
       GoRoute(
         path: '/dashboard',
         name: 'dashboard',
-        builder: (context, state) => const Scaffold(
-          body: Center(
-            child: Text('Dashboard - Coming Soon'),
-          ),
-        ),
+        builder: (context, state) => const DashboardScreen(),
       ),
     ],
 
