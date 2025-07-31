@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Talk - Welcome Journey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Nunito+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F7F5F3;
+            color: #4A4A4A;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .onboarding-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            max-width: 400px;
+            margin: 0 auto;
+            background: #FEFEFE;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 48px 32px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+
+        .illustration {
+            width: 200px;
+            height: 200px;
+            border-radius: 32px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            animation: gentleFloat 3s ease-in-out infinite;
+        }
+
+        .slide1 .illustration {
+            background: linear-gradient(135deg, #87A96B, #A4B88A);
+        }
+
+        .slide2 .illustration {
+            background: linear-gradient(135deg, #C8B5D1, #D4A5A5);
+        }
+
+        .slide3 .illustration {
+            background: linear-gradient(135deg, #F4C2A1, #B8D4E3);
+        }
+
+        .slide4 .illustration {
+            background: linear-gradient(135deg, #87A96B, #C8B5D1);
+        }
+
+        .slide-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #4A4A4A;
+        }
+
+        .slide-subtitle {
+            font-size: 18px;
+            color: #6B6B6B;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .slide-description {
+            font-size: 16px;
+            color: #6B6B6B;
+            line-height: 1.6;
+            margin-bottom: 48px;
+            max-width: 280px;
+        }
+
+        .feature-list {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 32px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 16px;
+            color: #4A4A4A;
+        }
+
+        .feature-list li::before {
+            content: '✨';
+            margin-right: 12px;
+            font-size: 20px;
+        }
+
+        .navigation {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .dots-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #D1D1D1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #87A96B;
+            transform: scale(1.5);
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-skip {
+            background: transparent;
+            color: #6B6B6B;
+        }
+
+        .btn-skip:hover {
+            color: #87A96B;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #87A96B, #7A9761);
+            color: white;
+            box-shadow: 0 4px 12px rgba(135, 169, 107, 0.3);
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(135, 169, 107, 0.4);
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #C8B5D1, #87A96B);
+            color: white;
+            box-shadow: 0 4px 12px rgba(200, 181, 209, 0.3);
+            padding: 16px 32px;
+            font-size: 18px;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(200, 181, 209, 0.4);
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 375px) {
+            .slide {
+                padding: 32px 24px 24px;
+            }
+            
+            .illustration {
+                width: 160px;
+                height: 160px;
+                font-size: 60px;
+                margin-bottom: 24px;
+            }
+            
+            .slide-title {
+                font-size: 24px;
+            }
+            
+            .slide-subtitle {
+                font-size: 16px;
+            }
+        }
+
+        .privacy-badge {
+            background: rgba(135, 169, 107, 0.1);
+            color: #87A96B;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            border: 1px solid rgba(135, 169, 107, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="onboarding-container">
+        <!-- Slide 1: Welcome -->
+        <div class="slide active">
+            <div class="illustration">💌</div>
+            <h1 class="slide-title">Welcome to Future Talk</h1>
+            <p class="slide-subtitle">Your digital sanctuary for meaningful connections</p>
+            <p class="slide-description">
+                A messaging app designed specifically for introverts who value thoughtful, 
+                pressure-free communication over real-time social chaos.
+            </p>
+        </div>
+
+        <!-- Slide 2: Time Capsules -->
+        <div class="slide">
+            <div class="illustration">⏰</div>
+            <h1 class="slide-title">Time Capsule Magic</h1>
+            <p class="slide-subtitle">Send messages to the future</p>
+            <ul class="feature-list">
+                <li>Schedule messages hours to years ahead</li>
+                <li>Voice recordings for deeper connection</li>
+                <li>Permanent delivery - like digital letters</li>
+                <li>Recipients don't need the app</li>
+            </ul>
+        </div>
+
+        <!-- Slide 3: Connection Stones -->
+        <div class="slide">
+            <div class="illustration">🪨</div>
+            <h1 class="slide-title">Connection Stones</h1>
+            <p class="slide-subtitle">Touch hearts across distance</p>
+            <ul class="feature-list">
+                <li>Real-time emotional touch system</li>
+                <li>Custom comfort stones for different moods</li>
+                <li>Instant "I'm thinking of you" moments</li>
+                <li>Private comfort between close friends</li>
+            </ul>
+        </div>
+
+        <!-- Slide 4: Privacy First -->
+        <div class="slide">
+            <div class="illustration">🔒</div>
+            <div class="privacy-badge">🛡️ 100% Privacy Protected</div>
+            <h1 class="slide-title">Your Safe Space</h1>
+            <p class="slide-subtitle">Complete privacy by design</p>
+            <ul class="feature-list">
+                <li>End-to-end encryption for everything</li>
+                <li>No data harvesting or tracking</li>
+                <li>Social battery status for energy levels</li>
+                <li>Anti-social media philosophy</li>
+            </ul>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn btn-skip" onclick="skipOnboarding()">Skip</button>
+            
+            <div class="dots-container">
+                <div class="dot active" onclick="goToSlide(0)"></div>
+                <div class="dot" onclick="goToSlide(1)"></div>
+                <div class="dot" onclick="goToSlide(2)"></div>
+                <div class="dot" onclick="goToSlide(3)"></div>
+            </div>
+            
+            <button class="nav-btn btn-next" onclick="nextSlide()" id="nextBtn">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const nextBtn = document.getElementById('nextBtn');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else if (index < currentSlide) {
+                    slide.classList.add('prev');
+                }
+            });
+
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+
+            // Update button text on last slide
+            if (currentSlide === slides.length - 1) {
+                nextBtn.textContent = 'Begin Journey';
+                nextBtn.className = 'nav-btn btn-start';
+            } else {
+                nextBtn.textContent = 'Next';
+                nextBtn.className = 'nav-btn btn-next';
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            } else {
+                // Navigate to sign up
+                goToSignUp();
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlide();
+        }
+
+        function skipOnboarding() {
+            goToSignUp();
+        }
+
+        function goToSignUp() {
+            // Add exit animation
+            document.querySelector('.onboarding-container').style.transform = 'translateY(-100%)';
+            document.querySelector('.onboarding-container').style.opacity = '0';
+            
+            setTimeout(() => {
+                console.log('Navigate to sign up screen');
+                // window.location.href = 'signup.html';
+            }, 500);
+        }
+
+        // Swipe gesture support for mobile
+        let startX = 0;
+        let startY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+            const diffX = startX - endX;
+            const diffY = startY - endY;
+
+            // Only handle horizontal swipes
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                if (diffX > 0 && currentSlide < slides.length - 1) {
+                    // Swipe left - next slide
+                    nextSlide();
+                } else if (diffX < 0 && currentSlide > 0) {
+                    // Swipe right - previous slide
+                    currentSlide--;
+                    updateSlide();
+                }
+            }
+        });
+
+        // Auto-advance after 8 seconds on first slide
+        setTimeout(() => {
+            if (currentSlide === 0) {
+                nextSlide();
+            }
+        }, 8000);
+    </script>
+</body>
+</html>

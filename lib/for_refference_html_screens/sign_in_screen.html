@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Talk - Welcome Back</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Nunito+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            color: #4A4A4A;
+            min-height: 100vh;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            background: #FEFEFE;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08), 0 16px 48px rgba(0,0,0,0.06);
+            animation: gentleSlideIn 0.6s ease-out;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo-small {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #87A96B, #C8B5D1);
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 8px 16px rgba(135, 169, 107, 0.2);
+            animation: gentleFloat 3s ease-in-out infinite;
+        }
+
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #4A4A4A;
+            margin-bottom: 8px;
+        }
+
+        .welcome-subtitle {
+            font-size: 16px;
+            color: #6B6B6B;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            font-size: 16px;
+            background: #FEFEFE;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #87A96B;
+            box-shadow: 0 0 0 4px rgba(135, 169, 107, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #D4A5A5;
+            background: rgba(212, 165, 165, 0.05);
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #D1D1D1;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .input-icon:hover {
+            color: #87A96B;
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 8px;
+        }
+
+        .forgot-password a {
+            font-size: 14px;
+            color: #87A96B;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+            color: #7A9761;
+        }
+
+        .error-message {
+            background: rgba(212, 165, 165, 0.1);
+            border: 1px solid rgba(212, 165, 165, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #D4A5A5;
+            font-size: 14px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #87A96B, #7A9761);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 12px rgba(135, 169, 107, 0.3);
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .login-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(135, 169, 107, 0.4);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .login-btn.loading {
+            color: transparent;
+        }
+
+        .spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            opacity: 0;
+        }
+
+        .login-btn.loading .spinner {
+            opacity: 1;
+        }
+
+        .social-divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: #6B6B6B;
+            font-size: 14px;
+        }
+
+        .social-divider::before,
+        .social-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #E0E0E0;
+        }
+
+        .social-divider span {
+            padding: 0 16px;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            background: #FEFEFE;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #4A4A4A;
+        }
+
+        .social-btn:hover {
+            border-color: #87A96B;
+            background: rgba(135, 169, 107, 0.02);
+            transform: translateY(-1px);
+        }
+
+        .signup-link {
+            text-align: center;
+            font-size: 14px;
+            color: #6B6B6B;
+            margin-bottom: 24px;
+        }
+
+        .signup-link a {
+            color: #87A96B;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .privacy-footer {
+            text-align: center;
+            font-size: 12px;
+            color: #6B6B6B;
+            line-height: 1.4;
+        }
+
+        .privacy-footer .shield {
+            color: #87A96B;
+            margin-right: 4px;
+        }
+
+        @keyframes gentleSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 375px) {
+            .login-container {
+                padding: 24px;
+                margin: 8px;
+            }
+            
+            .welcome-title {
+                font-size: 24px;
+            }
+            
+            .logo-small {
+                width: 70px;
+                height: 70px;
+                font-size: 28px;
+            }
+        }
+
+        .demo-credentials {
+            background: rgba(200, 181, 209, 0.08);
+            border: 1px solid rgba(200, 181, 209, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #6B6B6B;
+            text-align: center;
+        }
+
+        .demo-credentials strong {
+            color: #4A4A4A;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="header">
+            <div class="logo-small">💌</div>
+            <h1 class="welcome-title">Welcome Back</h1>
+            <p class="welcome-subtitle">Return to your sanctuary of meaningful connections</p>
+        </div>
+
+        <div class="demo-credentials">
+            <strong>Demo:</strong> user@demo.com / password123
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            <span>⚠️</span>
+            <span id="errorText"></span>
+        </div>
+
+        <form id="loginForm" novalidate>
+            <div class="form-group">
+                <label class="form-label" for="loginEmail">Email or Username</label>
+                <div style="position: relative;">
+                    <input type="text" id="loginEmail" class="form-input" placeholder="your@email.com or username" required autocomplete="username">
+                    <div class="input-icon">👤</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="loginPassword">Password</label>
+                <div style="position: relative;">
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Your secure password" required autocomplete="current-password">
+                    <div class="input-icon password-toggle" onclick="togglePassword()">👁️</div>
+                </div>
+                <div class="forgot-password">
+                    <a href="#" onclick="forgotPassword()">Forgot your password?</a>
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">
+                <span>Enter My Sanctuary</span>
+                <div class="spinner"></div>
+            </button>
+        </form>
+
+        <div class="social-divider">
+            <span>or continue with</span>
+        </div>
+
+        <div class="social-buttons">
+            <button class="social-btn" onclick="signInWithGoogle()">
+                <span style="font-size: 18px;">📱</span> Google
+            </button>
+            <button class="social-btn" onclick="signInWithFacebook()">
+                <span style="font-size: 18px;">📘</span> Facebook
+            </button>
+        </div>
+
+        <div class="signup-link">
+            New to Future Talk? <a href="#" onclick="goToSignup()">Create your sanctuary</a>
+        </div>
+
+        <div class="privacy-footer">
+            <span class="shield">🛡️</span>
+            Your privacy is protected with end-to-end encryption
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const emailInput = document.getElementById('loginEmail');
+        const passwordInput = document.getElementById('loginPassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+
+        let isPasswordVisible = false;
+
+        // Auto-fill demo credentials
+        emailInput.value = 'user@demo.com';
+        passwordInput.value = 'password123';
+
+        function togglePassword() {
+            const passwordToggle = document.querySelector('.password-toggle');
+            
+            if (isPasswordVisible) {
+                passwordInput.type = 'password';
+                passwordToggle.textContent = '👁️';
+                isPasswordVisible = false;
+            } else {
+                passwordInput.type = 'text';
+                passwordToggle.textContent = '🙈';
+                isPasswordVisible = true;
+            }
+        }
+
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.classList.add('show');
+            
+            // Add error state to inputs
+            emailInput.classList.add('error');
+            passwordInput.classList.add('error');
+            
+            // Remove error after 5 seconds
+            setTimeout(hideError, 5000);
+        }
+
+        function hideError() {
+            errorMessage.classList.remove('show');
+            emailInput.classList.remove('error');
+            passwordInput.classList.remove('error');
+        }
+
+        // Clear error when user starts typing
+        emailInput.addEventListener('input', hideError);
+        passwordInput.addEventListener('input', hideError);
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            
+            if (!email || !password) {
+                showError('Please fill in all fields');
+                return;
+            }
+            
+            // Start loading state
+            loginBtn.classList.add('loading');
+            loginBtn.disabled = true;
+            
+            // Simulate login process
+            setTimeout(() => {
+                // Check demo credentials
+                if ((email === 'user@demo.com' || email === 'demo_user') && password === 'password123') {
+                    // Success - redirect to app
+                    console.log('Login successful');
+                    goToApp();
+                } else {
+                    // Error - invalid credentials
+                    loginBtn.classList.remove('loading');
+                    loginBtn.disabled = false;
+                    showError('Invalid email/username or password. Try the demo credentials above.');
+                }
+            }, 1500);
+        });
+
+        function signInWithGoogle() {
+            console.log('Sign in with Google');
+            // Implement Google OAuth
+            showLoadingAndRedirect();
+        }
+
+        function signInWithFacebook() {
+            console.log('Sign in with Facebook');
+            // Implement Facebook OAuth
+            showLoadingAndRedirect();
+        }
+
+        function showLoadingAndRedirect() {
+            loginBtn.classList.add('loading');
+            loginBtn.disabled = true;
+            
+            setTimeout(() => {
+                goToApp();
+            }, 2000);
+        }
+
+        function forgotPassword() {
+            console.log('Forgot password flow');
+            // Implement password reset
+            alert('Password reset link would be sent to your email');
+        }
+
+        function goToSignup() {
+            console.log('Navigate to signup');
+            // window.location.href = 'signup.html';
+        }
+
+        function goToApp() {
+            // Add success animation
+            document.querySelector('.login-container').style.transform = 'scale(0.95)';
+            document.querySelector('.login-container').style.opacity = '0';
+            
+            setTimeout(() => {
+                console.log('Navigate to main app');
+                // window.location.href = 'dashboard.html';
+            }, 300);
+        }
+
+        // Add gentle entrance animation delay
+        setTimeout(() => {
+            document.querySelector('.login-container').style.animation = 'none';
+        }, 600);
+
+        // Handle Enter key in password field
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                form.dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>
