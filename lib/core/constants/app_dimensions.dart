@@ -66,6 +66,18 @@ class AppDimensions {
   
   /// Section padding - between major sections
   static const double sectionPadding = spacingXXXL; // 32px
+  
+  /// Medium padding
+  static const double paddingM = spacingM; // 12px
+  
+  /// Large padding
+  static const double paddingL = spacingL; // 16px
+  
+  /// Extra large padding
+  static const double paddingXL = spacingXL; // 20px
+  
+  /// Double extra large padding
+  static const double paddingXXL = spacingXXL; // 24px
 
   // ==================== COMPONENT HEIGHTS ====================
   
