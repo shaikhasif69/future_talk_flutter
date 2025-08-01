@@ -6,6 +6,7 @@ import '../features/auth/screens/sign_up_screen.dart';
 import '../features/auth/screens/sign_in_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
 import '../features/chat/screens/chat_list_screen.dart';
+import '../features/books/screens/book_library_screen.dart';
 
 /// Future Talk's routing configuration using GoRouter
 /// Handles navigation between authentication screens with smooth transitions
@@ -54,9 +55,16 @@ class AppRouter {
 
       // ==================== CHAT ROUTES ====================
       GoRoute(
-        path: '/splash',
+        path: '/chat',
         name: 'chat',
         builder: (context, state) => const ChatListScreen(),
+      ),
+
+      // ==================== BOOKS ROUTES ====================
+      GoRoute(
+        path: '/splash',
+        name: 'books',
+        builder: (context, state) => const ResponsiveBookLibraryScreen(),
       ),
     ],
 
@@ -111,6 +119,7 @@ class Routes {
   static const String signIn = '/sign_in';
   static const String dashboard = '/dashboard';
   static const String chat = '/chat';
+  static const String books = '/books';
 }
 
 /// Navigation extensions for easy routing
@@ -132,6 +141,9 @@ extension AppNavigation on BuildContext {
 
   /// Navigate to chat list
   void goToChat() => go(Routes.chat);
+
+  /// Navigate to book library
+  void goToBooks() => go(Routes.books);
 
   /// Push sign up screen
   void pushSignUp() => push(Routes.signUp);

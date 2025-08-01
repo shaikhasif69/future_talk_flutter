@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Talk - Enhanced Book Library</title>
+    
+    <!-- Import Future Talk Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #F7F5F3;
+            color: #4A4A4A;
+            font-family: 'Source Serif Pro', serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .screen-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #F7F5F3;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+        }
+        
+        /* Enhanced Header with Social Battery */
+        .header {
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            padding: 24px 20px 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 500;
+        }
+        
+        .social-battery-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .battery-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+        
+        .battery-text {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        /* Personalized Greeting */
+        .greeting-section {
+            margin-bottom: 16px;
+        }
+        
+        .greeting-text {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+        
+        .mood-suggestion {
+            font-family: 'Crimson Pro', serif;
+            font-size: 13px;
+            font-style: italic;
+            opacity: 0.8;
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 14px 16px 14px 45px;
+            border-radius: 12px;
+            border: none;
+            background: rgba(255,255,255,0.95);
+            font-family: 'Source Serif Pro', serif;
+            font-size: 16px;
+            color: #4A4A4A;
+            backdrop-filter: blur(10px);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6B6B6B;
+        }
+        
+        /* Quick Stats Bar */
+        .stats-bar {
+            background: white;
+            margin: -10px 20px 0;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 500;
+            color: #87A96B;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #6B6B6B;
+            margin-top: 2px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 32px 20px 100px;
+        }
+        
+        /* Continue Reading with Enhanced Progress */
+        .continue-reading {
+            margin-bottom: 32px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 500;
+            color: #4A4A4A;
+        }
+        
+        .see-all {
+            font-size: 14px;
+            color: #87A96B;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .reading-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid #F0F0F0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .reading-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #87A96B 0%, #A4B88A 35%, #F0F0F0 35%, #F0F0F0 100%);
+        }
+        
+        .reading-progress {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .book-cover-small {
+            width: 60px;
+            height: 80px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #D4A5A5 0%, #C8B5D1 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            position: relative;
+        }
+        
+        .reading-streak {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #F4C2A1;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        
+        .reading-info h4 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .reading-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: #6B6B6B;
+            margin-bottom: 8px;
+        }
+        
+        .reading-time {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .reading-mood {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #F0F0F0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #87A96B 0%, #A4B88A 100%);
+            width: 35%;
+            border-radius: 3px;
+        }
+        
+        .progress-text {
+            font-size: 11px;
+            color: #6B6B6B;
+        }
+        
+        .partner-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #F0F0F0;
+        }
+        
+        .partner-details {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .partner-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            background: #F4C2A1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+        }
+        
+        .partner-text {
+            font-size: 13px;
+            color: #6B6B6B;
+        }
+        
+        .sync-status {
+            font-size: 11px;
+            color: #87A96B;
+            background: rgba(135, 169, 107, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        
+        /* Reading Mood Selector */
+        .mood-section {
+            margin-bottom: 32px;
+        }
+        
+        .mood-selector {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        
+        .mood-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .mood-subtitle {
+            font-size: 12px;
+            color: #6B6B6B;
+            margin-bottom: 16px;
+        }
+        
+        .mood-options {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        
+        .mood-option {
+            min-width: 80px;
+            padding: 12px 16px;
+            border-radius: 20px;
+            background: #F7F5F3;
+            border: 1px solid #F0F0F0;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .mood-option.active {
+            background: #87A96B;
+            color: white;
+            border-color: #87A96B;
+        }
+        
+        .mood-emoji {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .mood-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        /* Categories with Personality */
+        .categories {
+            margin-bottom: 32px;
+        }
+        
+        .category-tabs {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .category-tab {
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: white;
+            border: 1px solid #F0F0F0;
+            font-size: 14px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .category-tab.active {
+            background: #87A96B;
+            color: white;
+            border-color: #87A96B;
+        }
+        
+        /* Enhanced Friends Reading */
+        .friends-reading {
+            margin-bottom: 32px;
+        }
+        
+        .friends-list {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+        
+        .friend-reading-card {
+            min-width: 200px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            position: relative;
+        }
+        
+        .friend-status-dot {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+        
+        .friend-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .friend-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 16px;
+            background: #B8D4E3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .friend-info h5 {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        
+        .friend-activity {
+            font-size: 11px;
+            color: #6B6B6B;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .friend-book {
+            font-family: 'Crimson Pro', serif;
+            font-size: 13px;
+            color: #4A4A4A;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .friend-progress {
+            font-size: 11px;
+            color: #6B6B6B;
+            margin-bottom: 12px;
+        }
+        
+        .join-btn {
+            width: 100%;
+            padding: 8px;
+            background: #F7F5F3;
+            border: 1px solid #87A96B;
+            border-radius: 8px;
+            color: #87A96B;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .join-btn:hover {
+            background: #87A96B;
+            color: white;
+        }
+        
+        /* Enhanced Book Grid */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        .book-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            border: 1px solid #F0F0F0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        .book-cover {
+            width: 100%;
+            height: 140px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #C8B5D1 0%, #D4A5A5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-bottom: 12px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .book-cover:hover {
+            transform: scale(1.02);
+        }
+        
+        .premium-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #F4C2A1;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        .free-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #87A96B;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        .comfort-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 4px 6px;
+            border-radius: 8px;
+            font-size: 8px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+        
+        .book-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+        
+        .book-author {
+            font-size: 12px;
+            color: #6B6B6B;
+            margin-bottom: 8px;
+        }
+        
+        .book-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #6B6B6B;
+            margin-bottom: 8px;
+        }
+        
+        .book-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .book-duration {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .book-tags {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        
+        .book-tag {
+            background: #F7F5F3;
+            color: #6B6B6B;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 9px;
+        }
+        
+        /* AI Recommendation Banner */
+        .ai-recommendation {
+            background: linear-gradient(135deg, #C8B5D1 0%, #D4A5A5 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-recommendation::before {
+            content: '✨';
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 20px;
+        }
+        
+        .ai-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .ai-subtitle {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 12px;
+        }
+        
+        .ai-book-suggestion {
+            background: rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .ai-book-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .ai-reason {
+            font-size: 11px;
+            opacity: 0.8;
+            font-style: italic;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            background: white;
+            padding: 12px 20px 32px;
+            border-top: 1px solid #F0F0F0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            color: #6B6B6B;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item.active {
+            color: #87A96B;
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+        }
+        
+        /* Enhanced Floating Action */
+        .floating-action {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 8px 24px rgba(135, 169, 107, 0.4);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-action:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(135, 169, 107, 0.5);
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #D1D1D1;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen-container">
+        <!-- Enhanced Header -->
+        <div class="header">
+            <div class="header-top">
+                <button class="back-btn">←</button>
+                <h1 class="header-title">Library</h1>
+                <div class="social-battery-indicator">
+                    <div class="battery-dot"></div>
+                    <span class="battery-text">Green</span>
+                </div>
+            </div>
+            
+            <div class="greeting-section">
+                <p class="greeting-text">Good evening, Asif! Perfect time for thoughtful reading.</p>
+                <p class="mood-suggestion">Based on your energy, try something comforting tonight.</p>
+            </div>
+            
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Search books, authors, moods...">
+            </div>
+        </div>
+        
+        <!-- Quick Stats -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">7</span>
+                <span class="stat-label">Books Read</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">12</span>
+                <span class="stat-label">Day Streak</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Friends Reading</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">42h</span>
+                <span class="stat-label">This Month</span>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- AI Recommendation -->
+            <div class="ai-recommendation">
+                <h3 class="ai-title">Perfect for You Right Now</h3>
+                <p class="ai-subtitle">Based on your green energy and evening reading habits</p>
+                <div class="ai-book-suggestion">
+                    <h4 class="ai-book-title">The Seven Moons of Maali Almeida</h4>
+                    <p class="ai-reason">Magical realism for creative minds like yours</p>
+                </div>
+            </div>
+            
+            <!-- Continue Reading with Enhanced Progress -->
+            <div class="continue-reading">
+                <div class="section-header">
+                    <h2 class="section-title">Continue Reading</h2>
+                    <a href="#" class="see-all">See all</a>
+                </div>
+                
+                <div class="reading-card">
+                    <div class="reading-progress">
+                        <div class="book-cover-small">
+                            📖
+                            <div class="reading-streak">7</div>
+                        </div>
+                        <div class="reading-info">
+                            <h4>Pride and Prejudice</h4>
+                            <div class="reading-meta">
+                                <span class="reading-time">📖 25 min left</span>
+                                <span class="reading-mood">😊 Enjoying</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <span class="progress-text">Chapter 8 of 24 • 35% complete</span>
+                        </div>
+                    </div>
+                    
+                    <div class="partner-info">
+                        <div class="partner-details">
+                            <div class="partner-avatar">S</div>
+                            <span class="partner-text">Reading with Sarah • Page 142</span>
+                        </div>
+                        <div class="sync-status">In sync ✨</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reading Mood Selector -->
+            <div class="mood-section">
+                <div class="mood-selector">
+                    <h3 class="mood-title">How are you feeling?</h3>
+                    <p class="mood-subtitle">We'll suggest books that match your current energy</p>
+                    <div class="mood-options">
+                        <div class="mood-option active">
+                            <span class="mood-emoji">😌</span>
+                            <span class="mood-label">Peaceful</span>
+                        </div>
+                        <div class="mood-option">
+                            <span class="mood-emoji">✨</span>
+                            <span class="mood-label">Inspired</span>
+                        </div>
+                        <div class="mood-option">
+                            <span class="mood-emoji">🤔</span>
+                            <span class="mood-label">Curious</span>
+                        </div>
+                        <div class="mood-option">
+                            <span class="mood-emoji">💝</span>
+                            <span class="mood-label">Romantic</span>
+                        </div>
+                        <div class="mood-option">
+                            <span class="mood-emoji">🌱</span>
+                            <span class="mood-label">Growing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enhanced Categories -->
+            <div class="categories">
+                <div class="category-tabs">
+                    <div class="category-tab active">
+                        <span>✨</span> For You
+                    </div>
+                    <div class="category-tab">
+                        <span>💝</span> Romance
+                    </div>
+                    <div class="category-tab">
+                        <span>🌱</span> Growth
+                    </div>
+                    <div class="category-tab">
+                        <span>📚</span> Classics
+                    </div>
+                    <div class="category-tab">
+                        <span>🎭</span> Poetry
+                    </div>
+                    <div class="category-tab">
+                        <span>🧘</span> Mindful
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enhanced Friends Reading -->
+            <div class="friends-reading">
+                <div class="section-header">
+                    <h2 class="section-title">Friends are Reading</h2>
+                    <a href="#" class="see-all">See all</a>
+                </div>
+                
+                <div class="friends-list">
+                    <div class="friend-reading-card">
+                        <div class="friend-status-dot"></div>
+                        <div class="friend-header">
+                            <div class="friend-avatar">A</div>
+                            <div class="friend-info">
+                                <h5>Alex</h5>
+                                <div class="friend-activity">
+                                    <span>🟢</span> Reading now
+                                </div>
+                            </div>
+                        </div>
+                        <p class="friend-book">The Alchemist by Paulo Coelho</p>
+                        <p class="friend-progress">Chapter 3 • 2 hours ago</p>
+                        <button class="join-btn">Join Reading</button>
+                    </div>
+                    
+                    <div class="friend-reading-card">
+                        <div class="friend-header">
+                            <div class="friend-avatar">M</div>
+                            <div class="friend-info">
+                                <h5>Maya</h5>
+                                <div class="friend-activity">
+                                    <span>🟡</span> 2h ago
+                                </div>
+                            </div>
+                        </div>
+                        <p class="friend-book">Atomic Habits by James Clear</p>
+                        <p class="friend-progress">Chapter 7 • Open for partners</p>
+                        <button class="join-btn">Send Request</button>
+                    </div>
+                    
+                    <div class="friend-reading-card">
+                        <div class="friend-header">
+                            <div class="friend-avatar">R</div>
+                            <div class="friend-info">
+                                <h5>Riley</h5>
+                                <div class="friend-activity">
+                                    <span>🔴</span> Recharging
+                                </div>
+                            </div>
+                        </div>
+                        <p class="friend-book">The Secret Garden</p>
+                        <p class="friend-progress">Reading solo • Chapter 12</p>
+                        <button class="join-btn" style="opacity: 0.5;">Respect space</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enhanced Book Grid -->
+            <div class="section-header">
+                <h2 class="section-title">Peaceful Reads</h2>
+                <a href="#" class="see-all">View all</a>
+            </div>
+            
+            <div class="book-grid">
+                <div class="book-card">
+                    <div class="book-cover">
+                        📚
+                        <span class="free-badge">Free</span>
+                        <span class="comfort-badge">Comforting</span>
+                    </div>
+                    <h3 class="book-title">The Secret Garden</h3>
+                    <p class="book-author">Frances Hodgson Burnett</p>
+                    <div class="book-meta">
+                        <span class="book-rating">⭐ 4.8</span>
+                        <span class="book-duration">🕐 8h</span>
+                    </div>
+                    <div class="book-tags">
+                        <span class="book-tag">Healing</span>
+                        <span class="book-tag">Nature</span>
+                    </div>
+                </div>
+                
+                <div class="book-card">
+                    <div class="book-cover">
+                        💭
+                        <span class="premium-badge">Premium</span>
+                        <span class="comfort-badge">Emotional</span>
+                    </div>
+                    <h3 class="book-title">The Seven Husbands of Evelyn Hugo</h3>
+                    <p class="book-author">Taylor Jenkins Reid</p>
+                    <div class="book-meta">
+                        <span class="book-rating">⭐ 4.9</span>
+                        <span class="book-duration">🕐 12h</span>
+                    </div>
+                    <div class="book-tags">
+                        <span class="book-tag">Drama</span>
+                        <span class="book-tag">Love</span>
+                    </div>
+                </div>
+                
+                <div class="book-card">
+                    <div class="book-cover">
+                        🌸
+                        <span class="free-badge">Free</span>
+                        <span class="comfort-badge">Gentle</span>
+                    </div>
+                    <h3 class="book-title">Little Women</h3>
+                    <p class="book-author">Louisa May Alcott</p>
+                    <div class="book-meta">
+                        <span class="book-rating">⭐ 4.7</span>
+                        <span class="book-duration">🕐 15h</span>
+                    </div>
+                    <div class="book-tags">
+                        <span class="book-tag">Family</span>
+                        <span class="book-tag">Growth</span>
+                    </div>
+                </div>
+                
+                <div class="book-card">
+                    <div class="book-cover">
+                        🧘
+                        <span class="premium-badge">Premium</span>
+                        <span class="comfort-badge">Mindful</span>
+                    </div>
+                    <h3 class="book-title">The Power of Now</h3>
+                    <p class="book-author">Eckhart Tolle</p>
+                    <div class="book-meta">
+                        <span class="book-rating">⭐ 4.6</span>
+                        <span class="book-duration">🕐 6h</span>
+                    </div>
+                    <div class="book-tags">
+                        <span class="book-tag">Peace</span>
+                        <span class="book-tag">Present</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Enhanced Floating Action -->
+        <button class="floating-action" title="Create reading goal">📝</button>
+        
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <div class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💬</span>
+                    <span>Chats</span>
+                </div>
+                <div class="nav-item active">
+                    <span class="nav-icon">📚</span>
+                    <span>Books</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">⏰</span>
+                    <span>Capsules</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
