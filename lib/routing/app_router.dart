@@ -11,6 +11,7 @@ import '../features/chat/models/chat_conversation.dart';
 
 import '../features/books/screens/book_library_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
+import '../features/settings/screens/settings_screen.dart';
 
 /// Future Talk's routing configuration using GoRouter
 /// Handles navigation between authentication screens with smooth transitions
@@ -124,6 +125,13 @@ class AppRouter {
         name: 'profile',
         builder: (context, state) => const ProfileScreen(),
       ),
+
+      // ==================== SETTINGS ROUTES ====================
+      GoRoute(
+        path: '/settings',
+        name: 'settings',
+        builder: (context, state) => const SettingsScreen(),
+      ),
     ],
 
     // Custom transitions will be handled per route if needed
@@ -180,6 +188,7 @@ class Routes {
   static const String individualChat = '/chat/individual';
   static const String books = '/books';
   static const String profile = '/profile';
+  static const String settings = '/settings';
 }
 
 /// Navigation extensions for easy routing
@@ -207,6 +216,9 @@ extension AppNavigation on BuildContext {
 
   /// Navigate to profile screen
   void goToProfile() => go(Routes.profile);
+
+  /// Navigate to settings screen
+  void goToSettings() => go(Routes.settings);
 
   /// Navigate to individual chat
   void goToIndividualChat(ChatConversation conversation) {
