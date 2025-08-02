@@ -100,21 +100,9 @@ class _CreateCapsulePage3ScreenSimpleState extends ConsumerState<CreateCapsulePa
     // Move to next step
     await capsuleNotifier.continueToNextStep();
     
-    // Show success message
+    // Navigate to final screen
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Message saved! Your time capsule is being created...',
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
-          ),
-          backgroundColor: AppColors.sageGreen,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-          ),
-        ),
-      );
+      context.go('/capsule/create/review');
     }
   }
   

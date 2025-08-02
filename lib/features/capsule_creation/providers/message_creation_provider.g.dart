@@ -107,7 +107,7 @@ final isCurrentlyRecordingProvider = AutoDisposeProvider<bool>.internal(
 // ignore: unused_element
 typedef IsCurrentlyRecordingRef = AutoDisposeProviderRef<bool>;
 String _$messageCreationNotifierHash() =>
-    r'a3b1de47f8bcc432965721b4915389362a81f2b9';
+    r'1984e08460498e038eaa1c23af987f19f6e74abd';
 
 /// Provider for managing message creation state and logic
 /// Handles text editing, voice recording, font selection, and auto-save

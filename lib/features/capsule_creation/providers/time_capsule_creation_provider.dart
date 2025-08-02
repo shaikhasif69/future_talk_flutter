@@ -324,8 +324,10 @@ String growthStage(Ref ref) {
 /// Convenience provider for time selection status
 @riverpod
 bool hasTimeSelection(Ref ref) {
-  final notifier = ref.read(timeCapsuleCreationNotifierProvider.notifier);
-  return notifier.hasTimeSelection;
+  final state = ref.watch(timeCapsuleCreationNotifierProvider);
+  return state.selectedTimeOption != null || 
+         state.selectedOccasion != null || 
+         state.customDateTime != null;
 }
 
 /// Convenience provider for current animation class

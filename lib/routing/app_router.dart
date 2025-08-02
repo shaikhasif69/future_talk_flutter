@@ -14,6 +14,7 @@ import '../features/capsule_garden/screens/capsule_garden_dashboard.dart';
 import '../features/capsule_creation/screens/create_capsule_page1_screen.dart';
 import '../features/capsule_creation/screens/create_capsule_page2_screen.dart';
 import '../features/capsule_creation/screens/create_capsule_page3_screen_simple.dart';
+import '../features/capsule_creation/screens/create_capsule_final_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/user_profile/screens/user_profile_screen.dart';
 import '../features/user_profile/models/user_profile_model.dart';
@@ -144,6 +145,11 @@ class AppRouter {
         name: 'create_capsule_message',
         builder: (context, state) => const CreateCapsulePage3ScreenSimple(),
       ),
+      GoRoute(
+        path: '/capsule/create/review',
+        name: 'create_capsule_review',
+        builder: (context, state) => const CreateCapsuleFinalScreen(),
+      ),
 
       // ==================== SPLASH ROUTE ====================
       // GoRoute(
@@ -249,6 +255,7 @@ class Routes {
   static const String books = '/books';
   static const String capsuleGarden = '/capsule-garden';
   static const String createCapsule = '/capsule/create';
+  static const String createCapsuleReview = '/capsule/create/review';
   static const String profile = '/profile';
   static const String userProfile = '/user-profile';
   static const String notifications = '/notifications';

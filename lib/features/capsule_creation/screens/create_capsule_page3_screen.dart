@@ -217,21 +217,9 @@ class _CreateCapsulePage3ScreenState extends ConsumerState<CreateCapsulePage3Scr
     // Strong haptic feedback
     HapticFeedback.heavyImpact();
     
-    // Navigate to final step (implement when available)
+    // Navigate to final step
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Message saved! Moving to final step...',
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
-          ),
-          backgroundColor: AppColors.sageGreen,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-          ),
-        ),
-      );
+      context.go('/capsule/create/review');
     }
   }
   
