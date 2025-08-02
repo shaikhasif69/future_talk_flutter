@@ -22,6 +22,7 @@ import '../features/user_profile/screens/user_profile_screen.dart';
 import '../features/user_profile/models/user_profile_model.dart';
 import '../features/settings/screens/settings_screen.dart';
 import '../features/notifications/screens/notification_screen.dart';
+import '../features/connection_stones/screens/connection_stones_dashboard_screen.dart';
 
 /// Future Talk's routing configuration using GoRouter
 /// Handles navigation between authentication screens with smooth transitions
@@ -123,6 +124,13 @@ class AppRouter {
         builder: (context, state) => const ResponsiveBookLibraryScreen(),
       ),
 
+      // ==================== CONNECTION STONES ROUTES ====================
+      GoRoute(
+        path: '/splash',
+        name: 'connection_stones',
+        builder: (context, state) => const ConnectionStonesDashboardScreen(),
+      ),
+
       // ==================== CAPSULE GARDEN ROUTES ====================
       GoRoute(
         path: '/capsule-garden',
@@ -133,9 +141,9 @@ class AppRouter {
       // ==================== CAPSULE CREATION ROUTES ====================
       GoRoute(
         // path: '/capsule/create',
-        path: '/splash',
+        path: '/create_capsule',
         name: 'create_capsule',
-        builder: (context, state) => const CreateCapsulePage1Screen(),
+        builder: (context, state) => const CreateCapsulePage1Screen(), // Testing connection stones
       ),
       GoRoute(
         path: '/capsule/create/friend-selection',
@@ -265,6 +273,7 @@ class Routes {
   static const String chat = '/chat';
   static const String individualChat = '/chat/individual';
   static const String books = '/books';
+  static const String connectionStones = '/connection-stones';
   static const String capsuleGarden = '/capsule-garden';
   static const String createCapsule = '/capsule/create';
   static const String createCapsuleFriendSelection = '/capsule/create/friend-selection';
@@ -298,6 +307,9 @@ extension AppNavigation on BuildContext {
 
   /// Navigate to book library
   void goToBooks() => go(Routes.books);
+
+  /// Navigate to connection stones
+  void goToConnectionStones() => go(Routes.connectionStones);
 
   /// Navigate to capsule garden
   void goToCapsuleGarden() => go(Routes.capsuleGarden);

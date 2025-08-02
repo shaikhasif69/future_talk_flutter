@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Talk - Connection Stones</title>
+    
+    <!-- Future Talk Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Serif Pro', serif;
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            color: #4A4A4A;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #FEFEFE;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 30px 80px rgba(0,0,0,0.08);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, #F7F5F3, #FEFEFE);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .time { 
+            color: #4A4A4A; 
+            font-family: 'Source Serif Pro', serif;
+        }
+        
+        .status-indicators {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .my-battery-status {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(135, 169, 107, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: #87A96B;
+        }
+        
+        .battery-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+
+        /* Stones Header */
+        .stones-header {
+            background: linear-gradient(135deg, #D4A5A5 0%, #E8C5C5 100%);
+            padding: 20px 20px 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stones-header::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: gentle-float 6s ease-in-out infinite;
+        }
+
+        .stones-header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            animation: gentle-float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes gentle-float {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.3; }
+            50% { transform: translateY(-10px) scale(1.1); opacity: 0.6; }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .stones-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stones-emoji {
+            font-size: 24px;
+            animation: stone-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes stone-pulse {
+            0%, 100% { transform: scale(1) rotate(-2deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
+        }
+
+        .stones-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .comfort-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 32px;
+            background: rgba(255,255,255,0.3);
+            margin: 0 8px;
+        }
+
+        /* Quick Touch Bar */
+        .quick-touch-bar {
+            padding: 16px 20px;
+            background: white;
+            margin: -12px 16px 0;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+            z-index: 10;
+        }
+
+        .touch-bar-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: #4A4A4A;
+            text-align: center;
+        }
+
+        .quick-stones {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .quick-stone {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            animation: quick-breathe 4s ease-in-out infinite;
+        }
+
+        .quick-stone:nth-child(2) { animation-delay: 0.5s; }
+        .quick-stone:nth-child(3) { animation-delay: 1s; }
+        .quick-stone:nth-child(4) { animation-delay: 1.5s; }
+
+        @keyframes quick-breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .quick-stone:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(212, 165, 165, 0.4);
+        }
+
+        .quick-stone:active {
+            transform: scale(0.95);
+        }
+
+        .quick-stone.receiving {
+            animation: receive-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes receive-glow {
+            0%, 100% { box-shadow: 0 0 0 rgba(212, 165, 165, 0); }
+            50% { box-shadow: 0 0 20px rgba(212, 165, 165, 0.8); }
+        }
+
+        .rose-quartz { background: linear-gradient(135deg, #D4A5A5, #E8C5C5); }
+        .clear-quartz { background: linear-gradient(135deg, #F8F9FA, #E9ECEF); }
+        .amethyst { background: linear-gradient(135deg, #C8B5D1, #DCC9E2); }
+        .ocean-wave { background: linear-gradient(135deg, #B8D4E3, #D4E6F1); }
+
+        /* Main Stones Collection */
+        .stones-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .collection-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .collection-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 500;
+            color: #4A4A4A;
+        }
+
+        .create-stone-btn {
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .create-stone-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(135, 169, 107, 0.4);
+        }
+
+        .stones-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stone-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .stone-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(212, 165, 165, 0.2);
+        }
+
+        .stone-card.touching {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 16px 40px rgba(212, 165, 165, 0.4);
+        }
+
+        .stone-visual {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            position: relative;
+            animation: stone-breathe 4s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .stone-visual:nth-child(1) { animation-delay: 0s; }
+        .stone-visual:nth-child(2) { animation-delay: 1s; }
+        .stone-visual:nth-child(3) { animation-delay: 2s; }
+        .stone-visual:nth-child(4) { animation-delay: 3s; }
+
+        @keyframes stone-breathe {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.08); opacity: 1; }
+        }
+
+        .stone-visual.receiving {
+            animation: stone-receive 2s ease-in-out infinite;
+        }
+
+        @keyframes stone-receive {
+            0%, 100% { 
+                transform: scale(1); 
+                filter: brightness(1) saturate(1);
+                box-shadow: 0 0 0 rgba(212, 165, 165, 0);
+            }
+            50% { 
+                transform: scale(1.12); 
+                filter: brightness(1.3) saturate(1.4);
+                box-shadow: 0 0 25px rgba(212, 165, 165, 0.7);
+            }
+        }
+
+        .stone-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 4px;
+        }
+
+        .friend-name {
+            font-size: 12px;
+            color: #6B6B6B;
+            margin-bottom: 12px;
+        }
+
+        .touch-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #87A96B;
+        }
+
+        .touch-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #87A96B;
+        }
+
+        .last-touch {
+            color: #C8B5D1;
+        }
+
+        /* Create New Stone Card */
+        .create-card {
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            border: 2px dashed #D1D1D1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #6B6B6B;
+            transition: all 0.3s ease;
+        }
+
+        .create-card:hover {
+            border-color: #87A96B;
+            background: linear-gradient(135deg, rgba(135, 169, 107, 0.05) 0%, #FEFEFE 100%);
+            color: #87A96B;
+        }
+
+        .create-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            animation: create-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes create-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .create-text {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Touch Feedback */
+        .touch-feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(212, 165, 165, 0.95);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 16px;
+            font-size: 16px;
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .touch-feedback.show {
+            opacity: 1;
+        }
+
+        /* Touch Instructions */
+        .touch-instructions {
+            background: rgba(135, 169, 107, 0.1);
+            border: 1px solid rgba(135, 169, 107, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            font-size: 12px;
+            color: #87A96B;
+            margin-top: 16px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px 32px;
+            border-top: 1px solid #F0F0F0;
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            color: #6B6B6B;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: #D4A5A5;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        /* Scrollbar */
+        .stones-content::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .stones-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .stones-content::-webkit-scrollbar-thumb {
+            background: rgba(212, 165, 165, 0.3);
+            border-radius: 2px;
+        }
+
+        /* Touch Ripple Effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 165, 165, 0.6) 0%, transparent 70%);
+            transform: scale(0);
+            animation: rippleEffect 0.8s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Floating comfort particles */
+        .comfort-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(212, 165, 165, 0.4);
+            border-radius: 50%;
+            animation: comfort-float 10s linear infinite;
+        }
+
+        @keyframes comfort-float {
+            0% {
+                transform: translateY(100vh) translateX(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        .particle-1 { left: 15%; animation-delay: 0s; }
+        .particle-2 { left: 45%; animation-delay: 3s; }
+        .particle-3 { left: 75%; animation-delay: 6s; }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- Floating comfort particles -->
+        <div class="comfort-particle particle-1"></div>
+        <div class="comfort-particle particle-2"></div>
+        <div class="comfort-particle particle-3"></div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="time">9:41</div>
+            <div class="status-indicators">
+                <div class="my-battery-status">
+                    <div class="battery-dot"></div>
+                    <span>Green</span>
+                </div>
+                <span style="color: #87A96B;">100% 🔋</span>
+            </div>
+        </div>
+
+        <!-- Stones Header -->
+        <div class="stones-header">
+            <div class="header-content">
+                <h1 class="stones-title">
+                    <span class="stones-emoji">🪨</span>
+                    Connection Stones
+                </h1>
+                <p class="stones-subtitle">Digital comfort objects that bridge hearts</p>
+                
+                <div class="comfort-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">47</div>
+                        <div class="stat-label">Touches Given</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">32</div>
+                        <div class="stat-label">Comfort Received</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Sacred Stones</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Touch Bar -->
+        <div class="quick-touch-bar">
+            <div class="touch-bar-title">Quick Comfort</div>
+            <div class="quick-stones">
+                <div class="quick-stone rose-quartz" onclick="quickTouch('Emma', '💎')" title="Emma's Rose Quartz">💎</div>
+                <div class="quick-stone clear-quartz receiving" onclick="quickTouch('Alex', '🔮')" title="Alex's Clear Quartz">🔮</div>
+                <div class="quick-stone amethyst" onclick="quickTouch('Mom', '💜')" title="Mom's Amethyst">💜</div>
+                <div class="quick-stone ocean-wave" onclick="quickTouch('Sarah', '🌊')" title="Sarah's Ocean Wave">🌊</div>
+            </div>
+        </div>
+
+        <!-- Main Stones Content -->
+        <div class="stones-content">
+            <div class="collection-header">
+                <h2 class="collection-title">Your Sacred Collection</h2>
+                <button class="create-stone-btn" onclick="createNewStone()">
+                    <span>✨</span>
+                    <span>Create</span>
+                </button>
+            </div>
+
+            <div class="stones-grid">
+                <!-- Rose Quartz Stone -->
+                <div class="stone-card" onclick="openStoneDetails('Rose Quartz', 'Emma')">
+                    <div class="stone-visual rose-quartz" 
+                         onmousedown="touchStone(this, 'Rose Quartz', 'Emma', '💎')"
+                         ontouchstart="touchStone(this, 'Rose Quartz', 'Emma', '💎')">
+                        💎
+                    </div>
+                    <div class="stone-name">Rose Quartz</div>
+                    <div class="friend-name">Connected to Emma</div>
+                    <div class="touch-indicator">
+                        <div class="touch-dot"></div>
+                        <span>2 hours ago</span>
+                    </div>
+                </div>
+
+                <!-- Clear Quartz Stone -->
+                <div class="stone-card" onclick="openStoneDetails('Clear Quartz', 'Alex')">
+                    <div class="stone-visual clear-quartz receiving" 
+                         onmousedown="touchStone(this, 'Clear Quartz', 'Alex', '🔮')"
+                         ontouchstart="touchStone(this, 'Clear Quartz', 'Alex', '🔮')">
+                        🔮
+                    </div>
+                    <div class="stone-name">Clear Quartz</div>
+                    <div class="friend-name">Connected to Alex</div>
+                    <div class="touch-indicator last-touch">
+                        <div class="touch-dot"></div>
+                        <span>Receiving comfort...</span>
+                    </div>
+                </div>
+
+                <!-- Amethyst Stone -->
+                <div class="stone-card" onclick="openStoneDetails('Amethyst', 'Mom')">
+                    <div class="stone-visual amethyst" 
+                         onmousedown="touchStone(this, 'Amethyst', 'Mom', '💜')"
+                         ontouchstart="touchStone(this, 'Amethyst', 'Mom', '💜')">
+                        💜
+                    </div>
+                    <div class="stone-name">Amethyst</div>
+                    <div class="friend-name">Connected to Mom</div>
+                    <div class="touch-indicator">
+                        <div class="touch-dot"></div>
+                        <span>Yesterday</span>
+                    </div>
+                </div>
+
+                <!-- Ocean Wave Stone -->
+                <div class="stone-card" onclick="openStoneDetails('Ocean Wave', 'Sarah')">
+                    <div class="stone-visual ocean-wave" 
+                         onmousedown="touchStone(this, 'Ocean Wave', 'Sarah', '🌊')"
+                         ontouchstart="touchStone(this, 'Ocean Wave', 'Sarah', '🌊')">
+                        🌊
+                    </div>
+                    <div class="stone-name">Ocean Wave</div>
+                    <div class="friend-name">Connected to Sarah</div>
+                    <div class="touch-indicator">
+                        <div class="touch-dot"></div>
+                        <span>3 days ago</span>
+                    </div>
+                </div>
+
+                <!-- Cherry Blossom Stone -->
+                <div class="stone-card" onclick="openStoneDetails('Cherry Blossom', 'Sister')">
+                    <div class="stone-visual cherry-blossom" 
+                         onmousedown="touchStone(this, 'Cherry Blossom', 'Sister', '🌸')"
+                         ontouchstart="touchStone(this, 'Cherry Blossom', 'Sister', '🌸')"
+                         style="background: linear-gradient(135deg, #F4C2C2, #F8D7DA);">
+                        🌸
+                    </div>
+                    <div class="stone-name">Cherry Blossom</div>
+                    <div class="friend-name">Connected to Sister</div>
+                    <div class="touch-indicator">
+                        <div class="touch-dot"></div>
+                        <span>5 days ago</span>
+                    </div>
+                </div>
+
+                <!-- Create New Stone Card -->
+                <div class="stone-card create-card" onclick="createNewStone()">
+                    <div class="create-icon">✨</div>
+                    <div class="create-text">Create New<br>Connection Stone</div>
+                </div>
+            </div>
+
+            <!-- Touch Instructions -->
+            <div class="touch-instructions">
+                💝 Press and hold any stone to send comfort to your friend<br>
+                ✨ Tap a stone to view its details and touch history
+            </div>
+        </div>
+
+        <!-- Touch Feedback -->
+        <div class="touch-feedback" id="touchFeedback">
+            Sending comfort to Emma... 💕
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <div class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💬</span>
+                    <span>Chats</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📚</span>
+                    <span>Books</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">⏰</span>
+                    <span>Capsules</span>
+                </div>
+                <div class="nav-item active">
+                    <span class="nav-icon">🪨</span>
+                    <span>Stones</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let touchTimeout;
+        let isLongPress = false;
+
+        function touchStone(element, stoneName, friendName, emoji) {
+            event.stopPropagation();
+            
+            isLongPress = false;
+            const card = element.closest('.stone-card');
+            
+            // Visual feedback immediately
+            element.style.transform = 'scale(0.95)';
+            card.classList.add('touching');
+            
+            // Long press detection for sending comfort
+            touchTimeout = setTimeout(() => {
+                isLongPress = true;
+                sendComfort(element, stoneName, friendName, emoji);
+            }, 800);
+            
+            // Cleanup function
+            const cleanup = () => {
+                clearTimeout(touchTimeout);
+                element.style.transform = '';
+                card.classList.remove('touching');
+                document.removeEventListener('mouseup', cleanup);
+                document.removeEventListener('touchend', cleanup);
+            };
+            
+            document.addEventListener('mouseup', cleanup);
+            document.addEventListener('touchend', cleanup);
+        }
+
+        function sendComfort(element, stoneName, friendName, emoji) {
+            // Create ripple effect
+            createRipple(element);
+            
+            // Show feedback
+            const feedback = document.getElementById('touchFeedback');
+            feedback.innerHTML = `${emoji} Sending comfort to ${friendName}<br>💕 Through your ${stoneName}`;
+            feedback.classList.add('show');
+            
+            // Haptic feedback
+            if (navigator.vibrate) {
+                navigator.vibrate([150, 100, 150, 100, 150]);
+            }
+            
+            // Hide feedback
+            setTimeout(() => {
+                feedback.classList.remove('show');
+            }, 3000);
+            
+            // Simulate receiving response
+            setTimeout(() => {
+                simulateResponse(friendName, emoji);
+            }, 5000);
+        }
+
+        function createRipple(element) {
+            const ripple = document.createElement('div');
+            ripple.classList.add('ripple');
+            
+            const rect = element.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (rect.width / 2 - size / 2) + 'px';
+            ripple.style.top = (rect.height / 2 - size / 2) + 'px';
+            
+            element.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 800);
+        }
+
+        function simulateResponse(friendName, emoji) {
+            const feedback = document.getElementById('touchFeedback');
+            feedback.innerHTML = `${emoji} ${friendName} touched back!<br>✨ You both felt the connection`;
+            feedback.classList.add('show');
+            
+            if (navigator.vibrate) {
+                navigator.vibrate([200, 100, 200]);
+            }
+            
+            setTimeout(() => {
+                feedback.classList.remove('show');
+            }, 3000);
+        }
+
+        function quickTouch(friendName, emoji) {
+            const feedback = document.getElementById('touchFeedback');
+            feedback.innerHTML = `${emoji} Quick comfort sent to ${friendName}!<br>💕 Gentle pulse delivered`;
+            feedback.classList.add('show');
+            
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100]);
+            }
+            
+            setTimeout(() => {
+                feedback.classList.remove('show');
+            }, 2000);
+        }
+
+        function openStoneDetails(stoneName, friendName) {
+            if (!isLongPress) {
+                const feedback = document.getElementById('touchFeedback');
+                feedback.innerHTML = `💎 ${stoneName} Details<br>📊 Connected to ${friendName}`;
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                }, 2000);
+            }
+        }
+
+        function createNewStone() {
+            const feedback = document.getElementById('touchFeedback');
+            feedback.innerHTML = `✨ Create New Stone<br>🎨 Design your perfect comfort object`;
+            feedback.classList.add('show');
+            
+            setTimeout(() => {
+                feedback.classList.remove('show');
+            }, 2000);
+        }
+
+        // Simulate incoming touches
+        setInterval(() => {
+            const stones = document.querySelectorAll('.stone-visual');
+            const randomStone = stones[Math.floor(Math.random() * (stones.length - 1))];
+            
+            if (!randomStone.classList.contains('receiving')) {
+                randomStone.classList.add('receiving');
+                
+                const feedback = document.getElementById('touchFeedback');
+                feedback.innerHTML = `💝 Someone is sending you comfort<br>✨ Your stone is glowing with warmth`;
+                feedback.classList.add('show');
+                
+                if (navigator.vibrate) {
+                    navigator.vibrate([150, 100, 150, 100, 150]);
+                }
+                
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                    randomStone.classList.remove('receiving');
+                }, 4000);
+            }
+        }, 25000);
+
+        // Enhanced card interactions
+        document.querySelectorAll('.stone-card:not(.create-card)').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('touching')) {
+                    this.style.transform = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
