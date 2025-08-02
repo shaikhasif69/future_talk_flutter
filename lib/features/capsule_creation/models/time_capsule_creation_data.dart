@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'friend_model.dart';
 import 'message_settings.dart';
+import 'anonymous_user_model.dart';
+import 'anonymous_message_settings.dart';
 
 part 'time_capsule_creation_data.freezed.dart';
 part 'time_capsule_creation_data.g.dart';
@@ -64,6 +66,23 @@ class TimeCapsuleCreationData with _$TimeCapsuleCreationData {
     
     /// Whether friend selection step is completed
     @Default(false) bool friendSelectionCompleted,
+    
+    // ==================== ANONYMOUS USER SELECTION PROPERTIES ====================
+    
+    /// Selected anonymous user for "Anonymous Gift" capsules
+    AnonymousUser? selectedAnonymousUser,
+    
+    /// Anonymous message settings for privacy and delivery options
+    AnonymousMessageSettings? anonymousMessageSettings,
+    
+    /// Search query for anonymous users
+    @Default('') String anonymousSearchQuery,
+    
+    /// Whether anonymous user selection step is completed
+    @Default(false) bool anonymousSelectionCompleted,
+    
+    /// Whether anonymous search is currently loading
+    @Default(false) bool isAnonymousSearchLoading,
   }) = _TimeCapsuleCreationData;
 
   factory TimeCapsuleCreationData.fromJson(Map<String, dynamic> json) =>

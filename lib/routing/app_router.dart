@@ -13,6 +13,7 @@ import '../features/books/screens/book_library_screen.dart';
 import '../features/capsule_garden/screens/capsule_garden_dashboard.dart';
 import '../features/capsule_creation/screens/create_capsule_page1_screen.dart';
 import '../features/capsule_creation/screens/friend_selection_screen.dart';
+import '../features/capsule_creation/screens/anonymous_user_search_screen.dart';
 import '../features/capsule_creation/screens/create_capsule_page2_screen.dart';
 import '../features/capsule_creation/screens/create_capsule_page3_screen_simple.dart';
 import '../features/capsule_creation/screens/create_capsule_final_screen.dart';
@@ -142,6 +143,11 @@ class AppRouter {
         builder: (context, state) => const FriendSelectionScreen(),
       ),
       GoRoute(
+        path: '/capsule/create/anonymous-search',
+        name: 'create_capsule_anonymous_search',
+        builder: (context, state) => const AnonymousUserSearchScreen(),
+      ),
+      GoRoute(
         path: '/capsule/create/delivery-time',
         name: 'create_capsule_delivery_time',
         builder: (context, state) => const CreateCapsulePage2Screen(),
@@ -262,6 +268,7 @@ class Routes {
   static const String capsuleGarden = '/capsule-garden';
   static const String createCapsule = '/capsule/create';
   static const String createCapsuleFriendSelection = '/capsule/create/friend-selection';
+  static const String createCapsuleAnonymousSearch = '/capsule/create/anonymous-search';
   static const String createCapsuleReview = '/capsule/create/review';
   static const String profile = '/profile';
   static const String userProfile = '/user-profile';
@@ -300,6 +307,9 @@ extension AppNavigation on BuildContext {
 
   /// Navigate to friend selection screen
   void goToFriendSelection() => go(Routes.createCapsuleFriendSelection);
+  
+  /// Navigate to anonymous user search screen
+  void goToAnonymousSearch() => go(Routes.createCapsuleAnonymousSearch);
 
   /// Navigate to profile screen
   void goToProfile() => go(Routes.profile);

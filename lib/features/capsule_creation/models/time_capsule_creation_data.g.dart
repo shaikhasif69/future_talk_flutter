@@ -50,6 +50,20 @@ _$TimeCapsuleCreationDataImpl _$$TimeCapsuleCreationDataImplFromJson(
         ),
   friendSearchQuery: json['friendSearchQuery'] as String? ?? '',
   friendSelectionCompleted: json['friendSelectionCompleted'] as bool? ?? false,
+  selectedAnonymousUser: json['selectedAnonymousUser'] == null
+      ? null
+      : AnonymousUser.fromJson(
+          json['selectedAnonymousUser'] as Map<String, dynamic>,
+        ),
+  anonymousMessageSettings: json['anonymousMessageSettings'] == null
+      ? null
+      : AnonymousMessageSettings.fromJson(
+          json['anonymousMessageSettings'] as Map<String, dynamic>,
+        ),
+  anonymousSearchQuery: json['anonymousSearchQuery'] as String? ?? '',
+  anonymousSelectionCompleted:
+      json['anonymousSelectionCompleted'] as bool? ?? false,
+  isAnonymousSearchLoading: json['isAnonymousSearchLoading'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$$TimeCapsuleCreationDataImplToJson(
@@ -72,6 +86,11 @@ Map<String, dynamic> _$$TimeCapsuleCreationDataImplToJson(
   'messageSettings': instance.messageSettings,
   'friendSearchQuery': instance.friendSearchQuery,
   'friendSelectionCompleted': instance.friendSelectionCompleted,
+  'selectedAnonymousUser': instance.selectedAnonymousUser,
+  'anonymousMessageSettings': instance.anonymousMessageSettings,
+  'anonymousSearchQuery': instance.anonymousSearchQuery,
+  'anonymousSelectionCompleted': instance.anonymousSelectionCompleted,
+  'isAnonymousSearchLoading': instance.isAnonymousSearchLoading,
 };
 
 const _$TimeCapsulePurposeEnumMap = {

@@ -397,8 +397,153 @@ final canProceedFromFriendSelectionProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CanProceedFromFriendSelectionRef = AutoDisposeProviderRef<bool>;
+String _$selectedAnonymousUserHash() =>
+    r'5ee4e573545522b20e74edc1acec36876f0e5be1';
+
+/// Convenience provider for selected anonymous user
+///
+/// Copied from [selectedAnonymousUser].
+@ProviderFor(selectedAnonymousUser)
+final selectedAnonymousUserProvider =
+    AutoDisposeProvider<AnonymousUser?>.internal(
+      selectedAnonymousUser,
+      name: r'selectedAnonymousUserProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$selectedAnonymousUserHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef SelectedAnonymousUserRef = AutoDisposeProviderRef<AnonymousUser?>;
+String _$anonymousMessageSettingsHash() =>
+    r'0526b8b3449c705ace5367a4ee888fe36e8d7a1d';
+
+/// Convenience provider for anonymous message settings
+///
+/// Copied from [anonymousMessageSettings].
+@ProviderFor(anonymousMessageSettings)
+final anonymousMessageSettingsProvider =
+    AutoDisposeProvider<AnonymousMessageSettings?>.internal(
+      anonymousMessageSettings,
+      name: r'anonymousMessageSettingsProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$anonymousMessageSettingsHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef AnonymousMessageSettingsRef =
+    AutoDisposeProviderRef<AnonymousMessageSettings?>;
+String _$anonymousSearchQueryHash() =>
+    r'540c5a7139ac43cbb125da6bbecc7f550366cb95';
+
+/// Convenience provider for anonymous search query
+///
+/// Copied from [anonymousSearchQuery].
+@ProviderFor(anonymousSearchQuery)
+final anonymousSearchQueryProvider = AutoDisposeProvider<String>.internal(
+  anonymousSearchQuery,
+  name: r'anonymousSearchQueryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$anonymousSearchQueryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef AnonymousSearchQueryRef = AutoDisposeProviderRef<String>;
+String _$anonymousSelectionCompletedHash() =>
+    r'9d683fa092f07eda51a553fba1d7bf5b801e878c';
+
+/// Convenience provider for anonymous selection completion
+///
+/// Copied from [anonymousSelectionCompleted].
+@ProviderFor(anonymousSelectionCompleted)
+final anonymousSelectionCompletedProvider = AutoDisposeProvider<bool>.internal(
+  anonymousSelectionCompleted,
+  name: r'anonymousSelectionCompletedProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$anonymousSelectionCompletedHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef AnonymousSelectionCompletedRef = AutoDisposeProviderRef<bool>;
+String _$isAnonymousSearchLoadingHash() =>
+    r'7759376cfe3179074988bb54c146f1c243807e70';
+
+/// Convenience provider for anonymous search loading state
+///
+/// Copied from [isAnonymousSearchLoading].
+@ProviderFor(isAnonymousSearchLoading)
+final isAnonymousSearchLoadingProvider = AutoDisposeProvider<bool>.internal(
+  isAnonymousSearchLoading,
+  name: r'isAnonymousSearchLoadingProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$isAnonymousSearchLoadingHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef IsAnonymousSearchLoadingRef = AutoDisposeProviderRef<bool>;
+String _$requiresAnonymousUserSelectionHash() =>
+    r'4c791859218b0c1ca44ed9a8c9226edad3bd600f';
+
+/// Convenience provider for anonymous user selection requirement
+///
+/// Copied from [requiresAnonymousUserSelection].
+@ProviderFor(requiresAnonymousUserSelection)
+final requiresAnonymousUserSelectionProvider =
+    AutoDisposeProvider<bool>.internal(
+      requiresAnonymousUserSelection,
+      name: r'requiresAnonymousUserSelectionProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$requiresAnonymousUserSelectionHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef RequiresAnonymousUserSelectionRef = AutoDisposeProviderRef<bool>;
+String _$canProceedFromAnonymousSelectionHash() =>
+    r'1bef7d95a2bd797ca63ac924611d527e861a7a80';
+
+/// Convenience provider for can proceed from anonymous selection
+///
+/// Copied from [canProceedFromAnonymousSelection].
+@ProviderFor(canProceedFromAnonymousSelection)
+final canProceedFromAnonymousSelectionProvider =
+    AutoDisposeProvider<bool>.internal(
+      canProceedFromAnonymousSelection,
+      name: r'canProceedFromAnonymousSelectionProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$canProceedFromAnonymousSelectionHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef CanProceedFromAnonymousSelectionRef = AutoDisposeProviderRef<bool>;
 String _$timeCapsuleCreationNotifierHash() =>
-    r'8ddd515cb19ed1c61291cf8bff6e3f4f44215380';
+    r'e302156c0abf421870b7534005cca301e5dcd0b6';
 
 /// Provider for managing time capsule creation state and logic
 /// Handles purpose selection, quick start interactions, and navigation flow

@@ -4,6 +4,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/time_capsule_creation_data.dart';
 import '../models/friend_model.dart';
 import '../models/message_settings.dart';
+import '../models/anonymous_user_model.dart';
+import '../models/anonymous_message_settings.dart';
 
 part 'time_capsule_creation_provider.g.dart';
 
@@ -342,6 +344,156 @@ class TimeCapsuleCreationNotifier extends _$TimeCapsuleCreationNotifier {
     return state.selectedFriend != null && state.friendSelectionCompleted;
   }
 
+  // ==================== ANONYMOUS USER SELECTION METHODS ====================
+
+  /// Select an anonymous user for the time capsule
+  void selectAnonymousUser(AnonymousUser user) {
+    HapticFeedback.selectionClick();
+    
+    // Initialize default anonymous message settings if none exist
+    final anonymousSettings = state.anonymousMessageSettings ?? 
+        const AnonymousMessageSettings();
+    
+    state = state.copyWith(
+      selectedAnonymousUser: user,
+      anonymousMessageSettings: anonymousSettings,
+      anonymousSelectionCompleted: true,
+      showContinueButton: true,
+    );
+  }
+
+  /// Clear anonymous user selection
+  void clearAnonymousUserSelection() {
+    HapticFeedback.selectionClick();
+    
+    state = state.copyWith(
+      selectedAnonymousUser: null,
+      anonymousSelectionCompleted: false,
+      showContinueButton: state.selectedPurpose != null,
+    );
+  }
+
+  /// Update anonymous user search query
+  void updateAnonymousSearchQuery(String query) {
+    state = state.copyWith(anonymousSearchQuery: query);
+  }
+
+  /// Clear anonymous user search
+  void clearAnonymousSearch() {
+    state = state.copyWith(anonymousSearchQuery: '');
+  }
+
+  /// Set anonymous search loading state
+  void setAnonymousSearchLoading(bool isLoading) {
+    state = state.copyWith(isAnonymousSearchLoading: isLoading);
+  }
+
+  /// Perform anonymous user search with privacy protection
+  Future<List<AnonymousUser>> searchAnonymousUsers(String query) async {
+    if (query.trim().length < 3) return [];
+    
+    setAnonymousSearchLoading(true);
+    
+    try {
+      // Simulate network delay for realistic UX
+      await Future.delayed(const Duration(milliseconds: 800));
+      
+      // Privacy-focused exact search
+      final results = AnonymousUserDemoData.searchUsersExact(query);
+      
+      return results;
+    } finally {
+      setAnonymousSearchLoading(false);
+    }
+  }
+
+  /// Update anonymous message settings
+  void updateAnonymousMessageSettings(AnonymousMessageSettings settings) {
+    HapticFeedback.selectionClick();
+    
+    state = state.copyWith(anonymousMessageSettings: settings);
+  }
+
+  /// Toggle anonymous notify about capsule setting
+  void toggleAnonymousNotifyAboutCapsule() {
+    HapticFeedback.selectionClick();
+    
+    final currentSettings = state.anonymousMessageSettings ?? 
+        const AnonymousMessageSettings();
+    final newSettings = currentSettings.copyWith(
+      notifyAboutCapsule: !currentSettings.notifyAboutCapsule,
+    );
+    
+    state = state.copyWith(anonymousMessageSettings: newSettings);
+  }
+
+  /// Update anonymous identity reveal option
+  void updateAnonymousIdentityRevealOption(IdentityRevealOption option) {
+    HapticFeedback.selectionClick();
+    
+    final currentSettings = state.anonymousMessageSettings ?? 
+        const AnonymousMessageSettings();
+    final newSettings = currentSettings.copyWith(identityRevealOption: option);
+    
+    state = state.copyWith(anonymousMessageSettings: newSettings);
+  }
+
+  /// Toggle anonymous one-time view setting
+  void toggleAnonymousOneTimeView() {
+    HapticFeedback.selectionClick();
+    
+    final currentSettings = state.anonymousMessageSettings ?? 
+        const AnonymousMessageSettings();
+    final newSettings = currentSettings.copyWith(
+      oneTimeView: !currentSettings.oneTimeView,
+    );
+    
+    state = state.copyWith(anonymousMessageSettings: newSettings);
+  }
+
+  /// Toggle anonymous delivery hint setting
+  void toggleAnonymousDeliveryHint() {
+    HapticFeedback.selectionClick();
+    
+    final currentSettings = state.anonymousMessageSettings ?? 
+        const AnonymousMessageSettings();
+    final newSettings = currentSettings.copyWith(
+      includeDeliveryHint: !currentSettings.includeDeliveryHint,
+    );
+    
+    state = state.copyWith(anonymousMessageSettings: newSettings);
+  }
+
+  /// Apply anonymous message settings template
+  void applyAnonymousMessageSettingsTemplate(String templateName) {
+    HapticFeedback.mediumImpact();
+    
+    final template = AnonymousMessageSettingsTemplates.getTemplate(templateName);
+    if (template != null) {
+      state = state.copyWith(anonymousMessageSettings: template);
+    }
+  }
+
+  /// Check if anonymous user selection is required for current purpose
+  bool get requiresAnonymousUserSelection {
+    return state.selectedPurpose == TimeCapsulePurpose.anonymous;
+  }
+
+  /// Check if current state allows proceeding from anonymous user selection
+  bool get canProceedFromAnonymousSelection {
+    if (!requiresAnonymousUserSelection) return true;
+    return state.selectedAnonymousUser != null && state.anonymousSelectionCompleted;
+  }
+
+  /// Get filtered anonymous users based on search query
+  Future<List<AnonymousUser>> getFilteredAnonymousUsers() async {
+    if (state.anonymousSearchQuery.isEmpty) {
+      return [];
+    }
+    
+    return await searchAnonymousUsers(state.anonymousSearchQuery);
+  }
+
   /// Get the appropriate continue button text based on state
   String get continueButtonText {
     if (state.isLoading) {
@@ -509,4 +661,51 @@ bool canProceedFromFriendSelection(Ref ref) {
   final state = ref.watch(timeCapsuleCreationNotifierProvider);
   if (state.selectedPurpose != TimeCapsulePurpose.someoneSpecial) return true;
   return state.selectedFriend != null && state.friendSelectionCompleted;
+}
+
+// ==================== ANONYMOUS USER SELECTION CONVENIENCE PROVIDERS ====================
+
+/// Convenience provider for selected anonymous user
+@riverpod
+AnonymousUser? selectedAnonymousUser(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).selectedAnonymousUser;
+}
+
+/// Convenience provider for anonymous message settings
+@riverpod
+AnonymousMessageSettings? anonymousMessageSettings(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).anonymousMessageSettings;
+}
+
+/// Convenience provider for anonymous search query
+@riverpod
+String anonymousSearchQuery(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).anonymousSearchQuery;
+}
+
+/// Convenience provider for anonymous selection completion
+@riverpod
+bool anonymousSelectionCompleted(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).anonymousSelectionCompleted;
+}
+
+/// Convenience provider for anonymous search loading state
+@riverpod
+bool isAnonymousSearchLoading(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).isAnonymousSearchLoading;
+}
+
+/// Convenience provider for anonymous user selection requirement
+@riverpod
+bool requiresAnonymousUserSelection(Ref ref) {
+  final notifier = ref.read(timeCapsuleCreationNotifierProvider.notifier);
+  return notifier.requiresAnonymousUserSelection;
+}
+
+/// Convenience provider for can proceed from anonymous selection
+@riverpod
+bool canProceedFromAnonymousSelection(Ref ref) {
+  final state = ref.watch(timeCapsuleCreationNotifierProvider);
+  if (state.selectedPurpose != TimeCapsulePurpose.anonymous) return true;
+  return state.selectedAnonymousUser != null && state.anonymousSelectionCompleted;
 }

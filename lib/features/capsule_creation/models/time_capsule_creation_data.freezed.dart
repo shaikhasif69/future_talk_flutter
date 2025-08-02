@@ -72,7 +72,24 @@ mixin _$TimeCapsuleCreationData {
   String get friendSearchQuery => throw _privateConstructorUsedError;
 
   /// Whether friend selection step is completed
-  bool get friendSelectionCompleted => throw _privateConstructorUsedError;
+  bool get friendSelectionCompleted =>
+      throw _privateConstructorUsedError; // ==================== ANONYMOUS USER SELECTION PROPERTIES ====================
+  /// Selected anonymous user for "Anonymous Gift" capsules
+  AnonymousUser? get selectedAnonymousUser =>
+      throw _privateConstructorUsedError;
+
+  /// Anonymous message settings for privacy and delivery options
+  AnonymousMessageSettings? get anonymousMessageSettings =>
+      throw _privateConstructorUsedError;
+
+  /// Search query for anonymous users
+  String get anonymousSearchQuery => throw _privateConstructorUsedError;
+
+  /// Whether anonymous user selection step is completed
+  bool get anonymousSelectionCompleted => throw _privateConstructorUsedError;
+
+  /// Whether anonymous search is currently loading
+  bool get isAnonymousSearchLoading => throw _privateConstructorUsedError;
 
   /// Serializes this TimeCapsuleCreationData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -109,11 +126,18 @@ abstract class $TimeCapsuleCreationDataCopyWith<$Res> {
     MessageSettings? messageSettings,
     String friendSearchQuery,
     bool friendSelectionCompleted,
+    AnonymousUser? selectedAnonymousUser,
+    AnonymousMessageSettings? anonymousMessageSettings,
+    String anonymousSearchQuery,
+    bool anonymousSelectionCompleted,
+    bool isAnonymousSearchLoading,
   });
 
   $CustomDateTimeCopyWith<$Res>? get customDateTime;
   $FriendCopyWith<$Res>? get selectedFriend;
   $MessageSettingsCopyWith<$Res>? get messageSettings;
+  $AnonymousUserCopyWith<$Res>? get selectedAnonymousUser;
+  $AnonymousMessageSettingsCopyWith<$Res>? get anonymousMessageSettings;
 }
 
 /// @nodoc
@@ -151,6 +175,11 @@ class _$TimeCapsuleCreationDataCopyWithImpl<
     Object? messageSettings = freezed,
     Object? friendSearchQuery = null,
     Object? friendSelectionCompleted = null,
+    Object? selectedAnonymousUser = freezed,
+    Object? anonymousMessageSettings = freezed,
+    Object? anonymousSearchQuery = null,
+    Object? anonymousSelectionCompleted = null,
+    Object? isAnonymousSearchLoading = null,
   }) {
     return _then(
       _value.copyWith(
@@ -222,6 +251,26 @@ class _$TimeCapsuleCreationDataCopyWithImpl<
                 ? _value.friendSelectionCompleted
                 : friendSelectionCompleted // ignore: cast_nullable_to_non_nullable
                       as bool,
+            selectedAnonymousUser: freezed == selectedAnonymousUser
+                ? _value.selectedAnonymousUser
+                : selectedAnonymousUser // ignore: cast_nullable_to_non_nullable
+                      as AnonymousUser?,
+            anonymousMessageSettings: freezed == anonymousMessageSettings
+                ? _value.anonymousMessageSettings
+                : anonymousMessageSettings // ignore: cast_nullable_to_non_nullable
+                      as AnonymousMessageSettings?,
+            anonymousSearchQuery: null == anonymousSearchQuery
+                ? _value.anonymousSearchQuery
+                : anonymousSearchQuery // ignore: cast_nullable_to_non_nullable
+                      as String,
+            anonymousSelectionCompleted: null == anonymousSelectionCompleted
+                ? _value.anonymousSelectionCompleted
+                : anonymousSelectionCompleted // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            isAnonymousSearchLoading: null == isAnonymousSearchLoading
+                ? _value.isAnonymousSearchLoading
+                : isAnonymousSearchLoading // ignore: cast_nullable_to_non_nullable
+                      as bool,
           )
           as $Val,
     );
@@ -268,6 +317,37 @@ class _$TimeCapsuleCreationDataCopyWithImpl<
       return _then(_value.copyWith(messageSettings: value) as $Val);
     });
   }
+
+  /// Create a copy of TimeCapsuleCreationData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AnonymousUserCopyWith<$Res>? get selectedAnonymousUser {
+    if (_value.selectedAnonymousUser == null) {
+      return null;
+    }
+
+    return $AnonymousUserCopyWith<$Res>(_value.selectedAnonymousUser!, (value) {
+      return _then(_value.copyWith(selectedAnonymousUser: value) as $Val);
+    });
+  }
+
+  /// Create a copy of TimeCapsuleCreationData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AnonymousMessageSettingsCopyWith<$Res>? get anonymousMessageSettings {
+    if (_value.anonymousMessageSettings == null) {
+      return null;
+    }
+
+    return $AnonymousMessageSettingsCopyWith<$Res>(
+      _value.anonymousMessageSettings!,
+      (value) {
+        return _then(_value.copyWith(anonymousMessageSettings: value) as $Val);
+      },
+    );
+  }
 }
 
 /// @nodoc
@@ -297,6 +377,11 @@ abstract class _$$TimeCapsuleCreationDataImplCopyWith<$Res>
     MessageSettings? messageSettings,
     String friendSearchQuery,
     bool friendSelectionCompleted,
+    AnonymousUser? selectedAnonymousUser,
+    AnonymousMessageSettings? anonymousMessageSettings,
+    String anonymousSearchQuery,
+    bool anonymousSelectionCompleted,
+    bool isAnonymousSearchLoading,
   });
 
   @override
@@ -305,6 +390,10 @@ abstract class _$$TimeCapsuleCreationDataImplCopyWith<$Res>
   $FriendCopyWith<$Res>? get selectedFriend;
   @override
   $MessageSettingsCopyWith<$Res>? get messageSettings;
+  @override
+  $AnonymousUserCopyWith<$Res>? get selectedAnonymousUser;
+  @override
+  $AnonymousMessageSettingsCopyWith<$Res>? get anonymousMessageSettings;
 }
 
 /// @nodoc
@@ -342,6 +431,11 @@ class __$$TimeCapsuleCreationDataImplCopyWithImpl<$Res>
     Object? messageSettings = freezed,
     Object? friendSearchQuery = null,
     Object? friendSelectionCompleted = null,
+    Object? selectedAnonymousUser = freezed,
+    Object? anonymousMessageSettings = freezed,
+    Object? anonymousSearchQuery = null,
+    Object? anonymousSelectionCompleted = null,
+    Object? isAnonymousSearchLoading = null,
   }) {
     return _then(
       _$TimeCapsuleCreationDataImpl(
@@ -413,6 +507,26 @@ class __$$TimeCapsuleCreationDataImplCopyWithImpl<$Res>
             ? _value.friendSelectionCompleted
             : friendSelectionCompleted // ignore: cast_nullable_to_non_nullable
                   as bool,
+        selectedAnonymousUser: freezed == selectedAnonymousUser
+            ? _value.selectedAnonymousUser
+            : selectedAnonymousUser // ignore: cast_nullable_to_non_nullable
+                  as AnonymousUser?,
+        anonymousMessageSettings: freezed == anonymousMessageSettings
+            ? _value.anonymousMessageSettings
+            : anonymousMessageSettings // ignore: cast_nullable_to_non_nullable
+                  as AnonymousMessageSettings?,
+        anonymousSearchQuery: null == anonymousSearchQuery
+            ? _value.anonymousSearchQuery
+            : anonymousSearchQuery // ignore: cast_nullable_to_non_nullable
+                  as String,
+        anonymousSelectionCompleted: null == anonymousSelectionCompleted
+            ? _value.anonymousSelectionCompleted
+            : anonymousSelectionCompleted // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        isAnonymousSearchLoading: null == isAnonymousSearchLoading
+            ? _value.isAnonymousSearchLoading
+            : isAnonymousSearchLoading // ignore: cast_nullable_to_non_nullable
+                  as bool,
       ),
     );
   }
@@ -439,6 +553,11 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
     this.messageSettings,
     this.friendSearchQuery = '',
     this.friendSelectionCompleted = false,
+    this.selectedAnonymousUser,
+    this.anonymousMessageSettings,
+    this.anonymousSearchQuery = '',
+    this.anonymousSelectionCompleted = false,
+    this.isAnonymousSearchLoading = false,
   });
 
   factory _$TimeCapsuleCreationDataImpl.fromJson(Map<String, dynamic> json) =>
@@ -520,10 +639,33 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
   @override
   @JsonKey()
   final bool friendSelectionCompleted;
+  // ==================== ANONYMOUS USER SELECTION PROPERTIES ====================
+  /// Selected anonymous user for "Anonymous Gift" capsules
+  @override
+  final AnonymousUser? selectedAnonymousUser;
+
+  /// Anonymous message settings for privacy and delivery options
+  @override
+  final AnonymousMessageSettings? anonymousMessageSettings;
+
+  /// Search query for anonymous users
+  @override
+  @JsonKey()
+  final String anonymousSearchQuery;
+
+  /// Whether anonymous user selection step is completed
+  @override
+  @JsonKey()
+  final bool anonymousSelectionCompleted;
+
+  /// Whether anonymous search is currently loading
+  @override
+  @JsonKey()
+  final bool isAnonymousSearchLoading;
 
   @override
   String toString() {
-    return 'TimeCapsuleCreationData(selectedPurpose: $selectedPurpose, currentStep: $currentStep, showContinueButton: $showContinueButton, selectedQuickStart: $selectedQuickStart, isLoading: $isLoading, creationStartedAt: $creationStartedAt, selectedTimeOption: $selectedTimeOption, selectedOccasion: $selectedOccasion, customDateTime: $customDateTime, timeMetaphor: $timeMetaphor, timeDisplay: $timeDisplay, timeDescription: $timeDescription, growthStage: $growthStage, selectedFriend: $selectedFriend, messageSettings: $messageSettings, friendSearchQuery: $friendSearchQuery, friendSelectionCompleted: $friendSelectionCompleted)';
+    return 'TimeCapsuleCreationData(selectedPurpose: $selectedPurpose, currentStep: $currentStep, showContinueButton: $showContinueButton, selectedQuickStart: $selectedQuickStart, isLoading: $isLoading, creationStartedAt: $creationStartedAt, selectedTimeOption: $selectedTimeOption, selectedOccasion: $selectedOccasion, customDateTime: $customDateTime, timeMetaphor: $timeMetaphor, timeDisplay: $timeDisplay, timeDescription: $timeDescription, growthStage: $growthStage, selectedFriend: $selectedFriend, messageSettings: $messageSettings, friendSearchQuery: $friendSearchQuery, friendSelectionCompleted: $friendSelectionCompleted, selectedAnonymousUser: $selectedAnonymousUser, anonymousMessageSettings: $anonymousMessageSettings, anonymousSearchQuery: $anonymousSearchQuery, anonymousSelectionCompleted: $anonymousSelectionCompleted, isAnonymousSearchLoading: $isAnonymousSearchLoading)';
   }
 
   @override
@@ -567,12 +709,32 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
                   other.friendSelectionCompleted,
                   friendSelectionCompleted,
                 ) ||
-                other.friendSelectionCompleted == friendSelectionCompleted));
+                other.friendSelectionCompleted == friendSelectionCompleted) &&
+            (identical(other.selectedAnonymousUser, selectedAnonymousUser) ||
+                other.selectedAnonymousUser == selectedAnonymousUser) &&
+            (identical(
+                  other.anonymousMessageSettings,
+                  anonymousMessageSettings,
+                ) ||
+                other.anonymousMessageSettings == anonymousMessageSettings) &&
+            (identical(other.anonymousSearchQuery, anonymousSearchQuery) ||
+                other.anonymousSearchQuery == anonymousSearchQuery) &&
+            (identical(
+                  other.anonymousSelectionCompleted,
+                  anonymousSelectionCompleted,
+                ) ||
+                other.anonymousSelectionCompleted ==
+                    anonymousSelectionCompleted) &&
+            (identical(
+                  other.isAnonymousSearchLoading,
+                  isAnonymousSearchLoading,
+                ) ||
+                other.isAnonymousSearchLoading == isAnonymousSearchLoading));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     runtimeType,
     selectedPurpose,
     currentStep,
@@ -591,7 +753,12 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
     messageSettings,
     friendSearchQuery,
     friendSelectionCompleted,
-  );
+    selectedAnonymousUser,
+    anonymousMessageSettings,
+    anonymousSearchQuery,
+    anonymousSelectionCompleted,
+    isAnonymousSearchLoading,
+  ]);
 
   /// Create a copy of TimeCapsuleCreationData
   /// with the given fields replaced by the non-null parameter values.
@@ -629,6 +796,11 @@ abstract class _TimeCapsuleCreationData implements TimeCapsuleCreationData {
     final MessageSettings? messageSettings,
     final String friendSearchQuery,
     final bool friendSelectionCompleted,
+    final AnonymousUser? selectedAnonymousUser,
+    final AnonymousMessageSettings? anonymousMessageSettings,
+    final String anonymousSearchQuery,
+    final bool anonymousSelectionCompleted,
+    final bool isAnonymousSearchLoading,
   }) = _$TimeCapsuleCreationDataImpl;
 
   factory _TimeCapsuleCreationData.fromJson(Map<String, dynamic> json) =
@@ -698,7 +870,26 @@ abstract class _TimeCapsuleCreationData implements TimeCapsuleCreationData {
 
   /// Whether friend selection step is completed
   @override
-  bool get friendSelectionCompleted;
+  bool get friendSelectionCompleted; // ==================== ANONYMOUS USER SELECTION PROPERTIES ====================
+  /// Selected anonymous user for "Anonymous Gift" capsules
+  @override
+  AnonymousUser? get selectedAnonymousUser;
+
+  /// Anonymous message settings for privacy and delivery options
+  @override
+  AnonymousMessageSettings? get anonymousMessageSettings;
+
+  /// Search query for anonymous users
+  @override
+  String get anonymousSearchQuery;
+
+  /// Whether anonymous user selection step is completed
+  @override
+  bool get anonymousSelectionCompleted;
+
+  /// Whether anonymous search is currently loading
+  @override
+  bool get isAnonymousSearchLoading;
 
   /// Create a copy of TimeCapsuleCreationData
   /// with the given fields replaced by the non-null parameter values.

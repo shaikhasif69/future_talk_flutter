@@ -94,20 +94,8 @@ class _CreateCapsulePage1ScreenState extends ConsumerState<CreateCapsulePage1Scr
           context.pushNamed('create_capsule_friend_selection');
           break;
         case TimeCapsulePurpose.anonymous:
-          // TODO: Navigate to anonymous gift screen
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Anonymous Gift flow coming soon!',
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
-              ),
-              backgroundColor: AppColors.lavenderMist,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-              ),
-            ),
-          );
+          // Navigate to anonymous user search screen
+          context.pushNamed('create_capsule_anonymous_search');
           break;
         default:
           break;
