@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
@@ -8,20 +7,23 @@ import '../../../shared/widgets/ft_button.dart';
 import '../models/time_capsule_creation_data.dart';
 import '../providers/time_capsule_creation_provider.dart';
 import '../widgets/time_capsule_header.dart';
-import '../widgets/purpose_card.dart';
-import '../widgets/quick_start_section.dart';
+import '../widgets/time_visualization_card.dart';
+import '../widgets/time_option_card.dart';
+import '../widgets/special_occasion_card.dart';
+import '../widgets/custom_date_time_picker.dart';
+import '../widgets/selection_context_card.dart';
 import '../widgets/animated_water_droplet_background.dart';
 
-/// First page of time capsule creation flow
+/// Second page of time capsule creation flow - Time Selection
 /// Pixel-perfect implementation of the HTML design with premium interactions
-class CreateCapsulePage1Screen extends ConsumerStatefulWidget {
-  const CreateCapsulePage1Screen({super.key});
+class CreateCapsulePage2Screen extends ConsumerStatefulWidget {
+  const CreateCapsulePage2Screen({super.key});
 
   @override
-  ConsumerState<CreateCapsulePage1Screen> createState() => _CreateCapsulePage1ScreenState();
+  ConsumerState<CreateCapsulePage2Screen> createState() => _CreateCapsulePage2ScreenState();
 }
 
-class _CreateCapsulePage1ScreenState extends ConsumerState<CreateCapsulePage1Screen>
+class _CreateCapsulePage2ScreenState extends ConsumerState<CreateCapsulePage2Screen>
     with TickerProviderStateMixin {
   late AnimationController _continueButtonController;
   late Animation<double> _continueButtonAnimation;
@@ -59,89 +61,59 @@ class _CreateCapsulePage1ScreenState extends ConsumerState<CreateCapsulePage1Scr
     super.dispose();
   }
 
-  void _handlePurposeSelection(TimeCapsulePurpose purpose) {
+  void _handleTimeOptionSelected(TimeOption timeOption) {
     final notifier = ref.read(timeCapsuleCreationNotifierProvider.notifier);
-    notifier.selectPurpose(purpose);
-    
-    // Show continue button with animation
-    _continueButtonController.forward();
+    notifier.selectTimeOption(timeOption);
   }
 
-  void _handleQuickStartSelection(QuickStartType quickStartType) {
+  void _handleOccasionSelected(SpecialOccasion occasion) {
     final notifier = ref.read(timeCapsuleCreationNotifierProvider.notifier);
-    notifier.selectQuickStart(quickStartType);
-    
-    // Show continue button if not already shown
-    if (!_continueButtonController.isCompleted) {
-      _continueButtonController.forward();
-    }
+    notifier.selectSpecialOccasion(occasion);
+  }
+
+  void _handleCustomDateTimeSelected(DateTime dateTime) {
+    final notifier = ref.read(timeCapsuleCreationNotifierProvider.notifier);
+    notifier.setCustomDateTime(dateTime);
   }
 
   void _handleContinue() async {
     final notifier = ref.read(timeCapsuleCreationNotifierProvider.notifier);
-    final creationState = ref.read(timeCapsuleCreationNotifierProvider);
-    
     await notifier.continueToNextStep();
     
-    // Navigate based on selected purpose
+    // Navigate to next step (implement navigation logic here)
     if (mounted) {
-      switch (creationState.selectedPurpose) {
-        case TimeCapsulePurpose.futureMe:
-          context.pushNamed('create_capsule_delivery_time');
-          break;
-        case TimeCapsulePurpose.someoneSpecial:
-          // TODO: Navigate to recipient selection screen
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Someone Special flow coming soon!',
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
-              ),
-              backgroundColor: AppColors.warmPeach,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-              ),
-            ),
-          );
-          break;
-        case TimeCapsulePurpose.anonymous:
-          // TODO: Navigate to anonymous gift screen
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Anonymous Gift flow coming soon!',
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
-              ),
-              backgroundColor: AppColors.lavenderMist,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-              ),
-            ),
-          );
-          break;
-        default:
-          break;
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Moving to step ${ref.read(currentCreationStepProvider)}...',
+            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
+          ),
+          backgroundColor: AppColors.sageGreen,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          ),
+        ),
+      );
     }
   }
 
   void _handleBackPressed() {
+    final notifier = ref.read(timeCapsuleCreationNotifierProvider.notifier);
+    notifier.goToPreviousStep();
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
-    final creationState = ref.watch(timeCapsuleCreationNotifierProvider);
-    final showContinueButton = ref.watch(showContinueButtonProvider);
+    final hasTimeSelection = ref.watch(hasTimeSelectionProvider);
     final isLoading = ref.watch(isCreationLoadingProvider);
     
     // Monitor continue button visibility
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (showContinueButton && !_continueButtonController.isCompleted) {
+      if (hasTimeSelection && !_continueButtonController.isCompleted) {
         _continueButtonController.forward();
-      } else if (!showContinueButton && _continueButtonController.isCompleted) {
+      } else if (!hasTimeSelection && _continueButtonController.isCompleted) {
         _continueButtonController.reverse();
       }
     });
@@ -169,9 +141,9 @@ class _CreateCapsulePage1ScreenState extends ConsumerState<CreateCapsulePage1Scr
               children: [
                 // Header (fixed)
                 TimeCapsuleHeader(
-                  currentStep: creationState.currentStep,
-                  title: 'Create Time Capsule',
-                  subtitle: 'Choose your recipient',
+                  currentStep: 2, // Step 2 active, step 1 completed
+                  title: 'When to Deliver?',
+                  subtitle: 'Choose your time travel destination',
                   onBackPressed: _handleBackPressed,
                 ),
                 
@@ -181,47 +153,38 @@ class _CreateCapsulePage1ScreenState extends ConsumerState<CreateCapsulePage1Scr
                     physics: const ClampingScrollPhysics(), // Prevents stretching
                     padding: const EdgeInsets.fromLTRB(
                       AppDimensions.screenPadding,
-                      AppDimensions.spacingXXXL,
+                      0,
                       AppDimensions.screenPadding,
-                      120, // Space for continue button only
+                      120, // Space for continue button
                     ),
                     child: Column(
                       children: [
-                        // Selection title
-                        Text(
-                          'Who will receive this message?',
-                          style: AppTextStyles.headlineSmall.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                          textAlign: TextAlign.center,
+                        // Selection context showing "Future Me"
+                        const SelectionContextCard(),
+                        
+                        const SizedBox(height: AppDimensions.spacingXXXL),
+                        
+                        // Time visualization card
+                        const TimeVisualizationCard(),
+                        
+                        // Time options grid
+                        TimeOptionsGrid(
+                          onTimeOptionSelected: _handleTimeOptionSelected,
+                          animationDelay: const Duration(milliseconds: 100),
+                        ),
+                        
+                        const SizedBox(height: AppDimensions.spacingXXXL),
+                        
+                        // Special occasions section
+                        SpecialOccasionsSection(
+                          onOccasionSelected: _handleOccasionSelected,
                         ),
                         
                         const SizedBox(height: AppDimensions.cardPaddingLarge),
                         
-                        // Purpose cards
-                        ...TimeCapsulePurpose.values.asMap().entries.map((entry) {
-                          final index = entry.key;
-                          final purpose = entry.value;
-                          
-                          return Padding(
-                            padding: EdgeInsets.only(
-                              bottom: index < TimeCapsulePurpose.values.length - 1 
-                                  ? AppDimensions.spacingXL 
-                                  : 0,
-                            ),
-                            child: PurposeCard(
-                              purpose: purpose,
-                              isSelected: creationState.selectedPurpose == purpose,
-                              onTap: () => _handlePurposeSelection(purpose),
-                              animationDelay: Duration(milliseconds: index * 100),
-                            ),
-                          );
-                        }),
-                        
-                        // Quick start section
-                        QuickStartSection(
-                          onQuickStartSelected: _handleQuickStartSelection,
-                          animationDelay: const Duration(milliseconds: 300),
+                        // Custom date time picker
+                        CustomDateTimePicker(
+                          onDateTimeSelected: _handleCustomDateTimeSelected,
                         ),
                       ],
                     ),
@@ -250,8 +213,8 @@ class _CreateCapsulePage1ScreenState extends ConsumerState<CreateCapsulePage1Scr
                       ],
                     ),
                     child: FTButton.primary(
-                      text: ref.read(timeCapsuleCreationNotifierProvider.notifier).continueButtonText,
-                      onPressed: creationState.selectedPurpose != null && !isLoading 
+                      text: isLoading ? 'Preparing canvas...' : 'Continue to Message',
+                      onPressed: hasTimeSelection && !isLoading 
                           ? _handleContinue 
                           : null,
                       isLoading: isLoading,

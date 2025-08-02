@@ -39,7 +39,28 @@ mixin _$TimeCapsuleCreationData {
   bool get isLoading => throw _privateConstructorUsedError;
 
   /// Creation timestamp for analytics
-  DateTime? get creationStartedAt => throw _privateConstructorUsedError;
+  DateTime? get creationStartedAt =>
+      throw _privateConstructorUsedError; // ==================== TIME SELECTION PROPERTIES ====================
+  /// Selected time option for delivery (1 hour, 1 day, etc.)
+  TimeOption? get selectedTimeOption => throw _privateConstructorUsedError;
+
+  /// Selected special occasion for delivery
+  SpecialOccasion? get selectedOccasion => throw _privateConstructorUsedError;
+
+  /// Custom date and time for delivery
+  CustomDateTime? get customDateTime => throw _privateConstructorUsedError;
+
+  /// Current visual metaphor for time selection
+  String get timeMetaphor => throw _privateConstructorUsedError;
+
+  /// Current time display text
+  String get timeDisplay => throw _privateConstructorUsedError;
+
+  /// Current time description
+  String get timeDescription => throw _privateConstructorUsedError;
+
+  /// Current growth stage text
+  String get growthStage => throw _privateConstructorUsedError;
 
   /// Serializes this TimeCapsuleCreationData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -65,7 +86,16 @@ abstract class $TimeCapsuleCreationDataCopyWith<$Res> {
     QuickStartType? selectedQuickStart,
     bool isLoading,
     DateTime? creationStartedAt,
+    TimeOption? selectedTimeOption,
+    SpecialOccasion? selectedOccasion,
+    CustomDateTime? customDateTime,
+    String timeMetaphor,
+    String timeDisplay,
+    String timeDescription,
+    String growthStage,
   });
+
+  $CustomDateTimeCopyWith<$Res>? get customDateTime;
 }
 
 /// @nodoc
@@ -92,6 +122,13 @@ class _$TimeCapsuleCreationDataCopyWithImpl<
     Object? selectedQuickStart = freezed,
     Object? isLoading = null,
     Object? creationStartedAt = freezed,
+    Object? selectedTimeOption = freezed,
+    Object? selectedOccasion = freezed,
+    Object? customDateTime = freezed,
+    Object? timeMetaphor = null,
+    Object? timeDisplay = null,
+    Object? timeDescription = null,
+    Object? growthStage = null,
   }) {
     return _then(
       _value.copyWith(
@@ -119,9 +156,51 @@ class _$TimeCapsuleCreationDataCopyWithImpl<
                 ? _value.creationStartedAt
                 : creationStartedAt // ignore: cast_nullable_to_non_nullable
                       as DateTime?,
+            selectedTimeOption: freezed == selectedTimeOption
+                ? _value.selectedTimeOption
+                : selectedTimeOption // ignore: cast_nullable_to_non_nullable
+                      as TimeOption?,
+            selectedOccasion: freezed == selectedOccasion
+                ? _value.selectedOccasion
+                : selectedOccasion // ignore: cast_nullable_to_non_nullable
+                      as SpecialOccasion?,
+            customDateTime: freezed == customDateTime
+                ? _value.customDateTime
+                : customDateTime // ignore: cast_nullable_to_non_nullable
+                      as CustomDateTime?,
+            timeMetaphor: null == timeMetaphor
+                ? _value.timeMetaphor
+                : timeMetaphor // ignore: cast_nullable_to_non_nullable
+                      as String,
+            timeDisplay: null == timeDisplay
+                ? _value.timeDisplay
+                : timeDisplay // ignore: cast_nullable_to_non_nullable
+                      as String,
+            timeDescription: null == timeDescription
+                ? _value.timeDescription
+                : timeDescription // ignore: cast_nullable_to_non_nullable
+                      as String,
+            growthStage: null == growthStage
+                ? _value.growthStage
+                : growthStage // ignore: cast_nullable_to_non_nullable
+                      as String,
           )
           as $Val,
     );
+  }
+
+  /// Create a copy of TimeCapsuleCreationData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomDateTimeCopyWith<$Res>? get customDateTime {
+    if (_value.customDateTime == null) {
+      return null;
+    }
+
+    return $CustomDateTimeCopyWith<$Res>(_value.customDateTime!, (value) {
+      return _then(_value.copyWith(customDateTime: value) as $Val);
+    });
   }
 }
 
@@ -141,7 +220,17 @@ abstract class _$$TimeCapsuleCreationDataImplCopyWith<$Res>
     QuickStartType? selectedQuickStart,
     bool isLoading,
     DateTime? creationStartedAt,
+    TimeOption? selectedTimeOption,
+    SpecialOccasion? selectedOccasion,
+    CustomDateTime? customDateTime,
+    String timeMetaphor,
+    String timeDisplay,
+    String timeDescription,
+    String growthStage,
   });
+
+  @override
+  $CustomDateTimeCopyWith<$Res>? get customDateTime;
 }
 
 /// @nodoc
@@ -168,6 +257,13 @@ class __$$TimeCapsuleCreationDataImplCopyWithImpl<$Res>
     Object? selectedQuickStart = freezed,
     Object? isLoading = null,
     Object? creationStartedAt = freezed,
+    Object? selectedTimeOption = freezed,
+    Object? selectedOccasion = freezed,
+    Object? customDateTime = freezed,
+    Object? timeMetaphor = null,
+    Object? timeDisplay = null,
+    Object? timeDescription = null,
+    Object? growthStage = null,
   }) {
     return _then(
       _$TimeCapsuleCreationDataImpl(
@@ -195,6 +291,34 @@ class __$$TimeCapsuleCreationDataImplCopyWithImpl<$Res>
             ? _value.creationStartedAt
             : creationStartedAt // ignore: cast_nullable_to_non_nullable
                   as DateTime?,
+        selectedTimeOption: freezed == selectedTimeOption
+            ? _value.selectedTimeOption
+            : selectedTimeOption // ignore: cast_nullable_to_non_nullable
+                  as TimeOption?,
+        selectedOccasion: freezed == selectedOccasion
+            ? _value.selectedOccasion
+            : selectedOccasion // ignore: cast_nullable_to_non_nullable
+                  as SpecialOccasion?,
+        customDateTime: freezed == customDateTime
+            ? _value.customDateTime
+            : customDateTime // ignore: cast_nullable_to_non_nullable
+                  as CustomDateTime?,
+        timeMetaphor: null == timeMetaphor
+            ? _value.timeMetaphor
+            : timeMetaphor // ignore: cast_nullable_to_non_nullable
+                  as String,
+        timeDisplay: null == timeDisplay
+            ? _value.timeDisplay
+            : timeDisplay // ignore: cast_nullable_to_non_nullable
+                  as String,
+        timeDescription: null == timeDescription
+            ? _value.timeDescription
+            : timeDescription // ignore: cast_nullable_to_non_nullable
+                  as String,
+        growthStage: null == growthStage
+            ? _value.growthStage
+            : growthStage // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -210,6 +334,13 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
     this.selectedQuickStart,
     this.isLoading = false,
     this.creationStartedAt,
+    this.selectedTimeOption,
+    this.selectedOccasion,
+    this.customDateTime,
+    this.timeMetaphor = '🌰',
+    this.timeDisplay = 'Select Time',
+    this.timeDescription = 'Choose when you\'d like to receive this message',
+    this.growthStage = 'Ready to Plant',
   });
 
   factory _$TimeCapsuleCreationDataImpl.fromJson(Map<String, dynamic> json) =>
@@ -241,10 +372,42 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
   /// Creation timestamp for analytics
   @override
   final DateTime? creationStartedAt;
+  // ==================== TIME SELECTION PROPERTIES ====================
+  /// Selected time option for delivery (1 hour, 1 day, etc.)
+  @override
+  final TimeOption? selectedTimeOption;
+
+  /// Selected special occasion for delivery
+  @override
+  final SpecialOccasion? selectedOccasion;
+
+  /// Custom date and time for delivery
+  @override
+  final CustomDateTime? customDateTime;
+
+  /// Current visual metaphor for time selection
+  @override
+  @JsonKey()
+  final String timeMetaphor;
+
+  /// Current time display text
+  @override
+  @JsonKey()
+  final String timeDisplay;
+
+  /// Current time description
+  @override
+  @JsonKey()
+  final String timeDescription;
+
+  /// Current growth stage text
+  @override
+  @JsonKey()
+  final String growthStage;
 
   @override
   String toString() {
-    return 'TimeCapsuleCreationData(selectedPurpose: $selectedPurpose, currentStep: $currentStep, showContinueButton: $showContinueButton, selectedQuickStart: $selectedQuickStart, isLoading: $isLoading, creationStartedAt: $creationStartedAt)';
+    return 'TimeCapsuleCreationData(selectedPurpose: $selectedPurpose, currentStep: $currentStep, showContinueButton: $showContinueButton, selectedQuickStart: $selectedQuickStart, isLoading: $isLoading, creationStartedAt: $creationStartedAt, selectedTimeOption: $selectedTimeOption, selectedOccasion: $selectedOccasion, customDateTime: $customDateTime, timeMetaphor: $timeMetaphor, timeDisplay: $timeDisplay, timeDescription: $timeDescription, growthStage: $growthStage)';
   }
 
   @override
@@ -263,7 +426,21 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.creationStartedAt, creationStartedAt) ||
-                other.creationStartedAt == creationStartedAt));
+                other.creationStartedAt == creationStartedAt) &&
+            (identical(other.selectedTimeOption, selectedTimeOption) ||
+                other.selectedTimeOption == selectedTimeOption) &&
+            (identical(other.selectedOccasion, selectedOccasion) ||
+                other.selectedOccasion == selectedOccasion) &&
+            (identical(other.customDateTime, customDateTime) ||
+                other.customDateTime == customDateTime) &&
+            (identical(other.timeMetaphor, timeMetaphor) ||
+                other.timeMetaphor == timeMetaphor) &&
+            (identical(other.timeDisplay, timeDisplay) ||
+                other.timeDisplay == timeDisplay) &&
+            (identical(other.timeDescription, timeDescription) ||
+                other.timeDescription == timeDescription) &&
+            (identical(other.growthStage, growthStage) ||
+                other.growthStage == growthStage));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -276,6 +453,13 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
     selectedQuickStart,
     isLoading,
     creationStartedAt,
+    selectedTimeOption,
+    selectedOccasion,
+    customDateTime,
+    timeMetaphor,
+    timeDisplay,
+    timeDescription,
+    growthStage,
   );
 
   /// Create a copy of TimeCapsuleCreationData
@@ -303,6 +487,13 @@ abstract class _TimeCapsuleCreationData implements TimeCapsuleCreationData {
     final QuickStartType? selectedQuickStart,
     final bool isLoading,
     final DateTime? creationStartedAt,
+    final TimeOption? selectedTimeOption,
+    final SpecialOccasion? selectedOccasion,
+    final CustomDateTime? customDateTime,
+    final String timeMetaphor,
+    final String timeDisplay,
+    final String timeDescription,
+    final String growthStage,
   }) = _$TimeCapsuleCreationDataImpl;
 
   factory _TimeCapsuleCreationData.fromJson(Map<String, dynamic> json) =
@@ -330,7 +521,34 @@ abstract class _TimeCapsuleCreationData implements TimeCapsuleCreationData {
 
   /// Creation timestamp for analytics
   @override
-  DateTime? get creationStartedAt;
+  DateTime? get creationStartedAt; // ==================== TIME SELECTION PROPERTIES ====================
+  /// Selected time option for delivery (1 hour, 1 day, etc.)
+  @override
+  TimeOption? get selectedTimeOption;
+
+  /// Selected special occasion for delivery
+  @override
+  SpecialOccasion? get selectedOccasion;
+
+  /// Custom date and time for delivery
+  @override
+  CustomDateTime? get customDateTime;
+
+  /// Current visual metaphor for time selection
+  @override
+  String get timeMetaphor;
+
+  /// Current time display text
+  @override
+  String get timeDisplay;
+
+  /// Current time description
+  @override
+  String get timeDescription;
+
+  /// Current growth stage text
+  @override
+  String get growthStage;
 
   /// Create a copy of TimeCapsuleCreationData
   /// with the given fields replaced by the non-null parameter values.
@@ -338,4 +556,180 @@ abstract class _TimeCapsuleCreationData implements TimeCapsuleCreationData {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TimeCapsuleCreationDataImplCopyWith<_$TimeCapsuleCreationDataImpl>
   get copyWith => throw _privateConstructorUsedError;
+}
+
+CustomDateTime _$CustomDateTimeFromJson(Map<String, dynamic> json) {
+  return _CustomDateTime.fromJson(json);
+}
+
+/// @nodoc
+mixin _$CustomDateTime {
+  DateTime get dateTime => throw _privateConstructorUsedError;
+  String get previewText => throw _privateConstructorUsedError;
+
+  /// Serializes this CustomDateTime to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of CustomDateTime
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $CustomDateTimeCopyWith<CustomDateTime> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CustomDateTimeCopyWith<$Res> {
+  factory $CustomDateTimeCopyWith(
+    CustomDateTime value,
+    $Res Function(CustomDateTime) then,
+  ) = _$CustomDateTimeCopyWithImpl<$Res, CustomDateTime>;
+  @useResult
+  $Res call({DateTime dateTime, String previewText});
+}
+
+/// @nodoc
+class _$CustomDateTimeCopyWithImpl<$Res, $Val extends CustomDateTime>
+    implements $CustomDateTimeCopyWith<$Res> {
+  _$CustomDateTimeCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of CustomDateTime
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? dateTime = null, Object? previewText = null}) {
+    return _then(
+      _value.copyWith(
+            dateTime: null == dateTime
+                ? _value.dateTime
+                : dateTime // ignore: cast_nullable_to_non_nullable
+                      as DateTime,
+            previewText: null == previewText
+                ? _value.previewText
+                : previewText // ignore: cast_nullable_to_non_nullable
+                      as String,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$CustomDateTimeImplCopyWith<$Res>
+    implements $CustomDateTimeCopyWith<$Res> {
+  factory _$$CustomDateTimeImplCopyWith(
+    _$CustomDateTimeImpl value,
+    $Res Function(_$CustomDateTimeImpl) then,
+  ) = __$$CustomDateTimeImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({DateTime dateTime, String previewText});
+}
+
+/// @nodoc
+class __$$CustomDateTimeImplCopyWithImpl<$Res>
+    extends _$CustomDateTimeCopyWithImpl<$Res, _$CustomDateTimeImpl>
+    implements _$$CustomDateTimeImplCopyWith<$Res> {
+  __$$CustomDateTimeImplCopyWithImpl(
+    _$CustomDateTimeImpl _value,
+    $Res Function(_$CustomDateTimeImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of CustomDateTime
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? dateTime = null, Object? previewText = null}) {
+    return _then(
+      _$CustomDateTimeImpl(
+        dateTime: null == dateTime
+            ? _value.dateTime
+            : dateTime // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
+        previewText: null == previewText
+            ? _value.previewText
+            : previewText // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$CustomDateTimeImpl implements _CustomDateTime {
+  const _$CustomDateTimeImpl({
+    required this.dateTime,
+    required this.previewText,
+  });
+
+  factory _$CustomDateTimeImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CustomDateTimeImplFromJson(json);
+
+  @override
+  final DateTime dateTime;
+  @override
+  final String previewText;
+
+  @override
+  String toString() {
+    return 'CustomDateTime(dateTime: $dateTime, previewText: $previewText)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomDateTimeImpl &&
+            (identical(other.dateTime, dateTime) ||
+                other.dateTime == dateTime) &&
+            (identical(other.previewText, previewText) ||
+                other.previewText == previewText));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, dateTime, previewText);
+
+  /// Create a copy of CustomDateTime
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomDateTimeImplCopyWith<_$CustomDateTimeImpl> get copyWith =>
+      __$$CustomDateTimeImplCopyWithImpl<_$CustomDateTimeImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$CustomDateTimeImplToJson(this);
+  }
+}
+
+abstract class _CustomDateTime implements CustomDateTime {
+  const factory _CustomDateTime({
+    required final DateTime dateTime,
+    required final String previewText,
+  }) = _$CustomDateTimeImpl;
+
+  factory _CustomDateTime.fromJson(Map<String, dynamic> json) =
+      _$CustomDateTimeImpl.fromJson;
+
+  @override
+  DateTime get dateTime;
+  @override
+  String get previewText;
+
+  /// Create a copy of CustomDateTime
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomDateTimeImplCopyWith<_$CustomDateTimeImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

@@ -114,6 +114,108 @@ class TimeCapsuleCreationNotifier extends _$TimeCapsuleCreationNotifier {
     return state.selectedPurpose != null && !state.isLoading;
   }
 
+  // ==================== TIME SELECTION METHODS ====================
+
+  /// Select a time option for delivery
+  void selectTimeOption(TimeOption timeOption) {
+    HapticFeedback.selectionClick();
+    
+    // Clear other selections
+    state = state.copyWith(
+      selectedTimeOption: timeOption,
+      selectedOccasion: null,
+      customDateTime: null,
+      timeMetaphor: timeOption.metaphor,
+      timeDisplay: timeOption.display,
+      timeDescription: timeOption.description,
+      growthStage: timeOption.growthStage,
+      showContinueButton: true,
+    );
+  }
+
+  /// Select a special occasion for delivery
+  void selectSpecialOccasion(SpecialOccasion occasion) {
+    HapticFeedback.selectionClick();
+    
+    // Clear other selections
+    state = state.copyWith(
+      selectedTimeOption: null,
+      selectedOccasion: occasion,
+      customDateTime: null,
+      timeMetaphor: occasion.emoji,
+      timeDisplay: occasion.display,
+      timeDescription: occasion.description,
+      growthStage: occasion.growthStage,
+      showContinueButton: true,
+    );
+  }
+
+  /// Set custom date and time for delivery
+  void setCustomDateTime(DateTime dateTime) {
+    HapticFeedback.selectionClick();
+    
+    final now = DateTime.now();
+    final difference = dateTime.difference(now);
+    final days = difference.inDays;
+    
+    String previewText;
+    if (days < 0) {
+      previewText = 'Selected time is in the past. Please choose a future date.';
+    } else if (days == 0) {
+      previewText = 'Delivery today!';
+    } else if (days == 1) {
+      previewText = 'Delivery tomorrow!';
+    } else {
+      previewText = 'Delivery in $days days';
+    }
+    
+    final customDateTime = CustomDateTime(
+      dateTime: dateTime,
+      previewText: previewText,
+    );
+    
+    // Clear other selections and update visualization
+    state = state.copyWith(
+      selectedTimeOption: null,
+      selectedOccasion: null,
+      customDateTime: customDateTime,
+      timeMetaphor: '📅',
+      timeDisplay: 'Custom Time',
+      timeDescription: 'Your message will arrive in $days days',
+      growthStage: 'Custom Journey',
+      showContinueButton: days > 0,
+    );
+  }
+
+  /// Clear all time selections
+  void clearTimeSelections() {
+    state = state.copyWith(
+      selectedTimeOption: null,
+      selectedOccasion: null,
+      customDateTime: null,
+      timeMetaphor: '🌰',
+      timeDisplay: 'Select Time',
+      timeDescription: 'Choose when you\'d like to receive this message',
+      growthStage: 'Ready to Plant',
+      showContinueButton: state.selectedPurpose != null,
+    );
+  }
+
+  /// Check if any time selection is made
+  bool get hasTimeSelection {
+    return state.selectedTimeOption != null || 
+           state.selectedOccasion != null || 
+           state.customDateTime != null;
+  }
+
+  /// Get the current animation class for metaphor
+  String get currentAnimationClass {
+    if (state.selectedTimeOption != null) {
+      return state.selectedTimeOption!.animationClass;
+    }
+    return 'seed-growing'; // Default animation
+  }
+
   /// Get the appropriate continue button text based on state
   String get continueButtonText {
     if (state.isLoading) {
@@ -173,4 +275,62 @@ bool isCreationLoading(Ref ref) {
 @riverpod
 int currentCreationStep(Ref ref) {
   return ref.watch(timeCapsuleCreationNotifierProvider).currentStep;
+}
+
+// ==================== TIME SELECTION CONVENIENCE PROVIDERS ====================
+
+/// Convenience provider for selected time option
+@riverpod
+TimeOption? selectedTimeOption(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).selectedTimeOption;
+}
+
+/// Convenience provider for selected special occasion
+@riverpod
+SpecialOccasion? selectedSpecialOccasion(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).selectedOccasion;
+}
+
+/// Convenience provider for custom date time
+@riverpod
+CustomDateTime? customDateTime(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).customDateTime;
+}
+
+/// Convenience provider for current time metaphor
+@riverpod
+String timeMetaphor(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).timeMetaphor;
+}
+
+/// Convenience provider for current time display text
+@riverpod
+String timeDisplay(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).timeDisplay;
+}
+
+/// Convenience provider for current time description
+@riverpod
+String timeDescription(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).timeDescription;
+}
+
+/// Convenience provider for current growth stage
+@riverpod
+String growthStage(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).growthStage;
+}
+
+/// Convenience provider for time selection status
+@riverpod
+bool hasTimeSelection(Ref ref) {
+  final notifier = ref.read(timeCapsuleCreationNotifierProvider.notifier);
+  return notifier.hasTimeSelection;
+}
+
+/// Convenience provider for current animation class
+@riverpod
+String currentAnimationClass(Ref ref) {
+  final notifier = ref.read(timeCapsuleCreationNotifierProvider.notifier);
+  return notifier.currentAnimationClass;
 }

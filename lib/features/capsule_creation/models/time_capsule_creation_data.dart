@@ -25,6 +25,29 @@ class TimeCapsuleCreationData with _$TimeCapsuleCreationData {
     
     /// Creation timestamp for analytics
     DateTime? creationStartedAt,
+    
+    // ==================== TIME SELECTION PROPERTIES ====================
+    
+    /// Selected time option for delivery (1 hour, 1 day, etc.)
+    TimeOption? selectedTimeOption,
+    
+    /// Selected special occasion for delivery
+    SpecialOccasion? selectedOccasion,
+    
+    /// Custom date and time for delivery
+    CustomDateTime? customDateTime,
+    
+    /// Current visual metaphor for time selection
+    @Default('🌰') String timeMetaphor,
+    
+    /// Current time display text
+    @Default('Select Time') String timeDisplay,
+    
+    /// Current time description
+    @Default('Choose when you\'d like to receive this message') String timeDescription,
+    
+    /// Current growth stage text
+    @Default('Ready to Plant') String growthStage,
   }) = _TimeCapsuleCreationData;
 
   factory TimeCapsuleCreationData.fromJson(Map<String, dynamic> json) =>
@@ -174,4 +197,261 @@ extension QuickStartTypeExtension on QuickStartType {
         return TimeCapsulePurpose.futureMe;
     }
   }
+}
+
+// ==================== TIME SELECTION MODELS ====================
+
+/// Time options for delivery scheduling
+enum TimeOption {
+  @JsonValue('1-hour')
+  oneHour,
+  
+  @JsonValue('1-day')
+  oneDay,
+  
+  @JsonValue('1-week')
+  oneWeek,
+  
+  @JsonValue('1-month')
+  oneMonth,
+  
+  @JsonValue('6-months')
+  sixMonths,
+  
+  @JsonValue('1-year')
+  oneYear,
+}
+
+/// Extension for time option properties
+extension TimeOptionExtension on TimeOption {
+  /// Display text for the time option
+  String get display {
+    switch (this) {
+      case TimeOption.oneHour:
+        return '1 Hour';
+      case TimeOption.oneDay:
+        return 'Tomorrow';
+      case TimeOption.oneWeek:
+        return '1 Week';
+      case TimeOption.oneMonth:
+        return '1 Month';
+      case TimeOption.sixMonths:
+        return '6 Months';
+      case TimeOption.oneYear:
+        return '1 Year';
+    }
+  }
+  
+  /// Subtitle for the time option
+  String get subtitle {
+    switch (this) {
+      case TimeOption.oneHour:
+        return 'Quick reflection';
+      case TimeOption.oneDay:
+        return 'Tomorrow\'s gift';
+      case TimeOption.oneWeek:
+        return 'Weekly wisdom';
+      case TimeOption.oneMonth:
+        return 'Monthly milestone';
+      case TimeOption.sixMonths:
+        return 'Growth journey';
+      case TimeOption.oneYear:
+        return 'Annual reflection';
+    }
+  }
+  
+  /// Visual metaphor emoji
+  String get metaphor {
+    switch (this) {
+      case TimeOption.oneHour:
+        return '☕';
+      case TimeOption.oneDay:
+        return '🌅';
+      case TimeOption.oneWeek:
+        return '🌱';
+      case TimeOption.oneMonth:
+        return '🌙';
+      case TimeOption.sixMonths:
+        return '🌳';
+      case TimeOption.oneYear:
+        return '💎';
+    }
+  }
+  
+  /// Description for the time option
+  String get description {
+    switch (this) {
+      case TimeOption.oneHour:
+        return 'A quick coffee break into the future';
+      case TimeOption.oneDay:
+        return 'Wake up to wisdom from yesterday';
+      case TimeOption.oneWeek:
+        return 'Let your thoughts sprout and grow';
+      case TimeOption.oneMonth:
+        return 'A full moon cycle of growth';
+      case TimeOption.sixMonths:
+        return 'Watch your wisdom mature like a tree';
+      case TimeOption.oneYear:
+        return 'Time crystallizes your thoughts into gems';
+    }
+  }
+  
+  /// Growth stage text
+  String get growthStage {
+    switch (this) {
+      case TimeOption.oneHour:
+        return 'Brewing';
+      case TimeOption.oneDay:
+        return 'New Dawn';
+      case TimeOption.oneWeek:
+        return 'Sprouting';
+      case TimeOption.oneMonth:
+        return 'Growing';
+      case TimeOption.sixMonths:
+        return 'Flourishing';
+      case TimeOption.oneYear:
+        return 'Crystallized';
+    }
+  }
+  
+  /// Animation class for the metaphor
+  String get animationClass {
+    switch (this) {
+      case TimeOption.oneHour:
+      case TimeOption.oneDay:
+      case TimeOption.oneWeek:
+        return 'seed-growing';
+      case TimeOption.oneMonth:
+      case TimeOption.sixMonths:
+        return 'tree-swaying';
+      case TimeOption.oneYear:
+        return 'crystal-forming';
+    }
+  }
+}
+
+/// Special occasions for delivery scheduling
+enum SpecialOccasion {
+  @JsonValue('birthday')
+  birthday,
+  
+  @JsonValue('new-year')
+  newYear,
+  
+  @JsonValue('graduation')
+  graduation,
+  
+  @JsonValue('job-start')
+  jobStart,
+  
+  @JsonValue('anniversary')
+  anniversary,
+  
+  @JsonValue('milestone')
+  milestone,
+}
+
+/// Extension for special occasion properties
+extension SpecialOccasionExtension on SpecialOccasion {
+  /// Display text for the occasion
+  String get display {
+    switch (this) {
+      case SpecialOccasion.birthday:
+        return 'Your Birthday';
+      case SpecialOccasion.newYear:
+        return 'New Year\'s Day';
+      case SpecialOccasion.graduation:
+        return 'Graduation Day';
+      case SpecialOccasion.jobStart:
+        return 'First Day';
+      case SpecialOccasion.anniversary:
+        return 'Anniversary';
+      case SpecialOccasion.milestone:
+        return 'Achievement';
+    }
+  }
+  
+  /// Short display text for cards
+  String get shortDisplay {
+    switch (this) {
+      case SpecialOccasion.birthday:
+        return 'Next Birthday';
+      case SpecialOccasion.newYear:
+        return 'New Year';
+      case SpecialOccasion.graduation:
+        return 'Graduation';
+      case SpecialOccasion.jobStart:
+        return 'Job Start';
+      case SpecialOccasion.anniversary:
+        return 'Anniversary';
+      case SpecialOccasion.milestone:
+        return 'Milestone';
+    }
+  }
+  
+  /// Emoji icon for the occasion
+  String get emoji {
+    switch (this) {
+      case SpecialOccasion.birthday:
+        return '🎂';
+      case SpecialOccasion.newYear:
+        return '🎊';
+      case SpecialOccasion.graduation:
+        return '🎓';
+      case SpecialOccasion.jobStart:
+        return '💼';
+      case SpecialOccasion.anniversary:
+        return '💍';
+      case SpecialOccasion.milestone:
+        return '🏆';
+    }
+  }
+  
+  /// Description for the occasion
+  String get description {
+    switch (this) {
+      case SpecialOccasion.birthday:
+        return 'A gift waiting for your special day';
+      case SpecialOccasion.newYear:
+        return 'Fresh wisdom for a fresh start';
+      case SpecialOccasion.graduation:
+        return 'Words for your achievement moment';
+      case SpecialOccasion.jobStart:
+        return 'Encouragement for new beginnings';
+      case SpecialOccasion.anniversary:
+        return 'Celebrating love and commitment';
+      case SpecialOccasion.milestone:
+        return 'Recognition of your hard work';
+    }
+  }
+  
+  /// Growth stage text
+  String get growthStage {
+    switch (this) {
+      case SpecialOccasion.birthday:
+        return 'Birthday Magic';
+      case SpecialOccasion.newYear:
+        return 'New Beginnings';
+      case SpecialOccasion.graduation:
+        return 'Milestone Reached';
+      case SpecialOccasion.jobStart:
+        return 'Career Journey';
+      case SpecialOccasion.anniversary:
+        return 'Love\'s Growth';
+      case SpecialOccasion.milestone:
+        return 'Victory Lap';
+    }
+  }
+}
+
+/// Custom date and time model
+@freezed
+class CustomDateTime with _$CustomDateTime {
+  const factory CustomDateTime({
+    required DateTime dateTime,
+    required String previewText,
+  }) = _CustomDateTime;
+
+  factory CustomDateTime.fromJson(Map<String, dynamic> json) =>
+      _$CustomDateTimeFromJson(json);
 }
