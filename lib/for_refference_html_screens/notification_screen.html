@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Talk - Notifications</title>
+    
+    <!-- Future Talk Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Serif Pro', serif;
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            color: #4A4A4A;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #FEFEFE;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 30px 80px rgba(0,0,0,0.08);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, #F7F5F3, #FEFEFE);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .time { 
+            color: #4A4A4A; 
+            font-family: 'Source Serif Pro', serif;
+        }
+        
+        .status-indicators {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .my-battery-status {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(135, 169, 107, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: #87A96B;
+        }
+        
+        .battery-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+
+        /* Premium Header */
+        .notifications-header {
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            padding: 16px 20px 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notifications-header::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-2px);
+        }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .clear-all-btn {
+            font-size: 12px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-all-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .notification-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .summary-text {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .unread-count {
+            background: rgba(255,255,255,0.3);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            background: white;
+            margin: -8px 16px 0;
+            border-radius: 16px;
+            padding: 4px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+            z-index: 10;
+            display: flex;
+            gap: 4px;
+        }
+
+        .filter-tab {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 12px;
+            background: transparent;
+            border: none;
+            font-size: 12px;
+            font-weight: 500;
+            color: #6B6B6B;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .filter-tab.active {
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(135, 169, 107, 0.3);
+        }
+
+        .filter-tab .tab-count {
+            display: block;
+            font-size: 10px;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px 20px 100px;
+            overflow-y: auto;
+        }
+
+        /* Time Sections */
+        .time-section {
+            margin-bottom: 24px;
+        }
+
+        .time-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .time-icon {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        /* Notification Categories */
+        .notification-group {
+            margin-bottom: 16px;
+        }
+
+        .group-title {
+            font-size: 12px;
+            color: #6B6B6B;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        /* Notification Items */
+        .notification-item {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-left: 4px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notification-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .notification-item.unread {
+            border-left-color: #87A96B;
+            background: linear-gradient(135deg, rgba(135, 169, 107, 0.03) 0%, rgba(255,255,255,1) 100%);
+        }
+
+        .notification-item.unread::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 8px;
+            height: 8px;
+            background: #87A96B;
+            border-radius: 50%;
+        }
+
+        /* Time Capsule Notifications */
+        .notification-item.time-capsule {
+            border-left-color: #C8B5D1;
+        }
+
+        .notification-item.time-capsule.unread {
+            background: linear-gradient(135deg, rgba(200, 181, 209, 0.05) 0%, rgba(255,255,255,1) 100%);
+        }
+
+        /* Connection Stone Notifications */
+        .notification-item.connection-stone {
+            border-left-color: #D4A5A5;
+        }
+
+        .notification-item.connection-stone.unread {
+            background: linear-gradient(135deg, rgba(212, 165, 165, 0.05) 0%, rgba(255,255,255,1) 100%);
+        }
+
+        /* Reading Notifications */
+        .notification-item.reading {
+            border-left-color: #F4C2A1;
+        }
+
+        .notification-item.reading.unread {
+            background: linear-gradient(135deg, rgba(244, 194, 161, 0.05) 0%, rgba(255,255,255,1) 100%);
+        }
+
+        /* Social Notifications */
+        .notification-item.social {
+            border-left-color: #B8D4E3;
+        }
+
+        .notification-item.social.unread {
+            background: linear-gradient(135deg, rgba(184, 212, 227, 0.05) 0%, rgba(255,255,255,1) 100%);
+        }
+
+        .notification-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .notification-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .notification-icon.time-capsule {
+            background: linear-gradient(135deg, #C8B5D1, #D4A5A5);
+        }
+
+        .notification-icon.connection-stone {
+            background: linear-gradient(135deg, #D4A5A5, #F4C2A1);
+        }
+
+        .notification-icon.reading {
+            background: linear-gradient(135deg, #F4C2A1, #87A96B);
+        }
+
+        .notification-icon.social {
+            background: linear-gradient(135deg, #B8D4E3, #87A96B);
+        }
+
+        .notification-icon.friend-avatar {
+            background: linear-gradient(135deg, #87A96B, #C8B5D1);
+            font-size: 16px;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .notification-message {
+            font-family: 'Crimson Pro', serif;
+            font-size: 13px;
+            color: #6B6B6B;
+            line-height: 1.4;
+            margin-bottom: 6px;
+        }
+
+        .notification-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #6B6B6B;
+        }
+
+        .notification-time {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 4px 8px;
+            border-radius: 8px;
+            border: none;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn.primary {
+            background: rgba(135, 169, 107, 0.1);
+            color: #87A96B;
+        }
+
+        .action-btn.primary:hover {
+            background: rgba(135, 169, 107, 0.2);
+        }
+
+        .action-btn.secondary {
+            background: rgba(107, 107, 107, 0.1);
+            color: #6B6B6B;
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(107, 107, 107, 0.2);
+        }
+
+        /* Special Notification Types */
+        .notification-preview {
+            background: rgba(135, 169, 107, 0.05);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            font-family: 'Crimson Pro', serif;
+            font-size: 12px;
+            color: #4A4A4A;
+            font-style: italic;
+            border-left: 2px solid #87A96B;
+        }
+
+        .stone-touch-animation {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stone-touch-animation::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(212, 165, 165, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: touchRipple 2s ease-out infinite;
+        }
+
+        @keyframes touchRipple {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            100% {
+                width: 80px;
+                height: 80px;
+                opacity: 0;
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 40px;
+            color: #6B6B6B;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .empty-description {
+            font-family: 'Crimson Pro', serif;
+            font-size: 14px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px 32px;
+            border-top: 1px solid #F0F0F0;
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            color: #6B6B6B;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: #87A96B;
+        }
+
+        .nav-item.has-notifications::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 8px;
+            height: 8px;
+            background: #D4A5A5;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        /* Scrollbar */
+        .main-content::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: rgba(135, 169, 107, 0.3);
+            border-radius: 2px;
+        }
+
+        /* Animations */
+        .notification-item {
+            animation: slideInNotification 0.4s ease-out;
+        }
+
+        @keyframes slideInNotification {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="time">9:41</div>
+            <div class="status-indicators">
+                <div class="my-battery-status">
+                    <div class="battery-dot"></div>
+                    <span>Green</span>
+                </div>
+                <span style="color: #87A96B;">100% 🔋</span>
+            </div>
+        </div>
+
+        <!-- Premium Header -->
+        <div class="notifications-header">
+            <div class="header-top">
+                <button class="back-btn">←</button>
+                <h1 class="header-title">Notifications</h1>
+                <button class="clear-all-btn">Clear All</button>
+            </div>
+            
+            <div class="notification-summary">
+                <span class="summary-text">Your thoughtful updates</span>
+                <span class="unread-count">7 unread</span>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-tab active">
+                All
+                <span class="tab-count">12</span>
+            </button>
+            <button class="filter-tab">
+                Capsules
+                <span class="tab-count">3</span>
+            </button>
+            <button class="filter-tab">
+                Stones
+                <span class="tab-count">2</span>
+            </button>
+            <button class="filter-tab">
+                Reading
+                <span class="tab-count">4</span>
+            </button>
+            <button class="filter-tab">
+                Social
+                <span class="tab-count">3</span>
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Today Section -->
+            <div class="time-section">
+                <h2 class="time-header">
+                    <span class="time-icon">🌅</span>
+                    Today
+                </h2>
+
+                <!-- Time Capsules Group -->
+                <div class="notification-group">
+                    <div class="group-title">Time Capsules</div>
+                    
+                    <div class="notification-item time-capsule unread">
+                        <div class="notification-header">
+                            <div class="notification-icon time-capsule">⏰</div>
+                            <div class="notification-content">
+                                <div class="notification-title">Time Capsule Delivered!</div>
+                                <div class="notification-message">A message from your past self has arrived</div>
+                                <div class="notification-preview">"I hope by now you've learned to be kinder to yourself. Remember that progress isn't always visible..."</div>
+                                <div class="notification-meta">
+                                    <span class="notification-time">🕐 2 hours ago</span>
+                                    <div class="notification-actions">
+                                        <button class="action-btn primary">Open</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notification-item time-capsule unread">
+                        <div class="notification-header">
+                            <div class="notification-icon friend-avatar">S</div>
+                            <div class="notification-content">
+                                <div class="notification-title">Sarah sent you a time capsule</div>
+                                <div class="notification-message">Scheduled to open in 3 days</div>
+                                <div class="notification-meta">
+                                    <span class="notification-time">🕐 4 hours ago</span>
+                                    <div class="notification-actions">
+                                        <button class="action-btn secondary">Preview</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Connection Stones Group -->
+                <div class="notification-group">
+                    <div class="group-title">Connection Stones</div>
+                    
+                    <div class="notification-item connection-stone unread stone-touch-animation">
+                        <div class="notification-header">
+                            <div class="notification-icon connection-stone">🪨</div>
+                            <div class="notification-content">
+                                <div class="notification-title">Alex touched their comfort stone</div>
+                                <div class="notification-message">They're thinking of you and could use some comfort</div>
+                                <div class="notification-meta">
+                                    <span class="notification-time">🕐 30 minutes ago</span>
+                                    <div class="notification-actions">
+                                        <button class="action-btn primary">Touch Back</button>
+                                        <button class="action-btn secondary">Message</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reading Group -->
+                <div class="notification-group">
+                    <div class="group-title">Reading Together</div>
+                    
+                    <div class="notification-item reading unread">
+                        <div class="notification-header">
+                            <div class="notification-icon reading">📚</div>
+                            <div class="notification-content">
+                                <div class="notification-title">Maya started reading "Atomic Habits"</div>
+                                <div class="notification-message">She's inviting you to read together</div>
+                                <div class="notification-meta">
+                                    <span class="notification-time">🕐 1 hour ago</span>
+                                    <div class="notification-actions">
+                                        <button class="action-btn primary">Join</button>
+                                        <button class="action-btn secondary">Maybe Later</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notification-item reading">
+                        <div class="notification-header">
+                            <div class="notification-icon reading">📖</div>
+                            <div class="notification-content">
+                                <div class="notification-title">Reading session completed</div>
+                                <div class="notification-message">You and Sarah finished Chapter 5 of "Pride and Prejudice"</div>
+                                <div class="notification-meta">
+                                    <span class="notification-time">🕐 3 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Group -->
+                <div class="notification-group">
+                    <div class="group-title">Social Updates</div>
+                    
+                    <div class="notification-item social unread">
+                        <div class="notification-header">
+                            <div class="notification-icon friend-avatar">R</div>
+                            <div class="notification-content">
+                                <div class="notification-title">Riley's social battery changed to Red</div>
+                                <div class="notification-message">They're recharging and need some space today</div>
+                                <div class="notification-meta">
+                                    <span class="notification-time">🕐 45 minutes ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notification-item social unread">
+                        <div class="notification-header">
+                            <div class="notification-icon friend-avatar">M</div>
+                            <div class="notification-content">
+                                <div class="notification-title">New friend request</div>
+                                <div class="notification-message">@mindful_maya wants to connect with you</div>
+                                <div class="notification-meta">
+                                    <span class="notification-time">🕐 2 hours ago</span>
+                                    <div class="notification-actions">
+                                        <button class="action-btn primary">Accept</button>
+                                        <button class="action-btn secondary">Decline</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Yesterday Section -->
+            <div class="time-section">
+                <h2 class="time-header">
+                    <span class="time-icon">🌙</span>
+                    Yesterday
+                </h2>
+
+                <div class="notification-group">
+                    <div class="notification-item reading">
+                        <div class="notification-header">
+                            <div class="notification-icon reading">📚</div>
+                            <div class="notification-content">
+                                <div class="notification-title">Weekly reading summary</div>
+                                <div class="notification-message">You read for 4.5 hours this week across 3 books</div>
+                                <div class="notification-meta">
+                                    <span class="notification-time">🕐 Yesterday 8:00 PM</span>
+                                    <div class="notification-actions">
+                                        <button class="action-btn secondary">View Details</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notification-item time-capsule">
+                        <div class="notification-header">
+                            <div class="notification-icon time-capsule">⏰</div>
+                            <div class="notification-content">
+                                <div class="notification-title">Time capsule sent successfully</div>
+                                <div class="notification-message">Your message to future self will be delivered in 6 months</div>
+                                <div class="notification-meta">
+                                    <span class="notification-time">🕐 Yesterday 2:30 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- This Week Section -->
+            <div class="time-section">
+                <h2 class="time-header">
+                    <span class="time-icon">📅</span>
+                    This Week
+                </h2>
+
+                <div class="notification-group">
+                    <div class="notification-item social">
+                        <div class="notification-header">
+                            <div class="notification-icon social">🎉</div>
+                            <div class="notification-content">
+                                <div class="notification-title">Milestone achieved!</div>
+                                <div class="notification-message">You've maintained a 14-day mindful communication streak</div>
+                                <div class="notification-meta">
+                                    <span class="notification-time">🕐 3 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notification-item connection-stone">
+                        <div class="notification-header">
+                            <div class="notification-icon connection-stone">✨</div>
+                            <div class="notification-content">
+                                <div class="notification-title">New comfort stone created</div>
+                                <div class="notification-message">You crafted "Evening Serenity" - a lavender crystal for peaceful nights</div>
+                                <div class="notification-meta">
+                                    <span class="notification-time">🕐 5 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <div class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💬</span>
+                    <span>Chats</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📚</span>
+                    <span>Books</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">⏰</span>
+                    <span>Capsules</span>
+                </div>
+                <div class="nav-item has-notifications active">
+                    <span class="nav-icon">🔔</span>
+                    <span>Notifications</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Filter Tabs
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active from all tabs
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                
+                // Add active to clicked tab
+                this.classList.add('active');
+                
+                // Filter notifications based on tab
+                const tabText = this.textContent.trim().split('\n')[0];
+                filterNotifications(tabText);
+                
+                // Add selection animation
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        function filterNotifications(filter) {
+            const notifications = document.querySelectorAll('.notification-item');
+            
+            notifications.forEach(notification => {
+                let show = false;
+                
+                switch(filter) {
+                    case 'All':
+                        show = true;
+                        break;
+                    case 'Capsules':
+                        show = notification.classList.contains('time-capsule');
+                        break;
+                    case 'Stones':
+                        show = notification.classList.contains('connection-stone');
+                        break;
+                    case 'Reading':
+                        show = notification.classList.contains('reading');
+                        break;
+                    case 'Social':
+                        show = notification.classList.contains('social');
+                        break;
+                }
+                
+                if (show) {
+                    notification.style.display = 'block';
+                    notification.style.animation = 'slideInNotification 0.4s ease-out';
+                } else {
+                    notification.style.display = 'none';
+                }
+            });
+        }
+
+        // Notification Item Interactions
+        document.querySelectorAll('.notification-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                // Don't trigger if clicking on action buttons
+                if (e.target.classList.contains('action-btn')) return;
+                
+                // Mark as read
+                this.classList.remove('unread');
+                
+                // Add click animation
+                this.style.transform = 'translateX(8px) scale(1.02)';
+                this.style.boxShadow = '0 6px 24px rgba(135, 169, 107, 0.15)';
+                
+                setTimeout(() => {
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                }, 300);
+            });
+        });
+
+        // Action Button Interactions
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // Add button animation
+                this.style.transform = 'scale(1.1)';
+                this.style.background = this.classList.contains('primary') ? 
+                    'rgba(135, 169, 107, 0.3)' : 'rgba(107, 107, 107, 0.3)';
+                
+                setTimeout(() => {
+                    this.style.transform = '';
+                    this.style.background = '';
+                }, 200);
+                
+                // Mark parent notification as read if primary action
+                if (this.classList.contains('primary')) {
+                    const notification = this.closest('.notification-item');
+                    notification.classList.remove('unread');
+                }
+            });
+        });
+
+        // Clear All Button
+        document.querySelector('.clear-all-btn').addEventListener('click', function() {
+            const unreadNotifications = document.querySelectorAll('.notification-item.unread');
+            
+            unreadNotifications.forEach((notification, index) => {
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(-100%)';
+                    notification.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        notification.classList.remove('unread');
+                        notification.style.transform = '';
+                        notification.style.opacity = '';
+                    }, 300);
+                }, index * 100);
+            });
+            
+            // Update unread count
+            setTimeout(() => {
+                document.querySelector('.unread-count').textContent = '0 unread';
+            }, unreadNotifications.length * 100 + 300);
+        });
+
+        // Back button
+        document.querySelector('.back-btn').addEventListener('click', function() {
+            this.style.transform = 'translateX(-6px) scale(1.1)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
+        });
+
+        // Entrance animation for sections
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Apply entrance animation to time sections
+        document.querySelectorAll('.time-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'all 0.5s ease-out';
+            observer.observe(section);
+        });
+
+        // Update unread count as notifications are read
+        function updateUnreadCount() {
+            const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+            document.querySelector('.unread-count').textContent = `${unreadCount} unread`;
+        }
+
+        // Simulate real-time notification updates
+        setTimeout(() => {
+            const newNotification = document.createElement('div');
+            newNotification.className = 'notification-item connection-stone unread stone-touch-animation';
+            newNotification.innerHTML = `
+                <div class="notification-header">
+                    <div class="notification-icon friend-avatar">S</div>
+                    <div class="notification-content">
+                        <div class="notification-title">Sarah touched her worry stone</div>
+                        <div class="notification-message">She's sending you gentle comfort</div>
+                        <div class="notification-meta">
+                            <span class="notification-time">🕐 Just now</span>
+                            <div class="notification-actions">
+                                <button class="action-btn primary">Touch Back</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const todaySection = document.querySelector('.time-section .notification-group');
+            todaySection.insertBefore(newNotification, todaySection.firstChild);
+            
+            // Add entrance animation
+            newNotification.style.transform = 'translateX(-100%)';
+            newNotification.style.opacity = '0';
+            
+            setTimeout(() => {
+                newNotification.style.transform = '';
+                newNotification.style.opacity = '';
+                newNotification.style.transition = 'all 0.4s ease-out';
+            }, 100);
+            
+            updateUnreadCount();
+        }, 5000);
+    </script>
+</body>
+</html>

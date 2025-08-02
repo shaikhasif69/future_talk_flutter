@@ -12,6 +12,7 @@ import '../features/chat/models/chat_conversation.dart';
 import '../features/books/screens/book_library_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
+import '../features/notifications/screens/notification_screen.dart';
 
 /// Future Talk's routing configuration using GoRouter
 /// Handles navigation between authentication screens with smooth transitions
@@ -121,14 +122,21 @@ class AppRouter {
 
       // ==================== PROFILE ROUTES ====================
       GoRoute(
-        path: '/splash',
+        path: '/profile',
         name: 'profile',
         builder: (context, state) => const ProfileScreen(),
       ),
 
+      // ==================== NOTIFICATIONS ROUTES ====================
+      GoRoute(
+        path: '/notifications',
+        name: 'notifications',
+        builder: (context, state) => const NotificationScreen(),
+      ),
+
       // ==================== SETTINGS ROUTES ====================
       GoRoute(
-        path: '/settings',
+        path: '/splash',
         name: 'settings',
         builder: (context, state) => const SettingsScreen(),
       ),
@@ -188,6 +196,7 @@ class Routes {
   static const String individualChat = '/chat/individual';
   static const String books = '/books';
   static const String profile = '/profile';
+  static const String notifications = '/notifications';
   static const String settings = '/settings';
 }
 
@@ -216,6 +225,9 @@ extension AppNavigation on BuildContext {
 
   /// Navigate to profile screen
   void goToProfile() => go(Routes.profile);
+
+  /// Navigate to notifications screen
+  void goToNotifications() => go(Routes.notifications);
 
   /// Navigate to settings screen
   void goToSettings() => go(Routes.settings);
