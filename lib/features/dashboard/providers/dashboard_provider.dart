@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../routing/app_router.dart';
 import '../models/dashboard_data.dart';
 import '../models/friend_status.dart';
 
@@ -78,13 +79,17 @@ class DashboardNotifier extends StateNotifier<AsyncValue<DashboardData>> {
       ),
       QuickAction(
         id: '4',
-        title: 'Reading Mode',
-        subtitle: 'Parallel reading',
-        icon: '📖',
+        title: 'User Profile',
+        subtitle: 'View Sarah\'s profile',
+        icon: '👤',
         isPremium: true,
         onTap: () {
-          // TODO: Navigate to parallel reading when created
-          print('Navigate to Parallel Reading');
+          if (_context != null) {
+            print('Navigating to user profile');
+            _context!.goToUserProfile('user_sarah_001');
+          } else {
+            print('Context is null - cannot navigate');
+          }
         },
       ),
     ];

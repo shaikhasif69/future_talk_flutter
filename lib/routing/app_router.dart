@@ -11,6 +11,8 @@ import '../features/chat/models/chat_conversation.dart';
 
 import '../features/books/screens/book_library_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
+import '../features/user_profile/screens/user_profile_screen.dart';
+import '../features/user_profile/models/user_profile_model.dart';
 import '../features/settings/screens/settings_screen.dart';
 import '../features/notifications/screens/notification_screen.dart';
 
@@ -26,6 +28,7 @@ class AppRouter {
     routes: [
       // ==================== SPLASH ROUTE (TESTING SHORTCUT) ====================
       // GoRoute(ƒchat
+      GoRoute(path: '/splash', name: 'splash', builder: (context, state) => const SplashScreen()),
       // ==================== ONBOARDING ROUTE ====================
       GoRoute(
         path: '/onboarding',
@@ -127,6 +130,26 @@ class AppRouter {
         builder: (context, state) => const ProfileScreen(),
       ),
 
+      // ==================== USER PROFILE ROUTES ====================
+      GoRoute(
+        path: '/user-profile/:userId',
+        name: 'user_profile',
+        builder: (context, state) {
+          final userId = state.pathParameters['userId']!;
+          final userProfileJson = state.extra as Map<String, dynamic>?;
+          
+          UserProfileModel? userProfile;
+          if (userProfileJson != null) {
+            userProfile = UserProfileModel.fromJson(userProfileJson);
+          }
+          
+          return UserProfileScreen(
+            userId: userId,
+            userProfile: userProfile,
+          );
+        },
+      ),
+
       // ==================== NOTIFICATIONS ROUTES ====================
       GoRoute(
         path: '/notifications',
@@ -136,7 +159,7 @@ class AppRouter {
 
       // ==================== SETTINGS ROUTES ====================
       GoRoute(
-        path: '/splash',
+        path: '/settings',
         name: 'settings',
         builder: (context, state) => const SettingsScreen(),
       ),
@@ -196,6 +219,7 @@ class Routes {
   static const String individualChat = '/chat/individual';
   static const String books = '/books';
   static const String profile = '/profile';
+  static const String userProfile = '/user-profile';
   static const String notifications = '/notifications';
   static const String settings = '/settings';
 }
@@ -225,6 +249,12 @@ extension AppNavigation on BuildContext {
 
   /// Navigate to profile screen
   void goToProfile() => go(Routes.profile);
+
+  /// Navigate to user profile screen
+  void goToUserProfile(String userId, {UserProfileModel? userProfile}) {
+    final path = '/user-profile/$userId';
+    go(path, extra: userProfile?.toJson());
+  }
 
   /// Navigate to notifications screen
   void goToNotifications() => go(Routes.notifications);
