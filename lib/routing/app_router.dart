@@ -13,6 +13,7 @@ import '../features/books/screens/book_library_screen.dart';
 import '../features/capsule_garden/screens/capsule_garden_dashboard.dart';
 import '../features/capsule_creation/screens/create_capsule_page1_screen.dart';
 import '../features/capsule_creation/screens/create_capsule_page2_screen.dart';
+import '../features/capsule_creation/screens/create_capsule_page3_screen_simple.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/user_profile/screens/user_profile_screen.dart';
 import '../features/user_profile/models/user_profile_model.dart';
@@ -137,6 +138,11 @@ class AppRouter {
         path: '/capsule/create/delivery-time',
         name: 'create_capsule_delivery_time',
         builder: (context, state) => const CreateCapsulePage2Screen(),
+      ),
+      GoRoute(
+        path: '/capsule/create/message',
+        name: 'create_capsule_message',
+        builder: (context, state) => const CreateCapsulePage3ScreenSimple(),
       ),
 
       // ==================== SPLASH ROUTE ====================

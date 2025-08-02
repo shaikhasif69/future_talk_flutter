@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
@@ -80,21 +81,9 @@ class _CreateCapsulePage2ScreenState extends ConsumerState<CreateCapsulePage2Scr
     final notifier = ref.read(timeCapsuleCreationNotifierProvider.notifier);
     await notifier.continueToNextStep();
     
-    // Navigate to next step (implement navigation logic here)
+    // Navigate to message creation screen
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Moving to step ${ref.read(currentCreationStepProvider)}...',
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
-          ),
-          backgroundColor: AppColors.sageGreen,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-          ),
-        ),
-      );
+      context.go('/capsule/create/message');
     }
   }
 
