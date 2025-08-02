@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Talk - Write Message</title>
+    
+    <!-- Future Talk Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Dancing+Script:wght@400;500;600&family=Caveat:wght@400;500;600&family=Kalam:wght@400;700&family=Patrick+Hand&family=Satisfy&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Serif Pro', serif;
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            color: #4A4A4A;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #FEFEFE;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 30px 80px rgba(0,0,0,0.08);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, #F7F5F3, #FEFEFE);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .status-bar.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #F0F0F0;
+            transition: all 0.3s ease;
+        }
+
+        .header.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: #F7F5F3;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4A4A4A;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #87A96B;
+            color: white;
+        }
+
+        .step-indicator {
+            display: flex;
+            gap: 8px;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #D1D1D1;
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.completed {
+            background: #87A96B;
+        }
+
+        .step-dot.active {
+            background: #87A96B;
+            transform: scale(1.2);
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: #6B6B6B;
+            text-align: center;
+        }
+
+        .context-bar {
+            background: rgba(135, 169, 107, 0.05);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #4A4A4A;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .main-content.expanded {
+            padding: 0;
+        }
+
+        .message-modes {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: #F7F5F3;
+            padding: 4px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .message-modes.hidden {
+            opacity: 0;
+            pointer-events: none;
+            height: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            background: transparent;
+            color: #6B6B6B;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .mode-btn.active {
+            background: white;
+            color: #87A96B;
+            box-shadow: 0 2px 8px rgba(135, 169, 107, 0.15);
+        }
+
+        .text-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .writing-canvas {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            flex: 1;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            border: 2px solid #F0F0F0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .writing-canvas.expanded {
+            border-radius: 0;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 100;
+            padding: 60px 20px 120px;
+        }
+
+        .writing-canvas:focus-within {
+            border-color: #87A96B;
+            box-shadow: 0 4px 20px rgba(135, 169, 107, 0.15);
+        }
+
+        .canvas-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .letter-greeting {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            color: #87A96B;
+            font-style: italic;
+        }
+
+        .expand-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #F7F5F3;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4A4A4A;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .expand-btn:hover {
+            background: #87A96B;
+            color: white;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .word-count {
+            font-size: 12px;
+            color: #6B6B6B;
+            background: #F7F5F3;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .writing-tools {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .font-selector {
+            position: relative;
+        }
+
+        .font-dropdown-btn {
+            background: #F7F5F3;
+            border: 1px solid #F0F0F0;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 12px;
+            color: #4A4A4A;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .font-dropdown-btn:hover {
+            border-color: #87A96B;
+            background: white;
+        }
+
+        .font-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #F0F0F0;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            z-index: 10;
+            min-width: 150px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .font-dropdown.show {
+            display: block;
+            animation: dropdownSlide 0.3s ease-out;
+        }
+
+        @keyframes dropdownSlide {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .font-option {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .font-option:last-child {
+            border-bottom: none;
+        }
+
+        .font-option:hover {
+            background: rgba(135, 169, 107, 0.05);
+        }
+
+        .font-option.selected {
+            background: rgba(135, 169, 107, 0.1);
+            color: #87A96B;
+        }
+
+        .text-size-controls {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: #F7F5F3;
+            border-radius: 8px;
+            padding: 2px;
+        }
+
+        .size-btn {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            border-radius: 4px;
+            color: #6B6B6B;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .size-btn:hover {
+            background: white;
+            color: #87A96B;
+        }
+
+        .inline-voice-btn {
+            background: #F7F5F3;
+            border: 1px solid #F0F0F0;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 12px;
+            color: #4A4A4A;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .inline-voice-btn:hover {
+            border-color: #87A96B;
+            background: white;
+            color: #87A96B;
+        }
+
+        .inline-voice-btn.recording {
+            background: rgba(212, 165, 165, 0.1);
+            border-color: #D4A5A5;
+            color: #D4A5A5;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        .message-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .message-textarea {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            resize: none;
+            font-family: 'Crimson Pro', serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #4A4A4A;
+            background: transparent;
+            min-height: 200px;
+        }
+
+        .message-textarea::placeholder {
+            color: #D1D1D1;
+            font-style: italic;
+        }
+
+        .audio-marker {
+            display: inline-block;
+            background: linear-gradient(135deg, #87A96B, #A4B88A);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 10px;
+            margin: 0 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            vertical-align: middle;
+        }
+
+        .audio-marker:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(135, 169, 107, 0.3);
+        }
+
+        .voice-area {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            flex: 1;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            border: 2px solid #F0F0F0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .voice-area.active {
+            display: flex;
+        }
+
+        .voice-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.7;
+        }
+
+        .voice-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: #4A4A4A;
+            margin-bottom: 8px;
+        }
+
+        .voice-subtitle {
+            font-size: 14px;
+            color: #6B6B6B;
+            margin-bottom: 24px;
+        }
+
+        .record-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #87A96B, #A4B88A);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(135, 169, 107, 0.3);
+        }
+
+        .record-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 24px rgba(135, 169, 107, 0.4);
+        }
+
+        .record-btn.recording {
+            background: linear-gradient(135deg, #D4A5A5, #F4C2A1);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .recording-status {
+            margin-top: 16px;
+            font-size: 14px;
+            color: #87A96B;
+            font-weight: 500;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .quick-actions.hidden {
+            opacity: 0;
+            pointer-events: none;
+            height: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .quick-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #F0F0F0;
+            background: white;
+            color: #6B6B6B;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-btn:hover {
+            border-color: #87A96B;
+            color: #87A96B;
+            background: rgba(135, 169, 107, 0.05);
+        }
+
+        .inspiration-section {
+            background: #F7F5F3;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .inspiration-section.hidden {
+            opacity: 0;
+            pointer-events: none;
+            height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .inspiration-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .inspiration-text {
+            font-family: 'Crimson Pro', serif;
+            font-size: 13px;
+            color: #6B6B6B;
+            font-style: italic;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .continue-section {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 335px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 101;
+        }
+
+        .continue-section.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(135, 169, 107, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(135, 169, 107, 0.4);
+        }
+
+        .continue-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px 32px;
+            border-top: 1px solid #F0F0F0;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            z-index: 99;
+        }
+
+        .bottom-nav.hidden {
+            transform: translateX(-50%) translateY(100%);
+            opacity: 0;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            color: #6B6B6B;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: #87A96B;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Font families for preview */
+        .font-crimson { font-family: 'Crimson Pro', serif; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-dancing { font-family: 'Dancing Script', cursive; }
+        .font-caveat { font-family: 'Caveat', cursive; }
+        .font-kalam { font-family: 'Kalam', cursive; }
+        .font-patrick { font-family: 'Patrick Hand', cursive; }
+        .font-satisfy { font-family: 'Satisfy', cursive; }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- Status Bar -->
+        <div class="status-bar" id="statusBar">
+            <div class="time">9:41</div>
+            <div class="status-indicators">
+                <div class="my-battery-status">
+                    <div class="battery-dot"></div>
+                    <span>Green</span>
+                </div>
+                <span style="color: #87A96B;">100% 🔋</span>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <div class="header" id="header">
+            <div class="header-top">
+                <button class="back-btn">←</button>
+                <div class="step-indicator">
+                    <div class="step-dot completed"></div>
+                    <div class="step-dot completed"></div>
+                    <div class="step-dot active"></div>
+                    <div class="step-dot"></div>
+                </div>
+            </div>
+            
+            <h1 class="page-title">Write Your Message</h1>
+            <p class="page-subtitle">Share your thoughts with future you</p>
+            
+            <div class="context-bar">
+                <span>🌰</span>
+                <span>To: Future Me</span>
+                <span>•</span>
+                <span>In: 6 Months</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content" id="mainContent">
+            <!-- Message Modes -->
+            <div class="message-modes" id="messageModes">
+                <button class="mode-btn active" data-mode="text">
+                    <span>✍️</span>
+                    <span>Write</span>
+                </button>
+                <button class="mode-btn" data-mode="voice">
+                    <span>🎙️</span>
+                    <span>Record</span>
+                </button>
+            </div>
+
+            <!-- Text Area -->
+            <div class="text-area" id="textArea">
+                <div class="writing-canvas" id="writingCanvas">
+                    <div class="canvas-header">
+                        <div class="header-left">
+                            <div class="letter-greeting">Dear Future Me,</div>
+                            <button class="expand-btn" id="expandBtn" title="Expand to full screen">⛶</button>
+                        </div>
+                        <div class="header-right">
+                            <div class="word-count" id="wordCount">0 words</div>
+                        </div>
+                    </div>
+
+                    <div class="writing-tools">
+                        <div class="font-selector">
+                            <button class="font-dropdown-btn" id="fontBtn">
+                                <span id="currentFont">Crimson Pro</span>
+                                <span>▼</span>
+                            </button>
+                            <div class="font-dropdown" id="fontDropdown">
+                                <div class="font-option font-crimson selected" data-font="Crimson Pro" data-class="font-crimson">Crimson Pro</div>
+                                <div class="font-option font-playfair" data-font="Playfair Display" data-class="font-playfair">Playfair Display</div>
+                                <div class="font-option font-dancing" data-font="Dancing Script" data-class="font-dancing">Dancing Script</div>
+                                <div class="font-option font-caveat" data-font="Caveat" data-class="font-caveat">Caveat</div>
+                                <div class="font-option font-kalam" data-font="Kalam" data-class="font-kalam">Kalam</div>
+                                <div class="font-option font-patrick" data-font="Patrick Hand" data-class="font-patrick">Patrick Hand</div>
+                                <div class="font-option font-satisfy" data-font="Satisfy" data-class="font-satisfy">Satisfy</div>
+                            </div>
+                        </div>
+
+                        <div class="text-size-controls">
+                            <button class="size-btn" id="decreaseSize" title="Decrease text size">A-</button>
+                            <button class="size-btn" id="increaseSize" title="Increase text size">A+</button>
+                        </div>
+
+                        <button class="inline-voice-btn" id="inlineVoiceBtn" title="Add voice note">
+                            <span>🎙️</span>
+                            <span>Voice</span>
+                        </button>
+                    </div>
+
+                    <div class="message-container">
+                        <textarea 
+                            class="message-textarea font-crimson" 
+                            id="messageText"
+                            placeholder="What wisdom do you want to share with yourself? What are you learning right now? What do you hope will be different in 6 months?"
+                            rows="10"
+                        ></textarea>
+                    </div>
+                </div>
+
+                <div class="quick-actions" id="quickActions">
+                    <button class="quick-btn" data-prompt="gratitude">💝 What I'm grateful for</button>
+                    <button class="quick-btn" data-prompt="growth">🌱 How I'm growing</button>
+                    <button class="quick-btn" data-prompt="hopes">✨ My hopes</button>
+                </div>
+
+                <div class="inspiration-section" id="inspirationSection">
+                    <div class="inspiration-title">💡 Writing Inspiration</div>
+                    <div class="inspiration-text" id="inspirationText">
+                        "Right now, I'm learning that..."
+                    </div>
+                </div>
+            </div>
+
+            <!-- Voice Area -->
+            <div class="voice-area" id="voiceArea">
+                <div class="voice-icon">🎙️</div>
+                <div class="voice-title">Record Your Voice</div>
+                <div class="voice-subtitle">Speak from your heart to future you</div>
+                <button class="record-btn" id="recordBtn">🎙️</button>
+                <div class="recording-status" id="recordingStatus">Tap to start recording</div>
+            </div>
+        </div>
+
+        <!-- Continue Button -->
+        <div class="continue-section" id="continueSection">
+            <button class="continue-btn" id="continueBtn" disabled>
+                <span>Review & Send</span>
+                <span>→</span>
+            </button>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav" id="bottomNav">
+            <div class="nav-items">
+                <div class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💬</span>
+                    <span>Chats</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📚</span>
+                    <span>Books</span>
+                </div>
+                <div class="nav-item active">
+                    <span class="nav-icon">⏰</span>
+                    <span>Capsules</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isRecording = false;
+        let recordingTimer = null;
+        let recordingSeconds = 0;
+        let isExpanded = false;
+        let currentFontSize = 16;
+        let audioMarkersCount = 0;
+        let isInlineRecording = false;
+        
+        const messageText = document.getElementById('messageText');
+        const wordCount = document.getElementById('wordCount');
+        const continueSection = document.getElementById('continueSection');
+        const continueBtn = document.getElementById('continueBtn');
+        const textArea = document.getElementById('textArea');
+        const voiceArea = document.getElementById('voiceArea');
+        const recordBtn = document.getElementById('recordBtn');
+        const recordingStatus = document.getElementById('recordingStatus');
+        const inspirationText = document.getElementById('inspirationText');
+        const expandBtn = document.getElementById('expandBtn');
+        const writingCanvas = document.getElementById('writingCanvas');
+        const fontBtn = document.getElementById('fontBtn');
+        const fontDropdown = document.getElementById('fontDropdown');
+        const currentFont = document.getElementById('currentFont');
+        const inlineVoiceBtn = document.getElementById('inlineVoiceBtn');
+
+        const inspirations = [
+            "Right now, I'm learning that...",
+            "I hope you remember how...",
+            "Today I realized...",
+            "I want you to know that...",
+            "Six months ago, I was...",
+            "I'm proud of myself for...",
+            "My biggest challenge right now is...",
+            "I hope by then you've...",
+            "What's bringing me joy today is...",
+            "I'm working on becoming..."
+        ];
+
+        // Mode switching
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const mode = this.dataset.mode;
+                
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                if (mode === 'text') {
+                    textArea.style.display = 'flex';
+                    voiceArea.classList.remove('active');
+                } else {
+                    textArea.style.display = 'none';
+                    voiceArea.classList.add('active');
+                }
+                
+                checkCanContinue();
+            });
+        });
+
+        // Expand/Collapse functionality
+        expandBtn.addEventListener('click', function() {
+            isExpanded = !isExpanded;
+            
+            const statusBar = document.getElementById('statusBar');
+            const header = document.getElementById('header');
+            const mainContent = document.getElementById('mainContent');
+            const messageModes = document.getElementById('messageModes');
+            const quickActions = document.getElementById('quickActions');
+            const inspirationSection = document.getElementById('inspirationSection');
+            const bottomNav = document.getElementById('bottomNav');
+            
+            if (isExpanded) {
+                // Hide UI elements
+                statusBar.classList.add('hidden');
+                header.classList.add('hidden');
+                messageModes.classList.add('hidden');
+                quickActions.classList.add('hidden');
+                inspirationSection.classList.add('hidden');
+                bottomNav.classList.add('hidden');
+                
+                // Expand canvas
+                mainContent.classList.add('expanded');
+                writingCanvas.classList.add('expanded');
+                expandBtn.textContent = '✕';
+                expandBtn.title = 'Exit full screen';
+                
+                // Focus on textarea
+                setTimeout(() => messageText.focus(), 300);
+            } else {
+                // Show UI elements
+                statusBar.classList.remove('hidden');
+                header.classList.remove('hidden');
+                messageModes.classList.remove('hidden');
+                quickActions.classList.remove('hidden');
+                inspirationSection.classList.remove('hidden');
+                bottomNav.classList.remove('hidden');
+                
+                // Collapse canvas
+                mainContent.classList.remove('expanded');
+                writingCanvas.classList.remove('expanded');
+                expandBtn.textContent = '⛶';
+                expandBtn.title = 'Expand to full screen';
+            }
+        });
+
+        // Font selector
+        fontBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            fontDropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', function() {
+            fontDropdown.classList.remove('show');
+        });
+
+        document.querySelectorAll('.font-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.font-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                const fontName = this.dataset.font;
+                const fontClass = this.dataset.class;
+                
+                currentFont.textContent = fontName;
+                messageText.className = `message-textarea ${fontClass}`;
+                
+                fontDropdown.classList.remove('show');
+            });
+        });
+
+        // Text size controls
+        document.getElementById('increaseSize').addEventListener('click', function() {
+            if (currentFontSize < 24) {
+                currentFontSize += 2;
+                messageText.style.fontSize = currentFontSize + 'px';
+            }
+        });
+
+        document.getElementById('decreaseSize').addEventListener('click', function() {
+            if (currentFontSize > 12) {
+                currentFontSize -= 2;
+                messageText.style.fontSize = currentFontSize + 'px';
+            }
+        });
+
+        // Inline voice recording
+        inlineVoiceBtn.addEventListener('click', function() {
+            if (!isInlineRecording) {
+                startInlineRecording();
+            } else {
+                stopInlineRecording();
+            }
+        });
+
+        function startInlineRecording() {
+            isInlineRecording = true;
+            inlineVoiceBtn.classList.add('recording');
+            inlineVoiceBtn.innerHTML = '<span>⏹️</span><span>Stop</span>';
+            
+            setTimeout(() => {
+                stopInlineRecording();
+            }, 3000); // Auto-stop after 3 seconds for demo
+        }
+
+        function stopInlineRecording() {
+            isInlineRecording = false;
+            inlineVoiceBtn.classList.remove('recording');
+            inlineVoiceBtn.innerHTML = '<span>🎙️</span><span>Voice</span>';
+            
+            // Insert audio marker at cursor position
+            insertAudioMarker();
+        }
+
+        function insertAudioMarker() {
+            const cursorPos = messageText.selectionStart;
+            const textBefore = messageText.value.substring(0, cursorPos);
+            const textAfter = messageText.value.substring(cursorPos);
+            
+            audioMarkersCount++;
+            const audioMarker = ` [🎙️Audio ${audioMarkersCount}] `;
+            
+            messageText.value = textBefore + audioMarker + textAfter;
+            messageText.selectionStart = messageText.selectionEnd = cursorPos + audioMarker.length;
+            
+            messageText.dispatchEvent(new Event('input'));
+            messageText.focus();
+        }
+
+        // Text input handling
+        messageText.addEventListener('input', function() {
+            const words = this.value.trim().split(/\s+/).filter(word => word.length > 0);
+            const count = this.value.trim() === '' ? 0 : words.length;
+            wordCount.textContent = `${count} word${count !== 1 ? 's' : ''}`;
+            
+            checkCanContinue();
+            
+            // Auto-save
+            localStorage.setItem('draft_message', this.value);
+        });
+
+        // Quick prompts
+        document.querySelectorAll('.quick-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const prompts = {
+                    'gratitude': "Right now, I'm grateful for... ",
+                    'growth': "I'm growing by learning... ",
+                    'hopes': "I hope that six months from now... "
+                };
+                
+                const prompt = prompts[this.dataset.prompt];
+                if (messageText.value.trim() === '') {
+                    messageText.value = prompt;
+                    messageText.focus();
+                    messageText.dispatchEvent(new Event('input'));
+                }
+                
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => this.style.transform = '', 200);
+            });
+        });
+
+        // Voice recording
+        recordBtn.addEventListener('click', function() {
+            if (!isRecording) {
+                startRecording();
+            } else {
+                stopRecording();
+            }
+        });
+
+        function startRecording() {
+            isRecording = true;
+            recordingSeconds = 0;
+            recordBtn.classList.add('recording');
+            recordBtn.textContent = '⏹️';
+            recordingStatus.textContent = 'Recording... 0:00';
+            
+            recordingTimer = setInterval(() => {
+                recordingSeconds++;
+                const minutes = Math.floor(recordingSeconds / 60);
+                const seconds = recordingSeconds % 60;
+                recordingStatus.textContent = `Recording... ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+            
+            checkCanContinue();
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            clearInterval(recordingTimer);
+            recordBtn.classList.remove('recording');
+            recordBtn.textContent = '🎙️';
+            
+            const minutes = Math.floor(recordingSeconds / 60);
+            const seconds = recordingSeconds % 60;
+            recordingStatus.textContent = `Recording saved: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            checkCanContinue();
+        }
+
+        function checkCanContinue() {
+            const hasText = messageText.value.trim().length > 0;
+            const hasVoice = recordingSeconds > 0 && !isRecording;
+            const canContinue = hasText || hasVoice;
+            
+            continueBtn.disabled = !canContinue;
+            
+            if (canContinue) {
+                continueSection.classList.add('show');
+            } else {
+                continueSection.classList.remove('show');
+            }
+        }
+
+        // Continue button
+        continueBtn.addEventListener('click', function() {
+            if (!this.disabled) {
+                this.innerHTML = `
+                    <div class="loading-spinner"></div>
+                    <span>Creating capsule...</span>
+                `;
+                
+                setTimeout(() => {
+                    console.log('Moving to preview screen');
+                    this.innerHTML = `
+                        <span>Review & Send</span>
+                        <span>→</span>
+                    `;
+                }, 2000);
+            }
+        });
+
+        // Inspiration rotation
+        setInterval(() => {
+            const randomInspiration = inspirations[Math.floor(Math.random() * inspirations.length)];
+            inspirationText.textContent = randomInspiration;
+        }, 10000);
+
+        // Load draft if exists
+        const savedDraft = localStorage.getItem('draft_message');
+        if (savedDraft) {
+            messageText.value = savedDraft;
+            messageText.dispatchEvent(new Event('input'));
+        }
+
+        // Back button
+        document.querySelector('.back-btn').addEventListener('click', function() {
+            this.style.transform = 'translateX(-4px)';
+            setTimeout(() => this.style.transform = '', 200);
+        });
+
+        // Focus on text area when screen loads
+        setTimeout(() => {
+            messageText.focus();
+        }, 500);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isExpanded) {
+                expandBtn.click();
+            }
+            
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key === 'Enter') {
+                    if (!continueBtn.disabled) {
+                        continueBtn.click();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

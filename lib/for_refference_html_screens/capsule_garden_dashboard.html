@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Talk - Capsule Garden Dashboard</title>
+    
+    <!-- Future Talk Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Serif Pro', serif;
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            color: #4A4A4A;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #FEFEFE;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 30px 80px rgba(0,0,0,0.08);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, #F7F5F3, #FEFEFE);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .time { 
+            color: #4A4A4A; 
+            font-family: 'Source Serif Pro', serif;
+        }
+        
+        .status-indicators {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .my-battery-status {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(135, 169, 107, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: #87A96B;
+        }
+        
+        .battery-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+
+        /* Garden Header */
+        .garden-header {
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            padding: 20px 20px 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .garden-header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 120px;
+            height: 120px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        .garden-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            animation: breathe 6s ease-in-out infinite reverse;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.6; }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .garden-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .garden-emoji {
+            font-size: 24px;
+            animation: gentle-sway 3s ease-in-out infinite;
+        }
+
+        @keyframes gentle-sway {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        .garden-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .garden-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 32px;
+            background: rgba(255,255,255,0.3);
+            margin: 0 8px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            padding: 20px;
+            background: white;
+            margin: -12px 16px 0;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+            z-index: 10;
+        }
+
+        .actions-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: #4A4A4A;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 16px 12px;
+            border-radius: 16px;
+            border: none;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(135, 169, 107, 0.3);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            color: #4A4A4A;
+            border: 2px solid #F0F0F0;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .action-btn.primary:hover {
+            box-shadow: 0 6px 20px rgba(135, 169, 107, 0.4);
+        }
+
+        .action-btn.secondary:hover {
+            border-color: #87A96B;
+            box-shadow: 0 4px 12px rgba(135, 169, 107, 0.2);
+        }
+
+        .action-icon {
+            font-size: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Garden Grid */
+        .garden-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .garden-section {
+            margin-bottom: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 500;
+            color: #4A4A4A;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-count {
+            background: rgba(135, 169, 107, 0.1);
+            color: #87A96B;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .capsule-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .capsule-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .capsule-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .capsule-card.ready {
+            border-color: #F4C2A1;
+            background: linear-gradient(135deg, rgba(244, 194, 161, 0.05) 0%, rgba(255,255,255,1) 100%);
+        }
+
+        .capsule-card.ready .capsule-asset {
+            animation: celebration 2s ease-in-out infinite;
+        }
+
+        @keyframes celebration {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(2deg); }
+            75% { transform: scale(1.1) rotate(-2deg); }
+        }
+
+        .capsule-asset {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 8px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Growth Stage Animations */
+        .growing-seed {
+            animation: gentle-grow 3s ease-in-out infinite;
+        }
+
+        .growing-sprout {
+            animation: sprout-sway 4s ease-in-out infinite;
+        }
+
+        .growing-tree {
+            animation: tree-breathe 5s ease-in-out infinite;
+        }
+
+        .blooming-flower {
+            animation: flower-bloom 3s ease-in-out infinite;
+        }
+
+        .forming-crystal {
+            animation: crystal-shine 4s ease-in-out infinite;
+        }
+
+        @keyframes gentle-grow {
+            0%, 100% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes sprout-sway {
+            0%, 100% { transform: rotate(-1deg) scale(0.95); }
+            50% { transform: rotate(1deg) scale(1.05); }
+        }
+
+        @keyframes tree-breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes flower-bloom {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
+        }
+
+        @keyframes crystal-shine {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .capsule-title {
+            font-size: 12px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .capsule-time {
+            font-size: 10px;
+            color: #6B6B6B;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 3px;
+            background: #F0F0F0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #87A96B 0%, #A4B88A 100%);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .capsule-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 10px;
+        }
+
+        .status-badge {
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .status-badge.growing {
+            background: rgba(135, 169, 107, 0.1);
+            color: #87A96B;
+        }
+
+        .status-badge.ready {
+            background: rgba(244, 194, 161, 0.2);
+            color: #F4A261;
+        }
+
+        .recipient-initial {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #C8B5D1, #D4A5A5);
+            color: white;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px 32px;
+            border-top: 1px solid #F0F0F0;
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            color: #6B6B6B;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: #87A96B;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        /* Scrollbar */
+        .garden-content::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .garden-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .garden-content::-webkit-scrollbar-thumb {
+            background: rgba(135, 169, 107, 0.3);
+            border-radius: 2px;
+        }
+
+        /* Floating particles for ambiance */
+        .floating-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(135, 169, 107, 0.3);
+            border-radius: 50%;
+            animation: float 8s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        .particle-1 {
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 8s;
+        }
+
+        .particle-2 {
+            left: 30%;
+            animation-delay: 2s;
+            animation-duration: 10s;
+        }
+
+        .particle-3 {
+            left: 70%;
+            animation-delay: 4s;
+            animation-duration: 9s;
+        }
+
+        .particle-4 {
+            left: 90%;
+            animation-delay: 6s;
+            animation-duration: 7s;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- Floating particles for ambiance -->
+        <div class="floating-particle particle-1"></div>
+        <div class="floating-particle particle-2"></div>
+        <div class="floating-particle particle-3"></div>
+        <div class="floating-particle particle-4"></div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="time">9:41</div>
+            <div class="status-indicators">
+                <div class="my-battery-status">
+                    <div class="battery-dot"></div>
+                    <span>Green</span>
+                </div>
+                <span style="color: #87A96B;">100% 🔋</span>
+            </div>
+        </div>
+
+        <!-- Garden Header -->
+        <div class="garden-header">
+            <div class="header-content">
+                <h1 class="garden-title">
+                    <span class="garden-emoji">🌱</span>
+                    Your Time Garden
+                </h1>
+                <p class="garden-subtitle">Messages growing through time</p>
+                
+                <div class="garden-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Growing</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Ready</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Delivered</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h2 class="actions-title">Quick Actions</h2>
+            <div class="action-buttons">
+                <button class="action-btn primary">
+                    <span class="action-icon">🌱</span>
+                    <span>Plant New Capsule</span>
+                </button>
+                <button class="action-btn secondary">
+                    <span class="action-icon">🎁</span>
+                    <span>View Ready</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Garden Content -->
+        <div class="garden-content">
+            <!-- Ready to Open Section -->
+            <div class="garden-section">
+                <div class="section-header">
+                    <h3 class="section-title">
+                        🎉 Ready to Open
+                    </h3>
+                    <span class="section-count">1</span>
+                </div>
+                
+                <div class="capsule-grid">
+                    <div class="capsule-card ready">
+                        <div class="capsule-asset">
+                            <span class="blooming-flower">🌸</span>
+                        </div>
+                        <div class="capsule-title">Birthday wishes for Sarah</div>
+                        <div class="capsule-time">Ready now!</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%;"></div>
+                        </div>
+                        <div class="capsule-status">
+                            <span class="status-badge ready">Ready</span>
+                            <div class="recipient-initial">S</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Currently Growing Section -->
+            <div class="garden-section">
+                <div class="section-header">
+                    <h3 class="section-title">
+                        🌿 Currently Growing
+                    </h3>
+                    <span class="section-count">3</span>
+                </div>
+                
+                <div class="capsule-grid">
+                    <div class="capsule-card">
+                        <div class="capsule-asset">
+                            <span class="growing-tree">🌳</span>
+                        </div>
+                        <div class="capsule-title">Message to future me</div>
+                        <div class="capsule-time">6 months remaining</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 35%;"></div>
+                        </div>
+                        <div class="capsule-status">
+                            <span class="status-badge growing">Growing</span>
+                            <div class="recipient-initial">M</div>
+                        </div>
+                    </div>
+
+                    <div class="capsule-card">
+                        <div class="capsule-asset">
+                            <span class="growing-sprout">🌱</span>
+                        </div>
+                        <div class="capsule-title">Anniversary surprise</div>
+                        <div class="capsule-time">2 weeks remaining</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%;"></div>
+                        </div>
+                        <div class="capsule-status">
+                            <span class="status-badge growing">Growing</span>
+                            <div class="recipient-initial">A</div>
+                        </div>
+                    </div>
+
+                    <div class="capsule-card">
+                        <div class="capsule-asset">
+                            <span class="forming-crystal">💎</span>
+                        </div>
+                        <div class="capsule-title">New Year reflection</div>
+                        <div class="capsule-time">3 months remaining</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 55%;"></div>
+                        </div>
+                        <div class="capsule-status">
+                            <span class="status-badge growing">Growing</span>
+                            <div class="recipient-initial">M</div>
+                        </div>
+                    </div>
+
+                    <div class="capsule-card">
+                        <div class="capsule-asset">
+                            <span class="growing-seed">🌰</span>
+                        </div>
+                        <div class="capsule-title">Encouragement for mom</div>
+                        <div class="capsule-time">3 days remaining</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 92%;"></div>
+                        </div>
+                        <div class="capsule-status">
+                            <span class="status-badge growing">Growing</span>
+                            <div class="recipient-initial">M</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recently Planted Section -->
+            <div class="garden-section">
+                <div class="section-header">
+                    <h3 class="section-title">
+                        🌰 Recently Planted
+                    </h3>
+                    <span class="section-count">2</span>
+                </div>
+                
+                <div class="capsule-grid">
+                    <div class="capsule-card">
+                        <div class="capsule-asset">
+                            <span class="growing-seed">🌰</span>
+                        </div>
+                        <div class="capsule-title">Graduation congratulations</div>
+                        <div class="capsule-time">11 months remaining</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 5%;"></div>
+                        </div>
+                        <div class="capsule-status">
+                            <span class="status-badge growing">Growing</span>
+                            <div class="recipient-initial">J</div>
+                        </div>
+                    </div>
+
+                    <div class="capsule-card">
+                        <div class="capsule-asset">
+                            <span class="growing-seed">🌰</span>
+                        </div>
+                        <div class="capsule-title">Thank you note</div>
+                        <div class="capsule-time">23 hours remaining</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 95%;"></div>
+                        </div>
+                        <div class="capsule-status">
+                            <span class="status-badge growing">Growing</span>
+                            <div class="recipient-initial">D</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <div class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💬</span>
+                    <span>Chats</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📚</span>
+                    <span>Books</span>
+                </div>
+                <div class="nav-item active">
+                    <span class="nav-icon">⏰</span>
+                    <span>Capsules</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add interactive hover effects
+        document.querySelectorAll('.capsule-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-6px) scale(1.02)';
+                this.style.boxShadow = '0 12px 32px rgba(135, 169, 107, 0.2)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                this.style.boxShadow = '';
+            });
+            
+            card.addEventListener('click', function() {
+                // Add click animation
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 100);
+            });
+        });
+
+        // Action button interactions
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Ripple effect
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255,255,255,0.3)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.left = '50%';
+                ripple.style.top = '50%';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.marginLeft = '-10px';
+                ripple.style.marginTop = '-10px';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add ripple animation to CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Simulate progress updates
+        function animateProgress() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const currentWidth = parseInt(bar.style.width);
+                if (currentWidth < 100 && Math.random() > 0.8) {
+                    const newWidth = Math.min(100, currentWidth + Math.random() * 2);
+                    bar.style.width = newWidth + '%';
+                }
+            });
+        }
+
+        // Update progress every 10 seconds for demo
+        setInterval(animateProgress, 10000);
+
+        // Add gentle breathing animation to garden header
+        const gardenHeader = document.querySelector('.garden-header');
+        let breatheScale = 1;
+        let breatheDirection = 1;
+
+        function breatheAnimation() {
+            breatheScale += breatheDirection * 0.002;
+            if (breatheScale > 1.01) breatheDirection = -1;
+            if (breatheScale < 0.99) breatheDirection = 1;
+            
+            gardenHeader.style.transform = `scale(${breatheScale})`;
+            requestAnimationFrame(breatheAnimation);
+        }
+
+        breatheAnimation();
+
+        // Add entrance animations for cards
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.capsule-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s ease-out';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

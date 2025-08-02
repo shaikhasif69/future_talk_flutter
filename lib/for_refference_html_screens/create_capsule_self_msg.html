@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Talk - Select Delivery Time</title>
+    
+    <!-- Future Talk Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Serif Pro', serif;
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            color: #4A4A4A;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #FEFEFE;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 30px 80px rgba(0,0,0,0.08);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, #F7F5F3, #FEFEFE);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .time { 
+            color: #4A4A4A; 
+            font-family: 'Source Serif Pro', serif;
+        }
+        
+        .status-indicators {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .my-battery-status {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(135, 169, 107, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: #87A96B;
+        }
+        
+        .battery-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 24px 20px;
+            border-bottom: 1px solid #F0F0F0;
+            position: relative;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: #F7F5F3;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4A4A4A;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #87A96B;
+            color: white;
+            transform: translateX(-2px);
+        }
+
+        .step-indicator {
+            display: flex;
+            gap: 8px;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #D1D1D1;
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.completed {
+            background: #87A96B;
+        }
+
+        .step-dot.active {
+            background: #87A96B;
+            transform: scale(1.2);
+        }
+
+        .header-content {
+            text-align: center;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-family: 'Crimson Pro', serif;
+            font-size: 16px;
+            color: #6B6B6B;
+            font-style: italic;
+        }
+
+        .selection-context {
+            background: rgba(135, 169, 107, 0.05);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            border-left: 4px solid #87A96B;
+        }
+
+        .context-text {
+            font-size: 14px;
+            color: #4A4A4A;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 32px 20px 120px;
+            overflow-y: auto;
+        }
+
+        /* Time Visualization */
+        .time-visualization {
+            text-align: center;
+            margin-bottom: 32px;
+            background: linear-gradient(135deg, #F7F5F3 0%, white 100%);
+            border-radius: 20px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .time-visualization::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(135, 169, 107, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-10px, 10px) scale(1.1); }
+        }
+
+        .current-selection {
+            position: relative;
+            z-index: 2;
+        }
+
+        .time-display {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 500;
+            color: #87A96B;
+            margin-bottom: 8px;
+        }
+
+        .time-description {
+            font-family: 'Crimson Pro', serif;
+            font-size: 14px;
+            color: #6B6B6B;
+            font-style: italic;
+            margin-bottom: 16px;
+        }
+
+        .visual-metaphor {
+            font-size: 48px;
+            margin-bottom: 12px;
+            transition: all 0.5s ease;
+            display: inline-block;
+        }
+
+        .growth-stage {
+            font-size: 12px;
+            color: #87A96B;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Quick Time Options */
+        .quick-times {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .time-option {
+            background: white;
+            border: 2px solid #F0F0F0;
+            border-radius: 16px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .time-option:hover {
+            border-color: #87A96B;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(135, 169, 107, 0.15);
+        }
+
+        .time-option.selected {
+            border-color: #87A96B;
+            background: linear-gradient(135deg, rgba(135, 169, 107, 0.05) 0%, white 100%);
+            box-shadow: 0 4px 16px rgba(135, 169, 107, 0.2);
+        }
+
+        .time-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .time-option.selected::before {
+            background: linear-gradient(90deg, #87A96B, #A4B88A);
+        }
+
+        .option-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .time-option:hover .option-icon {
+            transform: scale(1.1);
+        }
+
+        .option-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 4px;
+        }
+
+        .option-subtitle {
+            font-size: 11px;
+            color: #6B6B6B;
+            line-height: 1.3;
+        }
+
+        /* Special Occasions */
+        .special-occasions {
+            background: #F7F5F3;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .occasions-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .occasions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .occasion-option {
+            background: white;
+            border: 1px solid #F0F0F0;
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .occasion-option:hover {
+            border-color: #87A96B;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(135, 169, 107, 0.15);
+        }
+
+        .occasion-option.selected {
+            border-color: #87A96B;
+            background: rgba(135, 169, 107, 0.05);
+        }
+
+        .occasion-icon {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .occasion-text {
+            font-size: 11px;
+            color: #6B6B6B;
+            font-weight: 500;
+        }
+
+        /* Custom Date Picker */
+        .custom-section {
+            background: white;
+            border: 2px solid #F0F0F0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .custom-section:hover {
+            border-color: #87A96B;
+            box-shadow: 0 4px 16px rgba(135, 169, 107, 0.1);
+        }
+
+        .custom-section.active {
+            border-color: #87A96B;
+            background: linear-gradient(135deg, rgba(135, 169, 107, 0.03) 0%, white 100%);
+        }
+
+        .custom-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+
+        .custom-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #4A4A4A;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .custom-toggle {
+            font-size: 18px;
+            color: #87A96B;
+            transition: all 0.3s ease;
+        }
+
+        .custom-toggle.expanded {
+            transform: rotate(180deg);
+        }
+
+        .custom-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .custom-content.expanded {
+            max-height: 200px;
+        }
+
+        .date-time-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .input-label {
+            font-size: 12px;
+            color: #6B6B6B;
+            font-weight: 500;
+        }
+
+        .date-input {
+            padding: 12px;
+            border: 1px solid #F0F0F0;
+            border-radius: 12px;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 14px;
+            color: #4A4A4A;
+            background: #F7F5F3;
+            transition: all 0.3s ease;
+        }
+
+        .date-input:focus {
+            outline: none;
+            border-color: #87A96B;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(135, 169, 107, 0.1);
+        }
+
+        .preview-text {
+            font-size: 12px;
+            color: #87A96B;
+            text-align: center;
+            font-style: italic;
+            padding: 8px;
+            background: rgba(135, 169, 107, 0.05);
+            border-radius: 8px;
+        }
+
+        /* Continue Button */
+        .continue-section {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 335px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .continue-section.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(135, 169, 107, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(135, 169, 107, 0.4);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px 32px;
+            border-top: 1px solid #F0F0F0;
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            color: #6B6B6B;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: #87A96B;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        /* Scrollbar */
+        .main-content::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: rgba(135, 169, 107, 0.3);
+            border-radius: 2px;
+        }
+
+        /* Loading state */
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Metaphor animations */
+        .seed-growing {
+            animation: gentle-pulse 2s ease-in-out infinite;
+        }
+
+        .tree-swaying {
+            animation: tree-sway 4s ease-in-out infinite;
+        }
+
+        .crystal-forming {
+            animation: crystal-shine 3s ease-in-out infinite;
+        }
+
+        @keyframes gentle-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        @keyframes tree-sway {
+            0%, 100% { transform: rotate(-1deg); }
+            50% { transform: rotate(1deg); }
+        }
+
+        @keyframes crystal-shine {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2) saturate(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="time">9:41</div>
+            <div class="status-indicators">
+                <div class="my-battery-status">
+                    <div class="battery-dot"></div>
+                    <span>Green</span>
+                </div>
+                <span style="color: #87A96B;">100% 🔋</span>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <button class="back-btn">←</button>
+                <div class="step-indicator">
+                    <div class="step-dot completed"></div>
+                    <div class="step-dot active"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                </div>
+            </div>
+            
+            <div class="header-content">
+                <h1 class="page-title">When to Deliver?</h1>
+                <p class="page-subtitle">Choose your time travel destination</p>
+                
+                <div class="selection-context">
+                    <div class="context-text">
+                        <span>📝</span>
+                        <span>Message to: <strong>Future Me</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Time Visualization -->
+            <div class="time-visualization">
+                <div class="current-selection">
+                    <div class="visual-metaphor seed-growing" id="visualMetaphor">🌰</div>
+                    <div class="time-display" id="timeDisplay">Select Time</div>
+                    <div class="time-description" id="timeDescription">Choose when you'd like to receive this message</div>
+                    <div class="growth-stage" id="growthStage">Ready to Plant</div>
+                </div>
+            </div>
+
+            <!-- Quick Time Options -->
+            <div class="quick-times">
+                <h2 class="section-title">Popular Time Periods</h2>
+                
+                <div class="time-grid">
+                    <div class="time-option" data-time="1-hour" data-display="1 Hour" data-metaphor="☕" data-description="A quick coffee break into the future" data-stage="Brewing">
+                        <span class="option-icon">☕</span>
+                        <div class="option-title">1 Hour</div>
+                        <div class="option-subtitle">Quick reflection</div>
+                    </div>
+                    
+                    <div class="time-option" data-time="1-day" data-display="Tomorrow" data-metaphor="🌅" data-description="Wake up to wisdom from yesterday" data-stage="New Dawn">
+                        <span class="option-icon">🌅</span>
+                        <div class="option-title">1 Day</div>
+                        <div class="option-subtitle">Tomorrow's gift</div>
+                    </div>
+                    
+                    <div class="time-option" data-time="1-week" data-display="1 Week" data-metaphor="🌱" data-description="Let your thoughts sprout and grow" data-stage="Sprouting">
+                        <span class="option-icon">🌱</span>
+                        <div class="option-title">1 Week</div>
+                        <div class="option-subtitle">Weekly wisdom</div>
+                    </div>
+                    
+                    <div class="time-option" data-time="1-month" data-display="1 Month" data-metaphor="🌙" data-description="A full moon cycle of growth" data-stage="Growing">
+                        <span class="option-icon">🌙</span>
+                        <div class="option-title">1 Month</div>
+                        <div class="option-subtitle">Monthly milestone</div>
+                    </div>
+                    
+                    <div class="time-option" data-time="6-months" data-display="6 Months" data-metaphor="🌳" data-description="Watch your wisdom mature like a tree" data-stage="Flourishing">
+                        <span class="option-icon">🌳</span>
+                        <div class="option-title">6 Months</div>
+                        <div class="option-subtitle">Growth journey</div>
+                    </div>
+                    
+                    <div class="time-option" data-time="1-year" data-display="1 Year" data-metaphor="💎" data-description="Time crystallizes your thoughts into gems" data-stage="Crystallized">
+                        <span class="option-icon">💎</span>
+                        <div class="option-title">1 Year</div>
+                        <div class="option-subtitle">Annual reflection</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Special Occasions -->
+            <div class="special-occasions">
+                <h3 class="occasions-title">Special Moments</h3>
+                <div class="occasions-grid">
+                    <div class="occasion-option" data-occasion="birthday">
+                        <div class="occasion-icon">🎂</div>
+                        <div class="occasion-text">Next Birthday</div>
+                    </div>
+                    <div class="occasion-option" data-occasion="new-year">
+                        <div class="occasion-icon">🎊</div>
+                        <div class="occasion-text">New Year</div>
+                    </div>
+                    <div class="occasion-option" data-occasion="graduation">
+                        <div class="occasion-icon">🎓</div>
+                        <div class="occasion-text">Graduation</div>
+                    </div>
+                    <div class="occasion-option" data-occasion="job-start">
+                        <div class="occasion-icon">💼</div>
+                        <div class="occasion-text">Job Start</div>
+                    </div>
+                    <div class="occasion-option" data-occasion="anniversary">
+                        <div class="occasion-icon">💍</div>
+                        <div class="occasion-text">Anniversary</div>
+                    </div>
+                    <div class="occasion-option" data-occasion="milestone">
+                        <div class="occasion-icon">🏆</div>
+                        <div class="occasion-text">Milestone</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Date Picker -->
+            <div class="custom-section" id="customSection">
+                <div class="custom-header" id="customHeader">
+                    <div class="custom-title">
+                        <span>📅</span>
+                        <span>Custom Date & Time</span>
+                    </div>
+                    <div class="custom-toggle" id="customToggle">▼</div>
+                </div>
+                
+                <div class="custom-content" id="customContent">
+                    <div class="date-time-inputs">
+                        <div class="input-group">
+                            <label class="input-label">Date</label>
+                            <input type="date" class="date-input" id="customDate">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Time</label>
+                            <input type="time" class="date-input" id="customTime">
+                        </div>
+                    </div>
+                    <div class="preview-text" id="customPreview">
+                        Select a date and time to see preview
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Continue Button -->
+        <div class="continue-section" id="continueSection">
+            <button class="continue-btn" id="continueBtn">
+                <span>Continue to Message</span>
+                <span>→</span>
+            </button>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <div class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💬</span>
+                    <span>Chats</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📚</span>
+                    <span>Books</span>
+                </div>
+                <div class="nav-item active">
+                    <span class="nav-icon">⏰</span>
+                    <span>Capsules</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedTime = null;
+        let selectedOccasion = null;
+        let customDateTime = null;
+        
+        const continueSection = document.getElementById('continueSection');
+        const visualMetaphor = document.getElementById('visualMetaphor');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const timeDescription = document.getElementById('timeDescription');
+        const growthStage = document.getElementById('growthStage');
+
+        // Time option selection
+        document.querySelectorAll('.time-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Clear all selections
+                document.querySelectorAll('.time-option').forEach(opt => opt.classList.remove('selected'));
+                document.querySelectorAll('.occasion-option').forEach(opt => opt.classList.remove('selected'));
+                document.getElementById('customSection').classList.remove('active');
+                
+                // Select this option
+                this.classList.add('selected');
+                selectedTime = this.dataset.time;
+                selectedOccasion = null;
+                customDateTime = null;
+                
+                // Update visualization
+                updateVisualization(
+                    this.dataset.metaphor,
+                    this.dataset.display,
+                    this.dataset.description,
+                    this.dataset.stage
+                );
+                
+                // Show continue button
+                continueSection.classList.add('show');
+                
+                // Add feedback animation
+                this.style.transform = 'translateY(-4px) scale(1.02)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 300);
+            });
+        });
+
+        // Special occasion selection
+        document.querySelectorAll('.occasion-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Clear time options
+                document.querySelectorAll('.time-option').forEach(opt => opt.classList.remove('selected'));
+                document.querySelectorAll('.occasion-option').forEach(opt => opt.classList.remove('selected'));
+                document.getElementById('customSection').classList.remove('active');
+                
+                // Select this occasion
+                this.classList.add('selected');
+                selectedOccasion = this.dataset.occasion;
+                selectedTime = null;
+                customDateTime = null;
+                
+                // Update visualization based on occasion
+                const occasionData = {
+                    'birthday': { metaphor: '🎂', display: 'Your Birthday', description: 'A gift waiting for your special day', stage: 'Birthday Magic' },
+                    'new-year': { metaphor: '🎊', display: 'New Year\'s Day', description: 'Fresh wisdom for a fresh start', stage: 'New Beginnings' },
+                    'graduation': { metaphor: '🎓', display: 'Graduation Day', description: 'Words for your achievement moment', stage: 'Milestone Reached' },
+                    'job-start': { metaphor: '💼', display: 'First Day', description: 'Encouragement for new beginnings', stage: 'Career Journey' },
+                    'anniversary': { metaphor: '💍', display: 'Anniversary', description: 'Celebrating love and commitment', stage: 'Love\'s Growth' },
+                    'milestone': { metaphor: '🏆', display: 'Achievement', description: 'Recognition of your hard work', stage: 'Victory Lap' }
+                };
+                
+                const data = occasionData[selectedOccasion];
+                updateVisualization(data.metaphor, data.display, data.description, data.stage);
+                
+                continueSection.classList.add('show');
+                
+                // Celebration animation
+                this.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Custom date picker toggle
+        const customHeader = document.getElementById('customHeader');
+        const customContent = document.getElementById('customContent');
+        const customToggle = document.getElementById('customToggle');
+        const customSection = document.getElementById('customSection');
+
+        customHeader.addEventListener('click', function() {
+            const isExpanded = customContent.classList.contains('expanded');
+            
+            if (isExpanded) {
+                customContent.classList.remove('expanded');
+                customToggle.classList.remove('expanded');
+                customSection.classList.remove('active');
+            } else {
+                customContent.classList.add('expanded');
+                customToggle.classList.add('expanded');
+                customSection.classList.add('active');
+                
+                // Clear other selections
+                document.querySelectorAll('.time-option').forEach(opt => opt.classList.remove('selected'));
+                document.querySelectorAll('.occasion-option').forEach(opt => opt.classList.remove('selected'));
+            }
+        });
+
+        // Custom date/time inputs
+        const customDate = document.getElementById('customDate');
+        const customTime = document.getElementById('customTime');
+        const customPreview = document.getElementById('customPreview');
+
+        function updateCustomPreview() {
+            const date = customDate.value;
+            const time = customTime.value;
+            
+            if (date && time) {
+                const selectedDateTime = new Date(`${date}T${time}`);
+                const now = new Date();
+                const diffMs = selectedDateTime - now;
+                const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+                
+                let previewText = '';
+                if (diffDays < 0) {
+                    previewText = 'Selected time is in the past. Please choose a future date.';
+                } else if (diffDays === 0) {
+                    previewText = 'Delivery today!';
+                } else if (diffDays === 1) {
+                    previewText = 'Delivery tomorrow!';
+                } else {
+                    previewText = `Delivery in ${diffDays} days`;
+                }
+                
+                customPreview.textContent = previewText;
+                
+                if (diffMs > 0) {
+                    selectedTime = null;
+                    selectedOccasion = null;
+                    customDateTime = { date, time };
+                    
+                    updateVisualization('📅', 'Custom Time', `Your message will arrive in ${diffDays} days`, 'Custom Journey');
+                    continueSection.classList.add('show');
+                }
+            } else {
+                customPreview.textContent = 'Select a date and time to see preview';
+                continueSection.classList.remove('show');
+            }
+        }
+
+        customDate.addEventListener('change', updateCustomPreview);
+        customTime.addEventListener('change', updateCustomPreview);
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        customDate.setAttribute('min', today);
+
+        // Update visualization function
+        function updateVisualization(metaphor, display, description, stage) {
+            // Update metaphor with animation
+            visualMetaphor.style.transform = 'scale(0.8)';
+            visualMetaphor.style.opacity = '0';
+            
+            setTimeout(() => {
+                visualMetaphor.textContent = metaphor;
+                visualMetaphor.className = 'visual-metaphor';
+                
+                // Add appropriate animation class
+                if (metaphor === '🌰' || metaphor === '🌱') {
+                    visualMetaphor.classList.add('seed-growing');
+                } else if (metaphor === '🌳') {
+                    visualMetaphor.classList.add('tree-swaying');
+                } else if (metaphor === '💎') {
+                    visualMetaphor.classList.add('crystal-forming');
+                }
+                
+                visualMetaphor.style.transform = 'scale(1)';
+                visualMetaphor.style.opacity = '1';
+                visualMetaphor.style.transition = 'all 0.5s ease';
+            }, 250);
+            
+            // Update text
+            setTimeout(() => {
+                timeDisplay.textContent = display;
+                timeDescription.textContent = description;
+                growthStage.textContent = stage;
+            }, 100);
+        }
+
+        // Continue button
+        document.getElementById('continueBtn').addEventListener('click', function() {
+            const selection = {
+                selectedTime,
+                selectedOccasion,
+                customDateTime
+            };
+            
+            // Loading state
+            this.innerHTML = `
+                <div class="loading-spinner"></div>
+                <span>Preparing canvas...</span>
+            `;
+            
+            setTimeout(() => {
+                console.log('Moving to message composition with:', selection);
+                this.innerHTML = `
+                    <span>Continue to Message</span>
+                    <span>→</span>
+                `;
+            }, 1500);
+        });
+
+        // Back button
+        document.querySelector('.back-btn').addEventListener('click', function() {
+            this.style.transform = 'translateX(-4px)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
+        });
+
+        // Entrance animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeOptions = document.querySelectorAll('.time-option');
+            
+            timeOptions.forEach((option, index) => {
+                option.style.opacity = '0';
+                option.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    option.style.transition = 'all 0.5s ease-out';
+                    option.style.opacity = '1';
+                    option.style.transform = 'translateY(0)';
+                }, index * 50);
+            });
+        });
+    </script>
+</body>
+</html>

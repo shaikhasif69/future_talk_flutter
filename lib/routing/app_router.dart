@@ -10,6 +10,7 @@ import '../features/chat/screens/individual_chat_screen.dart';
 import '../features/chat/models/chat_conversation.dart';
 
 import '../features/books/screens/book_library_screen.dart';
+import '../features/capsule_garden/screens/capsule_garden_dashboard.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/user_profile/screens/user_profile_screen.dart';
 import '../features/user_profile/models/user_profile_model.dart';
@@ -28,7 +29,7 @@ class AppRouter {
     routes: [
       // ==================== SPLASH ROUTE (TESTING SHORTCUT) ====================
       // GoRoute(ƒchat
-      GoRoute(path: '/splash', name: 'splash', builder: (context, state) => const SplashScreen()),
+      // GoRoute(path: '/splash', name: 'splash', builder: (context, state) => const SplashScreen()),
       // ==================== ONBOARDING ROUTE ====================
       GoRoute(
         path: '/onboarding',
@@ -114,6 +115,13 @@ class AppRouter {
         path: '/books',
         name: 'books',
         builder: (context, state) => const ResponsiveBookLibraryScreen(),
+      ),
+
+      // ==================== CAPSULE GARDEN ROUTES ====================
+      GoRoute(
+        path: '/splash',
+        name: 'capsule_garden',
+        builder: (context, state) => const CapsuleGardenDashboard(),
       ),
 
       // ==================== SPLASH ROUTE ====================
@@ -218,6 +226,7 @@ class Routes {
   static const String chat = '/chat';
   static const String individualChat = '/chat/individual';
   static const String books = '/books';
+  static const String capsuleGarden = '/capsule-garden';
   static const String profile = '/profile';
   static const String userProfile = '/user-profile';
   static const String notifications = '/notifications';
@@ -246,6 +255,9 @@ extension AppNavigation on BuildContext {
 
   /// Navigate to book library
   void goToBooks() => go(Routes.books);
+
+  /// Navigate to capsule garden
+  void goToCapsuleGarden() => go(Routes.capsuleGarden);
 
   /// Navigate to profile screen
   void goToProfile() => go(Routes.profile);
