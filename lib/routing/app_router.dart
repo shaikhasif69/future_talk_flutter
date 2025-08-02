@@ -11,6 +11,7 @@ import '../features/chat/models/chat_conversation.dart';
 
 import '../features/books/screens/book_library_screen.dart';
 import '../features/capsule_garden/screens/capsule_garden_dashboard.dart';
+import '../features/capsule_creation/screens/create_capsule_page1_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/user_profile/screens/user_profile_screen.dart';
 import '../features/user_profile/models/user_profile_model.dart';
@@ -119,9 +120,17 @@ class AppRouter {
 
       // ==================== CAPSULE GARDEN ROUTES ====================
       GoRoute(
-        path: '/splash',
+        path: '/capsule-garden',
         name: 'capsule_garden',
         builder: (context, state) => const CapsuleGardenDashboard(),
+      ),
+
+      // ==================== CAPSULE CREATION ROUTES ====================
+      GoRoute(
+        // path: '/capsule/create',
+        path: '/splash',
+        name: 'create_capsule',
+        builder: (context, state) => const CreateCapsulePage1Screen(),
       ),
 
       // ==================== SPLASH ROUTE ====================
@@ -227,6 +236,7 @@ class Routes {
   static const String individualChat = '/chat/individual';
   static const String books = '/books';
   static const String capsuleGarden = '/capsule-garden';
+  static const String createCapsule = '/capsule/create';
   static const String profile = '/profile';
   static const String userProfile = '/user-profile';
   static const String notifications = '/notifications';
@@ -258,6 +268,9 @@ extension AppNavigation on BuildContext {
 
   /// Navigate to capsule garden
   void goToCapsuleGarden() => go(Routes.capsuleGarden);
+
+  /// Navigate to create capsule screen
+  void goToCreateCapsule() => go(Routes.createCapsule);
 
   /// Navigate to profile screen
   void goToProfile() => go(Routes.profile);
