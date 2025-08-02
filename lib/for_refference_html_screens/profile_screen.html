@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Talk - Profile</title>
+    
+    <!-- Future Talk Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Serif Pro', serif;
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            color: #4A4A4A;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #FEFEFE;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 30px 80px rgba(0,0,0,0.08);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Enhanced Status Bar */
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, #F7F5F3, #FEFEFE);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .time { 
+            color: #4A4A4A; 
+            font-family: 'Source Serif Pro', serif;
+        }
+        
+        .status-indicators {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .my-battery-status {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(135, 169, 107, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: #87A96B;
+        }
+        
+        .battery-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+
+        /* Premium Header */
+        .profile-header {
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            padding: 16px 20px 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 120px;
+            height: 120px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .profile-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-2px);
+        }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .settings-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .settings-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #C8B5D1, #D4A5A5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .edit-avatar-btn {
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #87A96B;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #87A96B;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-avatar-btn:hover {
+            background: #87A96B;
+            color: white;
+        }
+
+        .profile-details h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .profile-username {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .profile-bio {
+            font-family: 'Crimson Pro', serif;
+            font-size: 14px;
+            line-height: 1.4;
+            opacity: 0.9;
+            font-style: italic;
+            max-width: 200px;
+        }
+
+        /* Compact Social Battery Section */
+        .social-battery-section {
+            background: white;
+            margin: -12px 20px 0;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+            z-index: 10;
+        }
+
+        .battery-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .battery-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #4A4A4A;
+        }
+
+        .battery-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(76, 175, 80, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .battery-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4CAF50;
+            animation: batteryPulse 2s ease-in-out infinite;
+        }
+
+        .battery-label {
+            font-size: 11px;
+            color: #4CAF50;
+            font-weight: 500;
+        }
+
+        .battery-options {
+            display: flex;
+            gap: 8px;
+        }
+
+        .battery-option {
+            flex: 1;
+            padding: 8px 6px;
+            border-radius: 12px;
+            border: 1px solid #F0F0F0;
+            background: #FEFEFE;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .battery-option.active {
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            color: white;
+            border-color: #87A96B;
+        }
+
+        .battery-option.yellow {
+            border-color: #F4C2A1;
+        }
+
+        .battery-option.yellow.active {
+            background: linear-gradient(135deg, #F4C2A1 0%, #D4A5A5 100%);
+        }
+
+        .battery-option.red {
+            border-color: #D4A5A5;
+        }
+
+        .battery-option.red.active {
+            background: linear-gradient(135deg, #D4A5A5 0%, #C8B5D1 100%);
+        }
+
+        .battery-emoji {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .battery-text {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        /* Main Content with Better Scrolling */
+        .main-content {
+            flex: 1;
+            padding: 20px 20px 120px;
+            overflow-y: auto;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .stats-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .stats-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 500;
+            color: #4A4A4A;
+        }
+
+        .stats-period {
+            font-size: 12px;
+            color: #6B6B6B;
+            background: rgba(135, 169, 107, 0.1);
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 16px;
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(135, 169, 107, 0.1);
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: #87A96B;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6B6B6B;
+        }
+
+        .stat-sublabel {
+            font-size: 10px;
+            color: #6B6B6B;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        /* Premium Features Section */
+        .premium-section {
+            background: linear-gradient(135deg, #C8B5D1 0%, #D4A5A5 100%);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-section::before {
+            content: '✨';
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 24px;
+            opacity: 0.7;
+        }
+
+        .premium-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .premium-subtitle {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .premium-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .premium-feature {
+            background: rgba(255,255,255,0.2);
+            padding: 12px 16px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feature-icon {
+            font-size: 20px;
+        }
+
+        .feature-info h4 {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .feature-info p {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        /* Profile Actions Section */
+        .profile-actions {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #F0F0F0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-item:hover {
+            background: rgba(135, 169, 107, 0.05);
+            margin: 0 -12px;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .action-item:last-child {
+            border-bottom: none;
+        }
+
+        .action-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .action-icon {
+            font-size: 18px;
+        }
+
+        .action-details h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 2px;
+        }
+
+        .action-details p {
+            font-size: 12px;
+            color: #6B6B6B;
+        }
+
+        .action-arrow {
+            color: #6B6B6B;
+            font-size: 16px;
+        }
+
+        .logout-action {
+            color: #D4A5A5 !important;
+        }
+
+        .logout-action .action-details h4 {
+            color: #D4A5A5;
+        }
+
+        /* Friends Preview */
+        .friends-preview {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .friends-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .friends-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #4A4A4A;
+        }
+
+        .friends-count {
+            font-size: 12px;
+            color: #6B6B6B;
+            background: rgba(135, 169, 107, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .friends-list {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .friend-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #B8D4E3, #F4C2A1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 60px;
+        }
+
+        .friend-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        .friend-battery {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid white;
+            background: #4CAF50;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px 32px;
+            border-top: 1px solid #F0F0F0;
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            color: #6B6B6B;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: #87A96B;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        /* Animations */
+        @keyframes batteryPulse {
+            0%, 100% { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+            50% { 
+                opacity: 0.7; 
+                transform: scale(1.1); 
+            }
+        }
+
+        /* Scrollbar */
+        .main-content::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: rgba(135, 169, 107, 0.3);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="time">9:41</div>
+            <div class="status-indicators">
+                <div class="my-battery-status">
+                    <div class="battery-dot"></div>
+                    <span>Green</span>
+                </div>
+                <span style="color: #87A96B;">100% 🔋</span>
+            </div>
+        </div>
+
+        <!-- Premium Header -->
+        <div class="profile-header">
+            <div class="header-top">
+                <button class="back-btn">←</button>
+                <h1 class="header-title">Profile</h1>
+                <button class="settings-btn">⚙️</button>
+            </div>
+            
+            <div class="profile-info">
+                <div class="profile-avatar">
+                    AS
+                    <div class="edit-avatar-btn">✎</div>
+                </div>
+                <div class="profile-details">
+                    <h1>Asif Shaikh</h1>
+                    <p class="profile-username">@asif_thoughtful</p>
+                    <p class="profile-bio">A quiet soul who finds magic in meaningful conversations and future messages ✨</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compact Social Battery Section -->
+        <div class="social-battery-section">
+            <div class="battery-header">
+                <h2 class="battery-title">Social Battery</h2>
+                <div class="battery-status">
+                    <div class="battery-indicator"></div>
+                    <span class="battery-label">Green</span>
+                </div>
+            </div>
+            <div class="battery-options">
+                <div class="battery-option active">
+                    <span class="battery-emoji">💚</span>
+                    <span class="battery-text">Green</span>
+                </div>
+                <div class="battery-option yellow">
+                    <span class="battery-emoji">💛</span>
+                    <span class="battery-text">Yellow</span>
+                </div>
+                <div class="battery-option red">
+                    <span class="battery-emoji">❤️</span>
+                    <span class="battery-text">Red</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content with Better Scrolling -->
+        <div class="main-content">
+            <!-- Thoughtful Stats -->
+            <div class="stats-section">
+                <div class="stats-header">
+                    <h2 class="stats-title">Your Journey</h2>
+                    <span class="stats-period">This Month</span>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">18</span>
+                        <span class="stat-label">Time Capsules</span>
+                        <span class="stat-sublabel">Sent to future</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">7</span>
+                        <span class="stat-label">Books Read</span>
+                        <span class="stat-sublabel">Peaceful hours</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">12</span>
+                        <span class="stat-label">Day Streak</span>
+                        <span class="stat-sublabel">Mindful check-ins</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">Deep Chats</span>
+                        <span class="stat-sublabel">Meaningful talks</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Features -->
+            <div class="premium-section">
+                <h2 class="premium-title">Premium Sanctuary</h2>
+                <p class="premium-subtitle">Your premium features for deeper connections</p>
+                <div class="premium-features">
+                    <div class="premium-feature">
+                        <span class="feature-icon">🪨</span>
+                        <div class="feature-info">
+                            <h4>Connection Stones</h4>
+                            <p>3 custom stones • 47 comfort touches given</p>
+                        </div>
+                    </div>
+                    <div class="premium-feature">
+                        <span class="feature-icon">📚</span>
+                        <div class="feature-info">
+                            <h4>Parallel Reading</h4>
+                            <p>Currently reading with 2 friends</p>
+                        </div>
+                    </div>
+                    <div class="premium-feature">
+                        <span class="feature-icon">🎮</span>
+                        <div class="feature-info">
+                            <h4>Premium Games</h4>
+                            <p>12 games unlocked • Thoughtful entertainment</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Actions -->
+            <div class="profile-actions">
+                <h2 class="section-title">👤 Account</h2>
+                <div class="action-item">
+                    <div class="action-info">
+                        <span class="action-icon">✎</span>
+                        <div class="action-details">
+                            <h4>Edit Profile</h4>
+                            <p>Update your display name, bio, and preferences</p>
+                        </div>
+                    </div>
+                    <span class="action-arrow">→</span>
+                </div>
+                <div class="action-item">
+                    <div class="action-info">
+                        <span class="action-icon">📊</span>
+                        <div class="action-details">
+                            <h4>Your Activity</h4>
+                            <p>Detailed stats and reading analytics</p>
+                        </div>
+                    </div>
+                    <span class="action-arrow">→</span>
+                </div>
+                <div class="action-item">
+                    <div class="action-info">
+                        <span class="action-icon">💾</span>
+                        <div class="action-details">
+                            <h4>Export Data</h4>
+                            <p>Download all your Future Talk content</p>
+                        </div>
+                    </div>
+                    <span class="action-arrow">→</span>
+                </div>
+                <div class="action-item logout-action">
+                    <div class="action-info">
+                        <span class="action-icon">🚪</span>
+                        <div class="action-details">
+                            <h4>Logout</h4>
+                            <p>Sign out of your account</p>
+                        </div>
+                    </div>
+                    <span class="action-arrow">→</span>
+                </div>
+            </div>
+
+            <!-- Friends Preview -->
+            <div class="friends-preview">
+                <div class="friends-header">
+                    <h2 class="friends-title">👥 Close Friends</h2>
+                    <span class="friends-count">8 friends</span>
+                </div>
+                <div class="friends-list">
+                    <div class="friend-avatar">
+                        S
+                        <div class="friend-battery" style="background: #F4C2A1;"></div>
+                    </div>
+                    <div class="friend-avatar">
+                        A
+                        <div class="friend-battery"></div>
+                    </div>
+                    <div class="friend-avatar">
+                        M
+                        <div class="friend-battery" style="background: #D4A5A5;"></div>
+                    </div>
+                    <div class="friend-avatar">
+                        R
+                        <div class="friend-battery"></div>
+                    </div>
+                    <div class="friend-avatar">
+                        +4
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <div class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💬</span>
+                    <span>Chats</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📚</span>
+                    <span>Books</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">⏰</span>
+                    <span>Capsules</span>
+                </div>
+                <div class="nav-item active">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Social Battery Selection
+        document.querySelectorAll('.battery-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove active from all options
+                document.querySelectorAll('.battery-option').forEach(opt => opt.classList.remove('active'));
+                
+                // Add active to clicked option
+                this.classList.add('active');
+                
+                // Update battery status display
+                const batteryLabel = document.querySelector('.battery-label');
+                const batteryIndicator = document.querySelector('.battery-indicator');
+                const statusBattery = document.querySelector('.my-battery-status span');
+                
+                if (this.classList.contains('yellow')) {
+                    batteryLabel.textContent = 'Yellow';
+                    batteryIndicator.style.background = '#F4C2A1';
+                    statusBattery.textContent = 'Yellow';
+                } else if (this.classList.contains('red')) {
+                    batteryLabel.textContent = 'Red';
+                    batteryIndicator.style.background = '#D4A5A5';
+                    statusBattery.textContent = 'Red';
+                } else {
+                    batteryLabel.textContent = 'Green';
+                    batteryIndicator.style.background = '#4CAF50';
+                    statusBattery.textContent = 'Green';
+                }
+                
+                // Add selection animation
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Profile Actions
+        document.querySelectorAll('.action-item').forEach(item => {
+            item.addEventListener('click', function() {
+                if (this.classList.contains('logout-action')) {
+                    // Handle logout
+                    this.style.background = 'rgba(212, 165, 165, 0.1)';
+                } else {
+                    // Handle other actions
+                    this.style.background = 'rgba(135, 169, 107, 0.1)';
+                }
+                
+                setTimeout(() => {
+                    this.style.background = '';
+                }, 300);
+            });
+        });
+
+        // Profile Avatar Click
+        document.querySelector('.profile-avatar').addEventListener('click', function() {
+            this.style.transform = 'scale(1.1) rotate(5deg)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 300);
+        });
+
+        // Edit Avatar Button
+        document.querySelector('.edit-avatar-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.style.transform = 'scale(1.3)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
+        });
+
+        // Friends Avatar Clicks
+        document.querySelectorAll('.friend-avatar').forEach(avatar => {
+            avatar.addEventListener('click', function() {
+                this.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Stats animation on load
+        setTimeout(() => {
+            document.querySelectorAll('.stat-number').forEach((stat, index) => {
+                setTimeout(() => {
+                    stat.style.transform = 'scale(1.1)';
+                    stat.style.color = '#87A96B';
+                    setTimeout(() => {
+                        stat.style.transform = '';
+                    }, 300);
+                }, index * 100);
+            });
+        }, 500);
+
+        // Settings button click
+        document.querySelector('.settings-btn').addEventListener('click', function() {
+            this.style.transform = 'scale(1.2) rotate(90deg)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 300);
+        });
+    </script>
+</body>
+</html>

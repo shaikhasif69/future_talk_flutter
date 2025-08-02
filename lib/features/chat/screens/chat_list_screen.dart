@@ -4,6 +4,7 @@ import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/widgets/animations/ft_stagger_animation.dart';
 import '../../../shared/widgets/ft_button.dart';
+import '../../../routing/app_router.dart';
 import '../providers/chat_list_provider.dart';
 import '../widgets/chat_list_header.dart';
 import '../widgets/chat_item_tile.dart';
@@ -294,9 +295,15 @@ class _ChatListScreenState extends State<ChatListScreen> {
     // Mark conversation as read
     _chatProvider.markAsRead(conversationId);
     
+    // Find the conversation and navigate
+    final conversations = _chatProvider.conversations;
+    final conversation = conversations.firstWhere(
+      (c) => c.id == conversationId,
+      orElse: () => conversations.first, // Fallback
+    );
+    
     // Navigate to individual chat screen
-    // TODO: Implement navigation to chat detail screen
-    debugPrint('Navigate to chat: $conversationId');
+    context.goToIndividualChat(conversation);
   }
 
   void _showChatOptions(dynamic conversation) {

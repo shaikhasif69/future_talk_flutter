@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:future_talk_frontend/features/auth/screens/splash_screen.dart';
 import 'package:go_router/go_router.dart';
-import '../features/auth/screens/splash_screen.dart';
 import '../features/auth/screens/onboarding_screen.dart';
 import '../features/auth/screens/sign_up_screen.dart';
 import '../features/auth/screens/sign_in_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
 import '../features/chat/screens/chat_list_screen.dart';
+import '../features/chat/screens/individual_chat_screen.dart';
+import '../features/chat/models/chat_conversation.dart';
+
 import '../features/books/screens/book_library_screen.dart';
+import '../features/profile/screens/profile_screen.dart';
 
 /// Future Talk's routing configuration using GoRouter
 /// Handles navigation between authentication screens with smooth transitions
@@ -18,13 +22,8 @@ class AppRouter {
     initialLocation: '/splash',
     debugLogDiagnostics: true,
     routes: [
-      // ==================== SPLASH ROUTE ====================
-      // GoRoute(
-      //   path: '/splash',
-      //   name: 'splash',
-      //   builder: (context, state) => const SplashScreen(),
-      // ),
-
+      // ==================== SPLASH ROUTE (TESTING SHORTCUT) ====================
+      // GoRoute(ƒchat
       // ==================== ONBOARDING ROUTE ====================
       GoRoute(
         path: '/onboarding',
@@ -32,7 +31,7 @@ class AppRouter {
         builder: (context, state) => const OnboardingScreen(),
       ),
 
-      // ==================== SIGN UP ROUTE ====================
+      // ==================== SIGN UP ROUTE =============ƒchat=======
       GoRoute(
         path: '/sign_up',
         name: 'sign_up',
@@ -58,13 +57,72 @@ class AppRouter {
         path: '/chat',
         name: 'chat',
         builder: (context, state) => const ChatListScreen(),
+        routes: [
+          // Individual Chat Route
+          GoRoute(
+            path: 'individual/:conversationId',
+            name: 'individual_chat',
+            builder: (context, state) {
+              final conversationId = state.pathParameters['conversationId']!;
+              final conversationJson = state.extra as Map<String, dynamic>?;
+              
+              if (conversationJson != null) {
+                final conversation = ChatConversation.fromJson(conversationJson);
+                return IndividualChatScreen(conversation: conversation);
+              }
+              
+              // Fallback - shouldn't happen in normal flow
+              return const Scaffold(
+                body: Center(
+                  child: Text('Conversation not found'),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+
+      // ==================== INDIVIDUAL CHAT ROUTE (DIRECT ACCESS) ====================
+      GoRoute(
+        path: '/chat/individual/:conversationId',
+        name: 'individual_chat_direct',
+        builder: (context, state) {
+          final conversationId = state.pathParameters['conversationId']!;
+          final conversationJson = state.extra as Map<String, dynamic>?;
+          
+          if (conversationJson != null) {
+            final conversation = ChatConversation.fromJson(conversationJson);
+            return IndividualChatScreen(conversation: conversation);
+          }
+          
+          // Fallback - shouldn't happen in normal flow
+          return const Scaffold(
+            body: Center(
+              child: Text('Conversation not found'),
+            ),
+          );
+        },
       ),
 
       // ==================== BOOKS ROUTES ====================
       GoRoute(
-        path: '/splash',
+        path: '/books',
         name: 'books',
         builder: (context, state) => const ResponsiveBookLibraryScreen(),
+      ),
+
+      // ==================== SPLASH ROUTE ====================
+      // GoRoute(
+      //   path: '/splash',
+      //   name: 'splash',
+      //   builder: (context, state) => const SplashScreen(),
+      // ),
+
+      // ==================== PROFILE ROUTES ====================
+      GoRoute(
+        path: '/splash',
+        name: 'profile',
+        builder: (context, state) => const ProfileScreen(),
       ),
     ],
 
@@ -119,7 +177,9 @@ class Routes {
   static const String signIn = '/sign_in';
   static const String dashboard = '/dashboard';
   static const String chat = '/chat';
+  static const String individualChat = '/chat/individual';
   static const String books = '/books';
+  static const String profile = '/profile';
 }
 
 /// Navigation extensions for easy routing
@@ -144,6 +204,15 @@ extension AppNavigation on BuildContext {
 
   /// Navigate to book library
   void goToBooks() => go(Routes.books);
+
+  /// Navigate to profile screen
+  void goToProfile() => go(Routes.profile);
+
+  /// Navigate to individual chat
+  void goToIndividualChat(ChatConversation conversation) {
+    final path = '/chat/individual/${conversation.id}';
+    go(path, extra: conversation.toJson());
+  }
 
   /// Push sign up screen
   void pushSignUp() => push(Routes.signUp);

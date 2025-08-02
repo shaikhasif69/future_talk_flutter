@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Talk - Settings</title>
+    
+    <!-- Future Talk Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Serif Pro', serif;
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            color: #4A4A4A;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #FEFEFE;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 30px 80px rgba(0,0,0,0.08);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, #F7F5F3, #FEFEFE);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .time { 
+            color: #4A4A4A; 
+            font-family: 'Source Serif Pro', serif;
+        }
+        
+        .status-indicators {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .my-battery-status {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(135, 169, 107, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: #87A96B;
+        }
+        
+        .battery-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+
+        /* Premium Header */
+        .settings-header {
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            padding: 16px 20px 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .settings-header::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-2px);
+        }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .search-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 24px 20px 100px;
+            overflow-y: auto;
+        }
+
+        /* Settings Sections */
+        .settings-section {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid rgba(135, 169, 107, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .section-icon {
+            font-size: 20px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 500;
+            color: #4A4A4A;
+        }
+
+        .section-description {
+            font-family: 'Crimson Pro', serif;
+            font-size: 12px;
+            color: #6B6B6B;
+            margin-bottom: 20px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid #F0F0F0;
+            transition: all 0.3s ease;
+        }
+
+        .setting-item:hover {
+            background: rgba(135, 169, 107, 0.03);
+            margin: 0 -12px;
+            padding: 16px 12px;
+            border-radius: 8px;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info h4 {
+            font-size: 15px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 4px;
+        }
+
+        .setting-info p {
+            font-size: 12px;
+            color: #6B6B6B;
+            line-height: 1.3;
+        }
+
+        .setting-toggle {
+            width: 48px;
+            height: 26px;
+            border-radius: 13px;
+            background: #F0F0F0;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .setting-toggle.active {
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+        }
+
+        .toggle-knob {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: white;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .setting-toggle.active .toggle-knob {
+            transform: translateX(22px);
+        }
+
+        .setting-arrow {
+            color: #6B6B6B;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .setting-value {
+            font-size: 13px;
+            color: #87A96B;
+            background: rgba(135, 169, 107, 0.1);
+            padding: 4px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* AI Warning */
+        .ai-warning {
+            background: linear-gradient(135deg, rgba(244, 194, 161, 0.1), rgba(212, 165, 165, 0.1));
+            border: 1px solid rgba(244, 194, 161, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 12px;
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .ai-warning.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .ai-warning-text {
+            font-size: 11px;
+            color: #6B6B6B;
+            font-family: 'Crimson Pro', serif;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        /* Special Settings */
+        .danger-zone {
+            border: 1px solid rgba(212, 165, 165, 0.3);
+        }
+
+        .danger-item .setting-info h4 {
+            color: #D4A5A5;
+        }
+
+        .danger-item .setting-arrow {
+            color: #D4A5A5;
+        }
+
+        /* Preference Grid */
+        .preference-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .preference-item {
+            background: #F7F5F3;
+            padding: 16px 12px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #F0F0F0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .preference-item.active {
+            background: linear-gradient(135deg, rgba(135, 169, 107, 0.1), rgba(164, 184, 138, 0.1));
+            border-color: #87A96B;
+            box-shadow: 0 2px 8px rgba(135, 169, 107, 0.2);
+        }
+
+        .preference-icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .preference-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #4A4A4A;
+        }
+
+        .preference-description {
+            font-size: 10px;
+            color: #6B6B6B;
+            margin-top: 2px;
+        }
+
+        /* About Section */
+        .about-section {
+            background: linear-gradient(135deg, #C8B5D1 0%, #D4A5A5 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-section::before {
+            content: '✨';
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 24px;
+            opacity: 0.7;
+        }
+
+        .about-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .app-version {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .version-info h4 {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .version-number {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .about-description {
+            font-family: 'Crimson Pro', serif;
+            font-size: 13px;
+            line-height: 1.4;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        /* Notification Badge */
+        .notification-badge {
+            background: #D4A5A5;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px 32px;
+            border-top: 1px solid #F0F0F0;
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            color: #6B6B6B;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: #87A96B;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scrollbar */
+        .main-content::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: rgba(135, 169, 107, 0.3);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="time">9:41</div>
+            <div class="status-indicators">
+                <div class="my-battery-status">
+                    <div class="battery-dot"></div>
+                    <span>Green</span>
+                </div>
+                <span style="color: #87A96B;">100% 🔋</span>
+            </div>
+        </div>
+
+        <!-- Premium Header -->
+        <div class="settings-header">
+            <div class="header-top">
+                <button class="back-btn">←</button>
+                <h1 class="header-title">Settings</h1>
+                <button class="search-btn">🔍</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- AI & Privacy Settings -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <span class="section-icon">🤖</span>
+                    <h2 class="section-title">AI Assistance</h2>
+                </div>
+                <p class="section-description">Control how AI helps you communicate while respecting your privacy</p>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Grammar Assistant (Layer 1)</h4>
+                        <p>Help with spelling and grammar only - no message reading</p>
+                    </div>
+                    <div class="setting-toggle" data-layer="1">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Conversation Assistant (Layer 2)</h4>
+                        <p>Full AI help with message composition and suggestions</p>
+                    </div>
+                    <div class="setting-toggle" data-layer="2">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                
+                <div class="ai-warning" id="aiWarning">
+                    <p class="ai-warning-text">🛡️ Enabling AI assistance allows our systems to process your messages for improvement. Your privacy remains our highest priority and data is never stored permanently.</p>
+                </div>
+            </div>
+
+            <!-- Privacy Sanctuary -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <span class="section-icon">🔒</span>
+                    <h2 class="section-title">Privacy Sanctuary</h2>
+                </div>
+                <p class="section-description">Your safe space - control exactly who can reach you and how</p>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Anonymous Messages</h4>
+                        <p>Allow others to send you anonymous time capsules</p>
+                    </div>
+                    <div class="setting-toggle active">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Read Receipts</h4>
+                        <p>Show when you've read messages from friends</p>
+                    </div>
+                    <div class="setting-toggle active">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Profile Visibility</h4>
+                        <p>Control who can see your profile and information</p>
+                    </div>
+                    <span class="setting-value">Friends Only</span>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Online Status</h4>
+                        <p>Show when you're online and available to chat</p>
+                    </div>
+                    <div class="setting-toggle active">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Communication Preferences -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <span class="section-icon">💬</span>
+                    <h2 class="section-title">Communication</h2>
+                </div>
+                <p class="section-description">Customize how you connect and communicate with others</p>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Message Previews</h4>
+                        <p>Show message content in notifications</p>
+                    </div>
+                    <div class="setting-toggle active">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Slow Mode Default</h4>
+                        <p>Enable thoughtful conversation pace by default</p>
+                    </div>
+                    <div class="setting-toggle">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Quiet Hours</h4>
+                        <p>Automatically mute notifications during set times</p>
+                    </div>
+                    <span class="setting-value">10 PM - 8 AM</span>
+                </div>
+            </div>
+
+            <!-- Reading Preferences -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <span class="section-icon">📚</span>
+                    <h2 class="section-title">Reading Sanctuary</h2>
+                </div>
+                <p class="section-description">Personalize your reading experience and preferences</p>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Reading Notifications</h4>
+                        <p>Get notified when friends start reading sessions</p>
+                    </div>
+                    <div class="setting-toggle active">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                
+                <div class="preference-grid">
+                    <div class="preference-item active">
+                        <span class="preference-icon">🌙</span>
+                        <div class="preference-label">Evening Reader</div>
+                        <div class="preference-description">Peaceful nights</div>
+                    </div>
+                    <div class="preference-item">
+                        <span class="preference-icon">☀️</span>
+                        <div class="preference-label">Morning Reader</div>
+                        <div class="preference-description">Fresh starts</div>
+                    </div>
+                    <div class="preference-item active">
+                        <span class="preference-icon">🐌</span>
+                        <div class="preference-label">Slow Pace</div>
+                        <div class="preference-description">Savor each word</div>
+                    </div>
+                    <div class="preference-item active">
+                        <span class="preference-icon">💝</span>
+                        <div class="preference-label">Romance Lover</div>
+                        <div class="preference-description">Heart stories</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <span class="section-icon">🔔</span>
+                    <h2 class="section-title">Notifications</h2>
+                </div>
+                <p class="section-description">Stay connected without feeling overwhelmed</p>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Time Capsule Deliveries</h4>
+                        <p>Get notified when your future messages arrive</p>
+                    </div>
+                    <div class="setting-toggle active">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Connection Stone Touches</h4>
+                        <p>Feel when friends touch their comfort stones</p>
+                    </div>
+                    <div class="setting-toggle active">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Friend Battery Changes</h4>
+                        <p>Know when friends' social energy levels change</p>
+                    </div>
+                    <div class="setting-toggle">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Marketing Updates</h4>
+                        <p>Receive news about Future Talk features</p>
+                    </div>
+                    <div class="setting-toggle">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account & Security -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <span class="section-icon">⚙️</span>
+                    <h2 class="section-title">Account & Security</h2>
+                </div>
+                <p class="section-description">Manage your account and keep your data secure</p>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Change Email</h4>
+                        <p>asif****@gmail.com</p>
+                    </div>
+                    <span class="setting-arrow">→</span>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Update Password</h4>
+                        <p>Last changed 3 months ago</p>
+                    </div>
+                    <span class="setting-arrow">→</span>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Two-Factor Authentication</h4>
+                        <p>Add an extra layer of security to your account</p>
+                    </div>
+                    <div class="setting-toggle">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Login Sessions</h4>
+                        <p>Manage devices signed into your account</p>
+                    </div>
+                    <span class="notification-badge">3</span>
+                </div>
+            </div>
+
+            <!-- Data & Storage -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <span class="section-icon">💾</span>
+                    <h2 class="section-title">Data & Storage</h2>
+                </div>
+                <p class="section-description">Control your data and storage preferences</p>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Auto-Download Media</h4>
+                        <p>Automatically download images and voice messages</p>
+                    </div>
+                    <div class="setting-toggle active">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Storage Used</h4>
+                        <p>248 MB of messages, books, and media</p>
+                    </div>
+                    <span class="setting-arrow">→</span>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Backup Chat History</h4>
+                        <p>Automatically backup your conversations</p>
+                    </div>
+                    <div class="setting-toggle active">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Export All Data</h4>
+                        <p>Download a complete copy of your Future Talk data</p>
+                    </div>
+                    <span class="setting-arrow">→</span>
+                </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="settings-section danger-zone">
+                <div class="section-header">
+                    <span class="section-icon">⚠️</span>
+                    <h2 class="section-title">Danger Zone</h2>
+                </div>
+                <p class="section-description">Irreversible actions that permanently affect your account</p>
+                
+                <div class="setting-item danger-item">
+                    <div class="setting-info">
+                        <h4>Deactivate Account</h4>
+                        <p>Temporarily disable your account and hide your profile</p>
+                    </div>
+                    <span class="setting-arrow">→</span>
+                </div>
+                
+                <div class="setting-item danger-item">
+                    <div class="setting-info">
+                        <h4>Delete Account</h4>
+                        <p>Permanently delete your account and all data</p>
+                    </div>
+                    <span class="setting-arrow">→</span>
+                </div>
+            </div>
+
+            <!-- About -->
+            <div class="settings-section about-section">
+                <div class="about-content">
+                    <div class="app-version">
+                        <div class="version-info">
+                            <h4>Future Talk</h4>
+                            <span class="version-number">Version 1.0.0 (Beta)</span>
+                        </div>
+                        <span style="font-size: 24px;">✨</span>
+                    </div>
+                    <p class="about-description">Your sanctuary for thoughtful communication. Built with love for introverts who value meaningful connections over noise.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <div class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💬</span>
+                    <span>Chats</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📚</span>
+                    <span>Books</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">⏰</span>
+                    <span>Capsules</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Settings Toggles
+        document.querySelectorAll('.setting-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                
+                // Show AI warning if any AI layer is enabled
+                const aiWarning = document.getElementById('aiWarning');
+                const layer1 = document.querySelector('[data-layer="1"]').classList.contains('active');
+                const layer2 = document.querySelector('[data-layer="2"]').classList.contains('active');
+                
+                if (layer1 || layer2) {
+                    aiWarning.classList.add('show');
+                } else {
+                    aiWarning.classList.remove('show');
+                }
+                
+                // Add feedback animation
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+
+        // Reading Preferences
+        document.querySelectorAll('.preference-item').forEach(pref => {
+            pref.addEventListener('click', function() {
+                this.classList.toggle('active');
+                
+                // Add selection animation
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Setting Value Clicks
+        document.querySelectorAll('.setting-value').forEach(value => {
+            value.addEventListener('click', function() {
+                this.style.background = 'rgba(135, 169, 107, 0.2)';
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    this.style.background = '';
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Setting Arrow Clicks
+        document.querySelectorAll('.setting-arrow').forEach(arrow => {
+            arrow.addEventListener('click', function() {
+                // Add navigation animation
+                const item = arrow.closest('.setting-item');
+                item.style.background = 'rgba(135, 169, 107, 0.05)';
+                setTimeout(() => {
+                    item.style.background = '';
+                }, 300);
+            });
+        });
+
+        // Back button
+        document.querySelector('.back-btn').addEventListener('click', function() {
+            this.style.transform = 'translateX(-6px) scale(1.1)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
+        });
+
+        // Search button
+        document.querySelector('.search-btn').addEventListener('click', function() {
+            this.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
+        });
+
+        // Smooth scroll enhancements
+        let isScrolling = false;
+        const mainContent = document.querySelector('.main-content');
+
+        mainContent.addEventListener('scroll', function() {
+            if (!isScrolling) {
+                window.requestAnimationFrame(function() {
+                    // Add any scroll-based animations here
+                    isScrolling = false;
+                });
+                isScrolling = true;
+            }
+        });
+
+        // Entrance animation for sections
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Apply entrance animation to sections
+        document.querySelectorAll('.settings-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'all 0.4s ease-out';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
