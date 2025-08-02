@@ -60,7 +60,19 @@ mixin _$TimeCapsuleCreationData {
   String get timeDescription => throw _privateConstructorUsedError;
 
   /// Current growth stage text
-  String get growthStage => throw _privateConstructorUsedError;
+  String get growthStage =>
+      throw _privateConstructorUsedError; // ==================== FRIEND SELECTION PROPERTIES ====================
+  /// Selected friend for "Someone Special" capsules
+  Friend? get selectedFriend => throw _privateConstructorUsedError;
+
+  /// Message settings for capsule customization
+  MessageSettings? get messageSettings => throw _privateConstructorUsedError;
+
+  /// Search query for friends list
+  String get friendSearchQuery => throw _privateConstructorUsedError;
+
+  /// Whether friend selection step is completed
+  bool get friendSelectionCompleted => throw _privateConstructorUsedError;
 
   /// Serializes this TimeCapsuleCreationData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -93,9 +105,15 @@ abstract class $TimeCapsuleCreationDataCopyWith<$Res> {
     String timeDisplay,
     String timeDescription,
     String growthStage,
+    Friend? selectedFriend,
+    MessageSettings? messageSettings,
+    String friendSearchQuery,
+    bool friendSelectionCompleted,
   });
 
   $CustomDateTimeCopyWith<$Res>? get customDateTime;
+  $FriendCopyWith<$Res>? get selectedFriend;
+  $MessageSettingsCopyWith<$Res>? get messageSettings;
 }
 
 /// @nodoc
@@ -129,6 +147,10 @@ class _$TimeCapsuleCreationDataCopyWithImpl<
     Object? timeDisplay = null,
     Object? timeDescription = null,
     Object? growthStage = null,
+    Object? selectedFriend = freezed,
+    Object? messageSettings = freezed,
+    Object? friendSearchQuery = null,
+    Object? friendSelectionCompleted = null,
   }) {
     return _then(
       _value.copyWith(
@@ -184,6 +206,22 @@ class _$TimeCapsuleCreationDataCopyWithImpl<
                 ? _value.growthStage
                 : growthStage // ignore: cast_nullable_to_non_nullable
                       as String,
+            selectedFriend: freezed == selectedFriend
+                ? _value.selectedFriend
+                : selectedFriend // ignore: cast_nullable_to_non_nullable
+                      as Friend?,
+            messageSettings: freezed == messageSettings
+                ? _value.messageSettings
+                : messageSettings // ignore: cast_nullable_to_non_nullable
+                      as MessageSettings?,
+            friendSearchQuery: null == friendSearchQuery
+                ? _value.friendSearchQuery
+                : friendSearchQuery // ignore: cast_nullable_to_non_nullable
+                      as String,
+            friendSelectionCompleted: null == friendSelectionCompleted
+                ? _value.friendSelectionCompleted
+                : friendSelectionCompleted // ignore: cast_nullable_to_non_nullable
+                      as bool,
           )
           as $Val,
     );
@@ -200,6 +238,34 @@ class _$TimeCapsuleCreationDataCopyWithImpl<
 
     return $CustomDateTimeCopyWith<$Res>(_value.customDateTime!, (value) {
       return _then(_value.copyWith(customDateTime: value) as $Val);
+    });
+  }
+
+  /// Create a copy of TimeCapsuleCreationData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FriendCopyWith<$Res>? get selectedFriend {
+    if (_value.selectedFriend == null) {
+      return null;
+    }
+
+    return $FriendCopyWith<$Res>(_value.selectedFriend!, (value) {
+      return _then(_value.copyWith(selectedFriend: value) as $Val);
+    });
+  }
+
+  /// Create a copy of TimeCapsuleCreationData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $MessageSettingsCopyWith<$Res>? get messageSettings {
+    if (_value.messageSettings == null) {
+      return null;
+    }
+
+    return $MessageSettingsCopyWith<$Res>(_value.messageSettings!, (value) {
+      return _then(_value.copyWith(messageSettings: value) as $Val);
     });
   }
 }
@@ -227,10 +293,18 @@ abstract class _$$TimeCapsuleCreationDataImplCopyWith<$Res>
     String timeDisplay,
     String timeDescription,
     String growthStage,
+    Friend? selectedFriend,
+    MessageSettings? messageSettings,
+    String friendSearchQuery,
+    bool friendSelectionCompleted,
   });
 
   @override
   $CustomDateTimeCopyWith<$Res>? get customDateTime;
+  @override
+  $FriendCopyWith<$Res>? get selectedFriend;
+  @override
+  $MessageSettingsCopyWith<$Res>? get messageSettings;
 }
 
 /// @nodoc
@@ -264,6 +338,10 @@ class __$$TimeCapsuleCreationDataImplCopyWithImpl<$Res>
     Object? timeDisplay = null,
     Object? timeDescription = null,
     Object? growthStage = null,
+    Object? selectedFriend = freezed,
+    Object? messageSettings = freezed,
+    Object? friendSearchQuery = null,
+    Object? friendSelectionCompleted = null,
   }) {
     return _then(
       _$TimeCapsuleCreationDataImpl(
@@ -319,6 +397,22 @@ class __$$TimeCapsuleCreationDataImplCopyWithImpl<$Res>
             ? _value.growthStage
             : growthStage // ignore: cast_nullable_to_non_nullable
                   as String,
+        selectedFriend: freezed == selectedFriend
+            ? _value.selectedFriend
+            : selectedFriend // ignore: cast_nullable_to_non_nullable
+                  as Friend?,
+        messageSettings: freezed == messageSettings
+            ? _value.messageSettings
+            : messageSettings // ignore: cast_nullable_to_non_nullable
+                  as MessageSettings?,
+        friendSearchQuery: null == friendSearchQuery
+            ? _value.friendSearchQuery
+            : friendSearchQuery // ignore: cast_nullable_to_non_nullable
+                  as String,
+        friendSelectionCompleted: null == friendSelectionCompleted
+            ? _value.friendSelectionCompleted
+            : friendSelectionCompleted // ignore: cast_nullable_to_non_nullable
+                  as bool,
       ),
     );
   }
@@ -341,6 +435,10 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
     this.timeDisplay = 'Select Time',
     this.timeDescription = 'Choose when you\'d like to receive this message',
     this.growthStage = 'Ready to Plant',
+    this.selectedFriend,
+    this.messageSettings,
+    this.friendSearchQuery = '',
+    this.friendSelectionCompleted = false,
   });
 
   factory _$TimeCapsuleCreationDataImpl.fromJson(Map<String, dynamic> json) =>
@@ -404,10 +502,28 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
   @override
   @JsonKey()
   final String growthStage;
+  // ==================== FRIEND SELECTION PROPERTIES ====================
+  /// Selected friend for "Someone Special" capsules
+  @override
+  final Friend? selectedFriend;
+
+  /// Message settings for capsule customization
+  @override
+  final MessageSettings? messageSettings;
+
+  /// Search query for friends list
+  @override
+  @JsonKey()
+  final String friendSearchQuery;
+
+  /// Whether friend selection step is completed
+  @override
+  @JsonKey()
+  final bool friendSelectionCompleted;
 
   @override
   String toString() {
-    return 'TimeCapsuleCreationData(selectedPurpose: $selectedPurpose, currentStep: $currentStep, showContinueButton: $showContinueButton, selectedQuickStart: $selectedQuickStart, isLoading: $isLoading, creationStartedAt: $creationStartedAt, selectedTimeOption: $selectedTimeOption, selectedOccasion: $selectedOccasion, customDateTime: $customDateTime, timeMetaphor: $timeMetaphor, timeDisplay: $timeDisplay, timeDescription: $timeDescription, growthStage: $growthStage)';
+    return 'TimeCapsuleCreationData(selectedPurpose: $selectedPurpose, currentStep: $currentStep, showContinueButton: $showContinueButton, selectedQuickStart: $selectedQuickStart, isLoading: $isLoading, creationStartedAt: $creationStartedAt, selectedTimeOption: $selectedTimeOption, selectedOccasion: $selectedOccasion, customDateTime: $customDateTime, timeMetaphor: $timeMetaphor, timeDisplay: $timeDisplay, timeDescription: $timeDescription, growthStage: $growthStage, selectedFriend: $selectedFriend, messageSettings: $messageSettings, friendSearchQuery: $friendSearchQuery, friendSelectionCompleted: $friendSelectionCompleted)';
   }
 
   @override
@@ -440,7 +556,18 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
             (identical(other.timeDescription, timeDescription) ||
                 other.timeDescription == timeDescription) &&
             (identical(other.growthStage, growthStage) ||
-                other.growthStage == growthStage));
+                other.growthStage == growthStage) &&
+            (identical(other.selectedFriend, selectedFriend) ||
+                other.selectedFriend == selectedFriend) &&
+            (identical(other.messageSettings, messageSettings) ||
+                other.messageSettings == messageSettings) &&
+            (identical(other.friendSearchQuery, friendSearchQuery) ||
+                other.friendSearchQuery == friendSearchQuery) &&
+            (identical(
+                  other.friendSelectionCompleted,
+                  friendSelectionCompleted,
+                ) ||
+                other.friendSelectionCompleted == friendSelectionCompleted));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -460,6 +587,10 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
     timeDisplay,
     timeDescription,
     growthStage,
+    selectedFriend,
+    messageSettings,
+    friendSearchQuery,
+    friendSelectionCompleted,
   );
 
   /// Create a copy of TimeCapsuleCreationData
@@ -494,6 +625,10 @@ abstract class _TimeCapsuleCreationData implements TimeCapsuleCreationData {
     final String timeDisplay,
     final String timeDescription,
     final String growthStage,
+    final Friend? selectedFriend,
+    final MessageSettings? messageSettings,
+    final String friendSearchQuery,
+    final bool friendSelectionCompleted,
   }) = _$TimeCapsuleCreationDataImpl;
 
   factory _TimeCapsuleCreationData.fromJson(Map<String, dynamic> json) =
@@ -548,7 +683,22 @@ abstract class _TimeCapsuleCreationData implements TimeCapsuleCreationData {
 
   /// Current growth stage text
   @override
-  String get growthStage;
+  String get growthStage; // ==================== FRIEND SELECTION PROPERTIES ====================
+  /// Selected friend for "Someone Special" capsules
+  @override
+  Friend? get selectedFriend;
+
+  /// Message settings for capsule customization
+  @override
+  MessageSettings? get messageSettings;
+
+  /// Search query for friends list
+  @override
+  String get friendSearchQuery;
+
+  /// Whether friend selection step is completed
+  @override
+  bool get friendSelectionCompleted;
 
   /// Create a copy of TimeCapsuleCreationData
   /// with the given fields replaced by the non-null parameter values.

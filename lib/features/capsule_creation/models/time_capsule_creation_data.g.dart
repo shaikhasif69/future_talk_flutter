@@ -40,6 +40,16 @@ _$TimeCapsuleCreationDataImpl _$$TimeCapsuleCreationDataImplFromJson(
       json['timeDescription'] as String? ??
       'Choose when you\'d like to receive this message',
   growthStage: json['growthStage'] as String? ?? 'Ready to Plant',
+  selectedFriend: json['selectedFriend'] == null
+      ? null
+      : Friend.fromJson(json['selectedFriend'] as Map<String, dynamic>),
+  messageSettings: json['messageSettings'] == null
+      ? null
+      : MessageSettings.fromJson(
+          json['messageSettings'] as Map<String, dynamic>,
+        ),
+  friendSearchQuery: json['friendSearchQuery'] as String? ?? '',
+  friendSelectionCompleted: json['friendSelectionCompleted'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$$TimeCapsuleCreationDataImplToJson(
@@ -58,6 +68,10 @@ Map<String, dynamic> _$$TimeCapsuleCreationDataImplToJson(
   'timeDisplay': instance.timeDisplay,
   'timeDescription': instance.timeDescription,
   'growthStage': instance.growthStage,
+  'selectedFriend': instance.selectedFriend,
+  'messageSettings': instance.messageSettings,
+  'friendSearchQuery': instance.friendSearchQuery,
+  'friendSelectionCompleted': instance.friendSelectionCompleted,
 };
 
 const _$TimeCapsulePurposeEnumMap = {

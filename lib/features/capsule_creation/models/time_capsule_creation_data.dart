@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'friend_model.dart';
+import 'message_settings.dart';
 
 part 'time_capsule_creation_data.freezed.dart';
 part 'time_capsule_creation_data.g.dart';
@@ -48,6 +50,20 @@ class TimeCapsuleCreationData with _$TimeCapsuleCreationData {
     
     /// Current growth stage text
     @Default('Ready to Plant') String growthStage,
+    
+    // ==================== FRIEND SELECTION PROPERTIES ====================
+    
+    /// Selected friend for "Someone Special" capsules
+    Friend? selectedFriend,
+    
+    /// Message settings for capsule customization
+    MessageSettings? messageSettings,
+    
+    /// Search query for friends list
+    @Default('') String friendSearchQuery,
+    
+    /// Whether friend selection step is completed
+    @Default(false) bool friendSelectionCompleted,
   }) = _TimeCapsuleCreationData;
 
   factory TimeCapsuleCreationData.fromJson(Map<String, dynamic> json) =>

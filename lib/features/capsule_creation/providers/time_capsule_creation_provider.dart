@@ -2,6 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/time_capsule_creation_data.dart';
+import '../models/friend_model.dart';
+import '../models/message_settings.dart';
 
 part 'time_capsule_creation_provider.g.dart';
 
@@ -216,6 +218,130 @@ class TimeCapsuleCreationNotifier extends _$TimeCapsuleCreationNotifier {
     return 'seed-growing'; // Default animation
   }
 
+  // ==================== FRIEND SELECTION METHODS ====================
+
+  /// Select a friend for the time capsule
+  void selectFriend(Friend friend) {
+    HapticFeedback.selectionClick();
+    
+    // Initialize default message settings if none exist
+    final messageSettings = state.messageSettings ?? const MessageSettings();
+    
+    state = state.copyWith(
+      selectedFriend: friend,
+      messageSettings: messageSettings,
+      friendSelectionCompleted: true,
+      showContinueButton: true,
+    );
+  }
+
+  /// Clear friend selection
+  void clearFriendSelection() {
+    HapticFeedback.selectionClick();
+    
+    state = state.copyWith(
+      selectedFriend: null,
+      friendSelectionCompleted: false,
+      showContinueButton: state.selectedPurpose != null,
+    );
+  }
+
+  /// Update friend search query
+  void updateFriendSearchQuery(String query) {
+    state = state.copyWith(friendSearchQuery: query);
+  }
+
+  /// Clear friend search
+  void clearFriendSearch() {
+    state = state.copyWith(friendSearchQuery: '');
+  }
+
+  /// Update message settings
+  void updateMessageSettings(MessageSettings settings) {
+    HapticFeedback.selectionClick();
+    
+    state = state.copyWith(messageSettings: settings);
+  }
+
+  /// Toggle notify about capsule setting
+  void toggleNotifyAboutCapsule() {
+    HapticFeedback.selectionClick();
+    
+    final currentSettings = state.messageSettings ?? const MessageSettings();
+    final newSettings = currentSettings.copyWith(
+      notifyAboutCapsule: !currentSettings.notifyAboutCapsule,
+    );
+    
+    state = state.copyWith(messageSettings: newSettings);
+  }
+
+  /// Toggle anonymous sending setting
+  void toggleAnonymousSending() {
+    HapticFeedback.selectionClick();
+    
+    final currentSettings = state.messageSettings ?? const MessageSettings();
+    final newSettings = currentSettings.copyWith(
+      anonymousSending: !currentSettings.anonymousSending,
+    );
+    
+    state = state.copyWith(messageSettings: newSettings);
+  }
+
+  /// Toggle one-time view setting
+  void toggleOneTimeView() {
+    HapticFeedback.selectionClick();
+    
+    final currentSettings = state.messageSettings ?? const MessageSettings();
+    final newSettings = currentSettings.copyWith(
+      oneTimeView: !currentSettings.oneTimeView,
+    );
+    
+    state = state.copyWith(messageSettings: newSettings);
+  }
+
+  /// Update delivery method
+  void updateDeliveryMethod(DeliveryMethod method) {
+    HapticFeedback.selectionClick();
+    
+    final currentSettings = state.messageSettings ?? const MessageSettings();
+    final newSettings = currentSettings.copyWith(deliveryMethod: method);
+    
+    state = state.copyWith(messageSettings: newSettings);
+  }
+
+  /// Apply message settings template
+  void applyMessageSettingsTemplate(String templateName) {
+    HapticFeedback.mediumImpact();
+    
+    final template = MessageSettingsTemplates.getTemplate(templateName);
+    if (template != null) {
+      state = state.copyWith(messageSettings: template);
+    }
+  }
+
+  /// Get filtered friends based on search query
+  List<Friend> getFilteredFriends() {
+    final friends = FriendDemoData.demoFriends;
+    if (state.friendSearchQuery.isEmpty) {
+      return friends;
+    }
+    
+    return friends.where((friend) => 
+      friend.matchesSearch(state.friendSearchQuery)
+    ).toList();
+  }
+
+  /// Check if friend selection is required for current purpose
+  bool get requiresFriendSelection {
+    return state.selectedPurpose == TimeCapsulePurpose.someoneSpecial;
+  }
+
+  /// Check if current state allows proceeding to next step
+  bool get canProceedFromFriendSelection {
+    if (!requiresFriendSelection) return true;
+    return state.selectedFriend != null && state.friendSelectionCompleted;
+  }
+
   /// Get the appropriate continue button text based on state
   String get continueButtonText {
     if (state.isLoading) {
@@ -335,4 +461,52 @@ bool hasTimeSelection(Ref ref) {
 String currentAnimationClass(Ref ref) {
   final notifier = ref.read(timeCapsuleCreationNotifierProvider.notifier);
   return notifier.currentAnimationClass;
+}
+
+// ==================== FRIEND SELECTION CONVENIENCE PROVIDERS ====================
+
+/// Convenience provider for selected friend
+@riverpod
+Friend? selectedFriend(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).selectedFriend;
+}
+
+/// Convenience provider for message settings
+@riverpod
+MessageSettings? messageSettings(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).messageSettings;
+}
+
+/// Convenience provider for friend search query
+@riverpod
+String friendSearchQuery(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).friendSearchQuery;
+}
+
+/// Convenience provider for friend selection completion
+@riverpod
+bool friendSelectionCompleted(Ref ref) {
+  return ref.watch(timeCapsuleCreationNotifierProvider).friendSelectionCompleted;
+}
+
+/// Convenience provider for filtered friends list
+@riverpod
+List<Friend> filteredFriends(Ref ref) {
+  final notifier = ref.read(timeCapsuleCreationNotifierProvider.notifier);
+  return notifier.getFilteredFriends();
+}
+
+/// Convenience provider for friend selection requirement
+@riverpod
+bool requiresFriendSelection(Ref ref) {
+  final notifier = ref.read(timeCapsuleCreationNotifierProvider.notifier);
+  return notifier.requiresFriendSelection;
+}
+
+/// Convenience provider for can proceed from friend selection
+@riverpod
+bool canProceedFromFriendSelection(Ref ref) {
+  final state = ref.watch(timeCapsuleCreationNotifierProvider);
+  if (state.selectedPurpose != TimeCapsulePurpose.someoneSpecial) return true;
+  return state.selectedFriend != null && state.friendSelectionCompleted;
 }

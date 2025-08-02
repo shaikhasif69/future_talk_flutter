@@ -90,20 +90,8 @@ class _CreateCapsulePage1ScreenState extends ConsumerState<CreateCapsulePage1Scr
           context.pushNamed('create_capsule_delivery_time');
           break;
         case TimeCapsulePurpose.someoneSpecial:
-          // TODO: Navigate to recipient selection screen
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Someone Special flow coming soon!',
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
-              ),
-              backgroundColor: AppColors.warmPeach,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-              ),
-            ),
-          );
+          // Navigate to friend selection screen
+          context.pushNamed('create_capsule_friend_selection');
           break;
         case TimeCapsulePurpose.anonymous:
           // TODO: Navigate to anonymous gift screen

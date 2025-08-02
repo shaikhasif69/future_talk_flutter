@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Talk - Select Friend</title>
+    
+    <!-- Future Talk Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Serif Pro', serif;
+            background: linear-gradient(135deg, #F7F5F3 0%, #FEFEFE 100%);
+            color: #4A4A4A;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #FEFEFE;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 30px 80px rgba(0,0,0,0.08);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, #F7F5F3, #FEFEFE);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .time { 
+            color: #4A4A4A; 
+            font-family: 'Source Serif Pro', serif;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: #F7F5F3;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4A4A4A;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #87A96B;
+            color: white;
+        }
+
+        .step-indicator {
+            display: flex;
+            gap: 8px;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #D1D1D1;
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.completed {
+            background: #87A96B;
+        }
+
+        .step-dot.active {
+            background: #87A96B;
+            transform: scale(1.2);
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: #6B6B6B;
+            text-align: center;
+        }
+
+        .context-bar {
+            background: rgba(212, 165, 165, 0.05);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #4A4A4A;
+            border-left: 4px solid #D4A5A5;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .search-section {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #F0F0F0;
+            border-radius: 16px;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 16px;
+            color: #4A4A4A;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #87A96B;
+            box-shadow: 0 0 0 3px rgba(135, 169, 107, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #D1D1D1;
+            font-style: italic;
+        }
+
+        .friends-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .friend-count {
+            background: rgba(135, 169, 107, 0.1);
+            color: #87A96B;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .friends-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .friend-item {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            border: 2px solid #F0F0F0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .friend-item:hover {
+            border-color: #87A96B;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(135, 169, 107, 0.15);
+        }
+
+        .friend-item.selected {
+            border-color: #87A96B;
+            background: linear-gradient(135deg, rgba(135, 169, 107, 0.05) 0%, white 100%);
+            box-shadow: 0 4px 16px rgba(135, 169, 107, 0.2);
+        }
+
+        .friend-item.selected::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #87A96B, #A4B88A);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .friend-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #D4A5A5, #F4C2A1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .friend-info {
+            flex: 1;
+        }
+
+        .friend-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 2px;
+        }
+
+        .friend-status {
+            font-size: 12px;
+            color: #6B6B6B;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .battery-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .battery-green { background: #4CAF50; }
+        .battery-yellow { background: #FFC107; }
+        .battery-red { background: #F44336; }
+
+        .friend-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .last-active {
+            font-size: 10px;
+            color: #D1D1D1;
+        }
+
+        .selection-check {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #D1D1D1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .friend-item.selected .selection-check {
+            background: #87A96B;
+            border-color: #87A96B;
+            color: white;
+        }
+
+        /* Customization Section */
+        .customization-section {
+            background: #F7F5F3;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .custom-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(135, 169, 107, 0.1);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4A4A4A;
+            margin-bottom: 2px;
+        }
+
+        .setting-description {
+            font-size: 12px;
+            color: #6B6B6B;
+            line-height: 1.3;
+        }
+
+        .setting-toggle {
+            width: 44px;
+            height: 24px;
+            background: #D1D1D1;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .setting-toggle.active {
+            background: #87A96B;
+        }
+
+        .toggle-thumb {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .setting-toggle.active .toggle-thumb {
+            transform: translateX(20px);
+        }
+
+        .delivery-method {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .method-option {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #F0F0F0;
+            border-radius: 8px;
+            background: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .method-option.selected {
+            border-color: #87A96B;
+            background: rgba(135, 169, 107, 0.05);
+            color: #87A96B;
+        }
+
+        /* Continue Button */
+        .continue-section {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 335px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .continue-section.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #87A96B 0%, #A4B88A 100%);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-family: 'Source Serif Pro', serif;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(135, 169, 107, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(135, 169, 107, 0.4);
+        }
+
+        .continue-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px 32px;
+            border-top: 1px solid #F0F0F0;
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            color: #6B6B6B;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: #87A96B;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        /* Scrollbar */
+        .main-content::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: rgba(135, 169, 107, 0.3);
+            border-radius: 2px;
+        }
+
+        /* Loading state */
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6B6B6B;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .empty-description {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .add-friends-btn {
+            margin-top: 16px;
+            padding: 12px 24px;
+            background: rgba(135, 169, 107, 0.1);
+            border: 1px solid #87A96B;
+            border-radius: 12px;
+            color: #87A96B;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-friends-btn:hover {
+            background: #87A96B;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="time">9:41</div>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <button class="back-btn">←</button>
+                <div class="step-indicator">
+                    <div class="step-dot completed"></div>
+                    <div class="step-dot active"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                </div>
+            </div>
+            
+            <h1 class="page-title">Choose Your Friend</h1>
+            <p class="page-subtitle">Who will receive this special message?</p>
+            
+            <div class="context-bar">
+                <span>💝</span>
+                <span>Creating: <strong>Someone Special</strong> time capsule</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Search Section -->
+            <div class="search-section">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    placeholder="Search friends by name or username..."
+                    id="searchInput"
+                >
+            </div>
+
+            <!-- Friends Section -->
+            <div class="friends-section">
+                <h2 class="section-title">
+                    <span>👥</span>
+                    <span>Your Friends</span>
+                    <span class="friend-count">7</span>
+                </h2>
+
+                <div class="friends-list" id="friendsList">
+                    <!-- Friend Item 1 -->
+                    <div class="friend-item" data-friend="sarah">
+                        <div class="friend-avatar" style="background: linear-gradient(135deg, #D4A5A5, #F4C2A1);">S</div>
+                        <div class="friend-info">
+                            <div class="friend-name">Sarah Miller</div>
+                            <div class="friend-status">
+                                <div class="battery-indicator battery-green"></div>
+                                <span>Social battery: Green</span>
+                            </div>
+                        </div>
+                        <div class="friend-meta">
+                            <div class="last-active">2 hours ago</div>
+                            <div class="selection-check"></div>
+                        </div>
+                    </div>
+
+                    <!-- Friend Item 2 -->
+                    <div class="friend-item" data-friend="alex">
+                        <div class="friend-avatar" style="background: linear-gradient(135deg, #87A96B, #A4B88A);">A</div>
+                        <div class="friend-info">
+                            <div class="friend-name">Alex Johnson</div>
+                            <div class="friend-status">
+                                <div class="battery-indicator battery-yellow"></div>
+                                <span>Social battery: Yellow</span>
+                            </div>
+                        </div>
+                        <div class="friend-meta">
+                            <div class="last-active">1 day ago</div>
+                            <div class="selection-check"></div>
+                        </div>
+                    </div>
+
+                    <!-- Friend Item 3 -->
+                    <div class="friend-item" data-friend="maya">
+                        <div class="friend-avatar" style="background: linear-gradient(135deg, #C8B5D1, #B8D4E3);">M</div>
+                        <div class="friend-info">
+                            <div class="friend-name">Maya Chen</div>
+                            <div class="friend-status">
+                                <div class="battery-indicator battery-green"></div>
+                                <span>Social battery: Green</span>
+                            </div>
+                        </div>
+                        <div class="friend-meta">
+                            <div class="last-active">online now</div>
+                            <div class="selection-check"></div>
+                        </div>
+                    </div>
+
+                    <!-- Friend Item 4 -->
+                    <div class="friend-item" data-friend="riley">
+                        <div class="friend-avatar" style="background: linear-gradient(135deg, #F4C2A1, #D4A5A5);">R</div>
+                        <div class="friend-info">
+                            <div class="friend-name">Riley Park</div>
+                            <div class="friend-status">
+                                <div class="battery-indicator battery-red"></div>
+                                <span>Social battery: Red</span>
+                            </div>
+                        </div>
+                        <div class="friend-meta">
+                            <div class="last-active">3 hours ago</div>
+                            <div class="selection-check"></div>
+                        </div>
+                    </div>
+
+                    <!-- Friend Item 5 -->
+                    <div class="friend-item" data-friend="jamie">
+                        <div class="friend-avatar" style="background: linear-gradient(135deg, #B8D4E3, #C8B5D1);">J</div>
+                        <div class="friend-info">
+                            <div class="friend-name">Jamie Rodriguez</div>
+                            <div class="friend-status">
+                                <div class="battery-indicator battery-green"></div>
+                                <span>Social battery: Green</span>
+                            </div>
+                        </div>
+                        <div class="friend-meta">
+                            <div class="last-active">5 minutes ago</div>
+                            <div class="selection-check"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customization Section -->
+            <div class="customization-section">
+                <h3 class="custom-title">
+                    <span>⚙️</span>
+                    <span>Message Settings</span>
+                </h3>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-label">Notify About Capsule</div>
+                        <div class="setting-description">Let them know a time capsule is waiting (they can't read it yet)</div>
+                    </div>
+                    <div class="setting-toggle active" data-setting="notify-capsule">
+                        <div class="toggle-thumb"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-label">Anonymous Sending</div>
+                        <div class="setting-description">Hide your identity until delivery (option to reveal later)</div>
+                    </div>
+                    <div class="setting-toggle" data-setting="anonymous">
+                        <div class="toggle-thumb"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-label">One-Time View</div>
+                        <div class="setting-description">Message disappears after being read once</div>
+                    </div>
+                    <div class="setting-toggle" data-setting="one-time">
+                        <div class="toggle-thumb"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-label">Delivery Method</div>
+                        <div class="setting-description">How should they receive the final message?</div>
+                        <div class="delivery-method">
+                            <div class="method-option selected">📱 App Only</div>
+                            <div class="method-option">📧 App + Email</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Continue Button -->
+        <div class="continue-section" id="continueSection">
+            <button class="continue-btn" id="continueBtn" disabled>
+                <span>Continue to Time Selection</span>
+                <span>→</span>
+            </button>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <div class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💬</span>
+                    <span>Chats</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📚</span>
+                    <span>Books</span>
+                </div>
+                <div class="nav-item active">
+                    <span class="nav-icon">⏰</span>
+                    <span>Capsules</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedFriend = null;
+        const continueSection = document.getElementById('continueSection');
+        const continueBtn = document.getElementById('continueBtn');
+        const searchInput = document.getElementById('searchInput');
+
+        // Friend selection
+        document.querySelectorAll('.friend-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove selection from all friends
+                document.querySelectorAll('.friend-item').forEach(friend => friend.classList.remove('selected'));
+                
+                // Select this friend
+                this.classList.add('selected');
+                selectedFriend = this.dataset.friend;
+                
+                // Update selection check
+                const checkmark = this.querySelector('.selection-check');
+                checkmark.textContent = '✓';
+                
+                // Show continue button
+                continueSection.classList.add('show');
+                
+                // Add selection feedback
+                this.style.transform = 'translateY(-2px) scale(1.02)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 300);
+            });
+        });
+
+        // Settings toggles
+        document.querySelectorAll('.setting-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                
+                // Add feedback animation
+                this.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Delivery method selection
+        document.querySelectorAll('.method-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const parent = this.parentElement;
+                parent.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Search functionality
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const friendItems = document.querySelectorAll('.friend-item');
+            
+            friendItems.forEach(item => {
+                const friendName = item.querySelector('.friend-name').textContent.toLowerCase();
+                if (friendName.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // Continue button
+        continueBtn.addEventListener('click', function() {
+            if (selectedFriend) {
+                this.innerHTML = `
+                    <div class="loading-spinner"></div>
+                    <span>Preparing...</span>
+                `;
+                
+                setTimeout(() => {
+                    console.log('Moving to time selection with friend:', selectedFriend);
+                    this.innerHTML = `
+                        <span>Continue to Time Selection</span>
+                        <span>→</span>
+                    `;
+                }, 1500);
+            }
+        });
+
+        // Back button
+        document.querySelector('.back-btn').addEventListener('click', function() {
+            this.style.transform = 'translateX(-4px)';
+            setTimeout(() => this.style.transform = '', 200);
+        });
+
+        // Entrance animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const friendItems = document.querySelectorAll('.friend-item');
+            
+            friendItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    item.style.transition = 'all 0.4s ease-out';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

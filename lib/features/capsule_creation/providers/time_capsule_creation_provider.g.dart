@@ -260,8 +260,145 @@ final currentAnimationClassProvider = AutoDisposeProvider<String>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CurrentAnimationClassRef = AutoDisposeProviderRef<String>;
+String _$selectedFriendHash() => r'03540301ca7a930a77aa6e9be378f791484b0bea';
+
+/// Convenience provider for selected friend
+///
+/// Copied from [selectedFriend].
+@ProviderFor(selectedFriend)
+final selectedFriendProvider = AutoDisposeProvider<Friend?>.internal(
+  selectedFriend,
+  name: r'selectedFriendProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$selectedFriendHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef SelectedFriendRef = AutoDisposeProviderRef<Friend?>;
+String _$messageSettingsHash() => r'e2266889aa571a84d560721047a3151d6dcbde27';
+
+/// Convenience provider for message settings
+///
+/// Copied from [messageSettings].
+@ProviderFor(messageSettings)
+final messageSettingsProvider = AutoDisposeProvider<MessageSettings?>.internal(
+  messageSettings,
+  name: r'messageSettingsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$messageSettingsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef MessageSettingsRef = AutoDisposeProviderRef<MessageSettings?>;
+String _$friendSearchQueryHash() => r'dee3592a82d82c24dfe93a7973e664d97e89199a';
+
+/// Convenience provider for friend search query
+///
+/// Copied from [friendSearchQuery].
+@ProviderFor(friendSearchQuery)
+final friendSearchQueryProvider = AutoDisposeProvider<String>.internal(
+  friendSearchQuery,
+  name: r'friendSearchQueryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$friendSearchQueryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef FriendSearchQueryRef = AutoDisposeProviderRef<String>;
+String _$friendSelectionCompletedHash() =>
+    r'78e188feda1c3b1649cdec08e41d0fc8574f48ed';
+
+/// Convenience provider for friend selection completion
+///
+/// Copied from [friendSelectionCompleted].
+@ProviderFor(friendSelectionCompleted)
+final friendSelectionCompletedProvider = AutoDisposeProvider<bool>.internal(
+  friendSelectionCompleted,
+  name: r'friendSelectionCompletedProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$friendSelectionCompletedHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef FriendSelectionCompletedRef = AutoDisposeProviderRef<bool>;
+String _$filteredFriendsHash() => r'bb2ae553ff05e12bcb037f429799ec12ba050678';
+
+/// Convenience provider for filtered friends list
+///
+/// Copied from [filteredFriends].
+@ProviderFor(filteredFriends)
+final filteredFriendsProvider = AutoDisposeProvider<List<Friend>>.internal(
+  filteredFriends,
+  name: r'filteredFriendsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$filteredFriendsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef FilteredFriendsRef = AutoDisposeProviderRef<List<Friend>>;
+String _$requiresFriendSelectionHash() =>
+    r'265ec176813b3760a2bab588444bbe3117554ff0';
+
+/// Convenience provider for friend selection requirement
+///
+/// Copied from [requiresFriendSelection].
+@ProviderFor(requiresFriendSelection)
+final requiresFriendSelectionProvider = AutoDisposeProvider<bool>.internal(
+  requiresFriendSelection,
+  name: r'requiresFriendSelectionProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$requiresFriendSelectionHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef RequiresFriendSelectionRef = AutoDisposeProviderRef<bool>;
+String _$canProceedFromFriendSelectionHash() =>
+    r'211110ba59489b764de42f3068a6e033ed7a21e3';
+
+/// Convenience provider for can proceed from friend selection
+///
+/// Copied from [canProceedFromFriendSelection].
+@ProviderFor(canProceedFromFriendSelection)
+final canProceedFromFriendSelectionProvider =
+    AutoDisposeProvider<bool>.internal(
+      canProceedFromFriendSelection,
+      name: r'canProceedFromFriendSelectionProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$canProceedFromFriendSelectionHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef CanProceedFromFriendSelectionRef = AutoDisposeProviderRef<bool>;
 String _$timeCapsuleCreationNotifierHash() =>
-    r'4693f1b2061bcd4891cf74b77e28a99a5f3ace55';
+    r'8ddd515cb19ed1c61291cf8bff6e3f4f44215380';
 
 /// Provider for managing time capsule creation state and logic
 /// Handles purpose selection, quick start interactions, and navigation flow
