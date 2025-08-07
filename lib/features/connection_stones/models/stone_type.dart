@@ -63,21 +63,21 @@ extension StoneTypeProperties on StoneType {
   List<Color> get gradientColors {
     switch (this) {
       case StoneType.roseQuartz:
-        return [const Color(0xFFD4A5A5), const Color(0xFFE8C5C5)];
+        return [const Color(0xFF87A96B), const Color(0xFFA4B88A)]; // Sage green theme
       case StoneType.clearQuartz:
-        return [const Color(0xFFF8F9FA), const Color(0xFFE9ECEF)];
+        return [const Color(0xFFF7F5F3), const Color(0xFFE9ECEF)]; // Warm cream theme
       case StoneType.amethyst:
-        return [const Color(0xFFC8B5D1), const Color(0xFFDCC9E2)];
+        return [const Color(0xFFC8B5D1), const Color(0xFFDCC9E2)]; // Keep lavender for variety
       case StoneType.oceanWave:
-        return [const Color(0xFFB8D4E3), const Color(0xFFD4E6F1)];
+        return [const Color(0xFFB8D4E3), const Color(0xFFD4E6F1)]; // Keep blue for ocean theme
       case StoneType.cherryBlossom:
-        return [const Color(0xFFF4C2C2), const Color(0xFFF8D7DA)];
+        return [const Color(0xFF87A96B), const Color(0xFFA4B88A)]; // Sage green theme
       case StoneType.sunstone:
-        return [const Color(0xFFF4C2A1), const Color(0xFFFBE8DC)];
+        return [const Color(0xFFF4C2A1), const Color(0xFFFBE8DC)]; // Keep warm peach
       case StoneType.moonstone:
-        return [const Color(0xFFE6E6FA), const Color(0xFFF0F8FF)];
+        return [const Color(0xFFE6E6FA), const Color(0xFFF0F8FF)]; // Keep light theme
       case StoneType.lavenderJade:
-        return [const Color(0xFF87A96B), const Color(0xFFA4B88A)];
+        return [const Color(0xFF7A9761), const Color(0xFF87A96B)]; // Darker sage green variant
     }
   }
 

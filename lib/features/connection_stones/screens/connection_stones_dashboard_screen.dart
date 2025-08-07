@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/constants/app_dimensions.dart';
 import '../models/connection_stone_model.dart';
 import '../models/stone_type.dart';
 import '../providers/connection_stones_provider.dart';
@@ -11,7 +12,6 @@ import '../widgets/quick_touch_bar.dart';
 import '../widgets/stone_card.dart';
 import '../widgets/floating_comfort_particles.dart';
 import '../widgets/stone_visual_widget.dart';
-import '../utils/app_constants.dart';
 
 /// Premium Connection Stones Dashboard - The magical heart of emotional connection
 class ConnectionStonesDashboardScreen extends ConsumerStatefulWidget {
@@ -88,8 +88,8 @@ class _ConnectionStonesDashboardScreenState
             enableBasicParticles: true,
             enableHearts: false,
             enableSparkles: true,
-            primaryColor: AppColors.dustyRose,
-            secondaryColor: AppColors.lavenderMist,
+            primaryColor: AppColors.sageGreen,
+            secondaryColor: AppColors.sageGreenLight,
           ),
           
           // Main content
@@ -448,9 +448,10 @@ class _CreateStoneModalState extends ConsumerState<CreateStoneModal>
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppDimensions.spacingL),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
               // Handle bar
               Container(
                 width: 40,
@@ -490,6 +491,7 @@ class _CreateStoneModalState extends ConsumerState<CreateStoneModal>
               // Create button
               _buildCreateButton(),
             ],
+            ),
           ),
         ),
       ),

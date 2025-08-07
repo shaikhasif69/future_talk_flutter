@@ -14,7 +14,7 @@ class FloatingComfortParticles extends StatefulWidget {
   const FloatingComfortParticles({
     super.key,
     this.particleCount = 12,
-    this.particleColor = const Color(0xFFD4A5A5),
+    this.particleColor = const Color(0xFF87A96B), // Changed to sage green
     this.minSize = 2.0,
     this.maxSize = 6.0,
     this.animationDuration = const Duration(seconds: 15),
@@ -184,7 +184,7 @@ class FloatingHeartParticles extends StatefulWidget {
   const FloatingHeartParticles({
     super.key,
     this.heartCount = 8,
-    this.heartColor = const Color(0xFFD4A5A5),
+    this.heartColor = const Color(0xFF87A96B), // Changed to sage green
     this.minSize = 12.0,
     this.maxSize = 20.0,
     this.animationDuration = const Duration(seconds: 10),
@@ -323,7 +323,7 @@ class FloatingSparkleParticles extends StatefulWidget {
   const FloatingSparkleParticles({
     super.key,
     this.sparkleCount = 15,
-    this.sparkleColor = const Color(0xFFF4C2A1),
+    this.sparkleColor = const Color(0xFFA4B88A), // Changed to sage green light
     this.minSize = 8.0,
     this.maxSize = 16.0,
     this.animationDuration = const Duration(seconds: 8),
@@ -449,8 +449,8 @@ class MagicalComfortBackground extends StatelessWidget {
     this.enableHearts = true,
     this.enableSparkles = true,
     this.enableBasicParticles = true,
-    this.primaryColor = const Color(0xFFD4A5A5),
-    this.secondaryColor = const Color(0xFFF4C2A1),
+    this.primaryColor = const Color(0xFF87A96B), // Changed to sage green
+    this.secondaryColor = const Color(0xFFA4B88A), // Changed to sage green light
   });
 
   @override

@@ -67,7 +67,7 @@ class AppRouter {
 
       // ==================== CHAT ROUTES ====================
       GoRoute(
-        path: '/chat',
+        path: '/splash',
         name: 'chat',
         builder: (context, state) => const ChatListScreen(),
         routes: [
@@ -126,7 +126,7 @@ class AppRouter {
 
       // ==================== CONNECTION STONES ROUTES ====================
       GoRoute(
-        path: '/splash',
+        path: '/connection-stones',
         name: 'connection_stones',
         builder: (context, state) => const ConnectionStonesDashboardScreen(),
       ),

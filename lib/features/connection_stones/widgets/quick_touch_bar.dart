@@ -147,9 +147,13 @@ class _QuickTouchBarState extends ConsumerState<QuickTouchBar>
                       ],
               ),
               child: Center(
-                child: Text(
-                  stone.stoneType.emoji,
-                  style: const TextStyle(fontSize: 24),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  child: Text(
+                    stone.stoneType.emoji,
+                    key: ValueKey('${stone.id}_${stone.stoneType.emoji}'),
+                    style: const TextStyle(fontSize: 24),
+                  ),
                 ),
               ),
             ),
@@ -309,12 +313,12 @@ class QuickStoneDetailsModal extends ConsumerWidget {
                 _buildQuickStat(
                   label: 'Received',
                   value: stone.totalComfortReceived.toString(),
-                  color: AppColors.dustyRose,
+                  color: AppColors.warmPeach,
                 ),
                 _buildQuickStat(
                   label: 'Connection',
                   value: stone.connectionStrengthDisplay,
-                  color: AppColors.lavenderMist,
+                  color: AppColors.cloudBlue,
                 ),
               ],
             ),

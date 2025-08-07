@@ -11,7 +11,7 @@ A beautiful, privacy-first messaging app designed specifically for introverts - 
 
 ---
 
-## 🔒 **Core Features**
+## 🔒 **Core Features** 
 
 ### **Time Capsule Messaging System**
 - **Future Message Scheduling**: Write messages now, deliver them later (hours to years)

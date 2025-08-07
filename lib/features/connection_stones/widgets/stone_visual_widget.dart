@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import '../models/connection_stone_model.dart';
 import '../models/stone_type.dart';
 
@@ -192,11 +191,15 @@ class _StoneVisualWidgetState extends State<StoneVisualWidget>
         
         return Transform.rotate(
           angle: rotation,
-          child: Text(
-            widget.stone.stoneType.emoji,
-            style: TextStyle(
-              fontSize: widget.size * 0.4,
-              height: 1.0,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 150),
+            child: Text(
+              widget.stone.stoneType.emoji,
+              key: ValueKey('${widget.stone.id}_${widget.stone.stoneType.emoji}'),
+              style: TextStyle(
+                fontSize: widget.size * 0.4,
+                height: 1.0,
+              ),
             ),
           ),
         );
@@ -481,11 +484,15 @@ class _StoneCreationVisualState extends State<StoneCreationVisual>
                     ],
                   ),
                   child: Center(
-                    child: Text(
-                      widget.emoji,
-                      style: TextStyle(
-                        fontSize: widget.size * 0.4,
-                        height: 1.0,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 150),
+                      child: Text(
+                        widget.emoji,
+                        key: ValueKey(widget.emoji),
+                        style: TextStyle(
+                          fontSize: widget.size * 0.4,
+                          height: 1.0,
+                        ),
                       ),
                     ),
                   ),
