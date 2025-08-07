@@ -10,6 +10,8 @@ class FutureTalkApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+    
     return MaterialApp.router(
       // ==================== APP METADATA ====================
       title: 'Future Talk',
@@ -21,7 +23,7 @@ class FutureTalkApp extends ConsumerWidget {
       themeMode: ThemeMode.light, // Will be dynamic based on user preference later
       
       // ==================== ROUTING CONFIGURATION ====================
-      routerConfig: AppRouter.router,
+      routerConfig: router,
       
       // ==================== LOCALIZATION ====================
       // Will be configured when internationalization is added

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_durations.dart';
@@ -8,17 +9,18 @@ import '../../../shared/widgets/indicators/ft_loading_indicator.dart';
 import '../widgets/splash/splash_background.dart';
 import '../widgets/splash/splash_logo.dart';
 import '../widgets/splash/splash_particles.dart';
+import '../providers/auth_provider.dart';
 
 /// Future Talk's Premium Splash Screen
 /// Features floating logo with breathing particles and smooth animations
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
+class _SplashScreenState extends ConsumerState<SplashScreen>
     with TickerProviderStateMixin {
   late AnimationController _logoController;
   late AnimationController _particleController;
@@ -28,6 +30,8 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _logoOpacityAnimation;
   late Animation<double> _textOpacityAnimation;
   late Animation<double> _loadingAnimation;
+
+  bool _hasNavigated = false;
 
   @override
   void initState() {
@@ -81,7 +85,13 @@ class _SplashScreenState extends State<SplashScreen>
     ));
     
     _startAnimations();
-    _navigateToOnboarding();
+    
+    // Set minimum splash duration
+    Future.delayed(AppDurations.splashTotal, () {
+      if (mounted && !_hasNavigated) {
+        _checkAndNavigate();
+      }
+    });
   }
 
   @override
@@ -107,17 +117,46 @@ class _SplashScreenState extends State<SplashScreen>
     });
   }
 
-  void _navigateToOnboarding() {
-    Future.delayed(AppDurations.splashTotal, () {
-      if (mounted) {
+  void _checkAndNavigate() {
+    if (_hasNavigated || !mounted) return;
+    
+    final authState = ref.read(authProvider);
+    print('🚀 [Splash] Final auth check: isInitialized=${authState.isInitialized}, isLoggedIn=${authState.isLoggedIn}');
+    
+    _hasNavigated = true;
+    
+    if (authState.isInitialized) {
+      if (authState.isLoggedIn) {
+        print('🚀 [Splash] Navigating to dashboard');
+        context.goToDashboard();
+      } else {
+        print('🚀 [Splash] Navigating to onboarding');
         context.goToOnboarding();
       }
-    });
+    } else {
+      print('🚀 [Splash] Auth not initialized, defaulting to onboarding');
+      context.goToOnboarding();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    
+    // Listen for auth state changes in build method
+    ref.listen<AuthState>(authProvider, (previous, next) {
+      print('🚀 [Splash] Auth state changed: isInitialized=${next.isInitialized}, isLoggedIn=${next.isLoggedIn}');
+      if (next.isInitialized && mounted && !_hasNavigated) {
+        _hasNavigated = true;
+        if (next.isLoggedIn) {
+          print('🚀 [Splash] Navigating to dashboard (from listener)');
+          context.goToDashboard();
+        } else {
+          print('🚀 [Splash] Navigating to onboarding (from listener)');
+          context.goToOnboarding();
+        }
+      }
+    });
     
     return Scaffold(
       body: Stack(

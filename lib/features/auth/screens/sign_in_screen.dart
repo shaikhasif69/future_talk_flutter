@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/app_dimensions.dart';
+import '../../../core/network/api_result.dart';
 import '../../../routing/app_router.dart';
 import '../../../shared/widgets/layouts/ft_auth_scaffold.dart';
 import '../../../shared/widgets/forms/ft_form_header.dart';
@@ -11,17 +13,18 @@ import '../../../shared/widgets/ft_button.dart';
 import '../../../shared/widgets/ft_input.dart';
 import '../../../shared/widgets/ft_card.dart';
 import '../../../shared/widgets/animations/ft_stagger_animation.dart';
+import '../providers/auth_provider.dart';
 
 /// Future Talk's Premium Sign In Screen
 /// Features secure authentication with elegant validation and smooth animations
-class SignInScreen extends StatefulWidget {
+class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  ConsumerState<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends ConsumerState<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _scrollController = ScrollController();
   
@@ -97,108 +100,159 @@ class _SignInScreenState extends State<SignInScreen> {
     setState(() => _isLoading = true);
     HapticFeedback.mediumImpact();
     
-    try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 2));
-      
-      if (mounted) {
-        // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Welcome back! Navigating to your sanctuary...',
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
+    final result = await ref.read(authProvider.notifier).login(
+      _emailController.text.trim(),
+      _passwordController.text,
+    );
+
+    if (mounted) {
+      result.when(
+        success: (authResponse) {
+          final userName = authResponse.user.displayName ?? 
+                          authResponse.user.firstName ?? 
+                          authResponse.user.username;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Welcome back, $userName! Navigating to your sanctuary...',
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
+              ),
+              backgroundColor: AppColors.sageGreen,
+              duration: const Duration(seconds: 3),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+              ),
             ),
-            backgroundColor: AppColors.sageGreen,
-            duration: const Duration(seconds: 3),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          );
+          
+          context.goToDashboard();
+        },
+        failure: (error) {
+          String errorMessage = 'Invalid credentials. Please check your email and password.';
+          
+          if (error.details != null && error.details!.isNotEmpty) {
+            final allErrors = error.details!.values
+                .expand((list) => list)
+                .join(', ');
+            errorMessage = allErrors;
+          } else if (error.message.isNotEmpty) {
+            errorMessage = error.message;
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                errorMessage,
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
+              ),
+              backgroundColor: AppColors.dustyRose,
+              duration: const Duration(seconds: 3),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+              ),
             ),
-          ),
-        );
-        
-        // Navigate to dashboard
-        context.goToDashboard();
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Invalid credentials. Please check your email and password.',
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
-            ),
-            backgroundColor: AppColors.dustyRose,
-            duration: const Duration(seconds: 3),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-            ),
-          ),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
+          );
+        },
+      );
+    }
+
+    if (mounted) {
+      setState(() => _isLoading = false);
     }
   }
 
   void _handleForgotPassword() {
     HapticFeedback.selectionClick();
     
+    final emailController = TextEditingController();
+    bool isLoading = false;
+    
     // Show forgot password dialog
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.warmCream,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        ),
-        title: Text(
-          'Reset Password',
-          style: AppTextStyles.headlineMedium,
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Enter your email address and we\'ll send you a link to reset your password.',
-              style: AppTextStyles.bodyMedium.copyWith(height: 1.5),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          backgroundColor: AppColors.warmCream,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+          ),
+          title: Text(
+            'Reset Password',
+            style: AppTextStyles.headlineMedium,
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Enter your email address and we\'ll send you a link to reset your password.',
+                style: AppTextStyles.bodyMedium.copyWith(height: 1.5),
+              ),
+              const SizedBox(height: AppDimensions.spacingL),
+              FTInput.email(
+                controller: emailController,
+                hint: 'Enter your email',
+                label: 'Email Address',
+              ),
+            ],
+          ),
+          actions: [
+            FTButton.text(
+              text: 'Cancel',
+              onPressed: isLoading ? null : () => Navigator.of(context).pop(),
             ),
-            const SizedBox(height: AppDimensions.spacingL),
-            FTInput.email(
-              hint: 'Enter your email',
-              label: 'Email Address',
+            FTButton.primary(
+              text: 'Send Reset Link',
+              isLoading: isLoading,
+              onPressed: isLoading ? null : () async {
+                if (emailController.text.trim().isEmpty) return;
+                
+                setDialogState(() => isLoading = true);
+                
+                final result = await ref.read(authProvider.notifier)
+                    .requestPasswordReset(emailController.text.trim());
+                
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  
+                  result.when(
+                    success: (_) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Password reset link sent to your email!',
+                            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
+                          ),
+                          backgroundColor: AppColors.sageGreen,
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                          ),
+                        ),
+                      );
+                    },
+                    failure: (error) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            error.message,
+                            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
+                          ),
+                          backgroundColor: AppColors.dustyRose,
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+              },
             ),
           ],
         ),
-        actions: [
-          FTButton.text(
-            text: 'Cancel',
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          FTButton.primary(
-            text: 'Send Reset Link',
-            onPressed: () {
-              Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'Password reset link sent to your email!',
-                    style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
-                  ),
-                  backgroundColor: AppColors.sageGreen,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
       ),
     );
   }

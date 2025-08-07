@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/app_dimensions.dart';
+import '../../../core/network/api_result.dart';
 import '../../../routing/app_router.dart';
 import '../../../shared/widgets/layouts/ft_auth_scaffold.dart';
 import '../../../shared/widgets/forms/ft_form_header.dart';
 import '../../../shared/widgets/forms/ft_social_login_section.dart';
 import '../widgets/sign_up/sign_up_form.dart';
+import '../providers/auth_provider.dart';
 
 /// Future Talk's Premium Sign Up Screen
 /// Features comprehensive form validation, social login, and smooth animations
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final _scrollController = ScrollController();
   bool _isLoading = false;
 
@@ -45,51 +48,72 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() => _isLoading = true);
     HapticFeedback.mediumImpact();
     
-    try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 2));
-      
-      if (mounted) {
-        // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Welcome to Future Talk! Check your email to verify your account.',
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
+    // Split full name into first and last name
+    final names = fullName.trim().split(' ');
+    final firstName = names.first;
+    final lastName = names.length > 1 ? names.skip(1).join(' ') : '';
+    
+    final result = await ref.read(authProvider.notifier).register(
+      email: email.trim(),
+      password: password,
+      username: username.trim(),
+      firstName: firstName,
+      lastName: lastName,
+    );
+
+    if (mounted) {
+      result.when(
+        success: (authResponse) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Welcome to Future Talk, ${authResponse.user.firstName}! Your account is ready.',
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
+              ),
+              backgroundColor: AppColors.sageGreen,
+              duration: const Duration(seconds: 4),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+              ),
             ),
-            backgroundColor: AppColors.sageGreen,
-            duration: const Duration(seconds: 4),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          );
+          
+          // Navigate to dashboard since user is now logged in
+          context.goToDashboard();
+        },
+        failure: (error) {
+          String errorMessage = 'Something went wrong. Please try again.';
+          
+          if (error.details != null && error.details!.isNotEmpty) {
+            final allErrors = error.details!.values
+                .expand((list) => list)
+                .join(', ');
+            errorMessage = allErrors;
+          } else if (error.message.isNotEmpty) {
+            errorMessage = error.message;
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                errorMessage,
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
+              ),
+              backgroundColor: AppColors.dustyRose,
+              duration: const Duration(seconds: 3),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+              ),
             ),
-          ),
-        );
-        
-        // Navigate to sign in
-        context.goToSignIn();
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Something went wrong. Please try again.',
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
-            ),
-            backgroundColor: AppColors.dustyRose,
-            duration: const Duration(seconds: 3),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-            ),
-          ),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
+          );
+        },
+      );
+    }
+
+    if (mounted) {
+      setState(() => _isLoading = false);
     }
   }
 

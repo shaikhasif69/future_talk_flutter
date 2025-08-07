@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:future_talk_frontend/features/auth/screens/splash_screen.dart';
 import 'package:go_router/go_router.dart';
+import '../core/guards/auth_guard.dart';
+import '../features/auth/providers/auth_provider.dart';
 import '../features/auth/screens/onboarding_screen.dart';
 import '../features/auth/screens/sign_up_screen.dart';
 import '../features/auth/screens/sign_in_screen.dart';
@@ -24,19 +27,42 @@ import '../features/settings/screens/settings_screen.dart';
 import '../features/notifications/screens/notification_screen.dart';
 import '../features/connection_stones/screens/connection_stones_dashboard_screen.dart';
 
-/// Future Talk's routing configuration using GoRouter
-/// Handles navigation between authentication screens with smooth transitions
-class AppRouter {
-  AppRouter._();
-
-  /// GoRouter configuration
-  static final GoRouter _router = GoRouter(
+/// Router provider that handles authentication-aware routing
+final routerProvider = Provider<GoRouter>((ref) {
+  return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: true,
+    redirect: (context, state) {
+      final authState = ref.read(authProvider);
+      final currentPath = state.fullPath ?? state.matchedLocation;
+      final isAuthRoute = ['/splash', '/onboarding', '/sign_in', '/sign_up'].contains(currentPath);
+      
+      print('🔀 [Router] Redirect check: location=$currentPath, isLoggedIn=${authState.isLoggedIn}, isInitialized=${authState.isInitialized}');
+      
+      // If not initialized, allow navigation to continue (splash will handle)
+      if (!authState.isInitialized) {
+        return null;
+      }
+      
+      // If logged in but on auth route, redirect to dashboard  
+      if (authState.isLoggedIn && isAuthRoute && currentPath != '/splash') {
+        print('🔀 [Router] Redirecting logged in user to dashboard');
+        return '/dashboard';
+      }
+      
+      // If not logged in but on protected route, redirect to sign in
+      if (!authState.isLoggedIn && !isAuthRoute) {
+        print('🔀 [Router] Redirecting unauthenticated user to sign in');
+        return '/sign_in';
+      }
+      
+      // Allow navigation to continue
+      return null;
+    },
     routes: [
       // ==================== SPLASH ROUTE (TESTING SHORTCUT) ====================
       // GoRoute(ƒchat
-      // GoRoute(path: '/splash', name: 'splash', builder: (context, state) => const SplashScreen()),
+      GoRoute(path: '/splash', name: 'splash', builder: (context, state) => const SplashScreen()),
       // ==================== ONBOARDING ROUTE ====================
       GoRoute(
         path: '/onboarding',
@@ -67,7 +93,7 @@ class AppRouter {
 
       // ==================== CHAT ROUTES ====================
       GoRoute(
-        path: '/splash',
+        path: '/chat',
         name: 'chat',
         builder: (context, state) => const ChatListScreen(),
         routes: [
@@ -76,7 +102,6 @@ class AppRouter {
             path: 'individual/:conversationId',
             name: 'individual_chat',
             builder: (context, state) {
-              final conversationId = state.pathParameters['conversationId']!;
               final conversationJson = state.extra as Map<String, dynamic>?;
               
               if (conversationJson != null) {
@@ -100,7 +125,6 @@ class AppRouter {
         path: '/chat/individual/:conversationId',
         name: 'individual_chat_direct',
         builder: (context, state) {
-          final conversationId = state.pathParameters['conversationId']!;
           final conversationJson = state.extra as Map<String, dynamic>?;
           
           if (conversationJson != null) {
@@ -121,21 +145,30 @@ class AppRouter {
       GoRoute(
         path: '/books',
         name: 'books',
-        builder: (context, state) => const ResponsiveBookLibraryScreen(),
+        builder: (context, state) => AuthGuard(
+          child: const ResponsiveBookLibraryScreen(),
+          unauthorizedBuilder: () => const SignInScreen(),
+        ),
       ),
 
       // ==================== CONNECTION STONES ROUTES ====================
       GoRoute(
         path: '/connection-stones',
         name: 'connection_stones',
-        builder: (context, state) => const ConnectionStonesDashboardScreen(),
+        builder: (context, state) => AuthGuard(
+          child: const ConnectionStonesDashboardScreen(),
+          unauthorizedBuilder: () => const SignInScreen(),
+        ),
       ),
 
       // ==================== CAPSULE GARDEN ROUTES ====================
       GoRoute(
         path: '/capsule-garden',
         name: 'capsule_garden',
-        builder: (context, state) => const CapsuleGardenDashboard(),
+        builder: (context, state) => AuthGuard(
+          child: const CapsuleGardenDashboard(),
+          unauthorizedBuilder: () => const SignInScreen(),
+        ),
       ),
 
       // ==================== CAPSULE CREATION ROUTES ====================
@@ -143,32 +176,50 @@ class AppRouter {
         // path: '/capsule/create',
         path: '/create_capsule',
         name: 'create_capsule',
-        builder: (context, state) => const CreateCapsulePage1Screen(), // Testing connection stones
+        builder: (context, state) => AuthGuard(
+          child: const CreateCapsulePage1Screen(),
+          unauthorizedBuilder: () => const SignInScreen(),
+        ),
       ),
       GoRoute(
         path: '/capsule/create/friend-selection',
         name: 'create_capsule_friend_selection',
-        builder: (context, state) => const FriendSelectionScreen(),
+        builder: (context, state) => AuthGuard(
+          child: const FriendSelectionScreen(),
+          unauthorizedBuilder: () => const SignInScreen(),
+        ),
       ),
       GoRoute(
         path: '/capsule/create/anonymous-search',
         name: 'create_capsule_anonymous_search',
-        builder: (context, state) => const AnonymousUserSearchScreen(),
+        builder: (context, state) => AuthGuard(
+          child: const AnonymousUserSearchScreen(),
+          unauthorizedBuilder: () => const SignInScreen(),
+        ),
       ),
       GoRoute(
         path: '/capsule/create/delivery-time',
         name: 'create_capsule_delivery_time',
-        builder: (context, state) => const CreateCapsulePage2Screen(),
+        builder: (context, state) => AuthGuard(
+          child: const CreateCapsulePage2Screen(),
+          unauthorizedBuilder: () => const SignInScreen(),
+        ),
       ),
       GoRoute(
         path: '/capsule/create/message',
         name: 'create_capsule_message',
-        builder: (context, state) => const CreateCapsulePage3ScreenSimple(),
+        builder: (context, state) => AuthGuard(
+          child: const CreateCapsulePage3ScreenSimple(),
+          unauthorizedBuilder: () => const SignInScreen(),
+        ),
       ),
       GoRoute(
         path: '/capsule/create/review',
         name: 'create_capsule_review',
-        builder: (context, state) => const CreateCapsuleFinalScreen(),
+        builder: (context, state) => AuthGuard(
+          child: const CreateCapsuleFinalScreen(),
+          unauthorizedBuilder: () => const SignInScreen(),
+        ),
       ),
 
       // ==================== SPLASH ROUTE ====================
@@ -182,7 +233,10 @@ class AppRouter {
       GoRoute(
         path: '/profile',
         name: 'profile',
-        builder: (context, state) => const ProfileScreen(),
+        builder: (context, state) => AuthGuard(
+          child: const ProfileScreen(),
+          unauthorizedBuilder: () => const SignInScreen(),
+        ),
       ),
 
       // ==================== USER PROFILE ROUTES ====================
@@ -198,9 +252,12 @@ class AppRouter {
             userProfile = UserProfileModel.fromJson(userProfileJson);
           }
           
-          return UserProfileScreen(
-            userId: userId,
-            userProfile: userProfile,
+          return AuthGuard(
+            child: UserProfileScreen(
+              userId: userId,
+              userProfile: userProfile,
+            ),
+            unauthorizedBuilder: () => const SignInScreen(),
           );
         },
       ),
@@ -209,14 +266,20 @@ class AppRouter {
       GoRoute(
         path: '/notifications',
         name: 'notifications',
-        builder: (context, state) => const NotificationScreen(),
+        builder: (context, state) => AuthGuard(
+          child: const NotificationScreen(),
+          unauthorizedBuilder: () => const SignInScreen(),
+        ),
       ),
 
       // ==================== SETTINGS ROUTES ====================
       GoRoute(
         path: '/settings',
         name: 'settings',
-        builder: (context, state) => const SettingsScreen(),
+        builder: (context, state) => AuthGuard(
+          child: const SettingsScreen(),
+          unauthorizedBuilder: () => const SignInScreen(),
+        ),
       ),
     ],
 
@@ -254,9 +317,12 @@ class AppRouter {
       ),
     ),
   );
+});
 
-  /// Get the router instance
-  static GoRouter get router => _router;
+/// Future Talk's routing configuration using GoRouter
+/// Handles navigation between authentication screens with smooth transitions
+class AppRouter {
+  AppRouter._();
 
   // Transitions will be implemented per route when needed
 }
