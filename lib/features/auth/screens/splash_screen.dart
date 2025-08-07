@@ -118,44 +118,19 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   }
 
   void _checkAndNavigate() {
-    if (_hasNavigated || !mounted) return;
-    
-    final authState = ref.read(authProvider);
-    print('🚀 [Splash] Final auth check: isInitialized=${authState.isInitialized}, isLoggedIn=${authState.isLoggedIn}');
-    
-    _hasNavigated = true;
-    
-    if (authState.isInitialized) {
-      if (authState.isLoggedIn) {
-        print('🚀 [Splash] Navigating to dashboard');
-        context.goToDashboard();
-      } else {
-        print('🚀 [Splash] Navigating to onboarding');
-        context.goToOnboarding();
-      }
-    } else {
-      print('🚀 [Splash] Auth not initialized, defaulting to onboarding');
-      context.goToOnboarding();
-    }
+    // Navigation is now handled by the router's redirect logic
+    // This method is kept for future use if needed
+    print('🚀 [Splash] Auth state will be handled by router redirect');
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     
-    // Listen for auth state changes in build method
+    // Listen for auth state changes for debugging
     ref.listen<AuthState>(authProvider, (previous, next) {
       print('🚀 [Splash] Auth state changed: isInitialized=${next.isInitialized}, isLoggedIn=${next.isLoggedIn}');
-      if (next.isInitialized && mounted && !_hasNavigated) {
-        _hasNavigated = true;
-        if (next.isLoggedIn) {
-          print('🚀 [Splash] Navigating to dashboard (from listener)');
-          context.goToDashboard();
-        } else {
-          print('🚀 [Splash] Navigating to onboarding (from listener)');
-          context.goToOnboarding();
-        }
-      }
+      // Router will handle navigation automatically based on the redirect logic
     });
     
     return Scaffold(

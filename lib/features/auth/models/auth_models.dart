@@ -69,11 +69,55 @@ class RegisterRequest with _$RegisterRequest {
     required String email,
     required String password,
     required String username,
-    required String firstName,
-    required String lastName,
+    @JsonKey(name: 'display_name') required String displayName,
   }) = _RegisterRequest;
 
   factory RegisterRequest.fromJson(Map<String, dynamic> json) => _$RegisterRequestFromJson(json);
+}
+
+@freezed
+class RegisterResponse with _$RegisterResponse {
+  const factory RegisterResponse({
+    required String message,
+    required String email,
+    @JsonKey(name: 'expires_in_minutes') required int expiresInMinutes,
+    @JsonKey(name: 'otp_sent') required bool otpSent,
+    @JsonKey(name: 'remaining_requests') required int remainingRequests,
+  }) = _RegisterResponse;
+
+  factory RegisterResponse.fromJson(Map<String, dynamic> json) => _$RegisterResponseFromJson(json);
+}
+
+@freezed
+class OtpVerificationRequest with _$OtpVerificationRequest {
+  const factory OtpVerificationRequest({
+    required String email,
+    required String otp,
+  }) = _OtpVerificationRequest;
+
+  factory OtpVerificationRequest.fromJson(Map<String, dynamic> json) => _$OtpVerificationRequestFromJson(json);
+}
+
+@freezed
+class ResendOtpRequest with _$ResendOtpRequest {
+  const factory ResendOtpRequest({
+    required String email,
+  }) = _ResendOtpRequest;
+
+  factory ResendOtpRequest.fromJson(Map<String, dynamic> json) => _$ResendOtpRequestFromJson(json);
+}
+
+@freezed
+class ResendOtpResponse with _$ResendOtpResponse {
+  const factory ResendOtpResponse({
+    required String message,
+    required String email,
+    @JsonKey(name: 'expires_in_minutes') required int expiresInMinutes,
+    @JsonKey(name: 'otp_sent') required bool otpSent,
+    @JsonKey(name: 'remaining_requests') required int remainingRequests,
+  }) = _ResendOtpResponse;
+
+  factory ResendOtpResponse.fromJson(Map<String, dynamic> json) => _$ResendOtpResponseFromJson(json);
 }
 
 @freezed

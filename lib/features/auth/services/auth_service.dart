@@ -33,6 +33,8 @@ class AuthService {
           
           await SecureStorageService.saveUserId(authResponse.user.id);
           print('🔌 [AuthService] Tokens saved successfully');
+          print('🔌 [AuthService] AccessToken saved length: ${authResponse.accessToken.length}');
+          print('🔌 [AuthService] RefreshToken saved length: ${authResponse.refreshToken.length}');
 
           return ApiResult.success(authResponse);
         } catch (parseError) {
@@ -58,14 +60,43 @@ class AuthService {
     }
   }
 
-  Future<ApiResult<AuthResponse>> register(RegisterRequest request) async {
+  Future<ApiResult<RegisterResponse>> register(RegisterRequest request) async {
     try {
+      print('🔌 [AuthService] Sending registration request...');
       final response = await _apiClient.post(
         ApiEndpoints.register,
         data: request.toJson(),
       );
 
+      print('🔌 [AuthService] Registration response status: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        print('🔌 [AuthService] Registration successful, OTP sent');
+        final registerResponse = RegisterResponse.fromJson(response.data);
+        return ApiResult.success(registerResponse);
+      } else {
+        print('🔌 [AuthService] Registration failed: ${response.statusCode}');
+        return ApiResult.failure(_parseError(response));
+      }
+    } on DioException catch (e) {
+      print('🔌 [AuthService] Registration Dio exception: $e');
+      return ApiResult.failure(_handleDioError(e));
+    } catch (e) {
+      print('🔌 [AuthService] Registration unknown error: $e');
+      return ApiResult.failure(ApiError.unknown());
+    }
+  }
+
+  Future<ApiResult<AuthResponse>> verifyOtp(OtpVerificationRequest request) async {
+    try {
+      print('🔌 [AuthService] Sending OTP verification request...');
+      final response = await _apiClient.post(
+        ApiEndpoints.verifyOtp,
+        data: request.toJson(),
+      );
+
+      print('🔌 [AuthService] OTP verification response status: ${response.statusCode}');
       if (response.statusCode == 201) {
+        print('🔌 [AuthService] OTP verification successful');
         final authResponse = AuthResponse.fromJson(response.data);
         
         await SecureStorageService.saveTokens(
@@ -74,14 +105,44 @@ class AuthService {
         );
         
         await SecureStorageService.saveUserId(authResponse.user.id);
-
+        
+        print('🔌 [AuthService] User authenticated successfully');
         return ApiResult.success(authResponse);
       } else {
+        print('🔌 [AuthService] OTP verification failed: ${response.statusCode}');
         return ApiResult.failure(_parseError(response));
       }
     } on DioException catch (e) {
+      print('🔌 [AuthService] OTP verification Dio exception: $e');
       return ApiResult.failure(_handleDioError(e));
     } catch (e) {
+      print('🔌 [AuthService] OTP verification unknown error: $e');
+      return ApiResult.failure(ApiError.unknown());
+    }
+  }
+
+  Future<ApiResult<ResendOtpResponse>> resendOtp(ResendOtpRequest request) async {
+    try {
+      print('🔌 [AuthService] Sending resend OTP request...');
+      final response = await _apiClient.post(
+        ApiEndpoints.resendOtp,
+        data: request.toJson(),
+      );
+
+      print('🔌 [AuthService] Resend OTP response status: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        print('🔌 [AuthService] OTP resent successfully');
+        final resendResponse = ResendOtpResponse.fromJson(response.data);
+        return ApiResult.success(resendResponse);
+      } else {
+        print('🔌 [AuthService] Resend OTP failed: ${response.statusCode}');
+        return ApiResult.failure(_parseError(response));
+      }
+    } on DioException catch (e) {
+      print('🔌 [AuthService] Resend OTP Dio exception: $e');
+      return ApiResult.failure(_handleDioError(e));
+    } catch (e) {
+      print('🔌 [AuthService] Resend OTP unknown error: $e');
       return ApiResult.failure(ApiError.unknown());
     }
   }

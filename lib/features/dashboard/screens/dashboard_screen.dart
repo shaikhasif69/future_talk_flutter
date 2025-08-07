@@ -7,6 +7,8 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_durations.dart';
 import '../../../shared/widgets/animations/ft_stagger_animation.dart';
+import '../../../shared/widgets/layouts/ft_scaffold_with_nav.dart';
+import '../../../shared/providers/navigation_provider.dart';
 import '../models/dashboard_data.dart';
 import '../models/friend_status.dart';
 import '../providers/dashboard_provider.dart';
@@ -145,7 +147,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
       ref.read(dashboardProvider.notifier).setContext(context);
     });
     
-    return Scaffold(
+    return FTScaffoldWithNav(
+      showBottomNav: true,
+      floatingNav: true,
       backgroundColor: AppColors.warmCream,
       body: dashboardData.when(
         loading: () => _buildLoadingScreen(),

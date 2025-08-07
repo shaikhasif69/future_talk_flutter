@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../storage/secure_storage_service.dart';
 import 'dart:io';
 
 class ApiClient {
@@ -22,7 +22,6 @@ class ApiClient {
   }
   
   late final Dio _dio;
-  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   static final ApiClient _instance = ApiClient._internal();
   factory ApiClient() => _instance;
@@ -45,9 +44,13 @@ class ApiClient {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final token = await _secureStorage.read(key: 'access_token');
+          final token = await SecureStorageService.getAccessToken();
+          print('🌐 [ApiClient] Token for ${options.path}: ${token != null ? 'EXISTS (${token.length} chars)' : 'NULL'}');
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
+            print('🌐 [ApiClient] Added Authorization header: Bearer ${token.substring(0, 20)}...');
+          } else {
+            print('🌐 [ApiClient] No token found, no Authorization header');
           }
           handler.next(options);
         },
@@ -55,7 +58,7 @@ class ApiClient {
           if (error.response?.statusCode == 401) {
             final refreshed = await _refreshToken();
             if (refreshed) {
-              final token = await _secureStorage.read(key: 'access_token');
+              final token = await SecureStorageService.getAccessToken();
               error.requestOptions.headers['Authorization'] = 'Bearer $token';
               
               final clonedRequest = await _dio.fetch(error.requestOptions);
@@ -80,7 +83,7 @@ class ApiClient {
 
   Future<bool> _refreshToken() async {
     try {
-      final refreshToken = await _secureStorage.read(key: 'refresh_token');
+      final refreshToken = await SecureStorageService.getRefreshToken();
       if (refreshToken == null) return false;
 
       final response = await _dio.post(
@@ -91,8 +94,10 @@ class ApiClient {
 
       if (response.statusCode == 200) {
         final data = response.data;
-        await _secureStorage.write(key: 'access_token', value: data['access_token']);
-        await _secureStorage.write(key: 'refresh_token', value: data['refresh_token']);
+        await SecureStorageService.saveTokens(
+          accessToken: data['access_token'],
+          refreshToken: data['refresh_token'],
+        );
         return true;
       }
     } catch (e) {
@@ -102,8 +107,7 @@ class ApiClient {
   }
 
   Future<void> _clearTokens() async {
-    await _secureStorage.delete(key: 'access_token');
-    await _secureStorage.delete(key: 'refresh_token');
+    await SecureStorageService.clearTokens();
   }
 
   Dio get dio => _dio;

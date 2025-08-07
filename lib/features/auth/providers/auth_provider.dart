@@ -36,47 +36,17 @@ class Auth extends _$Auth {
     print('🔐 [Auth] Starting authentication initialization...');
     
     try {
-      // Check if we have stored tokens
-      final accessToken = await SecureStorageService.getAccessToken();
-      final refreshToken = await SecureStorageService.getRefreshToken();
-      final isLoggedInFlag = await SecureStorageService.isLoggedIn();
+      // Add minimum delay to ensure splash screen is visible
+      final authCheckFuture = _performAuthCheck();
+      final minSplashFuture = Future.delayed(const Duration(milliseconds: 1500)); // 1.5 seconds minimum
       
-      print('🔐 [Auth] Token check: accessToken=${accessToken != null}, refreshToken=${refreshToken != null}, isLoggedInFlag=$isLoggedInFlag');
+      // Wait for both auth check and minimum splash time
+      await Future.wait([authCheckFuture, minSplashFuture]);
       
-      if (accessToken != null && refreshToken != null && isLoggedInFlag) {
-        print('🔐 [Auth] Tokens found, fetching user profile...');
-        final result = await _authService.getCurrentUser();
-        result.when(
-          success: (user) {
-            print('🔐 [Auth] User profile loaded: ${user.email}');
-            state = AuthState(
-              user: user,
-              isLoggedIn: true,
-              isInitialized: true,
-              isLoading: false,
-            );
-          },
-          failure: (error) async {
-            print('🔐 [Auth] Failed to get user profile: ${error.message}. Clearing tokens.');
-            await SecureStorageService.clearTokens();
-            state = AuthState(
-              isLoggedIn: false,
-              isInitialized: true,
-              isLoading: false,
-              errorMessage: error.message,
-            );
-          },
-        );
-      } else {
-        print('🔐 [Auth] No valid tokens found, user not logged in');
-        state = const AuthState(
-          isLoggedIn: false,
-          isInitialized: true,
-          isLoading: false,
-        );
-      }
     } catch (e) {
       print('🔐 [Auth] Initialization error: $e');
+      // Even on error, wait for minimum splash time
+      await Future.delayed(const Duration(milliseconds: 1500));
       state = AuthState(
         isLoggedIn: false,
         isInitialized: true,
@@ -86,6 +56,37 @@ class Auth extends _$Auth {
     }
     
     print('🔐 [Auth] Initialization complete. State: ${state.isLoggedIn ? "Logged In" : "Not Logged In"}');
+  }
+
+  Future<void> _performAuthCheck() async {
+    // Check if we have stored tokens
+    final accessToken = await SecureStorageService.getAccessToken();
+    final refreshToken = await SecureStorageService.getRefreshToken();
+    final isLoggedInFlag = await SecureStorageService.isLoggedIn();
+    
+    print('🔐 [Auth] Token check: accessToken=${accessToken != null ? 'EXISTS' : 'NULL'}, refreshToken=${refreshToken != null ? 'EXISTS' : 'NULL'}, isLoggedInFlag=$isLoggedInFlag');
+    print('🔐 [Auth] AccessToken length: ${accessToken?.length ?? 0}, RefreshToken length: ${refreshToken?.length ?? 0}');
+    
+    if (accessToken != null && refreshToken != null && isLoggedInFlag) {
+      print('🔐 [Auth] Tokens found, user authenticated');
+      
+      state = AuthState(
+        isLoggedIn: true,
+        isInitialized: true,
+        isLoading: false,
+      );
+      
+      // Background validation: Fetch fresh user profile
+      print('🔐 [Auth] Background: Validating user profile...');
+      _validateUserInBackground();
+    } else {
+      print('🔐 [Auth] No valid tokens found, user not logged in');
+      state = const AuthState(
+        isLoggedIn: false,
+        isInitialized: true,
+        isLoading: false,
+      );
+    }
   }
 
   Future<ApiResult<AuthResponse>> login(String emailOrUsername, String password) async {
@@ -112,6 +113,42 @@ class Auth extends _$Auth {
       },
       failure: (error) {
         print('🔐 [Auth] Login failed: ${error.message}');
+        // IMPORTANT: Keep the user on the current screen, don't change login status
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: error.message,
+          // Explicitly maintain current auth state - don't change isLoggedIn
+        );
+      },
+    );
+
+    return result;
+  }
+
+  Future<ApiResult<RegisterResponse>> register({
+    required String email,
+    required String password,
+    required String username,
+    required String displayName,
+  }) async {
+    state = state.copyWith(isLoading: true, errorMessage: null);
+
+    final request = RegisterRequest(
+      email: email,
+      password: password,
+      username: username,
+      displayName: displayName,
+    );
+
+    final result = await _authService.register(request);
+
+    result.when(
+      success: (registerResponse) {
+        state = state.copyWith(
+          isLoading: false,
+        );
+      },
+      failure: (error) {
         state = state.copyWith(
           isLoading: false,
           errorMessage: error.message,
@@ -122,33 +159,51 @@ class Auth extends _$Auth {
     return result;
   }
 
-  Future<ApiResult<AuthResponse>> register({
+  Future<ApiResult<AuthResponse>> verifyOtp({
     required String email,
-    required String password,
-    required String username,
-    required String firstName,
-    required String lastName,
+    required String otp,
   }) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
 
-    final request = RegisterRequest(
+    final request = OtpVerificationRequest(
       email: email,
-      password: password,
-      username: username,
-      firstName: firstName,
-      lastName: lastName,
+      otp: otp,
     );
 
-    final result = await _authService.register(request);
+    final result = await _authService.verifyOtp(request);
 
     result.when(
       success: (authResponse) {
+        print('🔐 [Auth] OTP verification successful! User: ${authResponse.user.username}');
         state = AuthState(
           user: authResponse.user,
           isLoggedIn: true,
           isInitialized: true,
           isLoading: false,
         );
+        print('🔐 [Auth] Auth state updated after OTP: isLoggedIn=${state.isLoggedIn}');
+      },
+      failure: (error) {
+        print('🔐 [Auth] OTP verification failed: ${error.message}');
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: error.message,
+        );
+      },
+    );
+
+    return result;
+  }
+
+  Future<ApiResult<ResendOtpResponse>> resendOtp(String email) async {
+    state = state.copyWith(isLoading: true, errorMessage: null);
+
+    final request = ResendOtpRequest(email: email);
+    final result = await _authService.resendOtp(request);
+
+    result.when(
+      success: (resendResponse) {
+        state = state.copyWith(isLoading: false);
       },
       failure: (error) {
         state = state.copyWith(
@@ -248,4 +303,35 @@ class Auth extends _$Auth {
   void clearError() {
     state = state.copyWith(errorMessage: null);
   }
+
+  /// Background validation - doesn't block app startup
+  Future<void> _validateUserInBackground() async {
+    try {
+      final result = await _authService.getCurrentUser();
+      result.when(
+        success: (user) {
+          print('🔐 [Auth] Background validation successful: ${user.email}');
+          // Update state with fresh user data
+          state = state.copyWith(user: user);
+        },
+        failure: (error) async {
+          print('🔐 [Auth] Background validation failed: ${error.message}');
+          if (error.isUnauthorized) {
+            print('🔐 [Auth] Token invalid, logging out user');
+            await SecureStorageService.clearTokens();
+            state = const AuthState(
+              isLoggedIn: false,
+              isInitialized: true,
+              isLoading: false,
+            );
+          }
+          // For other errors, we keep user logged in (network issues, server down, etc.)
+        },
+      );
+    } catch (e) {
+      print('🔐 [Auth] Background validation error: $e');
+      // Don't log out user for unknown errors
+    }
+  }
+
 }

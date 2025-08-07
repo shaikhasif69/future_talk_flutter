@@ -106,8 +106,7 @@ _$RegisterRequestImpl _$$RegisterRequestImplFromJson(
   email: json['email'] as String,
   password: json['password'] as String,
   username: json['username'] as String,
-  firstName: json['firstName'] as String,
-  lastName: json['lastName'] as String,
+  displayName: json['display_name'] as String,
 );
 
 Map<String, dynamic> _$$RegisterRequestImplToJson(
@@ -116,8 +115,66 @@ Map<String, dynamic> _$$RegisterRequestImplToJson(
   'email': instance.email,
   'password': instance.password,
   'username': instance.username,
-  'firstName': instance.firstName,
-  'lastName': instance.lastName,
+  'display_name': instance.displayName,
+};
+
+_$RegisterResponseImpl _$$RegisterResponseImplFromJson(
+  Map<String, dynamic> json,
+) => _$RegisterResponseImpl(
+  message: json['message'] as String,
+  email: json['email'] as String,
+  expiresInMinutes: (json['expires_in_minutes'] as num).toInt(),
+  otpSent: json['otp_sent'] as bool,
+  remainingRequests: (json['remaining_requests'] as num).toInt(),
+);
+
+Map<String, dynamic> _$$RegisterResponseImplToJson(
+  _$RegisterResponseImpl instance,
+) => <String, dynamic>{
+  'message': instance.message,
+  'email': instance.email,
+  'expires_in_minutes': instance.expiresInMinutes,
+  'otp_sent': instance.otpSent,
+  'remaining_requests': instance.remainingRequests,
+};
+
+_$OtpVerificationRequestImpl _$$OtpVerificationRequestImplFromJson(
+  Map<String, dynamic> json,
+) => _$OtpVerificationRequestImpl(
+  email: json['email'] as String,
+  otp: json['otp'] as String,
+);
+
+Map<String, dynamic> _$$OtpVerificationRequestImplToJson(
+  _$OtpVerificationRequestImpl instance,
+) => <String, dynamic>{'email': instance.email, 'otp': instance.otp};
+
+_$ResendOtpRequestImpl _$$ResendOtpRequestImplFromJson(
+  Map<String, dynamic> json,
+) => _$ResendOtpRequestImpl(email: json['email'] as String);
+
+Map<String, dynamic> _$$ResendOtpRequestImplToJson(
+  _$ResendOtpRequestImpl instance,
+) => <String, dynamic>{'email': instance.email};
+
+_$ResendOtpResponseImpl _$$ResendOtpResponseImplFromJson(
+  Map<String, dynamic> json,
+) => _$ResendOtpResponseImpl(
+  message: json['message'] as String,
+  email: json['email'] as String,
+  expiresInMinutes: (json['expires_in_minutes'] as num).toInt(),
+  otpSent: json['otp_sent'] as bool,
+  remainingRequests: (json['remaining_requests'] as num).toInt(),
+);
+
+Map<String, dynamic> _$$ResendOtpResponseImplToJson(
+  _$ResendOtpResponseImpl instance,
+) => <String, dynamic>{
+  'message': instance.message,
+  'email': instance.email,
+  'expires_in_minutes': instance.expiresInMinutes,
+  'otp_sent': instance.otpSent,
+  'remaining_requests': instance.remainingRequests,
 };
 
 _$RefreshTokenRequestImpl _$$RefreshTokenRequestImplFromJson(

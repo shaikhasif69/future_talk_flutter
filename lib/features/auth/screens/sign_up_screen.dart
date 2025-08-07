@@ -48,41 +48,27 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     setState(() => _isLoading = true);
     HapticFeedback.mediumImpact();
     
-    // Split full name into first and last name
-    final names = fullName.trim().split(' ');
-    final firstName = names.first;
-    final lastName = names.length > 1 ? names.skip(1).join(' ') : '';
-    
     final result = await ref.read(authProvider.notifier).register(
       email: email.trim(),
       password: password,
       username: username.trim(),
-      firstName: firstName,
-      lastName: lastName,
+      displayName: fullName.trim(),
     );
 
     if (mounted) {
       result.when(
-        success: (authResponse) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Welcome to Future Talk, ${authResponse.user.firstName}! Your account is ready.',
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
-              ),
-              backgroundColor: AppColors.sageGreen,
-              duration: const Duration(seconds: 4),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-              ),
-            ),
-          );
+        success: (registerResponse) {
+          HapticFeedback.lightImpact();
           
-          // Navigate to dashboard since user is now logged in
-          context.goToDashboard();
+          // Navigate to OTP verification screen
+          context.goToVerifyOtp(
+            email.trim(),
+            message: registerResponse.message,
+            expiresInMinutes: registerResponse.expiresInMinutes,
+          );
         },
         failure: (error) {
+          HapticFeedback.vibrate();
           String errorMessage = 'Something went wrong. Please try again.';
           
           if (error.details != null && error.details!.isNotEmpty) {
@@ -101,7 +87,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
               ),
               backgroundColor: AppColors.dustyRose,
-              duration: const Duration(seconds: 3),
+              duration: const Duration(seconds: 4),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppDimensions.radiusM),

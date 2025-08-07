@@ -7,6 +7,7 @@ import '../features/auth/providers/auth_provider.dart';
 import '../features/auth/screens/onboarding_screen.dart';
 import '../features/auth/screens/sign_up_screen.dart';
 import '../features/auth/screens/sign_in_screen.dart';
+import '../features/auth/screens/otp_verification_screen.dart';
 import '../features/dashboard/screens/dashboard_screen.dart';
 import '../features/chat/screens/chat_list_screen.dart';
 import '../features/chat/screens/individual_chat_screen.dart';
@@ -26,37 +27,55 @@ import '../features/user_profile/models/user_profile_model.dart';
 import '../features/settings/screens/settings_screen.dart';
 import '../features/notifications/screens/notification_screen.dart';
 import '../features/connection_stones/screens/connection_stones_dashboard_screen.dart';
+import '../features/navigation/screens/time_capsules_screen.dart';
+import '../features/navigation/screens/connection_stones_screen.dart';
+import '../features/navigation/screens/parallel_reading_screen.dart';
 
-/// Router provider that handles authentication-aware routing
+/// Router provider that handles authentication-aware routing  
 final routerProvider = Provider<GoRouter>((ref) {
+  // Watch the auth provider so router rebuilds when auth state changes
+  ref.watch(authProvider);
+  
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: true,
     redirect: (context, state) {
       final authState = ref.read(authProvider);
       final currentPath = state.fullPath ?? state.matchedLocation;
-      final isAuthRoute = ['/splash', '/onboarding', '/sign_in', '/sign_up'].contains(currentPath);
+      final isAuthRoute = ['/splash', '/onboarding', '/sign_in', '/sign_up', '/verify-otp'].contains(currentPath);
       
       print('🔀 [Router] Redirect check: location=$currentPath, isLoggedIn=${authState.isLoggedIn}, isInitialized=${authState.isInitialized}');
       
-      // If not initialized, allow navigation to continue (splash will handle)
+      // Always stay on splash until auth is initialized
       if (!authState.isInitialized) {
-        return null;
+        if (currentPath != '/splash') {
+          print('🔀 [Router] Auth not initialized, redirecting to splash');
+          return '/splash';
+        }
+        return null; // Stay on splash
       }
       
-      // If logged in but on auth route, redirect to dashboard  
-      if (authState.isLoggedIn && isAuthRoute && currentPath != '/splash') {
-        print('🔀 [Router] Redirecting logged in user to dashboard');
-        return '/dashboard';
+      // Once initialized, handle navigation based on auth state
+      if (authState.isLoggedIn) {
+        if (isAuthRoute) {
+          print('🔀 [Router] Redirecting authenticated user to dashboard');
+          return '/dashboard';
+        }
+      } else {
+        // IMPORTANT: Don't redirect from auth screens when user is actively using them
+        // Only redirect from protected routes and splash
+        if (!isAuthRoute) {
+          print('🔀 [Router] Redirecting unauthenticated user to sign in');
+          return '/sign_in';
+        }
+        // Only redirect from splash to onboarding, not from other auth routes
+        if (currentPath == '/splash') {
+          print('🔀 [Router] Auth initialized, not logged in, redirecting to onboarding');
+          return '/onboarding';
+        }
       }
       
-      // If not logged in but on protected route, redirect to sign in
-      if (!authState.isLoggedIn && !isAuthRoute) {
-        print('🔀 [Router] Redirecting unauthenticated user to sign in');
-        return '/sign_in';
-      }
-      
-      // Allow navigation to continue
+      // Allow navigation to continue - this prevents unwanted redirects during login attempts
       return null;
     },
     routes: [
@@ -84,11 +103,49 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const SignInScreen(),
       ),
 
+      // ==================== OTP VERIFICATION ROUTE ====================
+      GoRoute(
+        path: '/verify-otp',
+        name: 'verify_otp',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          
+          if (extra != null) {
+            return OtpVerificationScreen(
+              email: extra['email'] as String,
+              message: extra['message'] as String?,
+              expiresInMinutes: extra['expiresInMinutes'] as int?,
+            );
+          }
+          
+          return const SignUpScreen();
+        },
+      ),
+
       // ==================== MAIN APP ROUTES ====================
       GoRoute(
         path: '/dashboard',
         name: 'dashboard',
         builder: (context, state) => const DashboardScreen(),
+      ),
+
+      // ==================== NAVIGATION TAB ROUTES ====================
+      GoRoute(
+        path: '/time-capsules',
+        name: 'time_capsules',
+        builder: (context, state) => const TimeCapsulsScreen(),
+      ),
+      
+      GoRoute(
+        path: '/connection-stones-tab',
+        name: 'connection_stones_tab',
+        builder: (context, state) => const ConnectionStonesScreen(),
+      ),
+      
+      GoRoute(
+        path: '/parallel-reading',
+        name: 'parallel_reading',
+        builder: (context, state) => const ParallelReadingScreen(),
       ),
 
       // ==================== CHAT ROUTES ====================
@@ -335,7 +392,11 @@ class Routes {
   static const String onboarding = '/onboarding';
   static const String signUp = '/sign_up';
   static const String signIn = '/sign_in';
+  static const String verifyOtp = '/verify-otp';
   static const String dashboard = '/dashboard';
+  static const String timeCapsules = '/time-capsules';
+  static const String connectionStonesTab = '/connection-stones-tab';
+  static const String parallelReading = '/parallel-reading';
   static const String chat = '/chat';
   static const String individualChat = '/chat/individual';
   static const String books = '/books';
@@ -364,6 +425,15 @@ extension AppNavigation on BuildContext {
 
   /// Navigate to sign in
   void goToSignIn() => go(Routes.signIn);
+
+  /// Navigate to OTP verification
+  void goToVerifyOtp(String email, {String? message, int? expiresInMinutes}) {
+    go(Routes.verifyOtp, extra: {
+      'email': email,
+      'message': message,
+      'expiresInMinutes': expiresInMinutes,
+    });
+  }
 
   /// Navigate to dashboard
   void goToDashboard() => go(Routes.dashboard);
