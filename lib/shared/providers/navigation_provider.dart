@@ -100,34 +100,28 @@ class NavigationItemConfig {
 class NavigationConfig {
   static const List<NavigationItemConfig> mainNavigation = [
     NavigationItemConfig(
-      route: '/capsule-garden',
-      icon: Icons.access_time_rounded,
-      activeIcon: Icons.access_time_filled,
-      label: 'Time Capsules',
+      route: '/dashboard',
+      icon: Icons.home_outlined,
+      activeIcon: Icons.home_rounded,
+      label: 'Home',
     ),
     NavigationItemConfig(
-      route: '/chat',
+      route: '/chat-tab',
       icon: Icons.chat_bubble_outline_rounded,
       activeIcon: Icons.chat_bubble_rounded,
       label: 'Chat',
     ),
     NavigationItemConfig(
-      route: '/connection-stones',
-      icon: Icons.scatter_plot_rounded,
-      activeIcon: Icons.scatter_plot_rounded,
-      label: 'Connection Stones',
+      route: '/capsule-tab',
+      icon: Icons.access_time_outlined,
+      activeIcon: Icons.access_time_filled,
+      label: 'Capsule',
     ),
     NavigationItemConfig(
-      route: '/books',
-      icon: Icons.menu_book_rounded,
+      route: '/read-tab',
+      icon: Icons.menu_book_outlined,
       activeIcon: Icons.menu_book_rounded,
-      label: 'Parallel Reading',
-    ),
-    NavigationItemConfig(
-      route: '/profile',
-      icon: Icons.person_outline_rounded,
-      activeIcon: Icons.person_rounded,
-      label: 'Profile',
+      label: 'Read',
     ),
   ];
 

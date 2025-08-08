@@ -30,6 +30,9 @@ import '../features/connection_stones/screens/connection_stones_dashboard_screen
 import '../features/navigation/screens/time_capsules_screen.dart';
 import '../features/navigation/screens/connection_stones_screen.dart';
 import '../features/navigation/screens/parallel_reading_screen.dart';
+import '../features/navigation/screens/chat_tab_screen.dart';
+import '../features/navigation/screens/capsule_tab_screen.dart';
+import '../features/navigation/screens/read_tab_screen.dart';
 
 /// Router provider that handles authentication-aware routing  
 final routerProvider = Provider<GoRouter>((ref) {
@@ -150,6 +153,25 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/parallel-reading',
         name: 'parallel_reading',
         builder: (context, state) => const ParallelReadingScreen(),
+      ),
+
+      // ==================== BOTTOM NAV TAB ROUTES ====================
+      GoRoute(
+        path: '/chat-tab',
+        name: 'chat_tab',
+        builder: (context, state) => const ChatTabScreen(),
+      ),
+      
+      GoRoute(
+        path: '/capsule-tab',
+        name: 'capsule_tab',
+        builder: (context, state) => const CapsuleTabScreen(),
+      ),
+      
+      GoRoute(
+        path: '/read-tab',
+        name: 'read_tab',
+        builder: (context, state) => const ReadTabScreen(),
       ),
 
       // ==================== CHAT ROUTES ====================
@@ -401,6 +423,9 @@ class Routes {
   static const String timeCapsules = '/time-capsules';
   static const String connectionStonesTab = '/connection-stones-tab';
   static const String parallelReading = '/parallel-reading';
+  static const String chatTab = '/chat-tab';
+  static const String capsuleTab = '/capsule-tab';
+  static const String readTab = '/read-tab';
   static const String chat = '/chat';
   static const String individualChat = '/chat/individual';
   static const String books = '/books';
