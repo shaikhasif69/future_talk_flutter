@@ -59,6 +59,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       result.when(
         success: (registerResponse) {
           HapticFeedback.lightImpact();
+          print('🎯 [SignUp] Registration successful, navigating to OTP verification');
+          print('🎯 [SignUp] Email: ${email.trim()}');
+          print('🎯 [SignUp] Message: ${registerResponse.message}');
           
           // Navigate to OTP verification screen
           context.goToVerifyOtp(
@@ -66,6 +69,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             message: registerResponse.message,
             expiresInMinutes: registerResponse.expiresInMinutes,
           );
+          print('🎯 [SignUp] Navigation to OTP verification called');
         },
         failure: (error) {
           HapticFeedback.vibrate();

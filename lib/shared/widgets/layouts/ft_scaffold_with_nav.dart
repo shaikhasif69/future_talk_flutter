@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../navigation/ft_bottom_navigation_bar.dart';
 import '../../providers/navigation_provider.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 
-/// Premium scaffold wrapper with integrated bottom navigation
-/// Provides consistent layout structure for Future Talk screens
-class FTScaffoldWithNav extends ConsumerWidget {
+/// Premium scaffold wrapper for Future Talk screens
+/// Provides consistent layout structure
+class FTScaffold extends ConsumerWidget {
   /// The main body content
   final Widget body;
   
@@ -17,14 +18,6 @@ class FTScaffoldWithNav extends ConsumerWidget {
   /// Background color override
   final Color? backgroundColor;
   
-  /// Whether to show the bottom navigation
-  final bool showBottomNav;
-  
-  /// Whether to use floating navigation
-  final bool floatingNav;
-  
-  /// Whether to extend body behind bottom nav
-  final bool extendBodyBehindNav;
   
   /// Custom floating action button
   final Widget? floatingActionButton;
@@ -50,14 +43,11 @@ class FTScaffoldWithNav extends ConsumerWidget {
   final bool left;
   final bool right;
 
-  const FTScaffoldWithNav({
+  const FTScaffold({
     super.key,
     required this.body,
     this.appBar,
     this.backgroundColor,
-    this.showBottomNav = true,
-    this.floatingNav = true,
-    this.extendBodyBehindNav = false,
     this.floatingActionButton,
     this.floatingActionButtonLocation,
     this.resizeToAvoidBottomInset = true,
@@ -65,15 +55,13 @@ class FTScaffoldWithNav extends ConsumerWidget {
     this.endDrawer,
     this.showAppBar = true,
     this.top = true,
-    this.bottom = false, // Bottom will be handled by nav
+    this.bottom = true,
     this.left = true,
     this.right = true,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final navigationState = ref.watch(navigationProvider);
-    
     return Scaffold(
       backgroundColor: backgroundColor ?? AppColors.warmCream,
       appBar: showAppBar ? (appBar ?? _buildDefaultAppBar(context)) : null,
@@ -83,29 +71,12 @@ class FTScaffoldWithNav extends ConsumerWidget {
       floatingActionButtonLocation: floatingActionButtonLocation,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       extendBodyBehindAppBar: false,
-      extendBody: extendBodyBehindNav,
       body: SafeArea(
         top: top,
         bottom: bottom,
         left: left,
         right: right,
-        child: Stack(
-          children: [
-            // Main body content
-            Positioned.fill(
-              bottom: showBottomNav && !extendBodyBehindNav 
-                ? _getBottomNavHeight(context) + _getBottomPadding(context)
-                : 0,
-              child: body,
-            ),
-            
-            // Bottom navigation overlay
-            if (showBottomNav && navigationState.isVisible)
-              FTBottomNavigationBar(
-                isFloating: floatingNav,
-              ),
-          ],
-        ),
+        child: body,
       ),
     );
   }
@@ -124,21 +95,6 @@ class FTScaffoldWithNav extends ConsumerWidget {
     );
   }
 
-  double _getBottomNavHeight(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    
-    if (screenWidth < AppDimensions.mobileBreakpoint) {
-      return AppDimensions.bottomNavHeight - 8;
-    } else if (screenWidth < AppDimensions.tabletBreakpoint) {
-      return AppDimensions.bottomNavHeight;
-    } else {
-      return AppDimensions.bottomNavHeight + 8;
-    }
-  }
-
-  double _getBottomPadding(BuildContext context) {
-    return floatingNav ? AppDimensions.screenPadding * 2 : 0;
-  }
 }
 
 /// Specialized scaffold for dashboard-style screens
@@ -148,7 +104,6 @@ class FTDashboardScaffold extends ConsumerWidget {
   final List<Widget>? actions;
   final Widget? leading;
   final Color? backgroundColor;
-  final bool showBottomNav;
 
   const FTDashboardScaffold({
     super.key,
@@ -157,13 +112,11 @@ class FTDashboardScaffold extends ConsumerWidget {
     this.actions,
     this.leading,
     this.backgroundColor,
-    this.showBottomNav = true,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FTScaffoldWithNav(
-      showBottomNav: showBottomNav,
+    return FTScaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
         title: title != null ? Text(
@@ -190,22 +143,18 @@ class FTDashboardScaffold extends ConsumerWidget {
 /// Specialized scaffold for full-screen content
 class FTFullScreenScaffold extends ConsumerWidget {
   final Widget body;
-  final bool showBottomNav;
   final Color? backgroundColor;
 
   const FTFullScreenScaffold({
     super.key,
     required this.body,
-    this.showBottomNav = false,
     this.backgroundColor,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FTScaffoldWithNav(
-      showBottomNav: showBottomNav,
+    return FTScaffold(
       showAppBar: false,
-      extendBodyBehindNav: true,
       backgroundColor: backgroundColor,
       body: body,
     );
@@ -223,17 +172,20 @@ class NavigationControllerWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        
         final navigationState = ref.read(navigationProvider);
         
         // Handle back navigation
         if (navigationState.navigationHistory.length > 1) {
           ref.read(navigationProvider.notifier).navigateBack(context: context);
-          return false; // Prevent system back
+        } else {
+          // Allow system back
+          Navigator.of(context).pop();
         }
-        
-        return true; // Allow system back
       },
       child: child,
     );

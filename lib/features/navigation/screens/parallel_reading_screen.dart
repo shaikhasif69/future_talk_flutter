@@ -11,10 +11,7 @@ class ParallelReadingScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FTScaffoldWithNav(
-      currentIndex: 3,
-      showBottomNav: true,
-      floatingNav: true,
+    return FTScaffold(
       backgroundColor: AppColors.warmCream,
       body: Center(
         child: Column(

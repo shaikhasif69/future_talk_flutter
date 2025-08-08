@@ -147,9 +147,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
       ref.read(dashboardProvider.notifier).setContext(context);
     });
     
-    return FTScaffoldWithNav(
-      showBottomNav: true,
-      floatingNav: true,
+    return FTScaffold(
       backgroundColor: AppColors.warmCream,
       body: dashboardData.when(
         loading: () => _buildLoadingScreen(),

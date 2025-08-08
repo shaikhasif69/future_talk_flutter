@@ -108,9 +108,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/verify-otp',
         name: 'verify_otp',
         builder: (context, state) {
+          print('🔄 [Router] Building OTP verification screen');
           final extra = state.extra as Map<String, dynamic>?;
+          print('🔄 [Router] Extra data: $extra');
           
           if (extra != null) {
+            print('🔄 [Router] Creating OtpVerificationScreen with email: ${extra['email']}');
             return OtpVerificationScreen(
               email: extra['email'] as String,
               message: extra['message'] as String?,
@@ -118,6 +121,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             );
           }
           
+          print('🔄 [Router] No extra data, returning to SignUpScreen');
           return const SignUpScreen();
         },
       ),
@@ -428,11 +432,19 @@ extension AppNavigation on BuildContext {
 
   /// Navigate to OTP verification
   void goToVerifyOtp(String email, {String? message, int? expiresInMinutes}) {
-    go(Routes.verifyOtp, extra: {
+    print('🚀 [Navigation] goToVerifyOtp called with email: $email');
+    print('🚀 [Navigation] message: $message, expires: $expiresInMinutes');
+    
+    final extraData = {
       'email': email,
       'message': message,
       'expiresInMinutes': expiresInMinutes,
-    });
+    };
+    print('🚀 [Navigation] Extra data: $extraData');
+    print('🚀 [Navigation] Calling go(${Routes.verifyOtp})');
+    
+    go(Routes.verifyOtp, extra: extraData);
+    print('🚀 [Navigation] go() method completed');
   }
 
   /// Navigate to dashboard

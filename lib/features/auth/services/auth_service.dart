@@ -69,7 +69,7 @@ class AuthService {
       );
 
       print('🔌 [AuthService] Registration response status: ${response.statusCode}');
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         print('🔌 [AuthService] Registration successful, OTP sent');
         final registerResponse = RegisterResponse.fromJson(response.data);
         return ApiResult.success(registerResponse);

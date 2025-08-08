@@ -49,7 +49,7 @@ class NavigationExampleScreen extends ConsumerWidget {
             
             const SizedBox(height: AppDimensions.spacingXXL),
             
-            _buildNavigationControlCard(ref),
+            _buildNavigationControlCard(context, ref),
             
             const SizedBox(height: AppDimensions.spacingXXL),
             
@@ -132,7 +132,7 @@ class NavigationExampleScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildNavigationControlCard(WidgetRef ref) {
+  Widget _buildNavigationControlCard(BuildContext context, WidgetRef ref) {
     return Card(
       elevation: 4,
       color: AppColors.pearlWhite,
@@ -177,7 +177,7 @@ class NavigationExampleScreen extends ConsumerWidget {
               runSpacing: AppDimensions.spacingS,
               children: List.generate(
                 NavigationConfig.mainNavigation.length,
-                (index) => _buildNavigationButton(ref, index),
+                (index) => _buildNavigationButton(context, ref, index),
               ),
             ),
             
@@ -230,7 +230,7 @@ class NavigationExampleScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildNavigationButton(WidgetRef ref, int index) {
+  Widget _buildNavigationButton(BuildContext context, WidgetRef ref, int index) {
     final item = NavigationConfig.mainNavigation[index];
     final isSelected = ref.watch(selectedIndexProvider) == index;
     

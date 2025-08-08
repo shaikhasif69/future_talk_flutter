@@ -11,10 +11,7 @@ class TimeCapsulsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FTScaffoldWithNav(
-      currentIndex: 0,
-      showBottomNav: true,
-      floatingNav: true,
+    return FTScaffold(
       backgroundColor: AppColors.warmCream,
       body: Center(
         child: Column(
