@@ -120,7 +120,7 @@ class ApiMessage {
   final String? replyToMessageId;
   final DateTime createdAt;
   final DateTime? editedAt;
-  final List<Map<String, dynamic>> attachments;
+  final List<String> attachments;
   final DateTime? selfDestructAt;
   final bool isDestroyed;
   final bool encrypted;
@@ -144,24 +144,40 @@ class ApiMessage {
 
   factory ApiMessage.fromJson(Map<String, dynamic> json) {
     return ApiMessage(
-      id: json['id'] as String,
-      conversationId: json['conversation_id'] as String,
-      senderId: json['sender_id'] as String,
-      content: json['content'] as String,
-      messageType: json['message_type'] as String,
-      replyToMessageId: json['reply_to_message_id'] as String?,
-      createdAt: DateTime.parse(json['created_at'] as String),
+      id: _parseRequiredString(json['id']) ?? '',
+      conversationId: _parseRequiredString(json['conversation_id']) ?? '',
+      senderId: _parseRequiredString(json['sender_id']) ?? '',
+      content: _parseRequiredString(json['content']) ?? '',
+      messageType: _parseRequiredString(json['message_type']) ?? 'text',
+      replyToMessageId: _parseOptionalString(json['reply_to_message_id']),
+      createdAt: DateTime.parse(_parseRequiredString(json['created_at']) ?? DateTime.now().toIso8601String()),
       editedAt: json['edited_at'] != null 
-          ? DateTime.parse(json['edited_at'] as String)
+          ? DateTime.parse(_parseRequiredString(json['edited_at'])!)
           : null,
-      attachments: List<Map<String, dynamic>>.from(json['attachments'] as List? ?? []),
+      attachments: List<String>.from(json['attachments'] as List? ?? []),
       selfDestructAt: json['self_destruct_at'] != null
-          ? DateTime.parse(json['self_destruct_at'] as String)
+          ? DateTime.parse(_parseRequiredString(json['self_destruct_at'])!)
           : null,
-      isDestroyed: json['is_destroyed'] as bool,
-      encrypted: json['encrypted'] as bool,
-      encryptionType: json['encryption_type'] as String?,
+      isDestroyed: json['is_destroyed'] as bool? ?? false,
+      encrypted: json['encrypted'] as bool? ?? false,
+      encryptionType: _parseOptionalString(json['encryption_type']),
     );
+  }
+
+  /// Safely parse required string fields that might come as Lists or other types
+  static String? _parseRequiredString(dynamic value) {
+    if (value == null) return null;
+    if (value is String) return value;
+    if (value is List) return value.isEmpty ? null : value.first?.toString();
+    return value.toString();
+  }
+
+  /// Safely parse optional string fields that might come as Lists or other types
+  static String? _parseOptionalString(dynamic value) {
+    if (value == null) return null;
+    if (value is String) return value.isEmpty ? null : value;
+    if (value is List) return value.isEmpty ? null : value.first?.toString();
+    return value.toString();
   }
 }
 
@@ -203,7 +219,20 @@ class ChatRepository {
       final responseData = jsonDecode(response.body) as Map<String, dynamic>;
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        return ApiResult.success(fromJson(responseData));
+        debugPrint('🔍 [ChatRepository] Response data structure: ${responseData.toString()}');
+        debugPrint('🔍 [ChatRepository] Response data keys: ${responseData.keys.toList()}');
+        debugPrint('🔍 [ChatRepository] Response data types: ${responseData.map((key, value) => MapEntry(key, value.runtimeType.toString()))}');
+        
+        try {
+          return ApiResult.success(fromJson(responseData));
+        } catch (parseError) {
+          debugPrint('❌ [ChatRepository] JSON parsing error: $parseError');
+          debugPrint('❌ [ChatRepository] Failed to parse response: ${responseData.toString()}');
+          return ApiResult.failure(ApiError(
+            message: 'Failed to parse response: $parseError',
+            statusCode: response.statusCode,
+          ));
+        }
       } else {
         final errorMessage = responseData['detail'] as String? ?? 
                            'Request failed with status: ${response.statusCode}';

@@ -5,7 +5,7 @@ import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/widgets/animations/ft_fade_in.dart';
 import '../models/chat_message.dart';
-import '../providers/individual_chat_provider.dart';
+import '../providers/realtime_individual_chat_provider.dart';
 
 /// Premium message input with auto-resizing, voice recording, and thoughtful interactions
 class MessageInput extends StatefulWidget {
@@ -16,7 +16,7 @@ class MessageInput extends StatefulWidget {
     this.onQuickReactionPressed,
   });
 
-  final IndividualChatProvider provider;
+  final RealtimeIndividualChatProvider provider;
   final VoidCallback? onMessageSent;
   final VoidCallback? onQuickReactionPressed;
 

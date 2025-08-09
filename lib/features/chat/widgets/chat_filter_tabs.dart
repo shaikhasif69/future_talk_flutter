@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_durations.dart';
-import '../providers/chat_list_provider.dart';
+import '../providers/realtime_chat_list_provider.dart';
 
 /// Premium filter tabs with smooth transitions and count badges
 /// Features gentle animations and introvert-friendly interactions

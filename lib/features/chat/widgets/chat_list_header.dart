@@ -3,7 +3,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/widgets/animations/ft_fade_in.dart';
-import '../providers/chat_list_provider.dart';
+import '../providers/realtime_chat_list_provider.dart';
 import 'chat_search_bar.dart';
 import 'chat_filter_tabs.dart';
 
@@ -17,7 +17,7 @@ class ChatListHeader extends StatelessWidget {
     required this.onFilterChanged,
   });
 
-  final ChatListProvider provider;
+  final RealtimeChatListProvider provider;
   final Function(String) onSearchChanged;
   final Function(ChatFilter) onFilterChanged;
 

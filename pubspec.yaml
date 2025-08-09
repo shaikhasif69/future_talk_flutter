@@ -70,6 +70,9 @@ dependencies:
   # Shared Preferences
   shared_preferences: ^2.2.2
   flutter_screenutil: ^5.9.3
+  
+  # WebSocket
+  web_socket_channel: ^2.4.5
 
 dev_dependencies:
   flutter_test:
@@ -116,6 +119,7 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   assets:
+    - assets/
 
   # fonts:
   #   - family: Schyler

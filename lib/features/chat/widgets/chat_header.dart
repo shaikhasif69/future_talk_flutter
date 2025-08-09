@@ -5,7 +5,7 @@ import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/widgets/animations/ft_fade_in.dart';
 import '../models/chat_conversation.dart';
-import '../providers/individual_chat_provider.dart';
+import '../providers/realtime_individual_chat_provider.dart';
 /// Premium chat header with social battery awareness and smooth animations
 class ChatHeader extends StatefulWidget {
   const ChatHeader({
@@ -18,7 +18,7 @@ class ChatHeader extends StatefulWidget {
   });
 
   final ChatConversation conversation;
-  final IndividualChatProvider provider;
+  final RealtimeIndividualChatProvider provider;
   final VoidCallback onBackPressed;
   final VoidCallback? onConnectionStonesPressed;
   final VoidCallback? onSettingsPressed;

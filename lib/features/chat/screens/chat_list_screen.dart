@@ -3,9 +3,8 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/widgets/animations/ft_stagger_animation.dart';
-import '../../../shared/widgets/ft_button.dart';
 import '../../../routing/app_router.dart';
-import '../providers/chat_list_provider.dart';
+import '../providers/realtime_chat_list_provider.dart';
 import '../widgets/chat_list_header.dart';
 import '../widgets/chat_item_tile.dart';
 import '../widgets/quiet_hours_banner.dart';
@@ -22,13 +21,13 @@ class ChatListScreen extends StatefulWidget {
 }
 
 class _ChatListScreenState extends State<ChatListScreen> {
-  late ChatListProvider _chatProvider;
+  late RealtimeChatListProvider _chatProvider;
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _chatProvider = ChatListProvider();
+    _chatProvider = RealtimeChatListProvider();
     
     // Add scroll listener for potential pull-to-refresh
     _scrollController.addListener(_onScroll);
@@ -177,7 +176,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
               ),
             ],
           );
-        }).toList(),
+        }),
         
         // Bottom padding for FAB
         const SliverToBoxAdapter(
