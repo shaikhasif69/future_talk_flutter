@@ -124,7 +124,7 @@ class _DashboardHeaderState extends State<DashboardHeader>
         child: Padding(
           padding: const EdgeInsets.fromLTRB(
             AppDimensions.screenPadding,
-            AppDimensions.spacingL,
+            AppDimensions.spacingM,
             AppDimensions.screenPadding,
             AppDimensions.spacingXL,
           ),
@@ -143,13 +143,17 @@ class _DashboardHeaderState extends State<DashboardHeader>
 
   Widget _buildTopSection() {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(
-          child: _buildGreetingSection(),
-        ),
-        const SizedBox(width: AppDimensions.spacingL),
-        _buildActionButtons(),
+        _buildProfileButton()
+            .animate(delay: 600.ms)
+            .fadeIn(duration: AppDurations.medium)
+            .scale(begin: const Offset(0.8, 0.8), end: const Offset(1.0, 1.0)),
+        const Spacer(),
+        _buildAppLogo()
+            .animate(delay: 800.ms)
+            .fadeIn(duration: AppDurations.medium)
+            .scale(begin: const Offset(0.8, 0.8), end: const Offset(1.0, 1.0)),
       ],
     )
         .animate(controller: _headerController)
@@ -157,64 +161,26 @@ class _DashboardHeaderState extends State<DashboardHeader>
         .slideY(begin: -0.2, end: 0.0, duration: AppDurations.medium);
   }
 
-  Widget _buildGreetingSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '${widget.greeting}, ${widget.userName}',
-          style: AppTextStyles.displaySmall.copyWith(
-            color: AppColors.softCharcoal,
-            height: 1.2,
-          ),
-        )
-            .animate(delay: 200.ms)
-            .fadeIn(duration: AppDurations.medium)
-            .slideX(begin: -0.3, end: 0.0, duration: AppDurations.medium),
-        const SizedBox(height: AppDimensions.spacingXS),
-        Text(
-          widget.subtitle,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.softCharcoalLight,
-          ),
-        )
-            .animate(delay: 400.ms)
-            .fadeIn(duration: AppDurations.medium)
-            .slideX(begin: -0.3, end: 0.0, duration: AppDurations.medium),
-      ],
+  Widget _buildAppLogo() {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: Text(
+        'FutureTalk',
+        style: AppTextStyles.headlineSmall.copyWith(
+          color: AppColors.sageGreen,
+          fontWeight: FontWeight.w600,
+          letterSpacing: -0.5,
+        ),
+      ),
     );
   }
 
-  Widget _buildActionButtons() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildActionButton(
-          icon: Icons.search_rounded,
-          onTap: () => _handleActionTap(widget.onSearchTapped),
-          tooltip: 'Search',
-        )
-            .animate(delay: 600.ms)
-            .fadeIn(duration: AppDurations.medium)
-            .scale(begin: const Offset(0.8, 0.8), end: const Offset(1.0, 1.0)),
-        const SizedBox(width: AppDimensions.spacingM),
-        _buildNotificationButton()
-            .animate(delay: 800.ms)
-            .fadeIn(duration: AppDurations.medium)
-            .scale(begin: const Offset(0.8, 0.8), end: const Offset(1.0, 1.0)),
-      ],
-    );
-  }
 
-  Widget _buildActionButton({
-    required IconData icon,
-    required VoidCallback onTap,
-    required String tooltip,
-  }) {
+  Widget _buildProfileButton() {
     return Tooltip(
-      message: tooltip,
+      message: 'Profile',
       child: GestureDetector(
-        onTap: onTap,
+        onTap: () => _handleActionTap(widget.onNotificationsTapped),
         child: AnimatedBuilder(
           animation: _actionController,
           builder: (context, child) {
@@ -232,94 +198,10 @@ class _DashboardHeaderState extends State<DashboardHeader>
                   ),
                 ),
                 child: Icon(
-                  icon,
+                  Icons.person_rounded,
                   size: AppDimensions.iconS,
                   color: AppColors.sageGreen,
                 ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNotificationButton() {
-    final hasUnread = widget.unreadNotifications > 0;
-    
-    return Tooltip(
-      message: 'Notifications',
-      child: GestureDetector(
-        onTap: () => _handleActionTap(widget.onNotificationsTapped),
-        child: AnimatedBuilder(
-          animation: _actionController,
-          builder: (context, child) {
-            return Transform.scale(
-              scale: 1.0 - (_actionController.value * 0.05),
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppColors.sageGreenWithOpacity(0.1),
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-                      border: Border.all(
-                        color: AppColors.sageGreenWithOpacity(0.2),
-                        width: 1.0,
-                      ),
-                    ),
-                    child: Icon(
-                      hasUnread 
-                          ? Icons.notifications_active_rounded 
-                          : Icons.notifications_rounded,
-                      size: AppDimensions.iconS,
-                      color: AppColors.sageGreen,
-                    ),
-                  ),
-                  if (hasUnread)
-                    Positioned(
-                      top: -2,
-                      right: -2,
-                      child: Container(
-                        constraints: const BoxConstraints(
-                          minWidth: 16,
-                          minHeight: 16,
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 4,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.dustyRose,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: AppColors.pearlWhite,
-                            width: 1.5,
-                          ),
-                        ),
-                        child: Text(
-                          widget.unreadNotifications > 99 
-                              ? '99+' 
-                              : '${widget.unreadNotifications}',
-                          style: AppTextStyles.labelSmall.copyWith(
-                            color: AppColors.pearlWhite,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 10,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    )
-                        .animate()
-                        .scale(
-                          begin: const Offset(0.0, 0.0),
-                          end: const Offset(1.0, 1.0),
-                          duration: AppDurations.fast,
-                          curve: Curves.elasticOut,
-                        ),
-                ],
               ),
             );
           },

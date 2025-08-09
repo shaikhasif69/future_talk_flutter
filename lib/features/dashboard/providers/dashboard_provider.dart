@@ -15,9 +15,12 @@ class DashboardNotifier extends StateNotifier<AsyncValue<DashboardData>> {
 
   /// Set context for navigation
   void setContext(BuildContext context) {
-    _context = context;
-    // Update quick actions with new context
-    updateQuickActions();
+    // Only update if context actually changed
+    if (_context != context) {
+      _context = context;
+      // Update quick actions with new context only once
+      updateQuickActions();
+    }
   }
 
   Future<void> _loadDashboardData() async {
@@ -29,7 +32,6 @@ class DashboardNotifier extends StateNotifier<AsyncValue<DashboardData>> {
       final data = mockData.copyWith(
         quickActions: _createQuickActionsWithNavigation(),
       );
-      print('Loading dashboard data with ${data.quickActions.length} quick actions');
       state = AsyncValue.data(data);
     } catch (error, stackTrace) {
       state = AsyncValue.error(error, stackTrace);
@@ -103,10 +105,8 @@ class DashboardNotifier extends StateNotifier<AsyncValue<DashboardData>> {
 
   /// Update quick actions when context changes
   void updateQuickActions() {
-    print('Updating quick actions with context: $_context');
     state.whenData((data) {
       final newActions = _createQuickActionsWithNavigation();
-      print('Created ${newActions.length} quick actions');
       state = AsyncValue.data(
         data.copyWith(
           quickActions: newActions,

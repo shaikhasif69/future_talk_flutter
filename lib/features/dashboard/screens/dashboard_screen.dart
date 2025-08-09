@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_durations.dart';
 import '../../../shared/widgets/animations/ft_stagger_animation.dart';
-import '../../../shared/widgets/layouts/ft_scaffold_with_nav.dart';
+import '../../navigation/widgets/side_menu.dart';
 import '../models/dashboard_data.dart';
 import '../models/friend_status.dart';
 import '../providers/dashboard_provider.dart';
@@ -15,10 +16,9 @@ import '../widgets/dashboard_header.dart';
 import '../widgets/quick_actions_grid.dart';
 import '../widgets/recent_activity_section.dart';
 import '../widgets/friends_status_section.dart';
-import '../widgets/dashboard_fab.dart';
+import '../widgets/sign_out_modal.dart';
+import '../../auth/providers/auth_provider.dart';
 
-/// Main dashboard screen for Future Talk
-/// Features staggered entrance animations and premium user experience
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
 
@@ -30,8 +30,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
     with TickerProviderStateMixin {
   late ScrollController _scrollController;
   
-  // Animation controllers for smooth transitions
   late AnimationController _refreshController;
+  late AnimationController _sideMenuAnimationController;
+  late Animation<double> _sideMenuAnimation;
+  late Animation<double> _contentScaleAnimation;
+  late Animation<double> _contentSlideAnimation;
+  
+  bool _isSideMenuOpen = false;
+  bool _isLoggingOut = false;
 
   @override
   void initState() {
@@ -42,44 +48,33 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
       duration: AppDurations.slow,
       vsync: this,
     );
+    
+    _sideMenuAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    
+    _sideMenuAnimation = Tween<double>(begin: -1.0, end: 0.0).animate(
+      CurvedAnimation(parent: _sideMenuAnimationController, curve: Curves.easeOut),
+    );
+    
+    _contentScaleAnimation = Tween<double>(begin: 1.0, end: 0.88).animate(
+      CurvedAnimation(parent: _sideMenuAnimationController, curve: Curves.easeOut),
+    );
+    
+    _contentSlideAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _sideMenuAnimationController, curve: Curves.easeOut),
+    );
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     _refreshController.dispose();
+    _sideMenuAnimationController.dispose();
     super.dispose();
   }
 
-  Future<void> _refreshDashboard() async {
-    _refreshController.forward();
-    
-    // Use Riverpod to refresh dashboard data
-    await ref.read(dashboardProvider.notifier).refresh();
-    
-    _refreshController.reverse();
-    
-    // Show refresh success feedback
-    HapticFeedback.lightImpact();
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Dashboard refreshed',
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.pearlWhite,
-            ),
-          ),
-          backgroundColor: AppColors.sageGreen,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-          ),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    }
-  }
 
   void _handleBatteryLevelChanged(SocialBatteryLevel newLevel) {
     ref.read(dashboardProvider.notifier).updateBatteryLevel(newLevel);
@@ -89,18 +84,17 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
   void _handleQuickActionTap(String actionId) {
     HapticFeedback.mediumImpact();
     
-    // Navigate based on action
     switch (actionId) {
-      case '1': // Time Capsule
+      case '1':
         _showFeatureSnackBar('Time Capsule', '💌');
         break;
-      case '2': // Start Chat
+      case '2':
         _showFeatureSnackBar('Start Chat', '💬');
         break;
-      case '3': // Touch Stone
+      case '3':
         _showFeatureSnackBar('Touch Stone', '🪨');
         break;
-      case '4': // Read Together
+      case '4':
         _showFeatureSnackBar('Read Together', '📚');
         break;
     }
@@ -132,34 +126,241 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
     );
   }
 
-  void _handleFabPressed() {
-    HapticFeedback.heavyImpact();
-    _showFeatureSnackBar('Quick Action', '⚡');
+
+  void _toggleSideMenu() {
+    setState(() {
+      _isSideMenuOpen = !_isSideMenuOpen;
+    });
+    
+    if (_isSideMenuOpen) {
+      _sideMenuAnimationController.forward();
+    } else {
+      _sideMenuAnimationController.reverse();
+    }
+    
+    HapticFeedback.mediumImpact();
+  }
+
+  void _closeSideMenu() {
+    if (_isSideMenuOpen) {
+      setState(() {
+        _isSideMenuOpen = false;
+      });
+      _sideMenuAnimationController.reverse();
+    }
+  }
+
+  Future<void> _showSignOutModal() async {
+    print('🚪 [Logout] ShowSignOutModal called');
+    
+    // First close the side menu
+    _closeSideMenu();
+    
+    // Wait for side menu animation to complete
+    await Future.delayed(const Duration(milliseconds: 300));
+    
+    if (!mounted) return;
+    
+    print('🚪 [Logout] Showing sign out modal');
+    // Show the sign out modal
+    final result = await SignOutModal.show(context);
+    
+    print('🚪 [Logout] Modal result: $result');
+    if (result == true && mounted) {
+      print('🚪 [Logout] User confirmed logout, calling _performLogout');
+      await _performLogout();
+    } else {
+      print('🚪 [Logout] User cancelled logout');
+    }
+  }
+
+  Future<void> _performLogout() async {
+    print('🚪 [Logout] _performLogout called');
+    if (_isLoggingOut) {
+      print('🚪 [Logout] Already logging out, returning');
+      return;
+    }
+    
+    print('🚪 [Logout] Setting _isLoggingOut = true');
+    setState(() {
+      _isLoggingOut = true;
+    });
+
+    try {
+      HapticFeedback.lightImpact();
+      print('🚪 [Logout] Showing loading dialog');
+      
+      // Show loading indicator
+      if (mounted) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => Center(
+            child: Container(
+              padding: const EdgeInsets.all(AppDimensions.spacingXXL),
+              margin: const EdgeInsets.symmetric(horizontal: AppDimensions.screenPadding),
+              decoration: BoxDecoration(
+                color: AppColors.pearlWhite,
+                borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(
+                    color: AppColors.sageGreen,
+                  ),
+                  const SizedBox(height: AppDimensions.spacingL),
+                  Text(
+                    'Signing out...',
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      color: AppColors.softCharcoal,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+
+      print('🚪 [Logout] Calling AuthProvider logout (which will call API then clear storage)...');
+      // Use AuthProvider logout method which properly manages auth state
+      // This will call the API with the token, then clear storage
+      await ref.read(authProvider.notifier).logout();
+      print('🚪 [Logout] AuthProvider logout completed');
+      
+      if (mounted) {
+        print('🚪 [Logout] Closing loading dialog');
+        Navigator.of(context, rootNavigator: true).pop(); // Close loading dialog
+        
+        print('🚪 [Logout] Showing success snackbar');
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Signed out successfully',
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.pearlWhite,
+              ),
+            ),
+            backgroundColor: AppColors.sageGreen,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        
+        print('🚪 [Logout] Navigating to splash screen');
+        // Small delay to ensure state is fully updated
+        await Future.delayed(const Duration(milliseconds: 100));
+        
+        // Navigate to splash screen - the router will handle the redirect
+        context.go('/splash');
+        print('🚪 [Logout] Navigation to splash completed');
+      }
+    } catch (e) {
+      print('🚪 [Logout] Error during logout: $e');
+      if (mounted) {
+        Navigator.of(context, rootNavigator: true).pop(); // Close loading dialog
+        
+        // Still show success and navigate (logout succeeded locally)
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Signed out successfully',
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.pearlWhite,
+              ),
+            ),
+            backgroundColor: AppColors.sageGreen,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+            ),
+          ),
+        );
+        context.go('/splash');
+        print('🚪 [Logout] Error case: Navigated to splash');
+      }
+    } finally {
+      if (mounted) {
+        print('🚪 [Logout] Setting _isLoggingOut = false');
+        setState(() {
+          _isLoggingOut = false;
+        });
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final dashboardData = ref.watch(dashboardProvider);
     
-    // Set context for navigation in dashboard provider
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(dashboardProvider.notifier).setContext(context);
     });
     
-    return FTScaffold(
+    return Scaffold(
       backgroundColor: AppColors.warmCream,
       body: dashboardData.when(
         loading: () => _buildLoadingScreen(),
         error: (error, stackTrace) => _buildErrorScreen(error.toString()),
         data: (data) => Stack(
           children: [
-            // Main content
-            _buildMainContent(data),
+            // Side menu
+            AnimatedBuilder(
+              animation: _sideMenuAnimation,
+              builder: (context, child) {
+                return Transform.translate(
+                  offset: Offset(_sideMenuAnimation.value * MediaQuery.of(context).size.width / 1.35, 0),
+                  child: SideMenu(
+                    userName: data.userName,
+                    userSubtitle: "Future Talk Member",
+                    onSignOut: _showSignOutModal,
+                  ),
+                );
+              },
+            ),
             
-            // Floating Action Button
-            DashboardFAB(
-              onPressed: _handleFabPressed,
-              tooltip: 'Create new',
+            // Main content with scaling and sliding animation
+            AnimatedBuilder(
+              animation: _sideMenuAnimationController,
+              builder: (context, child) {
+                final slideOffset = _contentSlideAnimation.value * MediaQuery.of(context).size.width / 1.35;
+                return Transform.translate(
+                  offset: Offset(slideOffset, 0),
+                  child: Transform.scale(
+                    scale: _contentScaleAnimation.value,
+                    child: GestureDetector(
+                      onTap: _closeSideMenu,
+                      child: AbsorbPointer(
+                        absorbing: _isSideMenuOpen,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: _contentSlideAnimation.value > 0.1
+                                ? BorderRadius.circular(20) 
+                                : BorderRadius.zero,
+                            boxShadow: _contentSlideAnimation.value > 0.1
+                                ? [
+                                    BoxShadow(
+                                      color: AppColors.sageGreen.withValues(alpha: 0.1),
+                                      blurRadius: 8,
+                                      spreadRadius: 0,
+                                      offset: const Offset(-2, 0),
+                                    )
+                                  ]
+                                : null,
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          child: _buildMainContent(data),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -245,17 +446,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
   }
 
   Widget _buildMainContent(DashboardData data) {
-    return RefreshIndicator(
-      onRefresh: _refreshDashboard,
-      color: AppColors.sageGreen,
-      backgroundColor: AppColors.pearlWhite,
-      child: CustomScrollView(
-        controller: _scrollController,
-        physics: const AlwaysScrollableScrollPhysics(
-          parent: BouncingScrollPhysics(),
-        ),
+    return CustomScrollView(
+      controller: _scrollController,
+      physics: const ClampingScrollPhysics(),
         slivers: [
-          // Dashboard Header
           SliverToBoxAdapter(
             child: FTStaggerAnimation(
               delay: 100.ms,
@@ -266,18 +460,16 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                 batteryLevel: data.userBatteryLevel,
                 unreadNotifications: data.unreadNotifications,
                 onSearchTapped: () => _showFeatureSnackBar('Search', '🔍'),
-                onNotificationsTapped: () => _showFeatureSnackBar('Notifications', '🔔'),
+                onNotificationsTapped: _toggleSideMenu,
                 onBatteryLevelChanged: _handleBatteryLevelChanged,
               ),
             ),
           ),
           
-          // Main content sections
           SliverPadding(
             padding: const EdgeInsets.all(AppDimensions.screenPadding),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                // Quick Actions Grid
                 FTStaggerAnimation(
                   delay: 300.ms,
                   child: QuickActionsGrid(
@@ -291,7 +483,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                 
                 const SizedBox(height: AppDimensions.sectionPadding),
                 
-                // Recent Activity Section
                 FTStaggerAnimation(
                   delay: 500.ms,
                   child: RecentActivitySection(
@@ -302,7 +493,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                 
                 const SizedBox(height: AppDimensions.sectionPadding),
                 
-                // Friends Status Section
                 FTStaggerAnimation(
                   delay: 700.ms,
                   child: FriendsStatusSection(
@@ -312,13 +502,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                   ),
                 ),
                 
-                // Bottom padding for FAB
                 const SizedBox(height: 120),
               ]),
             ),
           ),
         ],
-      ),
     );
   }
 
@@ -353,7 +541,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Handle bar
               Container(
                 width: 40,
                 height: 4,
@@ -364,7 +551,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                 ),
               ),
               
-              // Friend info
               Row(
                 children: [
                   Container(
@@ -428,7 +614,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
               
               const SizedBox(height: AppDimensions.spacingXXL),
               
-              // Action buttons
               Row(
                 children: [
                   Expanded(
@@ -485,7 +670,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
   }
 }
 
-/// Responsive dashboard screen that adapts to different screen sizes
 class ResponsiveDashboardScreen extends StatelessWidget {
   const ResponsiveDashboardScreen({super.key});
 
@@ -497,7 +681,6 @@ class ResponsiveDashboardScreen extends StatelessWidget {
       return const DashboardScreen();
     }
     
-    // Tablet/Desktop layout
-    return const DashboardScreen(); // Can be extended for larger screens
+    return const DashboardScreen();
   }
 }

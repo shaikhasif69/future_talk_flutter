@@ -36,8 +36,8 @@ import '../features/navigation/screens/read_tab_screen.dart';
 
 /// Router provider that handles authentication-aware routing  
 final routerProvider = Provider<GoRouter>((ref) {
-  // Watch the auth provider so router rebuilds when auth state changes
-  ref.watch(authProvider);
+  // Watch for changes in login and initialization state
+  ref.watch(authProvider.select((state) => (state.isLoggedIn, state.isInitialized)));
   
   return GoRouter(
     initialLocation: '/splash',
@@ -45,40 +45,45 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final authState = ref.read(authProvider);
       final currentPath = state.fullPath ?? state.matchedLocation;
-      final isAuthRoute = ['/splash', '/onboarding', '/sign_in', '/sign_up', '/verify-otp'].contains(currentPath);
       
-      print('🔀 [Router] Redirect check: location=$currentPath, isLoggedIn=${authState.isLoggedIn}, isInitialized=${authState.isInitialized}');
+      print('🔀 [Router] Redirect check: location=$currentPath, isLoggedIn=${authState.isLoggedIn}, isInitialized=${authState.isInitialized}, isLoading=${authState.isLoading}');
       
-      // Always stay on splash until auth is initialized
+      // Wait for auth to initialize
       if (!authState.isInitialized) {
         if (currentPath != '/splash') {
-          print('🔀 [Router] Auth not initialized, redirecting to splash');
+          print('🔀 [Router] Auth not initialized, staying on splash');
           return '/splash';
         }
-        return null; // Stay on splash
+        return null; // Stay on splash while initializing
       }
       
-      // Once initialized, handle navigation based on auth state
+      // Auth is initialized, handle based on login state
       if (authState.isLoggedIn) {
-        if (isAuthRoute) {
-          print('🔀 [Router] Redirecting authenticated user to dashboard');
+        // Logged in users go to dashboard (skip all auth screens)
+        if (['/splash', '/onboarding', '/sign_in', '/sign_up', '/verify-otp'].contains(currentPath)) {
+          print('🔀 [Router] Logged in user, redirecting to dashboard');
           return '/dashboard';
         }
       } else {
-        // IMPORTANT: Don't redirect from auth screens when user is actively using them
-        // Only redirect from protected routes and splash
-        if (!isAuthRoute) {
-          print('🔀 [Router] Redirecting unauthenticated user to sign in');
-          return '/sign_in';
-        }
-        // Only redirect from splash to onboarding, not from other auth routes
+        // Not logged in - handle the auth flow properly
+        
+        // From splash, go to onboarding (first time users)
         if (currentPath == '/splash') {
-          print('🔀 [Router] Auth initialized, not logged in, redirecting to onboarding');
+          print('🔀 [Router] Not logged in, redirecting from splash to onboarding');
           return '/onboarding';
         }
+        
+        // Allow auth screens (onboarding, sign_in, sign_up, verify-otp) without redirect
+        if (['/onboarding', '/sign_in', '/sign_up', '/verify-otp'].contains(currentPath)) {
+          print('🔀 [Router] Allowing access to auth screen: $currentPath');
+          return null;
+        }
+        
+        // Protected routes require authentication
+        print('🔀 [Router] Protected route, redirecting to sign in');
+        return '/sign_in';
       }
       
-      // Allow navigation to continue - this prevents unwanted redirects during login attempts
       return null;
     },
     routes: [

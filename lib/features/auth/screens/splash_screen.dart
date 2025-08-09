@@ -110,7 +110,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     _particleController.repeat();
     
     // Start loading animation after a delay
-    Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 2000), () {
       if (mounted) {
         _loadingController.forward();
       }
