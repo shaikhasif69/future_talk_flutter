@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/constants/app_dimensions.dart';
@@ -8,9 +9,10 @@ import '../../../../shared/widgets/ft_input.dart';
 import '../../../../shared/widgets/ft_card.dart';
 import '../../../../shared/widgets/forms/ft_password_strength.dart';
 import '../../../../shared/widgets/animations/ft_stagger_animation.dart';
+import '../../providers/signup_form_provider.dart';
 
 /// Sign up form component with validation and password strength
-class SignUpForm extends StatefulWidget {
+class SignUpForm extends ConsumerStatefulWidget {
   const SignUpForm({
     super.key,
     required this.onSubmit,
@@ -28,10 +30,10 @@ class SignUpForm extends StatefulWidget {
   final bool isLoading;
 
   @override
-  State<SignUpForm> createState() => _SignUpFormState();
+  ConsumerState<SignUpForm> createState() => _SignUpFormState();
 }
 
-class _SignUpFormState extends State<SignUpForm> {
+class _SignUpFormState extends ConsumerState<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   
   // Form controllers
@@ -61,12 +63,43 @@ class _SignUpFormState extends State<SignUpForm> {
   void initState() {
     super.initState();
     
-    // Add listeners for real-time validation
-    _fullNameController.addListener(_validateFullName);
-    _emailController.addListener(_validateEmail);
-    _usernameController.addListener(_validateUsername);
-    _passwordController.addListener(_validatePassword);
-    _confirmPasswordController.addListener(_validateConfirmPassword);
+    // Add listeners for real-time validation and form data saving
+    _fullNameController.addListener(() {
+      _validateFullName();
+      _saveFormData();
+    });
+    _emailController.addListener(() {
+      _validateEmail();
+      _saveFormData();
+    });
+    _usernameController.addListener(() {
+      _validateUsername();
+      _saveFormData();
+    });
+    _passwordController.addListener(() {
+      _validatePassword();
+      _saveFormData();
+    });
+    _confirmPasswordController.addListener(() {
+      _validateConfirmPassword();
+      _saveFormData();
+    });
+    
+    // Restore form data from provider
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final formData = ref.read(signUpFormStateProvider);
+      if (formData.fullName.isNotEmpty || formData.email.isNotEmpty) {
+        _fullNameController.text = formData.fullName;
+        _emailController.text = formData.email;
+        _usernameController.text = formData.username;
+        _passwordController.text = formData.password;
+        _confirmPasswordController.text = formData.confirmPassword;
+        setState(() {
+          _acceptTerms = formData.acceptTerms;
+          _acceptPrivacy = formData.acceptPrivacy;
+        });
+      }
+    });
   }
 
   @override
@@ -170,8 +203,23 @@ class _SignUpFormState extends State<SignUpForm> {
            _acceptPrivacy;
   }
 
+  void _saveFormData() {
+    ref.read(signUpFormStateProvider.notifier).updateFormData(
+      fullName: _fullNameController.text,
+      email: _emailController.text,
+      username: _usernameController.text,
+      password: _passwordController.text,
+      confirmPassword: _confirmPasswordController.text,
+      acceptTerms: _acceptTerms,
+      acceptPrivacy: _acceptPrivacy,
+    );
+  }
+
   Future<void> _handleSubmit() async {
     if (!_isFormValid) return;
+    
+    // Save form data before submitting
+    _saveFormData();
     
     await widget.onSubmit(
       fullName: _fullNameController.text,
@@ -314,6 +362,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 value: _acceptTerms,
                 onChanged: (value) {
                   setState(() => _acceptTerms = value ?? false);
+                  _saveFormData();
                   HapticFeedback.selectionClick();
                 },
                 activeColor: AppColors.sageGreen,
@@ -325,6 +374,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() => _acceptTerms = !_acceptTerms);
+                    _saveFormData();
                     HapticFeedback.selectionClick();
                   },
                   child: Text.rich(
@@ -352,6 +402,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 value: _acceptPrivacy,
                 onChanged: (value) {
                   setState(() => _acceptPrivacy = value ?? false);
+                  _saveFormData();
                   HapticFeedback.selectionClick();
                 },
                 activeColor: AppColors.sageGreen,
@@ -363,6 +414,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() => _acceptPrivacy = !_acceptPrivacy);
+                    _saveFormData();
                     HapticFeedback.selectionClick();
                   },
                   child: Text.rich(

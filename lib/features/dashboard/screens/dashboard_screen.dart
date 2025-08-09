@@ -316,9 +316,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                 return Transform.translate(
                   offset: Offset(_sideMenuAnimation.value * MediaQuery.of(context).size.width / 1.35, 0),
                   child: SideMenu(
-                    userName: data.userName,
-                    userSubtitle: "Future Talk Member",
                     onSignOut: _showSignOutModal,
+                    onMenuClose: _closeSideMenu,
                   ),
                 );
               },

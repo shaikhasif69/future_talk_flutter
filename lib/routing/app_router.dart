@@ -22,6 +22,7 @@ import '../features/capsule_creation/screens/create_capsule_page2_screen.dart';
 import '../features/capsule_creation/screens/create_capsule_page3_screen_simple.dart';
 import '../features/capsule_creation/screens/create_capsule_final_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
+import '../features/profile/screens/dynamic_profile_screen.dart';
 import '../features/user_profile/screens/user_profile_screen.dart';
 import '../features/user_profile/models/user_profile_model.dart';
 import '../features/settings/screens/settings_screen.dart';
@@ -322,7 +323,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/profile',
         name: 'profile',
         builder: (context, state) => AuthGuard(
-          child: const ProfileScreen(),
+          child: const DynamicProfileScreen(),
           unauthorizedBuilder: () => const SignInScreen(),
         ),
       ),

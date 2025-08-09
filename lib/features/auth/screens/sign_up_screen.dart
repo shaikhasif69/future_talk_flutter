@@ -4,13 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/app_dimensions.dart';
-import '../../../core/network/api_result.dart';
 import '../../../routing/app_router.dart';
 import '../../../shared/widgets/layouts/ft_auth_scaffold.dart';
 import '../../../shared/widgets/forms/ft_form_header.dart';
 import '../../../shared/widgets/forms/ft_social_login_section.dart';
 import '../widgets/sign_up/sign_up_form.dart';
 import '../providers/auth_provider.dart';
+import '../providers/signup_form_provider.dart';
 
 /// Future Talk's Premium Sign Up Screen
 /// Features comprehensive form validation, social login, and smooth animations
@@ -59,9 +59,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       result.when(
         success: (registerResponse) {
           HapticFeedback.lightImpact();
-          print('🎯 [SignUp] Registration successful, navigating to OTP verification');
-          print('🎯 [SignUp] Email: ${email.trim()}');
-          print('🎯 [SignUp] Message: ${registerResponse.message}');
+          // Registration successful - navigate to OTP verification
           
           // Navigate to OTP verification screen
           context.goToVerifyOtp(
@@ -69,7 +67,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             message: registerResponse.message,
             expiresInMinutes: registerResponse.expiresInMinutes,
           );
-          print('🎯 [SignUp] Navigation to OTP verification called');
+          
+          // Clear form data after successful navigation - user completed this step
+          ref.read(signUpFormStateProvider.notifier).clearFormData();
         },
         failure: (error) {
           HapticFeedback.vibrate();
@@ -111,6 +111,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   Widget build(BuildContext context) {
     return FTAuthScaffold(
       scrollController: _scrollController,
+      onBackPressed: () => context.goToOnboarding(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

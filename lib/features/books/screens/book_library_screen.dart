@@ -231,11 +231,11 @@ class _BookLibraryScreenState extends ConsumerState<BookLibraryScreen>
       onRefresh: _refreshLibrary,
       color: AppColors.sageGreen,
       backgroundColor: AppColors.pearlWhite,
+      displacement: 40.0, // Limit refresh indicator displacement
+      strokeWidth: 2.5, // Thinner refresh indicator
       child: CustomScrollView(
         controller: _scrollController,
-        physics: const AlwaysScrollableScrollPhysics(
-          parent: BouncingScrollPhysics(),
-        ),
+        physics: const ClampingScrollPhysics(), // Fixed scroll physics - no excessive stretching
         slivers: [
           // Enhanced Header with Social Battery
           SliverToBoxAdapter(

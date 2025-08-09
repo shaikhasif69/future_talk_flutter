@@ -35,6 +35,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   bool _isResendLoading = false;
   String? _errorMessage;
   int _resendCooldown = 0;
+  int _totalResendAttempts = 0;
 
   @override
   void initState() {
@@ -50,7 +51,9 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   }
 
   void _startResendCooldown() {
-    setState(() => _resendCooldown = 60);
+    // First resend: 30 seconds, subsequent resends: 60 seconds
+    final cooldownTime = _totalResendAttempts == 0 ? 30 : 60;
+    setState(() => _resendCooldown = cooldownTime);
     Future.delayed(const Duration(seconds: 1), _countdown);
   }
 
@@ -115,6 +118,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     setState(() {
       _isResendLoading = true;
       _errorMessage = null;
+      _totalResendAttempts++;
     });
     
     HapticFeedback.selectionClick();
@@ -141,7 +145,10 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
           _startResendCooldown();
         },
         failure: (error) {
-          setState(() => _errorMessage = error.message);
+          setState(() {
+            _errorMessage = error.message;
+            _totalResendAttempts--; // Don't count failed attempts
+          });
         },
       );
     }
@@ -170,10 +177,6 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
           _buildOtpSection(),
           
           const SizedBox(height: AppDimensions.spacingXXL),
-          
-          _buildVerifyButton(),
-          
-          const SizedBox(height: AppDimensions.spacingXL),
           
           _buildResendSection(),
           
@@ -215,51 +218,107 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     );
   }
 
-  Widget _buildVerifyButton() {
-    return FTButton.primary(
-      text: 'Verify Email',
-      onPressed: _otpController.text.length == 6 && !_isLoading 
-          ? () => _handleOtpVerification(_otpController.text)
-          : null,
-      isLoading: _isLoading,
-      size: FTButtonSize.large,
-    );
-  }
 
   Widget _buildResendSection() {
-    return Column(
-      children: [
-        if (_resendCooldown > 0) ...[
+    return Container(
+      padding: const EdgeInsets.all(AppDimensions.spacingL),
+      decoration: BoxDecoration(
+        color: AppColors.whisperGray.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+        border: Border.all(
+          color: AppColors.whisperGray.withOpacity(0.5),
+          width: 1.0,
+        ),
+      ),
+      child: Column(
+        children: [
           Text(
             'Didn\'t receive the code?',
-            style: AppTextStyles.bodyMedium,
+            style: AppTextStyles.bodyMedium.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
             textAlign: TextAlign.center,
           ),
           
-          const SizedBox(height: AppDimensions.spacingS),
+          const SizedBox(height: AppDimensions.spacingM),
           
-          Text(
-            'You can request a new code in ${_resendCooldown}s',
-            style: AppTextStyles.labelMedium,
-            textAlign: TextAlign.center,
-          ),
-        ] else ...[
-          Text(
-            'Didn\'t receive the code?',
-            style: AppTextStyles.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
-          
-          const SizedBox(height: AppDimensions.spacingS),
-          
-          FTButton.text(
-            text: 'Resend Code',
-            onPressed: _isResendLoading ? null : _handleResendOtp,
-            isLoading: _isResendLoading,
-          ),
+          if (_resendCooldown > 0) ...[
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDimensions.spacingL,
+                vertical: AppDimensions.spacingM,
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.dustyRose.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                border: Border.all(
+                  color: AppColors.dustyRose.withOpacity(0.3),
+                  width: 1.0,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.schedule,
+                    color: AppColors.dustyRose,
+                    size: AppDimensions.iconS,
+                  ),
+                  
+                  const SizedBox(width: AppDimensions.spacingS),
+                  
+                  Text(
+                    'Resend available in ${_formatTime(_resendCooldown)}',
+                    style: AppTextStyles.labelLarge.copyWith(
+                      color: AppColors.dustyRose,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: AppDimensions.spacingM),
+            
+            // Progress bar showing countdown
+            LinearProgressIndicator(
+              value: 1.0 - (_resendCooldown / (_totalResendAttempts == 0 ? 30.0 : 60.0)),
+              backgroundColor: AppColors.whisperGray,
+              valueColor: AlwaysStoppedAnimation<Color>(AppColors.dustyRose),
+              borderRadius: BorderRadius.circular(AppDimensions.radiusS),
+            ),
+          ] else ...[
+            FTButton.primary(
+              text: 'Resend Verification Code',
+              onPressed: _isResendLoading ? null : _handleResendOtp,
+              isLoading: _isResendLoading,
+              icon: Icons.refresh,
+              size: FTButtonSize.medium,
+            ),
+            
+            if (_totalResendAttempts > 0) ...[
+              const SizedBox(height: AppDimensions.spacingS),
+              Text(
+                'Code resent ${_totalResendAttempts} time${_totalResendAttempts > 1 ? 's' : ''}',
+                style: AppTextStyles.labelMedium.copyWith(
+                  color: AppColors.sageGreen,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ],
         ],
-      ],
+      ),
     );
+  }
+  
+  String _formatTime(int seconds) {
+    final minutes = seconds ~/ 60;
+    final remainingSeconds = seconds % 60;
+    if (minutes > 0) {
+      return '${minutes}m ${remainingSeconds.toString().padLeft(2, '0')}s';
+    }
+    return '${remainingSeconds}s';
   }
 
   Widget _buildErrorMessage() {

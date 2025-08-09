@@ -195,6 +195,11 @@ class _OtpInputWidgetState extends State<OtpInputWidget> with TickerProviderStat
                 ],
                 decoration: const InputDecoration(
                   border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  focusedErrorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
                   counterText: '',
                   contentPadding: EdgeInsets.zero,
                 ),

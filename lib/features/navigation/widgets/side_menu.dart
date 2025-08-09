@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../models/menu_item.dart';
 import 'side_menu_tile.dart';
 import 'side_menu_info_card.dart';
+import '../../auth/providers/auth_provider.dart';
 
 class SideMenu extends ConsumerStatefulWidget {
-  final String userName;
-  final String userSubtitle;
   final VoidCallback? onSignOut;
+  final VoidCallback? onMenuClose;
 
   const SideMenu({
     super.key,
-    required this.userName,
-    required this.userSubtitle,
     this.onSignOut,
+    this.onMenuClose,
   });
 
   @override
@@ -25,7 +25,7 @@ class SideMenu extends ConsumerStatefulWidget {
 }
 
 class _SideMenuState extends ConsumerState<SideMenu> {
-  MenuItem selectedMenu = mainMenuItems.first;
+  MenuItem? selectedMenu;
 
   void _handleMenuTap(MenuItem menuItem) {
     HapticFeedback.selectionClick();
@@ -33,14 +33,62 @@ class _SideMenuState extends ConsumerState<SideMenu> {
       selectedMenu = menuItem;
     });
     
-    // Handle navigation logic here
-    if (menuItem.onTap != null) {
-      menuItem.onTap!();
+    // Close side menu before navigating
+    if (widget.onMenuClose != null) {
+      widget.onMenuClose!();
     }
+    
+    // Add a small delay to let the close animation start
+    Future.delayed(const Duration(milliseconds: 100), () {
+      // Handle navigation logic here
+      if (mounted && menuItem.onTap != null) {
+        menuItem.onTap!();
+      }
+    });
+  }
+
+  void _handleProfileTap() {
+    HapticFeedback.selectionClick();
+    
+    // Close side menu before navigating
+    if (widget.onMenuClose != null) {
+      widget.onMenuClose!();
+    }
+    
+    // Add a small delay to let the close animation start
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (mounted) {
+        context.push('/profile');
+      }
+    });
+  }
+
+  String _getUserDisplayName(dynamic user) {
+    if (user == null) return 'Loading...';
+    
+    // Try display_name first, then username, then fallback
+    if (user.displayName != null && user.displayName!.isNotEmpty) {
+      return user.displayName!;
+    }
+    if (user.username != null && user.username!.isNotEmpty) {
+      return user.username!;
+    }
+    return 'Future Talk User';
+  }
+
+  String _getUserSubtitle(dynamic user) {
+    if (user == null) return 'Signing you in...';
+    
+    if (user.isPremium == true) {
+      return 'Premium Member';
+    }
+    return 'Future Talk Member';
   }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
+    
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width / 1.35,
@@ -54,10 +102,13 @@ class _SideMenuState extends ConsumerState<SideMenu> {
             children: [
               const SizedBox(height: AppDimensions.spacingM),
               
-              // User info card
-              SideMenuInfoCard(
-                name: widget.userName,
-                subtitle: widget.userSubtitle,
+              // User info card - make it tappable to navigate to profile
+              GestureDetector(
+                onTap: _handleProfileTap,
+                child: SideMenuInfoCard(
+                  name: _getUserDisplayName(authState.user),
+                  subtitle: _getUserSubtitle(authState.user),
+                ),
               ),
               
               const SizedBox(height: AppDimensions.spacingL),
@@ -79,7 +130,7 @@ class _SideMenuState extends ConsumerState<SideMenu> {
               ),
               
               // Main menu items
-              ...mainMenuItems.map((menu) => SideMenuTile(
+              ...getMainMenuItems(context).map((menu) => SideMenuTile(
                 menuItem: menu,
                 onTap: () => _handleMenuTap(menu),
                 isActive: selectedMenu == menu,
@@ -104,7 +155,7 @@ class _SideMenuState extends ConsumerState<SideMenu> {
               ),
               
               // History menu items
-              ...historyMenuItems.map((menu) => SideMenuTile(
+              ...getHistoryMenuItems(context).map((menu) => SideMenuTile(
                 menuItem: menu,
                 onTap: () => _handleMenuTap(menu),
                 isActive: selectedMenu == menu,

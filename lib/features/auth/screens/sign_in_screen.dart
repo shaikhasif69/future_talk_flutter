@@ -261,6 +261,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   Widget build(BuildContext context) {
     return FTAuthScaffold(
       scrollController: _scrollController,
+      onBackPressed: () => context.goToOnboarding(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

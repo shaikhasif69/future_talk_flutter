@@ -236,7 +236,18 @@ class AuthService {
       final response = await _apiClient.get(ApiEndpoints.userProfile);
 
       if (response.statusCode == 200) {
-        final user = AuthUser.fromJson(response.data);
+        // The API returns {"user": {...}, "social_battery": {...}, "privacy_settings": {...}}
+        // We need to extract the user object and add privacy_settings to it
+        final responseData = response.data as Map<String, dynamic>;
+        final userData = responseData['user'] as Map<String, dynamic>;
+        final privacyData = responseData['privacy_settings'] as Map<String, dynamic>?;
+        
+        // Add privacy settings to user data if available
+        if (privacyData != null) {
+          userData['privacySettings'] = privacyData;
+        }
+        
+        final user = AuthUser.fromJson(userData);
         return ApiResult.success(user);
       } else {
         return ApiResult.failure(_parseError(response));
@@ -244,6 +255,7 @@ class AuthService {
     } on DioException catch (e) {
       return ApiResult.failure(_handleDioError(e));
     } catch (e) {
+      print('🔐 [AuthService] getCurrentUser parsing error: $e');
       return ApiResult.failure(ApiError.unknown());
     }
   }
