@@ -6,7 +6,7 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/widgets/animations/ft_stagger_animation.dart';
 import '../models/chat_conversation.dart';
 import '../models/chat_message.dart' as msg;
-import '../providers/individual_chat_provider.dart';
+import '../providers/realtime_individual_chat_provider.dart';
 import '../widgets/chat_header.dart';
 import '../widgets/message_bubble.dart';
 import '../widgets/message_input.dart';
@@ -29,7 +29,7 @@ class IndividualChatScreen extends StatefulWidget {
 
 class _IndividualChatScreenState extends State<IndividualChatScreen>
     with TickerProviderStateMixin {
-  late IndividualChatProvider _chatProvider;
+  late RealtimeIndividualChatProvider _chatProvider;
   late ScrollController _scrollController;
   late AnimationController _fadeInController;
   late AnimationController _slideInController;
@@ -66,24 +66,28 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       return;
     }
 
-    _chatProvider = IndividualChatProvider(
+    _chatProvider = RealtimeIndividualChatProvider(
       conversationId: widget.conversation.id,
       otherParticipant: otherParticipant,
     );
 
-    // Start animations after provider is initialized
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _fadeInController.forward();
-      _slideInController.forward();
-      _scrollToBottom(animated: false);
-      
-      setState(() {
-        _isInitialized = true;
-      });
-    });
-
     // Listen to provider changes
     _chatProvider.addListener(_onChatProviderChanged);
+
+    // Initialize provider asynchronously
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _chatProvider.initialize();
+      
+      if (mounted) {
+        _fadeInController.forward();
+        _slideInController.forward();
+        _scrollToBottom(animated: false);
+        
+        setState(() {
+          _isInitialized = true;
+        });
+      }
+    });
   }
 
   void _onChatProviderChanged() {
@@ -373,11 +377,49 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     return ListenableBuilder(
       listenable: _chatProvider,
       builder: (context, _) {
-        if (_chatProvider.isLoading) {
+        if (_chatProvider.isInitializing || _chatProvider.isLoading) {
           return const Center(
             child: CircularProgressIndicator(
               strokeWidth: 2.0,
               valueColor: AlwaysStoppedAnimation<Color>(AppColors.sageGreen),
+            ),
+          );
+        }
+
+        if (_chatProvider.errorMessage != null) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(AppDimensions.paddingXXL),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.error_outline,
+                    size: 64.0,
+                    color: AppColors.dustyRose,
+                  ),
+                  const SizedBox(height: AppDimensions.spacingL),
+                  Text(
+                    'Failed to load chat',
+                    style: AppTextStyles.headlineSmall.copyWith(
+                      color: AppColors.softCharcoal,
+                    ),
+                  ),
+                  const SizedBox(height: AppDimensions.spacingM),
+                  Text(
+                    _chatProvider.errorMessage!,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.softCharcoalLight,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: AppDimensions.spacingL),
+                  ElevatedButton(
+                    onPressed: () => _chatProvider.initialize(),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
             ),
           );
         }
@@ -486,7 +528,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
               ),
             ],
           );
-        }).toList(),
+        }),
         
         // Typing indicator
         if (_chatProvider.isOtherUserTyping)
