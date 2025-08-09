@@ -77,7 +77,7 @@ class _ChatFilterTabsState extends State<ChatFilterTabs>
       height: 40.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
-        color: AppColors.sageGreen.withOpacity(0.05),
+        color: AppColors.sageGreen.withValues(alpha: 0.05),
       ),
       child: TabBar(
         controller: _tabController,
@@ -86,7 +86,7 @@ class _ChatFilterTabsState extends State<ChatFilterTabs>
           color: AppColors.sageGreen,
           boxShadow: [
             BoxShadow(
-              color: AppColors.sageGreen.withOpacity( 0.2),
+              color: AppColors.sageGreen.withValues(alpha:  0.2),
               blurRadius: 4.0,
               offset: const Offset(0, 1),
             ),
@@ -165,8 +165,8 @@ class _ChatFilterTabsState extends State<ChatFilterTabs>
               ),
               decoration: BoxDecoration(
                 color: isActive 
-                    ? AppColors.pearlWhite.withOpacity( 0.2)
-                    : AppColors.sageGreen.withOpacity( 0.1),
+                    ? AppColors.pearlWhite.withValues(alpha:  0.2)
+                    : AppColors.sageGreen.withValues(alpha:  0.1),
                 borderRadius: BorderRadius.circular(8.0),
               ),
               child: Text(
@@ -291,17 +291,17 @@ class ChatFilterButtonTabs extends StatelessWidget {
           decoration: BoxDecoration(
             color: isActive 
                 ? AppColors.sageGreen 
-                : AppColors.sageGreen.withOpacity( 0.05),
+                : AppColors.sageGreen.withValues(alpha:  0.05),
             borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
             border: Border.all(
               color: isActive 
                   ? AppColors.sageGreen 
-                  : AppColors.sageGreen.withOpacity( 0.1),
+                  : AppColors.sageGreen.withValues(alpha:  0.1),
               width: 1.0,
             ),
             boxShadow: isActive ? [
               BoxShadow(
-                color: AppColors.sageGreen.withOpacity( 0.2),
+                color: AppColors.sageGreen.withValues(alpha:  0.2),
                 blurRadius: 4.0,
                 offset: const Offset(0, 1),
               ),
@@ -330,7 +330,7 @@ class ChatFilterButtonTabs extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: isActive 
-                        ? AppColors.pearlWhite.withOpacity( 0.2)
+                        ? AppColors.pearlWhite.withValues(alpha:  0.2)
                         : AppColors.sageGreen,
                     borderRadius: BorderRadius.circular(8.0),
                   ),

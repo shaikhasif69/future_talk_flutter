@@ -4,7 +4,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/app_dimensions.dart';
-import '../../../shared/widgets/ft_card.dart';
 import '../models/book_model.dart';
 
 /// AI-powered book recommendation banner with magical feel
@@ -79,7 +78,7 @@ class _AIRecommendationBannerState extends State<AIRecommendationBanner>
           borderRadius: BorderRadius.circular(AppDimensions.radiusL),
           boxShadow: [
             BoxShadow(
-              color: AppColors.lavenderMist.withOpacity(0.3),
+              color: AppColors.lavenderMist.withValues(alpha: 0.3),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -100,7 +99,7 @@ class _AIRecommendationBannerState extends State<AIRecommendationBanner>
                         end: Alignment.centerRight,
                         colors: [
                           Colors.transparent,
-                          AppColors.pearlWhite.withOpacity(0.1),
+                          AppColors.pearlWhite.withValues(alpha: 0.1),
                           Colors.transparent,
                         ],
                         stops: [
@@ -151,7 +150,7 @@ class _AIRecommendationBannerState extends State<AIRecommendationBanner>
                           vertical: AppDimensions.spacingXS,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.pearlWhite.withOpacity(0.2),
+                          color: AppColors.pearlWhite.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(AppDimensions.radiusS),
                         ),
                         child: Row(
@@ -187,7 +186,7 @@ class _AIRecommendationBannerState extends State<AIRecommendationBanner>
                   Text(
                     'Based on ${widget.recommendation.basedOn}',
                     style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.pearlWhite.withOpacity(0.9),
+                      color: AppColors.pearlWhite.withValues(alpha: 0.9),
                       fontSize: 12,
                     ),
                   ),
@@ -199,7 +198,7 @@ class _AIRecommendationBannerState extends State<AIRecommendationBanner>
                     width: double.infinity,
                     padding: const EdgeInsets.all(AppDimensions.spacingM),
                     decoration: BoxDecoration(
-                      color: AppColors.pearlWhite.withOpacity(0.2),
+                      color: AppColors.pearlWhite.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                     ),
                     child: Column(
@@ -212,7 +211,7 @@ class _AIRecommendationBannerState extends State<AIRecommendationBanner>
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(
-                                color: AppColors.pearlWhite.withOpacity(0.3),
+                                color: AppColors.pearlWhite.withValues(alpha: 0.3),
                                 borderRadius: BorderRadius.circular(AppDimensions.radiusS),
                               ),
                               child: Center(
@@ -243,7 +242,7 @@ class _AIRecommendationBannerState extends State<AIRecommendationBanner>
                                   Text(
                                     'by ${widget.recommendation.author}',
                                     style: AppTextStyles.caption.copyWith(
-                                      color: AppColors.pearlWhite.withOpacity(0.8),
+                                      color: AppColors.pearlWhite.withValues(alpha: 0.8),
                                     ),
                                   ),
                                 ],
@@ -257,7 +256,7 @@ class _AIRecommendationBannerState extends State<AIRecommendationBanner>
                                 vertical: AppDimensions.spacingXS,
                               ),
                               decoration: BoxDecoration(
-                                color: AppColors.warmPeach.withOpacity(0.8),
+                                color: AppColors.warmPeach.withValues(alpha: 0.8),
                                 borderRadius: BorderRadius.circular(AppDimensions.radiusS),
                               ),
                               child: Text(
@@ -276,7 +275,7 @@ class _AIRecommendationBannerState extends State<AIRecommendationBanner>
                         Text(
                           widget.recommendation.reason,
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.pearlWhite.withOpacity(0.8),
+                            color: AppColors.pearlWhite.withValues(alpha: 0.8),
                             fontStyle: FontStyle.italic,
                           ),
                         ),

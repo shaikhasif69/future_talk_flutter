@@ -81,7 +81,7 @@ class _ChatHeaderState extends State<ChatHeader>
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.pearlWhite.withOpacity(0.95),
+        color: AppColors.pearlWhite.withValues(alpha: 0.95),
         border: Border(
           bottom: BorderSide(
             color: AppColors.sageGreenWithOpacity(0.08),
@@ -173,13 +173,13 @@ class _ChatHeaderState extends State<ChatHeader>
               end: Alignment.bottomRight,
               colors: [
                 participant.avatarColor,
-                participant.avatarColor.withOpacity(0.7),
+                participant.avatarColor.withValues(alpha: 0.7),
               ],
             ),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: participant.avatarColor.withOpacity(0.3),
+                color: participant.avatarColor.withValues(alpha: 0.3),
                 blurRadius: 8.0,
                 offset: const Offset(0, 2),
               ),
@@ -218,7 +218,7 @@ class _ChatHeaderState extends State<ChatHeader>
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: socialBattery.color.withOpacity(0.4),
+                          color: socialBattery.color.withValues(alpha: 0.4),
                           blurRadius: 4.0,
                           offset: const Offset(0, 1),
                         ),
@@ -289,7 +289,7 @@ class _ChatHeaderState extends State<ChatHeader>
         ),
         decoration: BoxDecoration(
           color: isOnline 
-              ? AppColors.success.withOpacity(0.1)
+              ? AppColors.success.withValues(alpha: 0.1)
               : AppColors.softCharcoalWithOpacity(0.1),
           borderRadius: BorderRadius.circular(AppDimensions.spacingS),
         ),

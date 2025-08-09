@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/navigation_provider.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
 
 /// Premium scaffold wrapper for Future Talk screens
 /// Provides consistent layout structure

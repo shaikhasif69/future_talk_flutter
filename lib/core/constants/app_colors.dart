@@ -132,11 +132,11 @@ class AppColors {
   
   /// Sage Green with opacity variations
   static Color sageGreenWithOpacity(double opacity) => 
-      sageGreen.withOpacity( opacity);
+      sageGreen.withValues(alpha:  opacity);
   
   /// Soft Charcoal with opacity variations
   static Color softCharcoalWithOpacity(double opacity) => 
-      softCharcoal.withOpacity( opacity);
+      softCharcoal.withValues(alpha:  opacity);
   
   /// Common opacity values
   static const double opacityHigh = 0.87;
@@ -147,11 +147,11 @@ class AppColors {
   // ==================== SHADOW COLORS ====================
   
   /// Subtle shadow for cards
-  static Color get cardShadow => softCharcoal.withOpacity( 0.08);
+  static Color get cardShadow => softCharcoal.withValues(alpha:  0.08);
   
   /// Button shadow
-  static Color get buttonShadow => sageGreen.withOpacity( 0.25);
+  static Color get buttonShadow => sageGreen.withValues(alpha:  0.25);
   
   /// Modal shadow
-  static Color get modalShadow => softCharcoal.withOpacity( 0.15);
+  static Color get modalShadow => softCharcoal.withValues(alpha:  0.15);
 }

@@ -338,7 +338,6 @@ class _ConnectionStatusCardState extends State<ConnectionStatusCard>
   void _triggerStoneAnimation() {
     // Create ripple effect for stone touch
     final overlay = Overlay.of(context);
-    if (overlay == null) return;
 
     late OverlayEntry rippleEntry;
     rippleEntry = OverlayEntry(

@@ -135,7 +135,7 @@ class _ProfileStatsSectionState extends State<ProfileStatsSection>
             vertical: AppDimensions.spacingXS,
           ),
           decoration: BoxDecoration(
-            color: AppColors.sageGreen.withOpacity(0.1),
+            color: AppColors.sageGreen.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(AppDimensions.radiusM),
           ),
           child: Text(
@@ -214,12 +214,12 @@ class _ProfileStatsSectionState extends State<ProfileStatsSection>
             ),
             borderRadius: BorderRadius.circular(AppDimensions.radiusL),
             border: Border.all(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: color.withOpacity(0.05),
+                color: color.withValues(alpha: 0.05),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -233,7 +233,7 @@ class _ProfileStatsSectionState extends State<ProfileStatsSection>
                 width: 32,
                 height: 32,
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
@@ -466,12 +466,12 @@ class _StatCardState extends State<StatCard>
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(AppDimensions.radiusL),
                   border: Border.all(
-                    color: widget.color.withOpacity(0.2),
+                    color: widget.color.withValues(alpha: 0.2),
                     width: _isHovered ? 2.0 : 1.0,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: widget.color.withOpacity(0.1),
+                      color: widget.color.withValues(alpha: 0.1),
                       blurRadius: _elevationAnimation.value,
                       offset: const Offset(0, 2),
                     ),

@@ -143,12 +143,12 @@ extension StoneTypeProperties on StoneType {
 
   /// Get receiving glow effect color (brighter version of primary color)
   Color get glowColor {
-    return primaryColor.withOpacity(0.8);
+    return primaryColor.withValues(alpha: 0.8);
   }
 
   /// Get the touch ripple color
   Color get rippleColor {
-    return primaryColor.withOpacity(0.6);
+    return primaryColor.withValues(alpha: 0.6);
   }
 
   /// Haptic feedback pattern for this stone type

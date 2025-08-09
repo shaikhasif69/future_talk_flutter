@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_durations.dart';
-import '../../../routing/app_router.dart';
 import '../../../shared/widgets/animations/ft_stagger_animation.dart';
 import '../../../shared/widgets/indicators/ft_loading_indicator.dart';
 import '../widgets/splash/splash_background.dart';

@@ -278,7 +278,7 @@ class _ConnectionStonesDashboardScreenState
               height: 60,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.sageGreen.withOpacity(0.1),
+                color: AppColors.sageGreen.withValues(alpha: 0.1),
               ),
               child: const Icon(
                 Icons.add,
@@ -321,10 +321,10 @@ class _ConnectionStonesDashboardScreenState
     return Container(
       padding: const EdgeInsets.all(AppDimensions.spacingM),
       decoration: BoxDecoration(
-        color: AppColors.sageGreen.withOpacity(0.1),
+        color: AppColors.sageGreen.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.sageGreen.withOpacity(0.2),
+          color: AppColors.sageGreen.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -547,7 +547,7 @@ class _CreateStoneModalState extends ConsumerState<CreateStoneModal>
                   border: Border.all(
                     color: isSelected 
                         ? Colors.transparent 
-                        : stoneType.primaryColor.withOpacity(0.3),
+                        : stoneType.primaryColor.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Row(
@@ -577,7 +577,7 @@ class _CreateStoneModalState extends ConsumerState<CreateStoneModal>
         Container(
           padding: const EdgeInsets.all(AppDimensions.spacingM),
           decoration: BoxDecoration(
-            color: _selectedStoneType.primaryColor.withOpacity(0.1),
+            color: _selectedStoneType.primaryColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(

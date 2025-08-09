@@ -90,7 +90,7 @@ class _StoneCardState extends ConsumerState<StoneCard>
                 boxShadow: [
                   BoxShadow(
                     color: _isHovered 
-                        ? widget.stone.stoneType.primaryColor.withOpacity(0.2)
+                        ? widget.stone.stoneType.primaryColor.withValues(alpha: 0.2)
                         : AppColors.cardShadow,
                     blurRadius: _isHovered ? 16 : 8,
                     offset: Offset(0, _isHovered ? 8 : 4),
@@ -110,7 +110,7 @@ class _StoneCardState extends ConsumerState<StoneCard>
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: _isHovered 
-                          ? widget.stone.stoneType.primaryColor.withOpacity(0.3)
+                          ? widget.stone.stoneType.primaryColor.withValues(alpha: 0.3)
                           : Colors.transparent,
                       width: 2,
                     ),
@@ -199,7 +199,7 @@ class _StoneCardState extends ConsumerState<StoneCard>
           ).animate(onPlay: (controller) => controller.repeat())
             .shimmer(
               duration: const Duration(milliseconds: 1500),
-              color: widget.stone.stoneType.primaryColor.withOpacity(0.3),
+              color: widget.stone.stoneType.primaryColor.withValues(alpha: 0.3),
             ),
         ],
       );
@@ -434,10 +434,10 @@ class StoneDetailsModal extends ConsumerWidget {
             vertical: AppDimensions.spacingS,
           ),
           decoration: BoxDecoration(
-            color: stone.stoneType.primaryColor.withOpacity(0.1),
+            color: stone.stoneType.primaryColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: stone.stoneType.primaryColor.withOpacity(0.3),
+              color: stone.stoneType.primaryColor.withValues(alpha: 0.3),
             ),
           ),
           child: Text(
@@ -456,7 +456,7 @@ class StoneDetailsModal extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.spacingM),
       decoration: BoxDecoration(
-        color: stone.stoneType.primaryColor.withOpacity(0.05),
+        color: stone.stoneType.primaryColor.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -521,7 +521,7 @@ class StoneDetailsModal extends ConsumerWidget {
         Container(
           padding: const EdgeInsets.all(AppDimensions.spacingS),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
           child: Icon(

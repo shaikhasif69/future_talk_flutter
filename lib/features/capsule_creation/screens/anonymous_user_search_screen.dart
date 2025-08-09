@@ -239,10 +239,10 @@ class _AnonymousUserSearchScreenState extends ConsumerState<AnonymousUserSearchS
                   ),
                   padding: const EdgeInsets.all(AppDimensions.paddingM),
                   decoration: BoxDecoration(
-                    color: AppColors.sageGreen.withOpacity(0.05),
+                    color: AppColors.sageGreen.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                     border: Border.all(
-                      color: AppColors.sageGreen.withOpacity(0.2),
+                      color: AppColors.sageGreen.withValues(alpha: 0.2),
                     ),
                   ),
                   child: Row(
@@ -295,13 +295,13 @@ class _AnonymousUserSearchScreenState extends ConsumerState<AnonymousUserSearchS
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
-                                AppColors.lavenderMist.withOpacity(0.05),
+                                AppColors.lavenderMist.withValues(alpha: 0.05),
                                 AppColors.pearlWhite,
                               ],
                             ),
                             borderRadius: BorderRadius.circular(AppDimensions.radiusL),
                             border: Border.all(
-                              color: AppColors.lavenderMist.withOpacity(0.2),
+                              color: AppColors.lavenderMist.withValues(alpha: 0.2),
                               width: 1,
                             ),
                           ),
@@ -313,7 +313,7 @@ class _AnonymousUserSearchScreenState extends ConsumerState<AnonymousUserSearchS
                                   Container(
                                     padding: const EdgeInsets.all(6),
                                     decoration: BoxDecoration(
-                                      color: AppColors.lavenderMist.withOpacity(0.1),
+                                      color: AppColors.lavenderMist.withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: const Icon(
@@ -408,7 +408,7 @@ class _AnonymousUserSearchScreenState extends ConsumerState<AnonymousUserSearchS
                                     Icon(
                                       Icons.search_off,
                                       size: 48,
-                                      color: AppColors.softCharcoalLight.withOpacity(0.5),
+                                      color: AppColors.softCharcoalLight.withValues(alpha: 0.5),
                                     ),
                                     const SizedBox(height: AppDimensions.spacingL),
                                     Text(
@@ -422,7 +422,7 @@ class _AnonymousUserSearchScreenState extends ConsumerState<AnonymousUserSearchS
                                     Text(
                                       'Double-check the username or email address. Remember, we only show exact matches for privacy.',
                                       style: AppTextStyles.bodyMedium.copyWith(
-                                        color: AppColors.softCharcoalLight.withOpacity(0.8),
+                                        color: AppColors.softCharcoalLight.withValues(alpha: 0.8),
                                         height: 1.4,
                                       ),
                                       textAlign: TextAlign.center,
@@ -463,7 +463,7 @@ class _AnonymousUserSearchScreenState extends ConsumerState<AnonymousUserSearchS
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.lavenderMist.withOpacity(0.3),
+                          color: AppColors.lavenderMist.withValues(alpha: 0.3),
                           blurRadius: 20,
                           offset: const Offset(0, 4),
                         ),

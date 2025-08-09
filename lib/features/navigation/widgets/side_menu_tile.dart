@@ -28,7 +28,7 @@ class SideMenuTile extends StatelessWidget {
           ),
           child: Divider(
             height: 1,
-            color: AppColors.pearlWhite.withOpacity(0.2),
+            color: AppColors.pearlWhite.withValues(alpha: 0.2),
           ),
         ),
         Stack(
@@ -57,7 +57,7 @@ class SideMenuTile extends StatelessWidget {
                 height: 40,
                 decoration: BoxDecoration(
                   color: isActive 
-                      ? AppColors.pearlWhite.withOpacity(0.2)
+                      ? AppColors.pearlWhite.withValues(alpha: 0.2)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(AppDimensions.radiusS),
                 ),
@@ -65,7 +65,7 @@ class SideMenuTile extends StatelessWidget {
                   menuItem.icon,
                   color: isActive 
                       ? AppColors.pearlWhite 
-                      : AppColors.pearlWhite.withOpacity(0.8),
+                      : AppColors.pearlWhite.withValues(alpha: 0.8),
                   size: 22,
                 ),
               ),
@@ -74,7 +74,7 @@ class SideMenuTile extends StatelessWidget {
                 style: AppTextStyles.bodyLarge.copyWith(
                   color: isActive 
                       ? AppColors.pearlWhite 
-                      : AppColors.pearlWhite.withOpacity(0.9),
+                      : AppColors.pearlWhite.withValues(alpha: 0.9),
                   fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
                 ),
               ),

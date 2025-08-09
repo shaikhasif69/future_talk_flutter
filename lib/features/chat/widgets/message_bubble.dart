@@ -285,10 +285,10 @@ class _MessageBubbleState extends State<MessageBubble>
     if (isFromMe) {
       if (isSelfDestruct) {
         gradientColors = [
-          AppColors.dustyRose.withOpacity(0.15),
-          AppColors.warmPeach.withOpacity(0.15),
+          AppColors.dustyRose.withValues(alpha: 0.15),
+          AppColors.warmPeach.withValues(alpha: 0.15),
         ];
-        bubbleColor = AppColors.dustyRose.withOpacity(0.15);
+        bubbleColor = AppColors.dustyRose.withValues(alpha: 0.15);
       } else {
         gradientColors = [AppColors.sageGreen, AppColors.sageGreenHover];
         bubbleColor = AppColors.sageGreen;
@@ -321,7 +321,7 @@ class _MessageBubbleState extends State<MessageBubble>
         ),
         borderRadius: borderRadius,
         border: Border.all(
-          color: AppColors.dustyRose.withOpacity(0.3),
+          color: AppColors.dustyRose.withValues(alpha: 0.3),
           width: 1.0,
         ),
         boxShadow: shadows,
@@ -389,7 +389,7 @@ class _MessageBubbleState extends State<MessageBubble>
               message.formattedTime,
               style: AppTextStyles.labelSmall.copyWith(
                 color: isFromMe 
-                    ? AppColors.pearlWhite.withOpacity(0.8)
+                    ? AppColors.pearlWhite.withValues(alpha: 0.8)
                     : AppColors.softCharcoalLight,
                 fontSize: 11.0,
               ),
@@ -403,7 +403,7 @@ class _MessageBubbleState extends State<MessageBubble>
                   fontSize: 10.0,
                   color: message.status == MessageStatus.read
                       ? AppColors.warmPeach
-                      : AppColors.pearlWhite.withOpacity(0.6),
+                      : AppColors.pearlWhite.withValues(alpha: 0.6),
                 ),
               ),
               
@@ -486,7 +486,7 @@ class _MessageBubbleState extends State<MessageBubble>
               value: progress,
               backgroundColor: Colors.transparent,
               valueColor: AlwaysStoppedAnimation<Color>(
-                AppColors.dustyRose.withOpacity(0.8),
+                AppColors.dustyRose.withValues(alpha: 0.8),
               ),
             ),
           );

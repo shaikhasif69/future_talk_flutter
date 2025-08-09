@@ -303,7 +303,7 @@ class _ContinueReadingCardState extends State<ContinueReadingCard>
         vertical: AppDimensions.spacingXS,
       ),
       decoration: BoxDecoration(
-        color: backgroundColor.withOpacity(0.1),
+        color: backgroundColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppDimensions.radiusS),
       ),
       child: Text(
@@ -386,8 +386,8 @@ class _ContinueReadingCardState extends State<ContinueReadingCard>
                   ),
                   decoration: BoxDecoration(
                     color: widget.progress.isSynced 
-                        ? AppColors.sageGreen.withOpacity(0.1)
-                        : AppColors.dustyRose.withOpacity(0.1),
+                        ? AppColors.sageGreen.withValues(alpha: 0.1)
+                        : AppColors.dustyRose.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppDimensions.radiusS),
                   ),
                   child: Row(

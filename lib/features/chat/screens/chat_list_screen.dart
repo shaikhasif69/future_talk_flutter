@@ -3,11 +3,10 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/widgets/animations/ft_stagger_animation.dart';
-import '../../../routing/app_router.dart';
-import '../providers/realtime_chat_list_provider.dart';
-import '../widgets/chat_list_header.dart';
+import '../providers/realtime_chat_provider.dart';
+// import '../widgets/chat_list_header.dart'; // TODO: Update to work with RealtimeChatProvider
 import '../widgets/chat_item_tile.dart';
-import '../widgets/quiet_hours_banner.dart';
+// import '../widgets/quiet_hours_banner.dart'; // TODO: Implement quiet hours
 import '../widgets/chat_section_divider.dart';
 import '../widgets/chat_floating_action_button.dart';
 
@@ -21,13 +20,14 @@ class ChatListScreen extends StatefulWidget {
 }
 
 class _ChatListScreenState extends State<ChatListScreen> {
-  late RealtimeChatListProvider _chatProvider;
+  late RealtimeChatProvider _chatProvider;
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _chatProvider = RealtimeChatListProvider();
+    _chatProvider = RealtimeChatProvider();
+    _chatProvider.initialize(); // Initialize the provider
     
     // Add scroll listener for potential pull-to-refresh
     _scrollController.addListener(_onScroll);
@@ -46,7 +46,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
   }
 
   Future<void> _onRefresh() async {
-    await _chatProvider.refreshConversations();
+    await _chatProvider.loadConversations();
   }
 
   @override
@@ -57,11 +57,12 @@ class _ChatListScreenState extends State<ChatListScreen> {
         child: Column(
           children: [
             // Header with search and filters
-            ChatListHeader(
-              provider: _chatProvider,
-              onSearchChanged: _chatProvider.updateSearchQuery,
-              onFilterChanged: _chatProvider.setFilter,
-            ),
+            // TODO: Update ChatListHeader to work with RealtimeChatProvider
+            // ChatListHeader(
+            //   provider: null,
+            //   onSearchChanged: (query) {},
+            //   onFilterChanged: (filter) {},
+            // ),
             
             // Chat list content
             Expanded(
@@ -73,11 +74,11 @@ class _ChatListScreenState extends State<ChatListScreen> {
                 child: ListenableBuilder(
                   listenable: _chatProvider,
                   builder: (context, _) {
-                    if (_chatProvider.isLoading) {
+                    if (!_chatProvider.isInitialized) {
                       return _buildLoadingState();
                     }
 
-                    if (!_chatProvider.hasConversations) {
+                    if (_chatProvider.conversations.isEmpty) {
                       return _buildEmptyState();
                     }
 
@@ -99,29 +100,14 @@ class _ChatListScreenState extends State<ChatListScreen> {
   }
 
   Widget _buildChatList() {
-    final groupedConversations = _chatProvider.groupedConversations;
+    final conversations = _chatProvider.conversations;
+    final groupedConversations = {'Recent': conversations}; // Simple grouping for now
     
     return CustomScrollView(
       controller: _scrollController,
       physics: const AlwaysScrollableScrollPhysics(),
       slivers: [
-        // Quiet hours banner
-        if (_chatProvider.isQuietHours)
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppDimensions.paddingM,
-                vertical: AppDimensions.spacingS,
-              ),
-              child: FTStaggerAnimation(
-                delay: const Duration(milliseconds: 100),
-                child: QuietHoursBanner(
-                  isActive: _chatProvider.isQuietHours,
-                  onToggle: _chatProvider.toggleQuietHours,
-                ),
-              ),
-            ),
-          ),
+        // TODO: Implement quiet hours functionality
         
         // Grouped chat sections
         ...groupedConversations.entries.map((entry) {
@@ -164,7 +150,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                         delay: Duration(milliseconds: globalIndex * 50),
                         slideDirection: FTStaggerSlideDirection.fromBottom,
                         child: ChatItemTile(
-                          conversation: conversation,
+                          conversation: conversation as dynamic, // TODO: Update ChatItemTile to use Conversation model
                           onTap: () => _navigateToChat(conversation.id),
                           onLongPress: () => _showChatOptions(conversation),
                         ),
@@ -236,15 +222,14 @@ class _ChatListScreenState extends State<ChatListScreen> {
             ),
             const SizedBox(height: AppDimensions.spacingM),
             Text(
-              _chatProvider.searchQuery.isNotEmpty
-                  ? 'No conversations match your search'
-                  : 'Start a conversation to connect with friends',
+              'Start a conversation to connect with friends',
               style: AppTextStyles.bodyMedium.copyWith(
                 color: AppColors.softCharcoalLight,
               ),
               textAlign: TextAlign.center,
             ),
-            if (_chatProvider.searchQuery.isEmpty) ...[
+            // Always show the start conversation button
+            ...[
               const SizedBox(height: AppDimensions.spacingXL),
               FTStaggerAnimation(
                 delay: const Duration(milliseconds: 300),
@@ -291,18 +276,13 @@ class _ChatListScreenState extends State<ChatListScreen> {
   }
 
   void _navigateToChat(String conversationId) {
-    // Mark conversation as read
-    _chatProvider.markAsRead(conversationId);
-    
-    // Find the conversation and navigate
-    final conversations = _chatProvider.conversations;
-    final conversation = conversations.firstWhere(
-      (c) => c.id == conversationId,
-      orElse: () => conversations.first, // Fallback
-    );
+    // Select the conversation in the provider
+    _chatProvider.selectConversation(conversationId);
     
     // Navigate to individual chat screen
-    context.goToIndividualChat(conversation);
+    // TODO: Update routing to work with new model
+    // context.goToIndividualChat(conversation);
+    debugPrint('Navigate to chat: $conversationId');
   }
 
   void _showChatOptions(dynamic conversation) {
@@ -338,33 +318,31 @@ class _ChatListScreenState extends State<ChatListScreen> {
             
             // Options
             ListTile(
-              leading: Icon(
-                conversation.isPinned ? Icons.push_pin : Icons.push_pin_outlined,
+              leading: const Icon(
+                Icons.push_pin_outlined,
                 color: AppColors.sageGreen,
               ),
               title: Text(
-                conversation.isPinned ? 'Unpin' : 'Pin',
+                'Pin', // TODO: Implement pinning
                 style: AppTextStyles.bodyMedium,
               ),
               onTap: () {
-                _chatProvider.togglePin(conversation.id);
+                // TODO: Implement toggle pin
                 Navigator.pop(context);
               },
             ),
             
             ListTile(
-              leading: Icon(
-                conversation.isMuted 
-                    ? Icons.volume_up_outlined 
-                    : Icons.volume_off_outlined,
+              leading: const Icon(
+                Icons.volume_off_outlined,
                 color: AppColors.softCharcoal,
               ),
               title: Text(
-                conversation.isMuted ? 'Unmute' : 'Mute',
+                'Mute', // TODO: Implement muting
                 style: AppTextStyles.bodyMedium,
               ),
               onTap: () {
-                _chatProvider.toggleMute(conversation.id);
+                // TODO: Implement toggle mute
                 Navigator.pop(context);
               },
             ),
@@ -380,7 +358,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   style: AppTextStyles.bodyMedium,
                 ),
                 onTap: () {
-                  _chatProvider.markAsRead(conversation.id);
+                  // TODO: Implement mark as read
                   Navigator.pop(context);
                 },
               ),

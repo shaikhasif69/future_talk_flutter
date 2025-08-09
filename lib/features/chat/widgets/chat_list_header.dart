@@ -25,10 +25,10 @@ class ChatListHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.pearlWhite.withOpacity( 0.95),
+        color: AppColors.pearlWhite.withValues(alpha:  0.95),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softCharcoal.withOpacity( 0.05),
+            color: AppColors.softCharcoal.withValues(alpha:  0.05),
             blurRadius: 8.0,
             offset: const Offset(0, 1),
           ),
@@ -188,7 +188,7 @@ class ChatListHeader extends StatelessWidget {
             width: 40.0,
             height: 40.0,
             decoration: BoxDecoration(
-              color: AppColors.sageGreen.withOpacity( 0.1),
+              color: AppColors.sageGreen.withValues(alpha:  0.1),
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
             ),
             child: Icon(

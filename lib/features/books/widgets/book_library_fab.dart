@@ -85,7 +85,7 @@ class _BookLibraryFABState extends State<BookLibraryFAB>
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.sageGreen.withOpacity(0.4 * _glowAnimation.value),
+                    color: AppColors.sageGreen.withValues(alpha: 0.4 * _glowAnimation.value),
                     blurRadius: 16 * _glowAnimation.value,
                     spreadRadius: 2 * _glowAnimation.value,
                   ),

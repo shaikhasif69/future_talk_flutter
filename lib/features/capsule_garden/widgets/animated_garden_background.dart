@@ -202,7 +202,7 @@ class FloatingParticlesPainter extends CustomPainter {
 
       // Paint particle with glow effect
       final paint = Paint()
-        ..color = particle.color.withOpacity(currentOpacity)
+        ..color = particle.color.withValues(alpha: currentOpacity)
         ..style = PaintingStyle.fill;
 
       // Draw main particle
@@ -214,7 +214,7 @@ class FloatingParticlesPainter extends CustomPainter {
 
       // Draw subtle glow
       final glowPaint = Paint()
-        ..color = particle.color.withOpacity(currentOpacity * 0.3)
+        ..color = particle.color.withValues(alpha: currentOpacity * 0.3)
         ..style = PaintingStyle.fill
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3.0);
 

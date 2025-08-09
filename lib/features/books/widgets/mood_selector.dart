@@ -145,7 +145,7 @@ class _MoodSelectorState extends State<MoodSelector>
                 ),
                 boxShadow: isSelected ? [
                   BoxShadow(
-                    color: AppColors.sageGreen.withOpacity(0.3),
+                    color: AppColors.sageGreen.withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),

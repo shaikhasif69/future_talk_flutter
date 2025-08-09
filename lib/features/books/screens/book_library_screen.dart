@@ -7,7 +7,6 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_durations.dart';
 import '../../../shared/widgets/animations/ft_stagger_animation.dart';
-import '../../../shared/widgets/ft_card.dart';
 import '../models/book_model.dart';
 import '../providers/book_library_provider.dart';
 import '../widgets/book_library_header.dart';

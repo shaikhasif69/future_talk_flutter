@@ -116,7 +116,7 @@ class _CategoryTabsState extends State<CategoryTabs>
                 ),
                 boxShadow: isSelected ? [
                   BoxShadow(
-                    color: AppColors.sageGreen.withOpacity(0.25),
+                    color: AppColors.sageGreen.withValues(alpha: 0.25),
                     blurRadius: 8,
                     offset: const Offset(0, 3),
                   ),

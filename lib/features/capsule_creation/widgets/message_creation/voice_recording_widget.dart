@@ -252,7 +252,7 @@ class _VoiceRecordingWidgetState extends State<VoiceRecordingWidget>
                 boxShadow: [
                   BoxShadow(
                     color: widget.isRecording 
-                        ? AppColors.dustyRose.withOpacity(0.3)
+                        ? AppColors.dustyRose.withValues(alpha: 0.3)
                         : AppColors.sageGreenWithOpacity(0.3),
                     blurRadius: 16,
                     offset: const Offset(0, 4),
@@ -345,7 +345,7 @@ class _RecordingItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: AppDimensions.spacingM),
       padding: const EdgeInsets.all(AppDimensions.paddingM),
       decoration: BoxDecoration(
-        color: AppColors.warmCream.withOpacity(0.3),
+        color: AppColors.warmCream.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
         border: Border.all(
           color: AppColors.sageGreenWithOpacity(0.1),
@@ -429,7 +429,7 @@ class _RecordingItem extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: AppColors.dustyRose.withOpacity(0.1),
+                    color: AppColors.dustyRose.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppDimensions.radiusS),
                   ),
                   child: const Icon(
@@ -460,7 +460,7 @@ class WaveformPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = color.withOpacity(0.7)
+      ..color = color.withValues(alpha: 0.7)
       ..strokeWidth = 2
       ..strokeCap = StrokeCap.round;
 

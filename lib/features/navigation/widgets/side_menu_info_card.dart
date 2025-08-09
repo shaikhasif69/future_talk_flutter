@@ -48,7 +48,7 @@ class SideMenuInfoCard extends StatelessWidget {
                 Text(
                   subtitle,
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.pearlWhite.withOpacity(0.8),
+                    color: AppColors.pearlWhite.withValues(alpha: 0.8),
                   ),
                 ),
               ],

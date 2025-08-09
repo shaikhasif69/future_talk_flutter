@@ -29,7 +29,7 @@ class ContextBarWidget extends StatelessWidget {
         vertical: AppDimensions.spacingS,
       ),
       decoration: BoxDecoration(
-        color: AppColors.pearlWhite.withOpacity(0.8),
+        color: AppColors.pearlWhite.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
         border: Border.all(
           color: AppColors.sageGreenWithOpacity(0.2),
@@ -95,7 +95,7 @@ class ContextBarWidget extends StatelessWidget {
               vertical: 2,
             ),
             decoration: BoxDecoration(
-              color: AppColors.warmPeach.withOpacity(0.1),
+              color: AppColors.warmPeach.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
             ),
             child: Row(

@@ -202,7 +202,7 @@ class _BookGridState extends State<BookGrid>
         vertical: 2,
       ),
       decoration: BoxDecoration(
-        color: AppColors.softCharcoal.withOpacity(0.7),
+        color: AppColors.softCharcoal.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(AppDimensions.radiusXS),
       ),
       child: Text(
@@ -220,7 +220,7 @@ class _BookGridState extends State<BookGrid>
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: AppColors.cloudBlue.withOpacity(0.9),
+        color: AppColors.cloudBlue.withValues(alpha: 0.9),
         shape: BoxShape.circle,
       ),
       child: const Icon(

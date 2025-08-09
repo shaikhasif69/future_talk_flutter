@@ -25,7 +25,7 @@ class MessageSettingsSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppColors.sageGreen.withOpacity(0.05),
+            color: AppColors.sageGreen.withValues(alpha: 0.05),
             blurRadius: 12,
             offset: const Offset(0, 2),
           ),
@@ -112,7 +112,7 @@ class MessageSettingsSection extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: AppColors.sageGreen.withOpacity(0.1),
+            color: AppColors.sageGreen.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -169,7 +169,7 @@ class MessageSettingsSection extends StatelessWidget {
           boxShadow: value
               ? [
                   BoxShadow(
-                    color: AppColors.sageGreen.withOpacity(0.3),
+                    color: AppColors.sageGreen.withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -191,7 +191,7 @@ class MessageSettingsSection extends StatelessWidget {
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
@@ -281,12 +281,12 @@ class MessageSettingsSection extends StatelessWidget {
             width: 1,
           ),
           color: isSelected 
-              ? AppColors.sageGreen.withOpacity(0.05)
+              ? AppColors.sageGreen.withValues(alpha: 0.05)
               : Colors.white,
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: AppColors.sageGreen.withOpacity(0.1),
+                    color: AppColors.sageGreen.withValues(alpha: 0.1),
                     blurRadius: 4,
                     offset: const Offset(0, 1),
                   ),
@@ -371,10 +371,10 @@ class MessageSettingsTemplateSelector extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: AppColors.sageGreen.withOpacity(0.3),
+            color: AppColors.sageGreen.withValues(alpha: 0.3),
             width: 1,
           ),
-          color: AppColors.sageGreen.withOpacity(0.05),
+          color: AppColors.sageGreen.withValues(alpha: 0.05),
         ),
         child: Text(
           templateName,
@@ -402,10 +402,10 @@ class MessageSettingsSummary extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.spacingL),
       decoration: BoxDecoration(
-        color: AppColors.sageGreen.withOpacity(0.05),
+        color: AppColors.sageGreen.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.sageGreen.withOpacity(0.2),
+          color: AppColors.sageGreen.withValues(alpha: 0.2),
           width: 1,
         ),
       ),

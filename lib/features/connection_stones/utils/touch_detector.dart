@@ -200,7 +200,7 @@ class _TouchDetectorState extends State<TouchDetector>
           height: _lastTouchLocation!.size * _rippleAnimation.value * 4,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.white.withOpacity(
+            color: Colors.white.withValues(alpha: 
               (1 - _rippleAnimation.value) * 0.3,
             ),
           ),
@@ -369,7 +369,7 @@ class _HeartTouchDetectorState extends State<HeartTouchDetector>
     return CustomPaint(
       painter: HeartTrailPainter(
         points: _touchPoints,
-        color: widget.heartColor.withOpacity(0.6),
+        color: widget.heartColor.withValues(alpha: 0.6),
       ),
       size: Size.infinite,
     );

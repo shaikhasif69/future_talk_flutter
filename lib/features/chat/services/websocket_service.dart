@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/io.dart';
 import '../../../core/storage/secure_storage_service.dart';
 
 /// WebSocket connection states
-enum WebSocketState {
+enum WebSocketConnectionState {
   disconnected,
   connecting,
   connected,
@@ -15,214 +16,210 @@ enum WebSocketState {
   error,
 }
 
-/// WebSocket message types from the API documentation
-enum WebSocketMessageType {
-  // Connection
+/// WebSocket event types from API documentation
+enum WebSocketEventType {
+  // Connection events
   connectionEstablished,
   heartbeat,
   heartbeatAck,
   
-  // Conversation management
+  // Conversation events
   joinConversation,
-  leaveConversation,
   conversationJoined,
   
-  // Messaging
-  newMessage,
-  messageRead,
+  // Message events
+  chatMessage,
   messageReadReceipt,
   
-  // Real-time features
+  // Typing events
+  typingIndicator,
   typingStart,
   typingStop,
-  userTyping,
-  onlineStatus,
-  getOnlineStatus,
   
-  // Error handling
+  // Error events
   error,
 }
 
-/// WebSocket message wrapper
+/// WebSocket message wrapper for API communication
 class WebSocketMessage {
-  final WebSocketMessageType type;
+  final String type;
   final Map<String, dynamic> data;
   final String? conversationId;
-  final String? userId;
   final String? messageId;
+  final String? userId;
+  final String? username;
   final DateTime timestamp;
 
   WebSocketMessage({
     required this.type,
     required this.data,
     this.conversationId,
-    this.userId,
     this.messageId,
+    this.userId,
+    this.username,
     DateTime? timestamp,
   }) : timestamp = timestamp ?? DateTime.now();
 
-  factory WebSocketMessage.fromJson(Map<String, dynamic> json) {
-    final typeString = json['type'] as String;
-    final type = _parseMessageType(typeString);
-    
+  /// Create message for outgoing events
+  factory WebSocketMessage.outgoing(
+    WebSocketEventType eventType,
+    Map<String, dynamic> data,
+  ) {
     return WebSocketMessage(
-      type: type,
-      data: json['data'] ?? json,
+      type: _eventTypeToString(eventType),
+      data: data,
+    );
+  }
+
+  /// Create from incoming JSON
+  factory WebSocketMessage.fromJson(Map<String, dynamic> json) {
+    return WebSocketMessage(
+      type: json['type'] as String,
+      data: json.containsKey('data') 
+          ? json['data'] as Map<String, dynamic>
+          : json,
       conversationId: json['conversation_id'] as String?,
-      userId: json['user_id'] as String?,
       messageId: json['message_id'] as String?,
+      userId: json['user_id'] as String?,
+      username: json['username'] as String?,
       timestamp: json['timestamp'] != null 
           ? DateTime.parse(json['timestamp'] as String)
           : DateTime.now(),
     );
   }
 
+  /// Convert to JSON for sending
   Map<String, dynamic> toJson() {
     return {
-      'type': _messageTypeToString(type),
+      'type': type,
       'data': data,
-      if (conversationId != null) 'conversation_id': conversationId,
-      if (userId != null) 'user_id': userId,
-      if (messageId != null) 'message_id': messageId,
-      'timestamp': timestamp.toIso8601String(),
     };
   }
 
-  static WebSocketMessageType _parseMessageType(String typeString) {
-    switch (typeString) {
-      case 'connection_established':
-        return WebSocketMessageType.connectionEstablished;
-      case 'heartbeat':
-        return WebSocketMessageType.heartbeat;
-      case 'heartbeat_ack':
-        return WebSocketMessageType.heartbeatAck;
-      case 'join_conversation':
-        return WebSocketMessageType.joinConversation;
-      case 'leave_conversation':
-        return WebSocketMessageType.leaveConversation;
-      case 'conversation_joined':
-        return WebSocketMessageType.conversationJoined;
-      case 'new_message':
-        return WebSocketMessageType.newMessage;
-      case 'message_read':
-        return WebSocketMessageType.messageRead;
-      case 'message_read_receipt':
-        return WebSocketMessageType.messageReadReceipt;
-      case 'typing_start':
-        return WebSocketMessageType.typingStart;
-      case 'typing_stop':
-        return WebSocketMessageType.typingStop;
-      case 'user_typing':
-        return WebSocketMessageType.userTyping;
-      case 'online_status':
-        return WebSocketMessageType.onlineStatus;
-      case 'get_online_status':
-        return WebSocketMessageType.getOnlineStatus;
-      case 'error':
-        return WebSocketMessageType.error;
-      default:
-        debugPrint('⚠️ [WebSocket] Unknown message type: $typeString');
-        return WebSocketMessageType.error;
+  /// Get event type enum from string
+  WebSocketEventType get eventType => _stringToEventType(type);
+
+  static String _eventTypeToString(WebSocketEventType type) {
+    switch (type) {
+      case WebSocketEventType.connectionEstablished:
+        return 'connection_established';
+      case WebSocketEventType.heartbeat:
+        return 'heartbeat';
+      case WebSocketEventType.heartbeatAck:
+        return 'heartbeat_ack';
+      case WebSocketEventType.joinConversation:
+        return 'join_conversation';
+      case WebSocketEventType.conversationJoined:
+        return 'conversation_joined';
+      case WebSocketEventType.chatMessage:
+        return 'chat_message';
+      case WebSocketEventType.messageReadReceipt:
+        return 'message_read_receipt';
+      case WebSocketEventType.typingIndicator:
+        return 'typing_indicator';
+      case WebSocketEventType.typingStart:
+        return 'typing_start';
+      case WebSocketEventType.typingStop:
+        return 'typing_stop';
+      case WebSocketEventType.error:
+        return 'error';
     }
   }
 
-  static String _messageTypeToString(WebSocketMessageType type) {
+  static WebSocketEventType _stringToEventType(String type) {
     switch (type) {
-      case WebSocketMessageType.connectionEstablished:
-        return 'connection_established';
-      case WebSocketMessageType.heartbeat:
-        return 'heartbeat';
-      case WebSocketMessageType.heartbeatAck:
-        return 'heartbeat_ack';
-      case WebSocketMessageType.joinConversation:
-        return 'join_conversation';
-      case WebSocketMessageType.leaveConversation:
-        return 'leave_conversation';
-      case WebSocketMessageType.conversationJoined:
-        return 'conversation_joined';
-      case WebSocketMessageType.newMessage:
-        return 'new_message';
-      case WebSocketMessageType.messageRead:
-        return 'message_read';
-      case WebSocketMessageType.messageReadReceipt:
-        return 'message_read_receipt';
-      case WebSocketMessageType.typingStart:
-        return 'typing_start';
-      case WebSocketMessageType.typingStop:
-        return 'typing_stop';
-      case WebSocketMessageType.userTyping:
-        return 'user_typing';
-      case WebSocketMessageType.onlineStatus:
-        return 'online_status';
-      case WebSocketMessageType.getOnlineStatus:
-        return 'get_online_status';
-      case WebSocketMessageType.error:
-        return 'error';
+      case 'connection_established':
+        return WebSocketEventType.connectionEstablished;
+      case 'heartbeat':
+        return WebSocketEventType.heartbeat;
+      case 'heartbeat_ack':
+        return WebSocketEventType.heartbeatAck;
+      case 'join_conversation':
+        return WebSocketEventType.joinConversation;
+      case 'conversation_joined':
+        return WebSocketEventType.conversationJoined;
+      case 'chat_message':
+        return WebSocketEventType.chatMessage;
+      case 'message_read_receipt':
+        return WebSocketEventType.messageReadReceipt;
+      case 'typing_indicator':
+        return WebSocketEventType.typingIndicator;
+      case 'typing_start':
+        return WebSocketEventType.typingStart;
+      case 'typing_stop':
+        return WebSocketEventType.typingStop;
+      case 'error':
+        return WebSocketEventType.error;
+      default:
+        debugPrint('⚠️ [WebSocket] Unknown event type: $type');
+        return WebSocketEventType.error;
     }
   }
 }
 
-/// Production-grade WebSocket service with robust connection management
-class WebSocketService extends ChangeNotifier {
-  // Dynamic WebSocket base URL that matches the ApiClient configuration
+/// Comprehensive WebSocket service matching API documentation
+class ChatWebSocketService extends ChangeNotifier {
+  // Connection configuration
   static String get _baseUrl {
     if (kIsWeb) {
-      // Web - use localhost with WebSocket protocol
       return 'ws://127.0.0.1:8000/api/v1/chat/ws';
     } else if (Platform.isAndroid) {
-      // Android emulator - use 10.0.2.2 with WebSocket protocol
       return 'ws://10.0.2.2:8000/api/v1/chat/ws';
     } else if (Platform.isIOS) {
-      // iOS simulator - use localhost with WebSocket protocol
       return 'ws://127.0.0.1:8000/api/v1/chat/ws';
     } else {
-      // Default fallback
       return 'ws://127.0.0.1:8000/api/v1/chat/ws';
     }
   }
+
   static const Duration _heartbeatInterval = Duration(seconds: 30);
+  static const Duration _connectionTimeout = Duration(seconds: 10);
   static const Duration _reconnectBaseDelay = Duration(seconds: 1);
   static const Duration _maxReconnectDelay = Duration(seconds: 30);
   static const int _maxReconnectAttempts = 10;
 
+  // Connection state
   WebSocketChannel? _channel;
   StreamSubscription? _messageSubscription;
   Timer? _heartbeatTimer;
   Timer? _reconnectTimer;
-  
-  WebSocketState _state = WebSocketState.disconnected;
+  Timer? _connectionTimeoutTimer;
+
+  WebSocketConnectionState _state = WebSocketConnectionState.disconnected;
   int _reconnectAttempts = 0;
   String? _lastError;
   String? _userId;
-  
+  String? _accessToken;
+
   // Message queue for offline messages
   final List<WebSocketMessage> _messageQueue = [];
-  
+
   // Event streams for different message types
-  final StreamController<WebSocketMessage> _messageController = 
-      StreamController<WebSocketMessage>.broadcast();
-  final StreamController<WebSocketMessage> _typingController = 
-      StreamController<WebSocketMessage>.broadcast();
-  final StreamController<WebSocketMessage> _onlineStatusController = 
-      StreamController<WebSocketMessage>.broadcast();
-  final StreamController<Map<String, dynamic>> _newMessageController = 
+  final StreamController<Map<String, dynamic>> _chatMessageController = 
+      StreamController<Map<String, dynamic>>.broadcast();
+  final StreamController<Map<String, dynamic>> _typingIndicatorController = 
       StreamController<Map<String, dynamic>>.broadcast();
   final StreamController<Map<String, dynamic>> _readReceiptController = 
       StreamController<Map<String, dynamic>>.broadcast();
+  final StreamController<Map<String, dynamic>> _connectionController = 
+      StreamController<Map<String, dynamic>>.broadcast();
+  final StreamController<WebSocketMessage> _messageController = 
+      StreamController<WebSocketMessage>.broadcast();
 
   // Getters
-  WebSocketState get state => _state;
-  bool get isConnected => _state == WebSocketState.connected;
-  bool get isConnecting => _state == WebSocketState.connecting || _state == WebSocketState.reconnecting;
+  WebSocketConnectionState get connectionState => _state;
+  bool get isConnected => _state == WebSocketConnectionState.connected;
+  bool get isConnecting => _state == WebSocketConnectionState.connecting || 
+                          _state == WebSocketConnectionState.reconnecting;
   String? get lastError => _lastError;
   String? get userId => _userId;
 
   // Event streams
-  Stream<WebSocketMessage> get onMessage => _messageController.stream;
-  Stream<WebSocketMessage> get onTyping => _typingController.stream;
-  Stream<WebSocketMessage> get onOnlineStatus => _onlineStatusController.stream;
-  Stream<Map<String, dynamic>> get onNewMessage => _newMessageController.stream;
+  Stream<Map<String, dynamic>> get onChatMessage => _chatMessageController.stream;
+  Stream<Map<String, dynamic>> get onTypingIndicator => _typingIndicatorController.stream;
   Stream<Map<String, dynamic>> get onReadReceipt => _readReceiptController.stream;
+  Stream<Map<String, dynamic>> get onConnection => _connectionController.stream;
+  Stream<WebSocketMessage> get onMessage => _messageController.stream;
 
   /// Connect to WebSocket with JWT authentication
   Future<bool> connect() async {
@@ -232,26 +229,33 @@ class WebSocketService extends ChangeNotifier {
     }
 
     try {
-      _setState(WebSocketState.connecting);
+      _setState(WebSocketConnectionState.connecting);
       _lastError = null;
 
       // Get auth token
-      final accessToken = await SecureStorageService.getAccessToken();
-      if (accessToken == null || accessToken.isEmpty) {
+      _accessToken = await SecureStorageService.getAccessToken();
+      if (_accessToken == null || _accessToken!.isEmpty) {
         throw Exception('No access token available');
       }
 
-      final wsUrl = '$_baseUrl?token=$accessToken';
+      final wsUrl = '$_baseUrl?token=$_accessToken';
       debugPrint('🔌 [WebSocket] Connecting to: ${wsUrl.replaceAll(RegExp(r'token=[^&]+'), 'token=***')}');
 
       // Create WebSocket connection
       _channel = IOWebSocketChannel.connect(
         Uri.parse(wsUrl),
-        protocols: ['chat-protocol'],
         headers: {
-          'Authorization': 'Bearer $accessToken',
+          'Authorization': 'Bearer $_accessToken',
         },
       );
+
+      // Set connection timeout
+      _connectionTimeoutTimer = Timer(_connectionTimeout, () {
+        if (_state == WebSocketConnectionState.connecting) {
+          debugPrint('❌ [WebSocket] Connection timeout');
+          _handleError(Exception('Connection timeout'));
+        }
+      });
 
       // Listen to messages
       _messageSubscription = _channel!.stream.listen(
@@ -261,24 +265,25 @@ class WebSocketService extends ChangeNotifier {
         cancelOnError: false,
       );
 
-      // Wait for connection establishment (with timeout)
+      // Wait for connection establishment
       final connectionEstablished = await _waitForConnectionEstablished();
       
       if (connectionEstablished) {
-        _setState(WebSocketState.connected);
+        _connectionTimeoutTimer?.cancel();
+        _setState(WebSocketConnectionState.connected);
         _reconnectAttempts = 0;
         _startHeartbeat();
         _flushMessageQueue();
         debugPrint('✅ [WebSocket] Connected successfully');
         return true;
       } else {
-        throw Exception('Connection establishment timeout');
+        throw Exception('Connection establishment failed');
       }
 
     } catch (e) {
       debugPrint('❌ [WebSocket] Connection failed: $e');
       _lastError = e.toString();
-      _setState(WebSocketState.error);
+      _setState(WebSocketConnectionState.error);
       _scheduleReconnect();
       return false;
     }
@@ -288,6 +293,7 @@ class WebSocketService extends ChangeNotifier {
   Future<void> disconnect() async {
     debugPrint('🔌 [WebSocket] Disconnecting...');
     
+    _connectionTimeoutTimer?.cancel();
     _reconnectTimer?.cancel();
     _heartbeatTimer?.cancel();
     
@@ -301,7 +307,7 @@ class WebSocketService extends ChangeNotifier {
     _channel = null;
     _messageSubscription = null;
     
-    _setState(WebSocketState.disconnected);
+    _setState(WebSocketConnectionState.disconnected);
     debugPrint('✅ [WebSocket] Disconnected');
   }
 
@@ -327,59 +333,36 @@ class WebSocketService extends ChangeNotifier {
 
   /// Join a conversation for real-time updates
   Future<bool> joinConversation(String conversationId) async {
-    final message = WebSocketMessage(
-      type: WebSocketMessageType.joinConversation,
-      data: {'conversation_id': conversationId},
-      conversationId: conversationId,
-    );
-    return await sendMessage(message);
-  }
-
-  /// Leave a conversation
-  Future<bool> leaveConversation(String conversationId) async {
-    final message = WebSocketMessage(
-      type: WebSocketMessageType.leaveConversation,
-      data: {'conversation_id': conversationId},
-      conversationId: conversationId,
+    final message = WebSocketMessage.outgoing(
+      WebSocketEventType.joinConversation,
+      {'conversation_id': conversationId},
     );
     return await sendMessage(message);
   }
 
   /// Send typing start indicator
   Future<bool> startTyping(String conversationId) async {
-    final message = WebSocketMessage(
-      type: WebSocketMessageType.typingStart,
-      data: {'conversation_id': conversationId},
-      conversationId: conversationId,
+    final message = WebSocketMessage.outgoing(
+      WebSocketEventType.typingStart,
+      {'conversation_id': conversationId},
     );
     return await sendMessage(message);
   }
 
   /// Send typing stop indicator
   Future<bool> stopTyping(String conversationId) async {
-    final message = WebSocketMessage(
-      type: WebSocketMessageType.typingStop,
-      data: {'conversation_id': conversationId},
-      conversationId: conversationId,
+    final message = WebSocketMessage.outgoing(
+      WebSocketEventType.typingStop,
+      {'conversation_id': conversationId},
     );
     return await sendMessage(message);
   }
 
-  /// Mark message as read
-  Future<bool> markMessageAsRead(String messageId) async {
-    final message = WebSocketMessage(
-      type: WebSocketMessageType.messageRead,
-      data: {'message_id': messageId},
-      messageId: messageId,
-    );
-    return await sendMessage(message);
-  }
-
-  /// Get online status for users
-  Future<bool> getOnlineStatus(List<String> userIds) async {
-    final message = WebSocketMessage(
-      type: WebSocketMessageType.getOnlineStatus,
-      data: {'user_ids': userIds},
+  /// Send heartbeat to keep connection alive
+  Future<bool> sendHeartbeat() async {
+    final message = WebSocketMessage.outgoing(
+      WebSocketEventType.heartbeat,
+      {},
     );
     return await sendMessage(message);
   }
@@ -393,33 +376,37 @@ class WebSocketService extends ChangeNotifier {
       debugPrint('📥 [WebSocket] Received: ${message.type}');
       
       // Route message to appropriate stream
-      switch (message.type) {
-        case WebSocketMessageType.connectionEstablished:
+      switch (message.eventType) {
+        case WebSocketEventType.connectionEstablished:
           _userId = messageData['user_id'] as String?;
+          _connectionController.add(messageData);
           debugPrint('🔌 [WebSocket] Connection established for user: $_userId');
           break;
           
-        case WebSocketMessageType.heartbeatAck:
+        case WebSocketEventType.heartbeatAck:
           // Heartbeat acknowledged - connection is healthy
           break;
           
-        case WebSocketMessageType.newMessage:
-          _newMessageController.add(messageData);
+        case WebSocketEventType.chatMessage:
+          _chatMessageController.add(messageData);
+          debugPrint('💬 [WebSocket] Chat message received for conversation: ${message.conversationId}');
           break;
           
-        case WebSocketMessageType.userTyping:
-          _typingController.add(message);
+        case WebSocketEventType.typingIndicator:
+          _typingIndicatorController.add(messageData);
+          debugPrint('⌨️ [WebSocket] Typing indicator: ${message.username} in ${message.conversationId}');
           break;
           
-        case WebSocketMessageType.messageReadReceipt:
+        case WebSocketEventType.messageReadReceipt:
           _readReceiptController.add(messageData);
+          debugPrint('✓ [WebSocket] Read receipt for message: ${message.messageId}');
           break;
           
-        case WebSocketMessageType.onlineStatus:
-          _onlineStatusController.add(message);
+        case WebSocketEventType.conversationJoined:
+          debugPrint('🚪 [WebSocket] Joined conversation: ${message.conversationId}');
           break;
           
-        case WebSocketMessageType.error:
+        case WebSocketEventType.error:
           debugPrint('❌ [WebSocket] Server error: ${messageData['message']}');
           _lastError = messageData['message'] as String?;
           break;
@@ -441,14 +428,14 @@ class WebSocketService extends ChangeNotifier {
   void _handleError(dynamic error) {
     debugPrint('❌ [WebSocket] Connection error: $error');
     _lastError = error.toString();
-    _setState(WebSocketState.error);
+    _setState(WebSocketConnectionState.error);
     _scheduleReconnect();
   }
 
   /// Handle WebSocket disconnection
   void _handleDisconnection() {
     debugPrint('🔌 [WebSocket] Connection closed');
-    _setState(WebSocketState.disconnected);
+    _setState(WebSocketConnectionState.disconnected);
     _stopHeartbeat();
     _scheduleReconnect();
   }
@@ -458,15 +445,15 @@ class WebSocketService extends ChangeNotifier {
     final completer = Completer<bool>();
     late StreamSubscription subscription;
     
-    // Timeout after 10 seconds
-    final timeout = Timer(const Duration(seconds: 10), () {
+    // Timeout after connection timeout duration
+    final timeout = Timer(_connectionTimeout, () {
       if (!completer.isCompleted) {
         completer.complete(false);
       }
     });
     
-    subscription = _messageController.stream.listen((message) {
-      if (message.type == WebSocketMessageType.connectionEstablished) {
+    subscription = _connectionController.stream.listen((data) {
+      if (data['type'] == 'connection_established') {
         timeout.cancel();
         subscription.cancel();
         if (!completer.isCompleted) {
@@ -484,11 +471,7 @@ class WebSocketService extends ChangeNotifier {
     
     _heartbeatTimer = Timer.periodic(_heartbeatInterval, (timer) {
       if (isConnected) {
-        final heartbeatMessage = WebSocketMessage(
-          type: WebSocketMessageType.heartbeat,
-          data: {},
-        );
-        sendMessage(heartbeatMessage);
+        sendHeartbeat();
       }
     });
   }
@@ -503,7 +486,7 @@ class WebSocketService extends ChangeNotifier {
   void _scheduleReconnect() {
     if (_reconnectAttempts >= _maxReconnectAttempts) {
       debugPrint('❌ [WebSocket] Max reconnection attempts reached');
-      _setState(WebSocketState.error);
+      _setState(WebSocketConnectionState.error);
       return;
     }
 
@@ -511,18 +494,18 @@ class WebSocketService extends ChangeNotifier {
     
     // Calculate delay with exponential backoff
     final delayMs = (_reconnectBaseDelay.inMilliseconds * 
-        (1 << (_reconnectAttempts - 1))).clamp(
+        pow(2, _reconnectAttempts - 1)).clamp(
         _reconnectBaseDelay.inMilliseconds, 
         _maxReconnectDelay.inMilliseconds
     );
     
-    final delay = Duration(milliseconds: delayMs);
+    final delay = Duration(milliseconds: delayMs.toInt());
     
     debugPrint('🔄 [WebSocket] Scheduling reconnect attempt $_reconnectAttempts in ${delay.inSeconds}s');
     
     _reconnectTimer = Timer(delay, () {
-      if (_state != WebSocketState.connected) {
-        _setState(WebSocketState.reconnecting);
+      if (_state != WebSocketConnectionState.connected) {
+        _setState(WebSocketConnectionState.reconnecting);
         connect();
       }
     });
@@ -531,14 +514,14 @@ class WebSocketService extends ChangeNotifier {
   /// Queue message for later sending
   void _queueMessage(WebSocketMessage message) {
     // Only queue certain types of messages
-    if (message.type == WebSocketMessageType.messageRead ||
-        message.type == WebSocketMessageType.typingStart ||
-        message.type == WebSocketMessageType.typingStop) {
+    if (message.eventType == WebSocketEventType.typingStart ||
+        message.eventType == WebSocketEventType.typingStop ||
+        message.eventType == WebSocketEventType.joinConversation) {
       _messageQueue.add(message);
       
       // Limit queue size
-      if (_messageQueue.length > 100) {
-        _messageQueue.removeRange(0, _messageQueue.length - 100);
+      if (_messageQueue.length > 50) {
+        _messageQueue.removeRange(0, _messageQueue.length - 50);
       }
     }
   }
@@ -558,7 +541,7 @@ class WebSocketService extends ChangeNotifier {
   }
 
   /// Update connection state and notify listeners
-  void _setState(WebSocketState newState) {
+  void _setState(WebSocketConnectionState newState) {
     if (_state != newState) {
       _state = newState;
       debugPrint('🔄 [WebSocket] State changed to: $newState');
@@ -570,17 +553,21 @@ class WebSocketService extends ChangeNotifier {
   void dispose() {
     debugPrint('🔌 [WebSocket] Disposing service');
     
+    _connectionTimeoutTimer?.cancel();
     _reconnectTimer?.cancel();
     _stopHeartbeat();
     
     disconnect();
     
-    _messageController.close();
-    _typingController.close();
-    _onlineStatusController.close();
-    _newMessageController.close();
+    _chatMessageController.close();
+    _typingIndicatorController.close();
     _readReceiptController.close();
+    _connectionController.close();
+    _messageController.close();
     
     super.dispose();
   }
 }
+
+/// Singleton instance
+final chatWebSocketService = ChatWebSocketService();

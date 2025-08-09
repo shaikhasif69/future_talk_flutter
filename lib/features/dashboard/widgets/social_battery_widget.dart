@@ -123,7 +123,7 @@ class _SocialBatteryWidgetState extends State<SocialBatteryWidget>
           end: Alignment.bottomRight,
           colors: [
             AppColors.sageGreenWithOpacity(0.1),
-            AppColors.lavenderMistLight.withOpacity( 0.1),
+            AppColors.lavenderMistLight.withValues(alpha:  0.1),
           ],
         ),
         borderRadius: BorderRadius.circular(AppDimensions.cardRadius),

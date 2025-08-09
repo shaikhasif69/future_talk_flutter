@@ -420,7 +420,7 @@ class _FTInputState extends State<FTInput> with TickerProviderStateMixin {
       case FTInputStyle.filled:
         fillColor = widget.enabled 
             ? AppColors.warmCreamAlt 
-            : AppColors.stoneGray.withOpacity( 0.1);
+            : AppColors.stoneGray.withValues(alpha:  0.1);
         break;
       case FTInputStyle.outlined:
         fillColor = Colors.transparent;

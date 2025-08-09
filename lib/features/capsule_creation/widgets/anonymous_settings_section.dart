@@ -176,7 +176,7 @@ class _AnonymousSettingsSectionState extends State<AnonymousSettingsSection>
                 boxShadow: value
                     ? [
                         BoxShadow(
-                          color: AppColors.lavenderMist.withOpacity(0.3),
+                          color: AppColors.lavenderMist.withValues(alpha: 0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -253,12 +253,12 @@ class _AnonymousSettingsSectionState extends State<AnonymousSettingsSection>
                   padding: const EdgeInsets.all(AppDimensions.paddingM),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? AppColors.lavenderMist.withOpacity(0.05)
+                        ? AppColors.lavenderMist.withValues(alpha: 0.05)
                         : AppColors.pearlWhite,
                     border: Border.all(
                       color: isSelected
                           ? AppColors.lavenderMist
-                          : AppColors.whisperGray.withOpacity(0.3),
+                          : AppColors.whisperGray.withValues(alpha: 0.3),
                       width: 1,
                     ),
                     borderRadius: BorderRadius.circular(AppDimensions.radiusS),
@@ -303,10 +303,10 @@ class _AnonymousSettingsSectionState extends State<AnonymousSettingsSection>
             margin: const EdgeInsets.only(top: AppDimensions.spacingXL),
             padding: const EdgeInsets.all(AppDimensions.paddingXL),
             decoration: BoxDecoration(
-              color: AppColors.warmPeach.withOpacity(0.3),
+              color: AppColors.warmPeach.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(AppDimensions.radiusL),
               border: Border.all(
-                color: AppColors.warmPeach.withOpacity(0.2),
+                color: AppColors.warmPeach.withValues(alpha: 0.2),
                 width: 1,
               ),
             ),
@@ -319,7 +319,7 @@ class _AnonymousSettingsSectionState extends State<AnonymousSettingsSection>
                     Container(
                       padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: AppColors.lavenderMist.withOpacity(0.1),
+                        color: AppColors.lavenderMist.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: const Icon(
@@ -356,7 +356,7 @@ class _AnonymousSettingsSectionState extends State<AnonymousSettingsSection>
                 Container(
                   height: 1,
                   margin: const EdgeInsets.symmetric(vertical: AppDimensions.spacingM),
-                  color: AppColors.warmPeach.withOpacity(0.3),
+                  color: AppColors.warmPeach.withValues(alpha: 0.3),
                 ),
                 
                 // Identity reveal options
@@ -366,7 +366,7 @@ class _AnonymousSettingsSectionState extends State<AnonymousSettingsSection>
                 Container(
                   height: 1,
                   margin: const EdgeInsets.symmetric(vertical: AppDimensions.spacingM),
-                  color: AppColors.warmPeach.withOpacity(0.3),
+                  color: AppColors.warmPeach.withValues(alpha: 0.3),
                 ),
                 
                 // One-time view toggle
@@ -384,7 +384,7 @@ class _AnonymousSettingsSectionState extends State<AnonymousSettingsSection>
                 Container(
                   height: 1,
                   margin: const EdgeInsets.symmetric(vertical: AppDimensions.spacingM),
-                  color: AppColors.warmPeach.withOpacity(0.3),
+                  color: AppColors.warmPeach.withValues(alpha: 0.3),
                 ),
                 
                 // Delivery hint toggle
@@ -403,10 +403,10 @@ class _AnonymousSettingsSectionState extends State<AnonymousSettingsSection>
                 Container(
                   padding: const EdgeInsets.all(AppDimensions.paddingM),
                   decoration: BoxDecoration(
-                    color: AppColors.lavenderMist.withOpacity(0.05),
+                    color: AppColors.lavenderMist.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(AppDimensions.radiusS),
                     border: Border.all(
-                      color: AppColors.lavenderMist.withOpacity(0.1),
+                      color: AppColors.lavenderMist.withValues(alpha: 0.1),
                     ),
                   ),
                   child: Row(

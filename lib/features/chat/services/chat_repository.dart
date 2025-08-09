@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../../../core/storage/secure_storage_service.dart';
 import '../../../core/network/api_result.dart';
+import '../models/chat_message.dart';
+import '../models/chat_conversation.dart';
 
 /// Data models for API requests and responses
 class ConversationCreateRequest {
@@ -49,137 +51,7 @@ class SendMessageRequest {
   };
 }
 
-class ApiConversation {
-  final String id;
-  final String conversationType;
-  final DateTime createdAt;
-  final DateTime lastMessageAt;
-  final bool isArchived;
-  final List<ApiParticipant> participants;
-  final ApiMessage? lastMessage;
-  final int unreadCount;
-
-  const ApiConversation({
-    required this.id,
-    required this.conversationType,
-    required this.createdAt,
-    required this.lastMessageAt,
-    required this.isArchived,
-    required this.participants,
-    this.lastMessage,
-    required this.unreadCount,
-  });
-
-  factory ApiConversation.fromJson(Map<String, dynamic> json) {
-    return ApiConversation(
-      id: json['id'] as String,
-      conversationType: json['conversation_type'] as String,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      lastMessageAt: DateTime.parse(json['last_message_at'] as String),
-      isArchived: json['is_archived'] as bool,
-      participants: (json['participants'] as List)
-          .map((p) => ApiParticipant.fromJson(p as Map<String, dynamic>))
-          .toList(),
-      lastMessage: json['last_message'] != null 
-          ? ApiMessage.fromJson(json['last_message'] as Map<String, dynamic>)
-          : null,
-      unreadCount: json['unread_count'] as int,
-    );
-  }
-}
-
-class ApiParticipant {
-  final String userId;
-  final String username;
-  final String role;
-  final DateTime joinedAt;
-
-  const ApiParticipant({
-    required this.userId,
-    required this.username,
-    required this.role,
-    required this.joinedAt,
-  });
-
-  factory ApiParticipant.fromJson(Map<String, dynamic> json) {
-    return ApiParticipant(
-      userId: json['user_id'] as String,
-      username: json['username'] as String,
-      role: json['role'] as String,
-      joinedAt: DateTime.parse(json['joined_at'] as String),
-    );
-  }
-}
-
-class ApiMessage {
-  final String id;
-  final String conversationId;
-  final String senderId;
-  final String content;
-  final String messageType;
-  final String? replyToMessageId;
-  final DateTime createdAt;
-  final DateTime? editedAt;
-  final List<String> attachments;
-  final DateTime? selfDestructAt;
-  final bool isDestroyed;
-  final bool encrypted;
-  final String? encryptionType;
-
-  const ApiMessage({
-    required this.id,
-    required this.conversationId,
-    required this.senderId,
-    required this.content,
-    required this.messageType,
-    this.replyToMessageId,
-    required this.createdAt,
-    this.editedAt,
-    required this.attachments,
-    this.selfDestructAt,
-    required this.isDestroyed,
-    required this.encrypted,
-    this.encryptionType,
-  });
-
-  factory ApiMessage.fromJson(Map<String, dynamic> json) {
-    return ApiMessage(
-      id: _parseRequiredString(json['id']) ?? '',
-      conversationId: _parseRequiredString(json['conversation_id']) ?? '',
-      senderId: _parseRequiredString(json['sender_id']) ?? '',
-      content: _parseRequiredString(json['content']) ?? '',
-      messageType: _parseRequiredString(json['message_type']) ?? 'text',
-      replyToMessageId: _parseOptionalString(json['reply_to_message_id']),
-      createdAt: DateTime.parse(_parseRequiredString(json['created_at']) ?? DateTime.now().toIso8601String()),
-      editedAt: json['edited_at'] != null 
-          ? DateTime.parse(_parseRequiredString(json['edited_at'])!)
-          : null,
-      attachments: List<String>.from(json['attachments'] as List? ?? []),
-      selfDestructAt: json['self_destruct_at'] != null
-          ? DateTime.parse(_parseRequiredString(json['self_destruct_at'])!)
-          : null,
-      isDestroyed: json['is_destroyed'] as bool? ?? false,
-      encrypted: json['encrypted'] as bool? ?? false,
-      encryptionType: _parseOptionalString(json['encryption_type']),
-    );
-  }
-
-  /// Safely parse required string fields that might come as Lists or other types
-  static String? _parseRequiredString(dynamic value) {
-    if (value == null) return null;
-    if (value is String) return value;
-    if (value is List) return value.isEmpty ? null : value.first?.toString();
-    return value.toString();
-  }
-
-  /// Safely parse optional string fields that might come as Lists or other types
-  static String? _parseOptionalString(dynamic value) {
-    if (value == null) return null;
-    if (value is String) return value.isEmpty ? null : value;
-    if (value is List) return value.isEmpty ? null : value.first?.toString();
-    return value.toString();
-  }
-}
+/// Legacy API models - keeping for compatibility with old methods that haven't been updated yet
 
 /// Repository for chat-related API calls
 class ChatRepository {
@@ -254,22 +126,88 @@ class ChatRepository {
     }
   }
 
-  /// Handle HTTP response for list endpoints
-  Future<ApiResult<List<T>>> _handleListResponse<T>(
-    Future<http.Response> responseFunction,
-    T Function(Map<String, dynamic>) fromJson,
-  ) async {
+
+  /// Create a new conversation with proper type conversion
+  Future<ApiResult<Conversation>> createConversation({
+    required List<String> participantIds,
+    required String conversationType,
+  }) async {
+    final request = ConversationCreateRequest(
+      participantIds: participantIds,
+      conversationType: conversationType,
+    );
+
+    debugPrint('🔗 [ChatRepository] Creating conversation with: ${participantIds.length} participants');
+
     try {
-      final response = await responseFunction;
+      final response = await http.post(
+        Uri.parse('$_baseUrl/conversations'),
+        headers: await _getHeaders(),
+        body: jsonEncode(request.toJson()),
+      );
+      
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final responseData = jsonDecode(response.body) as Map<String, dynamic>;
+        final userId = await _getCurrentUserId();
+        
+        try {
+          final conversation = Conversation.fromApiConversation(responseData, userId);
+          return ApiResult.success(conversation);
+        } catch (parseError) {
+          debugPrint('❌ [ChatRepository] JSON parsing error: $parseError');
+          debugPrint('❌ [ChatRepository] Failed to parse response: ${responseData.toString()}');
+          return ApiResult.failure(ApiError(
+            message: 'Failed to parse response: $parseError',
+            statusCode: response.statusCode,
+          ));
+        }
+      } else {
+        final errorData = jsonDecode(response.body) as Map<String, dynamic>;
+        final errorMessage = errorData['detail'] as String? ?? 
+                           'Request failed with status: ${response.statusCode}';
+        return ApiResult.failure(ApiError(
+          message: errorMessage,
+          statusCode: response.statusCode,
+        ));
+      }
+    } catch (e) {
+      return ApiResult.failure(ApiError(
+        message: 'Network error: $e',
+        statusCode: 0,
+      ));
+    }
+  }
+
+  /// Get user's conversations with proper type conversion
+  Future<ApiResult<List<Conversation>>> getConversations({
+    int limit = 20,
+    int offset = 0,
+  }) async {
+    final uri = Uri.parse('$_baseUrl/conversations')
+        .replace(queryParameters: {
+      'limit': limit.toString(),
+      'offset': offset.toString(),
+    });
+
+    debugPrint('🔗 [ChatRepository] Fetching conversations: limit=$limit, offset=$offset');
+
+    try {
+      final response = await http.get(uri, headers: await _getHeaders());
       
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseData = jsonDecode(response.body);
         
         if (responseData is List) {
-          final items = responseData
-              .map((item) => fromJson(item as Map<String, dynamic>))
+          // Get current user ID for message processing
+          final userId = await _getCurrentUserId();
+          
+          final conversations = responseData
+              .map((item) => Conversation.fromApiConversation(
+                  item as Map<String, dynamic>, 
+                  userId,
+                ))
               .toList();
-          return ApiResult.success(items);
+          return ApiResult.success(conversations);
         } else {
           return ApiResult.failure(ApiError(
             message: 'Expected list response but got: ${responseData.runtimeType}',
@@ -293,49 +231,8 @@ class ChatRepository {
     }
   }
 
-  /// Create a new conversation
-  Future<ApiResult<ApiConversation>> createConversation({
-    required List<String> participantIds,
-    required String conversationType,
-  }) async {
-    final request = ConversationCreateRequest(
-      participantIds: participantIds,
-      conversationType: conversationType,
-    );
-
-    debugPrint('🔗 [ChatRepository] Creating conversation with: ${participantIds.length} participants');
-
-    return await _handleResponse<ApiConversation>(
-      http.post(
-        Uri.parse('$_baseUrl/conversations'),
-        headers: await _getHeaders(),
-        body: jsonEncode(request.toJson()),
-      ),
-      (json) => ApiConversation.fromJson(json),
-    );
-  }
-
-  /// Get user's conversations
-  Future<ApiResult<List<ApiConversation>>> getConversations({
-    int limit = 20,
-    int offset = 0,
-  }) async {
-    final uri = Uri.parse('$_baseUrl/conversations')
-        .replace(queryParameters: {
-      'limit': limit.toString(),
-      'offset': offset.toString(),
-    });
-
-    debugPrint('🔗 [ChatRepository] Fetching conversations: limit=$limit, offset=$offset');
-
-    return await _handleListResponse<ApiConversation>(
-      http.get(uri, headers: await _getHeaders()),
-      (json) => ApiConversation.fromJson(json),
-    );
-  }
-
-  /// Send a message in a conversation
-  Future<ApiResult<ApiMessage>> sendMessage({
+  /// Send a message in a conversation with proper type conversion
+  Future<ApiResult<ChatMessage>> sendMessage({
     required String conversationId,
     required String content,
     String messageType = 'text',
@@ -355,41 +252,112 @@ class ChatRepository {
 
     debugPrint('🔗 [ChatRepository] Sending message to conversation: $conversationId');
 
-    return await _handleResponse<ApiMessage>(
-      http.post(
+    try {
+      final response = await http.post(
         Uri.parse('$_baseUrl/conversations/$conversationId/messages'),
         headers: await _getHeaders(),
         body: jsonEncode(request.toJson()),
-      ),
-      (json) => ApiMessage.fromJson(json),
-    );
+      );
+      
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final responseData = jsonDecode(response.body) as Map<String, dynamic>;
+        final userId = await _getCurrentUserId();
+        
+        try {
+          final message = ChatMessage.fromApiMessage(responseData, userId);
+          return ApiResult.success(message);
+        } catch (parseError) {
+          debugPrint('❌ [ChatRepository] JSON parsing error: $parseError');
+          debugPrint('❌ [ChatRepository] Failed to parse response: ${responseData.toString()}');
+          return ApiResult.failure(ApiError(
+            message: 'Failed to parse response: $parseError',
+            statusCode: response.statusCode,
+          ));
+        }
+      } else {
+        final errorData = jsonDecode(response.body) as Map<String, dynamic>;
+        final errorMessage = errorData['detail'] as String? ?? 
+                           'Request failed with status: ${response.statusCode}';
+        return ApiResult.failure(ApiError(
+          message: errorMessage,
+          statusCode: response.statusCode,
+        ));
+      }
+    } catch (e) {
+      return ApiResult.failure(ApiError(
+        message: 'Network error: $e',
+        statusCode: 0,
+      ));
+    }
   }
 
-  /// Get messages from a conversation
-  Future<ApiResult<List<ApiMessage>>> getMessages({
+  /// Get messages from a conversation with proper pagination and type conversion
+  Future<ApiResult<List<ChatMessage>>> getMessages({
     required String conversationId,
-    int limit = 50,
+    int limit = 100,
     int offset = 0,
     String? beforeMessageId,
   }) async {
     final queryParams = <String, String>{
       'limit': limit.toString(),
-      'offset': offset.toString(),
     };
     
+    // Use before_message_id for proper pagination (preferred over offset)
     if (beforeMessageId != null) {
       queryParams['before_message_id'] = beforeMessageId;
+    } else {
+      queryParams['offset'] = offset.toString();
     }
 
     final uri = Uri.parse('$_baseUrl/conversations/$conversationId/messages')
         .replace(queryParameters: queryParams);
 
-    debugPrint('🔗 [ChatRepository] Fetching messages for conversation: $conversationId');
+    debugPrint('🔗 [ChatRepository] Fetching messages for conversation: $conversationId, limit=$limit, beforeMessageId=$beforeMessageId');
 
-    return await _handleListResponse<ApiMessage>(
-      http.get(uri, headers: await _getHeaders()),
-      (json) => ApiMessage.fromJson(json),
-    );
+    try {
+      final response = await http.get(uri, headers: await _getHeaders());
+      
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final responseData = jsonDecode(response.body);
+        
+        if (responseData is List) {
+          // Get current user ID for message processing
+          final userId = await _getCurrentUserId();
+          
+          // Messages come from API in reverse chronological order (newest first)
+          // We need to reverse them for display (oldest first, newest last)
+          final messages = responseData
+              .map((item) => ChatMessage.fromApiMessage(
+                  item as Map<String, dynamic>,
+                  userId,
+                ))
+              .toList()
+              .reversed
+              .toList();
+              
+          debugPrint('🔗 [ChatRepository] Loaded ${messages.length} messages, reversed for display');
+          return ApiResult.success(messages);
+        } else {
+          return ApiResult.failure(ApiError(
+            message: 'Expected list response but got: ${responseData.runtimeType}',
+            statusCode: response.statusCode,
+          ));
+        }
+      } else {
+        final errorData = jsonDecode(response.body) as Map<String, dynamic>;
+        final errorMessage = errorData['detail'] as String? ?? 
+                           'Request failed with status: ${response.statusCode}';
+        return ApiResult.failure(ApiError(
+          message: errorMessage,
+          statusCode: response.statusCode,
+        ));
+      }
+    } catch (e) {
+      return ApiResult.failure(ApiError(
+        message: 'Network error: $e',
+        statusCode: 0,
+      ));
+    }
   }
 
   /// Mark a message as read
@@ -436,21 +404,49 @@ class ChatRepository {
     );
   }
 
-  /// Get conversation by ID
-  Future<ApiResult<ApiConversation>> getConversation(String conversationId) async {
+  /// Get conversation by ID with proper type conversion
+  Future<ApiResult<Conversation>> getConversation(String conversationId) async {
     debugPrint('🔗 [ChatRepository] Fetching conversation: $conversationId');
 
-    return await _handleResponse<ApiConversation>(
-      http.get(
+    try {
+      final response = await http.get(
         Uri.parse('$_baseUrl/conversations/$conversationId'),
         headers: await _getHeaders(),
-      ),
-      (json) => ApiConversation.fromJson(json),
-    );
+      );
+      
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final responseData = jsonDecode(response.body) as Map<String, dynamic>;
+        final userId = await _getCurrentUserId();
+        
+        try {
+          final conversation = Conversation.fromApiConversation(responseData, userId);
+          return ApiResult.success(conversation);
+        } catch (parseError) {
+          debugPrint('❌ [ChatRepository] JSON parsing error: $parseError');
+          return ApiResult.failure(ApiError(
+            message: 'Failed to parse response: $parseError',
+            statusCode: response.statusCode,
+          ));
+        }
+      } else {
+        final errorData = jsonDecode(response.body) as Map<String, dynamic>;
+        final errorMessage = errorData['detail'] as String? ?? 
+                           'Request failed with status: ${response.statusCode}';
+        return ApiResult.failure(ApiError(
+          message: errorMessage,
+          statusCode: response.statusCode,
+        ));
+      }
+    } catch (e) {
+      return ApiResult.failure(ApiError(
+        message: 'Network error: $e',
+        statusCode: 0,
+      ));
+    }
   }
 
-  /// Search conversations
-  Future<ApiResult<List<ApiConversation>>> searchConversations({
+  /// Search conversations with proper type conversion
+  Future<ApiResult<List<Conversation>>> searchConversations({
     required String query,
     int limit = 20,
     int offset = 0,
@@ -464,10 +460,44 @@ class ChatRepository {
 
     debugPrint('🔗 [ChatRepository] Searching conversations: "$query"');
 
-    return await _handleListResponse<ApiConversation>(
-      http.get(uri, headers: await _getHeaders()),
-      (json) => ApiConversation.fromJson(json),
-    );
+    try {
+      final response = await http.get(uri, headers: await _getHeaders());
+      
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final responseData = jsonDecode(response.body);
+        
+        if (responseData is List) {
+          // Get current user ID for message processing
+          final userId = await _getCurrentUserId();
+          
+          final conversations = responseData
+              .map((item) => Conversation.fromApiConversation(
+                  item as Map<String, dynamic>, 
+                  userId,
+                ))
+              .toList();
+          return ApiResult.success(conversations);
+        } else {
+          return ApiResult.failure(ApiError(
+            message: 'Expected list response but got: ${responseData.runtimeType}',
+            statusCode: response.statusCode,
+          ));
+        }
+      } else {
+        final errorData = jsonDecode(response.body) as Map<String, dynamic>;
+        final errorMessage = errorData['detail'] as String? ?? 
+                           'Request failed with status: ${response.statusCode}';
+        return ApiResult.failure(ApiError(
+          message: errorMessage,
+          statusCode: response.statusCode,
+        ));
+      }
+    } catch (e) {
+      return ApiResult.failure(ApiError(
+        message: 'Network error: $e',
+        statusCode: 0,
+      ));
+    }
   }
 
   /// Get conversation participants' online status
@@ -490,8 +520,8 @@ class ChatRepository {
     );
   }
 
-  /// Update conversation settings (mute, archive, etc.)
-  Future<ApiResult<ApiConversation>> updateConversationSettings({
+  /// Update conversation settings (mute, archive, etc.) with proper type conversion
+  Future<ApiResult<Conversation>> updateConversationSettings({
     required String conversationId,
     bool? isMuted,
     bool? isArchived,
@@ -511,14 +541,42 @@ class ChatRepository {
 
     debugPrint('🔗 [ChatRepository] Updating conversation settings: $conversationId');
 
-    return await _handleResponse<ApiConversation>(
-      http.patch(
+    try {
+      final response = await http.patch(
         Uri.parse('$_baseUrl/conversations/$conversationId'),
         headers: await _getHeaders(),
         body: jsonEncode(updates),
-      ),
-      (json) => ApiConversation.fromJson(json),
-    );
+      );
+      
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final responseData = jsonDecode(response.body) as Map<String, dynamic>;
+        final userId = await _getCurrentUserId();
+        
+        try {
+          final conversation = Conversation.fromApiConversation(responseData, userId);
+          return ApiResult.success(conversation);
+        } catch (parseError) {
+          debugPrint('❌ [ChatRepository] JSON parsing error: $parseError');
+          return ApiResult.failure(ApiError(
+            message: 'Failed to parse response: $parseError',
+            statusCode: response.statusCode,
+          ));
+        }
+      } else {
+        final errorData = jsonDecode(response.body) as Map<String, dynamic>;
+        final errorMessage = errorData['detail'] as String? ?? 
+                           'Request failed with status: ${response.statusCode}';
+        return ApiResult.failure(ApiError(
+          message: errorMessage,
+          statusCode: response.statusCode,
+        ));
+      }
+    } catch (e) {
+      return ApiResult.failure(ApiError(
+        message: 'Network error: $e',
+        statusCode: 0,
+      ));
+    }
   }
 
   /// Delete a message (if within allowed time)
@@ -534,21 +592,49 @@ class ChatRepository {
     );
   }
 
-  /// Edit a message (if within allowed time)
-  Future<ApiResult<ApiMessage>> editMessage({
+  /// Edit a message (if within allowed time) with proper type conversion
+  Future<ApiResult<ChatMessage>> editMessage({
     required String messageId,
     required String newContent,
   }) async {
     debugPrint('🔗 [ChatRepository] Editing message: $messageId');
 
-    return await _handleResponse<ApiMessage>(
-      http.patch(
+    try {
+      final response = await http.patch(
         Uri.parse('$_baseUrl/messages/$messageId'),
         headers: await _getHeaders(),
         body: jsonEncode({'content': newContent}),
-      ),
-      (json) => ApiMessage.fromJson(json),
-    );
+      );
+      
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final responseData = jsonDecode(response.body) as Map<String, dynamic>;
+        final userId = await _getCurrentUserId();
+        
+        try {
+          final message = ChatMessage.fromApiMessage(responseData, userId);
+          return ApiResult.success(message);
+        } catch (parseError) {
+          debugPrint('❌ [ChatRepository] JSON parsing error: $parseError');
+          return ApiResult.failure(ApiError(
+            message: 'Failed to parse response: $parseError',
+            statusCode: response.statusCode,
+          ));
+        }
+      } else {
+        final errorData = jsonDecode(response.body) as Map<String, dynamic>;
+        final errorMessage = errorData['detail'] as String? ?? 
+                           'Request failed with status: ${response.statusCode}';
+        return ApiResult.failure(ApiError(
+          message: errorMessage,
+          statusCode: response.statusCode,
+        ));
+      }
+    } catch (e) {
+      return ApiResult.failure(ApiError(
+        message: 'Network error: $e',
+        statusCode: 0,
+      ));
+    }
   }
 
   /// React to a message
@@ -582,6 +668,18 @@ class ChatRepository {
       ),
       (_) {},
     );
+  }
+
+  /// Get current user ID from storage
+  Future<String> _getCurrentUserId() async {
+    try {
+      // This would need to be implemented based on your auth system
+      // For now, return a placeholder
+      return 'current-user-id'; // TODO: Implement proper user ID retrieval
+    } catch (e) {
+      debugPrint('❌ [ChatRepository] Failed to get current user ID: $e');
+      return 'unknown-user';
+    }
   }
 }
 

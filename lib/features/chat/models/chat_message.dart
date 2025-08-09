@@ -3,15 +3,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'chat_message.freezed.dart';
 part 'chat_message.g.dart';
 
-/// Types of messages that can be sent in a chat
-enum MessageType {
-  text,
-  voice,
-  image,
-  file,
-  connectionStone,
-  selfDestruct,
-}
+/// Conversation types matching API documentation
+enum ConversationType { direct, group }
+
+/// Message types matching API documentation  
+enum MessageType { text, voice, video, image }
+
+/// Participant roles matching API documentation
+enum ParticipantRole { admin, member }
 
 /// Message delivery status
 enum MessageStatus {
@@ -20,6 +19,34 @@ enum MessageStatus {
   delivered,
   read,
   failed,
+}
+
+/// Attachment model matching API documentation
+@freezed
+class Attachment with _$Attachment {
+  const factory Attachment({
+    required String id,
+    required String fileName,
+    required String fileUrl,
+    required String fileType,
+    required int fileSize,
+  }) = _Attachment;
+
+  factory Attachment.fromJson(Map<String, Object?> json) =>
+      _$AttachmentFromJson(json);
+}
+
+/// Reaction model matching API documentation
+@freezed
+class Reaction with _$Reaction {
+  const factory Reaction({
+    required String userId,
+    required String emoji,
+    required DateTime createdAt,
+  }) = _Reaction;
+
+  factory Reaction.fromJson(Map<String, Object?> json) =>
+      _$ReactionFromJson(json);
 }
 
 /// Voice message specific data
@@ -123,35 +150,35 @@ class SelfDestructMessage with _$SelfDestructMessage {
       _$SelfDestructMessageFromJson(json);
 }
 
-/// Main chat message model
+/// Main chat message model matching API documentation exactly
 @freezed
 class ChatMessage with _$ChatMessage {
   const factory ChatMessage({
-    required String id,
-    required String senderId,
-    required String senderName,
-    required String conversationId,
-    required MessageType type,
-    required DateTime timestamp,
-    required MessageStatus status,
-    @Default('') String content,
-    @Default([]) List<MessageReaction> reactions,
-    @Default(false) bool isFromMe,
+    required String id, // UUID
+    required String conversationId, // UUID
+    required String senderId, // UUID
+    required String senderUsername,
+    required String content,
+    required MessageType messageType,
+    required DateTime createdAt,
+    DateTime? updatedAt,
     @Default(false) bool isEdited,
-    DateTime? editedAt,
-    String? replyToMessageId,
-    VoiceMessage? voiceMessage,
-    ImageMessage? imageMessage,
-    ConnectionStoneMessage? connectionStone,
-    SelfDestructMessage? selfDestruct,
+    @Default(false) bool isDestroyed,
+    String? replyToMessageId, // UUID or null
+    @Default([]) List<Attachment> attachments,
+    @Default([]) List<Reaction> reactions,
+    @Default([]) List<String> readBy, // List of user IDs
+    // Additional fields for UI state
+    @Default(MessageStatus.sent) MessageStatus status,
+    @Default(false) bool isFromMe,
   }) = _ChatMessage;
 
   const ChatMessage._();
 
   /// Get formatted timestamp for display
   String get formattedTime {
-    final hour = timestamp.hour;
-    final minute = timestamp.minute;
+    final hour = createdAt.hour;
+    final minute = createdAt.minute;
     final amPm = hour >= 12 ? 'PM' : 'AM';
     final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
     
@@ -161,7 +188,7 @@ class ChatMessage with _$ChatMessage {
   /// Get formatted date for display
   String get formattedDate {
     final now = DateTime.now();
-    final messageDate = DateTime(timestamp.year, timestamp.month, timestamp.day);
+    final messageDate = DateTime(createdAt.year, createdAt.month, createdAt.day);
     final today = DateTime(now.year, now.month, now.day);
     final yesterday = today.subtract(const Duration(days: 1));
     
@@ -170,7 +197,7 @@ class ChatMessage with _$ChatMessage {
     } else if (messageDate == yesterday) {
       return 'Yesterday';
     } else {
-      return '${timestamp.month}/${timestamp.day}/${timestamp.year}';
+      return '${createdAt.month}/${createdAt.day}/${createdAt.year}';
     }
   }
 
@@ -209,17 +236,9 @@ class ChatMessage with _$ChatMessage {
   /// Check if message has reactions
   bool get hasReactions => reactions.isNotEmpty;
 
-  /// Get my reactions from this message
-  List<MessageReaction> get myReactions =>
-      reactions.where((r) => r.isFromMe).toList();
-
-  /// Get others' reactions from this message
-  List<MessageReaction> get othersReactions =>
-      reactions.where((r) => !r.isFromMe).toList();
-
   /// Get grouped reactions by emoji
-  Map<String, List<MessageReaction>> get groupedReactions {
-    final Map<String, List<MessageReaction>> grouped = {};
+  Map<String, List<Reaction>> get groupedReactions {
+    final Map<String, List<Reaction>> grouped = {};
     
     for (final reaction in reactions) {
       grouped.putIfAbsent(reaction.emoji, () => []).add(reaction);
@@ -228,41 +247,28 @@ class ChatMessage with _$ChatMessage {
     return grouped;
   }
 
-  /// Check if I've reacted with specific emoji
-  bool hasMyReaction(String emoji) {
-    return reactions.any((r) => r.isFromMe && r.emoji == emoji);
+  /// Check if user has reacted with specific emoji
+  bool hasUserReaction(String emoji, String userId) {
+    return reactions.any((r) => r.userId == userId && r.emoji == emoji);
   }
 
   /// Get content preview for notifications
   String get contentPreview {
-    switch (type) {
+    switch (messageType) {
       case MessageType.text:
         return content.length > 50 ? '${content.substring(0, 50)}...' : content;
       case MessageType.voice:
         return '🎵 Voice message';
+      case MessageType.video:
+        return '🎥 Video message';
       case MessageType.image:
-        final caption = imageMessage?.caption;
-        return caption?.isNotEmpty == true ? '📷 $caption' : '📷 Photo';
-      case MessageType.file:
-        return '📄 File';
-      case MessageType.connectionStone:
-        return '🪨 ${connectionStone?.emotion ?? 'Connection stone'}';
-      case MessageType.selfDestruct:
-        return '🔥 Self-destructing message';
+        return '📷 Photo';
     }
   }
 
-  /// Check if message is expired (for self-destruct messages)
-  bool get isExpired {
-    if (type != MessageType.selfDestruct || selfDestruct == null) {
-      return false;
-    }
-    return selfDestruct!.hasExpired;
-  }
-
-  /// Get display content (empty if expired)
+  /// Get display content (empty if destroyed)
   String get displayContent {
-    if (isExpired) return 'This message has disappeared';
+    if (isDestroyed) return 'This message has been deleted';
     return content;
   }
 
@@ -270,7 +276,7 @@ class ChatMessage with _$ChatMessage {
   bool shouldShowTimestamp(ChatMessage? previousMessage) {
     if (previousMessage == null) return true;
     
-    final timeDiff = timestamp.difference(previousMessage.timestamp).inMinutes;
+    final timeDiff = createdAt.difference(previousMessage.createdAt).inMinutes;
     final differentSender = senderId != previousMessage.senderId;
     
     return timeDiff > 5 || differentSender;
@@ -282,6 +288,38 @@ class ChatMessage with _$ChatMessage {
     if (previousMessage == null) return true;
     
     return senderId != previousMessage.senderId;
+  }
+
+  /// Create from API message data
+  static ChatMessage fromApiMessage(Map<String, dynamic> json, String currentUserId) {
+    return ChatMessage(
+      id: json['id'] as String,
+      conversationId: json['conversation_id'] as String,
+      senderId: json['sender_id'] as String,
+      senderUsername: json['sender_username'] as String? ?? 'Unknown',
+      content: json['content'] as String,
+      messageType: MessageType.values.firstWhere(
+        (e) => e.name == json['message_type'],
+        orElse: () => MessageType.text,
+      ),
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: json['updated_at'] != null 
+        ? DateTime.parse(json['updated_at'] as String)
+        : null,
+      isEdited: json['is_edited'] as bool? ?? false,
+      isDestroyed: json['is_destroyed'] as bool? ?? false,
+      replyToMessageId: json['reply_to_message_id'] as String?,
+      attachments: (json['attachments'] as List<dynamic>? ?? [])
+        .map((a) => Attachment.fromJson(a as Map<String, dynamic>))
+        .toList(),
+      reactions: (json['reactions'] as List<dynamic>? ?? [])
+        .map((r) => Reaction.fromJson(r as Map<String, dynamic>))
+        .toList(),
+      readBy: (json['read_by'] as List<dynamic>? ?? [])
+        .map((id) => id as String)
+        .toList(),
+      isFromMe: json['sender_id'] as String == currentUserId,
+    );
   }
 
   factory ChatMessage.fromJson(Map<String, Object?> json) =>

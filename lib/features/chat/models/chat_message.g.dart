@@ -6,6 +6,38 @@ part of 'chat_message.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$AttachmentImpl _$$AttachmentImplFromJson(Map<String, dynamic> json) =>
+    _$AttachmentImpl(
+      id: json['id'] as String,
+      fileName: json['fileName'] as String,
+      fileUrl: json['fileUrl'] as String,
+      fileType: json['fileType'] as String,
+      fileSize: (json['fileSize'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$$AttachmentImplToJson(_$AttachmentImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'fileName': instance.fileName,
+      'fileUrl': instance.fileUrl,
+      'fileType': instance.fileType,
+      'fileSize': instance.fileSize,
+    };
+
+_$ReactionImpl _$$ReactionImplFromJson(Map<String, dynamic> json) =>
+    _$ReactionImpl(
+      userId: json['userId'] as String,
+      emoji: json['emoji'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+    );
+
+Map<String, dynamic> _$$ReactionImplToJson(_$ReactionImpl instance) =>
+    <String, dynamic>{
+      'userId': instance.userId,
+      'emoji': instance.emoji,
+      'createdAt': instance.createdAt.toIso8601String(),
+    };
+
 _$VoiceMessageImpl _$$VoiceMessageImplFromJson(Map<String, dynamic> json) =>
     _$VoiceMessageImpl(
       audioUrl: json['audioUrl'] as String,
@@ -103,70 +135,64 @@ Map<String, dynamic> _$$SelfDestructMessageImplToJson(
 _$ChatMessageImpl _$$ChatMessageImplFromJson(Map<String, dynamic> json) =>
     _$ChatMessageImpl(
       id: json['id'] as String,
-      senderId: json['senderId'] as String,
-      senderName: json['senderName'] as String,
       conversationId: json['conversationId'] as String,
-      type: $enumDecode(_$MessageTypeEnumMap, json['type']),
-      timestamp: DateTime.parse(json['timestamp'] as String),
-      status: $enumDecode(_$MessageStatusEnumMap, json['status']),
-      content: json['content'] as String? ?? '',
-      reactions:
-          (json['reactions'] as List<dynamic>?)
-              ?.map((e) => MessageReaction.fromJson(e as Map<String, dynamic>))
+      senderId: json['senderId'] as String,
+      senderUsername: json['senderUsername'] as String,
+      content: json['content'] as String,
+      messageType: $enumDecode(_$MessageTypeEnumMap, json['messageType']),
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
+      isEdited: json['isEdited'] as bool? ?? false,
+      isDestroyed: json['isDestroyed'] as bool? ?? false,
+      replyToMessageId: json['replyToMessageId'] as String?,
+      attachments:
+          (json['attachments'] as List<dynamic>?)
+              ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      reactions:
+          (json['reactions'] as List<dynamic>?)
+              ?.map((e) => Reaction.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      readBy:
+          (json['readBy'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      status:
+          $enumDecodeNullable(_$MessageStatusEnumMap, json['status']) ??
+          MessageStatus.sent,
       isFromMe: json['isFromMe'] as bool? ?? false,
-      isEdited: json['isEdited'] as bool? ?? false,
-      editedAt: json['editedAt'] == null
-          ? null
-          : DateTime.parse(json['editedAt'] as String),
-      replyToMessageId: json['replyToMessageId'] as String?,
-      voiceMessage: json['voiceMessage'] == null
-          ? null
-          : VoiceMessage.fromJson(json['voiceMessage'] as Map<String, dynamic>),
-      imageMessage: json['imageMessage'] == null
-          ? null
-          : ImageMessage.fromJson(json['imageMessage'] as Map<String, dynamic>),
-      connectionStone: json['connectionStone'] == null
-          ? null
-          : ConnectionStoneMessage.fromJson(
-              json['connectionStone'] as Map<String, dynamic>,
-            ),
-      selfDestruct: json['selfDestruct'] == null
-          ? null
-          : SelfDestructMessage.fromJson(
-              json['selfDestruct'] as Map<String, dynamic>,
-            ),
     );
 
 Map<String, dynamic> _$$ChatMessageImplToJson(_$ChatMessageImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'senderId': instance.senderId,
-      'senderName': instance.senderName,
       'conversationId': instance.conversationId,
-      'type': _$MessageTypeEnumMap[instance.type]!,
-      'timestamp': instance.timestamp.toIso8601String(),
-      'status': _$MessageStatusEnumMap[instance.status]!,
+      'senderId': instance.senderId,
+      'senderUsername': instance.senderUsername,
       'content': instance.content,
-      'reactions': instance.reactions,
-      'isFromMe': instance.isFromMe,
+      'messageType': _$MessageTypeEnumMap[instance.messageType]!,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
       'isEdited': instance.isEdited,
-      'editedAt': instance.editedAt?.toIso8601String(),
+      'isDestroyed': instance.isDestroyed,
       'replyToMessageId': instance.replyToMessageId,
-      'voiceMessage': instance.voiceMessage,
-      'imageMessage': instance.imageMessage,
-      'connectionStone': instance.connectionStone,
-      'selfDestruct': instance.selfDestruct,
+      'attachments': instance.attachments,
+      'reactions': instance.reactions,
+      'readBy': instance.readBy,
+      'status': _$MessageStatusEnumMap[instance.status]!,
+      'isFromMe': instance.isFromMe,
     };
 
 const _$MessageTypeEnumMap = {
   MessageType.text: 'text',
   MessageType.voice: 'voice',
+  MessageType.video: 'video',
   MessageType.image: 'image',
-  MessageType.file: 'file',
-  MessageType.connectionStone: 'connectionStone',
-  MessageType.selfDestruct: 'selfDestruct',
 };
 
 const _$MessageStatusEnumMap = {

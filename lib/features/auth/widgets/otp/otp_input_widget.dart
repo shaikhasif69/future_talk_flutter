@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/constants/app_dimensions.dart';
-import '../../../../core/constants/app_durations.dart';
 
 class OtpInputWidget extends StatefulWidget {
   final TextEditingController controller;

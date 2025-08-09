@@ -97,7 +97,7 @@ class FTLoadingIndicator extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppDimensions.progressBarRadius),
           boxShadow: [
             BoxShadow(
-              color: AppColors.sageGreen.withOpacity( 0.4),
+              color: AppColors.sageGreen.withValues(alpha:  0.4),
               blurRadius: 4.0,
               offset: const Offset(0, 1),
             ),
@@ -114,7 +114,7 @@ class FTLoadingIndicator extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppDimensions.progressBarRadius),
         boxShadow: [
           BoxShadow(
-            color: AppColors.sageGreen.withOpacity( 0.4),
+            color: AppColors.sageGreen.withValues(alpha:  0.4),
             blurRadius: 4.0,
             offset: const Offset(0, 1),
           ),
@@ -124,7 +124,7 @@ class FTLoadingIndicator extends StatelessWidget {
     .animate(onPlay: (controller) => controller.repeat())
     .shimmer(
       duration: Duration(milliseconds: 1500),
-      color: AppColors.pearlWhite.withOpacity( 0.3),
+      color: AppColors.pearlWhite.withValues(alpha:  0.3),
     );
   }
 }

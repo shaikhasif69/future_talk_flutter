@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
-import '../../../shared/widgets/animations/ft_fade_in.dart';
 import '../models/chat_message.dart';
 import '../providers/realtime_individual_chat_provider.dart';
 
@@ -31,10 +30,8 @@ class _MessageInputState extends State<MessageInput>
   late AnimationController _sendButtonController;
   late AnimationController _slowModeController;
   late Animation<double> _sendButtonScale;
-  late Animation<Color?> _sendButtonColor;
 
   bool _isRecordingVoice = false;
-  double _voiceRecordingAmplitude = 0.0;
 
   @override
   void initState() {
@@ -68,10 +65,6 @@ class _MessageInputState extends State<MessageInput>
       curve: Curves.elasticOut,
     ));
 
-    _sendButtonColor = ColorTween(
-      begin: AppColors.sageGreenWithOpacity(0.3),
-      end: AppColors.sageGreen,
-    ).animate(_sendButtonController);
   }
 
   void _listenToProviderChanges() {
@@ -138,16 +131,12 @@ class _MessageInputState extends State<MessageInput>
     // TODO: Show photo picker
   }
 
-  void _onQuickReactionPressed() {
-    HapticFeedback.selectionClick();
-    widget.onQuickReactionPressed?.call();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.pearlWhite.withOpacity(0.95),
+        color: AppColors.pearlWhite.withValues(alpha: 0.95),
         border: Border(
           top: BorderSide(
             color: AppColors.sageGreenWithOpacity(0.1),
@@ -209,13 +198,13 @@ class _MessageInputState extends State<MessageInput>
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      AppColors.warmPeach.withOpacity(0.1),
-                      AppColors.sageGreen.withOpacity(0.1),
+                      AppColors.warmPeach.withValues(alpha: 0.1),
+                      AppColors.sageGreen.withValues(alpha: 0.1),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                   border: Border.all(
-                    color: AppColors.warmPeach.withOpacity(0.2),
+                    color: AppColors.warmPeach.withValues(alpha: 0.2),
                     width: 1.0,
                   ),
                 ),
@@ -366,7 +355,7 @@ class _MessageInputState extends State<MessageInput>
           height: 36.0,
           decoration: BoxDecoration(
             color: _isRecordingVoice 
-                ? AppColors.dustyRose.withOpacity(0.2)
+                ? AppColors.dustyRose.withValues(alpha: 0.2)
                 : AppColors.sageGreenWithOpacity(0.1),
             shape: BoxShape.circle,
             border: Border.all(

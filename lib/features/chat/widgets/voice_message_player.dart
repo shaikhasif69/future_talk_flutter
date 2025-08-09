@@ -207,13 +207,13 @@ class _VoiceMessagePlayerState extends State<VoiceMessagePlayer>
                   end: Alignment.bottomRight,
                   colors: [
                     _playButtonColor.value ?? AppColors.lavenderMist,
-                    (_playButtonColor.value ?? AppColors.lavenderMist).withOpacity(0.8),
+                    (_playButtonColor.value ?? AppColors.lavenderMist).withValues(alpha: 0.8),
                   ],
                 ),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: (_playButtonColor.value ?? AppColors.lavenderMist).withOpacity(0.4),
+                    color: (_playButtonColor.value ?? AppColors.lavenderMist).withValues(alpha: 0.4),
                     blurRadius: 8.0,
                     offset: const Offset(0, 2),
                   ),
@@ -265,7 +265,7 @@ class _VoiceMessagePlayerState extends State<VoiceMessagePlayer>
             isPlaying: _isPlaying,
             waveAnimation: _waveAnimation,
             activeColor: AppColors.lavenderMist,
-            inactiveColor: AppColors.lavenderMist.withOpacity(0.3),
+            inactiveColor: AppColors.lavenderMist.withValues(alpha: 0.3),
           ),
           size: const Size.fromHeight(24.0),
         ),
@@ -281,7 +281,7 @@ class _VoiceMessagePlayerState extends State<VoiceMessagePlayer>
           value: _progressController.value,
           backgroundColor: AppColors.whisperGray,
           valueColor: AlwaysStoppedAnimation<Color>(
-            AppColors.lavenderMist.withOpacity(0.6),
+            AppColors.lavenderMist.withValues(alpha: 0.6),
           ),
           minHeight: 2.0,
         );
@@ -537,10 +537,10 @@ class _VoiceMessageRecorderState extends State<VoiceMessageRecorder>
     return Container(
       padding: const EdgeInsets.all(AppDimensions.paddingM),
       decoration: BoxDecoration(
-        color: AppColors.dustyRose.withOpacity(0.1),
+        color: AppColors.dustyRose.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
         border: Border.all(
-          color: AppColors.dustyRose.withOpacity(0.3),
+          color: AppColors.dustyRose.withValues(alpha: 0.3),
           width: 1.0,
         ),
       ),
@@ -588,7 +588,7 @@ class _VoiceMessageRecorderState extends State<VoiceMessageRecorder>
                 boxShadow: [
                   BoxShadow(
                     color: (_isRecording ? AppColors.dustyRose : AppColors.sageGreen)
-                        .withOpacity(0.4),
+                        .withValues(alpha: 0.4),
                     blurRadius: 8.0,
                     offset: const Offset(0, 2),
                   ),

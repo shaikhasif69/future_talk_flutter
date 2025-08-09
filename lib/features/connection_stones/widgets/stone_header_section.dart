@@ -63,7 +63,7 @@ class _StoneHeaderSectionState extends ConsumerState<StoneHeaderSection>
           end: Alignment.bottomRight,
           colors: [
             AppColors.dustyRose,
-            AppColors.dustyRose.withOpacity(0.8),
+            AppColors.dustyRose.withValues(alpha: 0.8),
           ],
         ),
       ),
@@ -88,7 +88,7 @@ class _StoneHeaderSectionState extends ConsumerState<StoneHeaderSection>
                   Text(
                     'Digital comfort objects that bridge hearts',
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                       fontSize: 14,
                     ),
                   ),
@@ -121,7 +121,7 @@ class _StoneHeaderSectionState extends ConsumerState<StoneHeaderSection>
                 height: 100,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                 ),
               ).animate(onPlay: (controller) => controller.repeat())
                 .scale(
@@ -141,7 +141,7 @@ class _StoneHeaderSectionState extends ConsumerState<StoneHeaderSection>
                 height: 60,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.05),
+                  color: Colors.white.withValues(alpha: 0.05),
                 ),
               ).animate(onPlay: (controller) => controller.repeat())
                 .scale(
@@ -180,7 +180,7 @@ class _StoneHeaderSectionState extends ConsumerState<StoneHeaderSection>
                 height: size,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.4),
+                  color: Colors.white.withValues(alpha: 0.4),
                 ),
               ),
             ),
@@ -267,7 +267,7 @@ class _StoneHeaderSectionState extends ConsumerState<StoneHeaderSection>
           ).animate(onPlay: (controller) => controller.repeat())
             .shimmer(
               duration: const Duration(seconds: 2),
-              color: Colors.white.withOpacity(0.3),
+              color: Colors.white.withValues(alpha: 0.3),
             ),
           
           const SizedBox(height: 2),
@@ -275,7 +275,7 @@ class _StoneHeaderSectionState extends ConsumerState<StoneHeaderSection>
           Text(
             label,
             style: AppTextStyles.labelSmall.copyWith(
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withValues(alpha: 0.8),
               fontSize: 11,
               letterSpacing: 0.5,
             ),
@@ -296,9 +296,9 @@ class _StoneHeaderSectionState extends ConsumerState<StoneHeaderSection>
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.white.withOpacity(0.0),
-            Colors.white.withOpacity(0.3),
-            Colors.white.withOpacity(0.0),
+            Colors.white.withValues(alpha: 0.0),
+            Colors.white.withValues(alpha: 0.3),
+            Colors.white.withValues(alpha: 0.0),
           ],
         ),
       ),
@@ -331,7 +331,7 @@ class PremiumGradientHeader extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: gradientColors.first.withOpacity(0.3),
+            color: gradientColors.first.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -424,10 +424,10 @@ class _FloatingComfortParticlesState extends State<FloatingComfortParticles>
           height: particle.size,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: widget.particleColor.withOpacity(0.4),
+            color: widget.particleColor.withValues(alpha: 0.4),
             boxShadow: [
               BoxShadow(
-                color: widget.particleColor.withOpacity(0.2),
+                color: widget.particleColor.withValues(alpha: 0.2),
                 blurRadius: 4,
                 spreadRadius: 1,
               ),

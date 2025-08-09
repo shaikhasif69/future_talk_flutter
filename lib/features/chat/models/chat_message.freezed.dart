@@ -15,6 +15,447 @@ final _privateConstructorUsedError = UnsupportedError(
   'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
 );
 
+Attachment _$AttachmentFromJson(Map<String, dynamic> json) {
+  return _Attachment.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Attachment {
+  String get id => throw _privateConstructorUsedError;
+  String get fileName => throw _privateConstructorUsedError;
+  String get fileUrl => throw _privateConstructorUsedError;
+  String get fileType => throw _privateConstructorUsedError;
+  int get fileSize => throw _privateConstructorUsedError;
+
+  /// Serializes this Attachment to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of Attachment
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $AttachmentCopyWith<Attachment> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AttachmentCopyWith<$Res> {
+  factory $AttachmentCopyWith(
+    Attachment value,
+    $Res Function(Attachment) then,
+  ) = _$AttachmentCopyWithImpl<$Res, Attachment>;
+  @useResult
+  $Res call({
+    String id,
+    String fileName,
+    String fileUrl,
+    String fileType,
+    int fileSize,
+  });
+}
+
+/// @nodoc
+class _$AttachmentCopyWithImpl<$Res, $Val extends Attachment>
+    implements $AttachmentCopyWith<$Res> {
+  _$AttachmentCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of Attachment
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? fileName = null,
+    Object? fileUrl = null,
+    Object? fileType = null,
+    Object? fileSize = null,
+  }) {
+    return _then(
+      _value.copyWith(
+            id: null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                      as String,
+            fileName: null == fileName
+                ? _value.fileName
+                : fileName // ignore: cast_nullable_to_non_nullable
+                      as String,
+            fileUrl: null == fileUrl
+                ? _value.fileUrl
+                : fileUrl // ignore: cast_nullable_to_non_nullable
+                      as String,
+            fileType: null == fileType
+                ? _value.fileType
+                : fileType // ignore: cast_nullable_to_non_nullable
+                      as String,
+            fileSize: null == fileSize
+                ? _value.fileSize
+                : fileSize // ignore: cast_nullable_to_non_nullable
+                      as int,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$AttachmentImplCopyWith<$Res>
+    implements $AttachmentCopyWith<$Res> {
+  factory _$$AttachmentImplCopyWith(
+    _$AttachmentImpl value,
+    $Res Function(_$AttachmentImpl) then,
+  ) = __$$AttachmentImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String id,
+    String fileName,
+    String fileUrl,
+    String fileType,
+    int fileSize,
+  });
+}
+
+/// @nodoc
+class __$$AttachmentImplCopyWithImpl<$Res>
+    extends _$AttachmentCopyWithImpl<$Res, _$AttachmentImpl>
+    implements _$$AttachmentImplCopyWith<$Res> {
+  __$$AttachmentImplCopyWithImpl(
+    _$AttachmentImpl _value,
+    $Res Function(_$AttachmentImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of Attachment
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? fileName = null,
+    Object? fileUrl = null,
+    Object? fileType = null,
+    Object? fileSize = null,
+  }) {
+    return _then(
+      _$AttachmentImpl(
+        id: null == id
+            ? _value.id
+            : id // ignore: cast_nullable_to_non_nullable
+                  as String,
+        fileName: null == fileName
+            ? _value.fileName
+            : fileName // ignore: cast_nullable_to_non_nullable
+                  as String,
+        fileUrl: null == fileUrl
+            ? _value.fileUrl
+            : fileUrl // ignore: cast_nullable_to_non_nullable
+                  as String,
+        fileType: null == fileType
+            ? _value.fileType
+            : fileType // ignore: cast_nullable_to_non_nullable
+                  as String,
+        fileSize: null == fileSize
+            ? _value.fileSize
+            : fileSize // ignore: cast_nullable_to_non_nullable
+                  as int,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$AttachmentImpl implements _Attachment {
+  const _$AttachmentImpl({
+    required this.id,
+    required this.fileName,
+    required this.fileUrl,
+    required this.fileType,
+    required this.fileSize,
+  });
+
+  factory _$AttachmentImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AttachmentImplFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final String fileName;
+  @override
+  final String fileUrl;
+  @override
+  final String fileType;
+  @override
+  final int fileSize;
+
+  @override
+  String toString() {
+    return 'Attachment(id: $id, fileName: $fileName, fileUrl: $fileUrl, fileType: $fileType, fileSize: $fileSize)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AttachmentImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.fileName, fileName) ||
+                other.fileName == fileName) &&
+            (identical(other.fileUrl, fileUrl) || other.fileUrl == fileUrl) &&
+            (identical(other.fileType, fileType) ||
+                other.fileType == fileType) &&
+            (identical(other.fileSize, fileSize) ||
+                other.fileSize == fileSize));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, id, fileName, fileUrl, fileType, fileSize);
+
+  /// Create a copy of Attachment
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AttachmentImplCopyWith<_$AttachmentImpl> get copyWith =>
+      __$$AttachmentImplCopyWithImpl<_$AttachmentImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AttachmentImplToJson(this);
+  }
+}
+
+abstract class _Attachment implements Attachment {
+  const factory _Attachment({
+    required final String id,
+    required final String fileName,
+    required final String fileUrl,
+    required final String fileType,
+    required final int fileSize,
+  }) = _$AttachmentImpl;
+
+  factory _Attachment.fromJson(Map<String, dynamic> json) =
+      _$AttachmentImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  String get fileName;
+  @override
+  String get fileUrl;
+  @override
+  String get fileType;
+  @override
+  int get fileSize;
+
+  /// Create a copy of Attachment
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AttachmentImplCopyWith<_$AttachmentImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Reaction _$ReactionFromJson(Map<String, dynamic> json) {
+  return _Reaction.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Reaction {
+  String get userId => throw _privateConstructorUsedError;
+  String get emoji => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+
+  /// Serializes this Reaction to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ReactionCopyWith<Reaction> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ReactionCopyWith<$Res> {
+  factory $ReactionCopyWith(Reaction value, $Res Function(Reaction) then) =
+      _$ReactionCopyWithImpl<$Res, Reaction>;
+  @useResult
+  $Res call({String userId, String emoji, DateTime createdAt});
+}
+
+/// @nodoc
+class _$ReactionCopyWithImpl<$Res, $Val extends Reaction>
+    implements $ReactionCopyWith<$Res> {
+  _$ReactionCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? userId = null,
+    Object? emoji = null,
+    Object? createdAt = null,
+  }) {
+    return _then(
+      _value.copyWith(
+            userId: null == userId
+                ? _value.userId
+                : userId // ignore: cast_nullable_to_non_nullable
+                      as String,
+            emoji: null == emoji
+                ? _value.emoji
+                : emoji // ignore: cast_nullable_to_non_nullable
+                      as String,
+            createdAt: null == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$ReactionImplCopyWith<$Res>
+    implements $ReactionCopyWith<$Res> {
+  factory _$$ReactionImplCopyWith(
+    _$ReactionImpl value,
+    $Res Function(_$ReactionImpl) then,
+  ) = __$$ReactionImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String userId, String emoji, DateTime createdAt});
+}
+
+/// @nodoc
+class __$$ReactionImplCopyWithImpl<$Res>
+    extends _$ReactionCopyWithImpl<$Res, _$ReactionImpl>
+    implements _$$ReactionImplCopyWith<$Res> {
+  __$$ReactionImplCopyWithImpl(
+    _$ReactionImpl _value,
+    $Res Function(_$ReactionImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? userId = null,
+    Object? emoji = null,
+    Object? createdAt = null,
+  }) {
+    return _then(
+      _$ReactionImpl(
+        userId: null == userId
+            ? _value.userId
+            : userId // ignore: cast_nullable_to_non_nullable
+                  as String,
+        emoji: null == emoji
+            ? _value.emoji
+            : emoji // ignore: cast_nullable_to_non_nullable
+                  as String,
+        createdAt: null == createdAt
+            ? _value.createdAt
+            : createdAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ReactionImpl implements _Reaction {
+  const _$ReactionImpl({
+    required this.userId,
+    required this.emoji,
+    required this.createdAt,
+  });
+
+  factory _$ReactionImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ReactionImplFromJson(json);
+
+  @override
+  final String userId;
+  @override
+  final String emoji;
+  @override
+  final DateTime createdAt;
+
+  @override
+  String toString() {
+    return 'Reaction(userId: $userId, emoji: $emoji, createdAt: $createdAt)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ReactionImpl &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.emoji, emoji) || other.emoji == emoji) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, userId, emoji, createdAt);
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ReactionImplCopyWith<_$ReactionImpl> get copyWith =>
+      __$$ReactionImplCopyWithImpl<_$ReactionImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ReactionImplToJson(this);
+  }
+}
+
+abstract class _Reaction implements Reaction {
+  const factory _Reaction({
+    required final String userId,
+    required final String emoji,
+    required final DateTime createdAt,
+  }) = _$ReactionImpl;
+
+  factory _Reaction.fromJson(Map<String, dynamic> json) =
+      _$ReactionImpl.fromJson;
+
+  @override
+  String get userId;
+  @override
+  String get emoji;
+  @override
+  DateTime get createdAt;
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ReactionImplCopyWith<_$ReactionImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 VoiceMessage _$VoiceMessageFromJson(Map<String, dynamic> json) {
   return _VoiceMessage.fromJson(json);
 }
@@ -1242,24 +1683,25 @@ ChatMessage _$ChatMessageFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ChatMessage {
-  String get id => throw _privateConstructorUsedError;
-  String get senderId => throw _privateConstructorUsedError;
-  String get senderName => throw _privateConstructorUsedError;
-  String get conversationId => throw _privateConstructorUsedError;
-  MessageType get type => throw _privateConstructorUsedError;
-  DateTime get timestamp => throw _privateConstructorUsedError;
-  MessageStatus get status => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError; // UUID
+  String get conversationId => throw _privateConstructorUsedError; // UUID
+  String get senderId => throw _privateConstructorUsedError; // UUID
+  String get senderUsername => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
-  List<MessageReaction> get reactions => throw _privateConstructorUsedError;
-  bool get isFromMe => throw _privateConstructorUsedError;
+  MessageType get messageType => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
   bool get isEdited => throw _privateConstructorUsedError;
-  DateTime? get editedAt => throw _privateConstructorUsedError;
-  String? get replyToMessageId => throw _privateConstructorUsedError;
-  VoiceMessage? get voiceMessage => throw _privateConstructorUsedError;
-  ImageMessage? get imageMessage => throw _privateConstructorUsedError;
-  ConnectionStoneMessage? get connectionStone =>
-      throw _privateConstructorUsedError;
-  SelfDestructMessage? get selfDestruct => throw _privateConstructorUsedError;
+  bool get isDestroyed => throw _privateConstructorUsedError;
+  String? get replyToMessageId =>
+      throw _privateConstructorUsedError; // UUID or null
+  List<Attachment> get attachments => throw _privateConstructorUsedError;
+  List<Reaction> get reactions => throw _privateConstructorUsedError;
+  List<String> get readBy =>
+      throw _privateConstructorUsedError; // List of user IDs
+  // Additional fields for UI state
+  MessageStatus get status => throw _privateConstructorUsedError;
+  bool get isFromMe => throw _privateConstructorUsedError;
 
   /// Serializes this ChatMessage to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1280,28 +1722,22 @@ abstract class $ChatMessageCopyWith<$Res> {
   @useResult
   $Res call({
     String id,
-    String senderId,
-    String senderName,
     String conversationId,
-    MessageType type,
-    DateTime timestamp,
-    MessageStatus status,
+    String senderId,
+    String senderUsername,
     String content,
-    List<MessageReaction> reactions,
-    bool isFromMe,
+    MessageType messageType,
+    DateTime createdAt,
+    DateTime? updatedAt,
     bool isEdited,
-    DateTime? editedAt,
+    bool isDestroyed,
     String? replyToMessageId,
-    VoiceMessage? voiceMessage,
-    ImageMessage? imageMessage,
-    ConnectionStoneMessage? connectionStone,
-    SelfDestructMessage? selfDestruct,
+    List<Attachment> attachments,
+    List<Reaction> reactions,
+    List<String> readBy,
+    MessageStatus status,
+    bool isFromMe,
   });
-
-  $VoiceMessageCopyWith<$Res>? get voiceMessage;
-  $ImageMessageCopyWith<$Res>? get imageMessage;
-  $ConnectionStoneMessageCopyWith<$Res>? get connectionStone;
-  $SelfDestructMessageCopyWith<$Res>? get selfDestruct;
 }
 
 /// @nodoc
@@ -1320,22 +1756,21 @@ class _$ChatMessageCopyWithImpl<$Res, $Val extends ChatMessage>
   @override
   $Res call({
     Object? id = null,
-    Object? senderId = null,
-    Object? senderName = null,
     Object? conversationId = null,
-    Object? type = null,
-    Object? timestamp = null,
-    Object? status = null,
+    Object? senderId = null,
+    Object? senderUsername = null,
     Object? content = null,
-    Object? reactions = null,
-    Object? isFromMe = null,
+    Object? messageType = null,
+    Object? createdAt = null,
+    Object? updatedAt = freezed,
     Object? isEdited = null,
-    Object? editedAt = freezed,
+    Object? isDestroyed = null,
     Object? replyToMessageId = freezed,
-    Object? voiceMessage = freezed,
-    Object? imageMessage = freezed,
-    Object? connectionStone = freezed,
-    Object? selfDestruct = freezed,
+    Object? attachments = null,
+    Object? reactions = null,
+    Object? readBy = null,
+    Object? status = null,
+    Object? isFromMe = null,
   }) {
     return _then(
       _value.copyWith(
@@ -1343,131 +1778,69 @@ class _$ChatMessageCopyWithImpl<$Res, $Val extends ChatMessage>
                 ? _value.id
                 : id // ignore: cast_nullable_to_non_nullable
                       as String,
-            senderId: null == senderId
-                ? _value.senderId
-                : senderId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            senderName: null == senderName
-                ? _value.senderName
-                : senderName // ignore: cast_nullable_to_non_nullable
-                      as String,
             conversationId: null == conversationId
                 ? _value.conversationId
                 : conversationId // ignore: cast_nullable_to_non_nullable
                       as String,
-            type: null == type
-                ? _value.type
-                : type // ignore: cast_nullable_to_non_nullable
-                      as MessageType,
-            timestamp: null == timestamp
-                ? _value.timestamp
-                : timestamp // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            status: null == status
-                ? _value.status
-                : status // ignore: cast_nullable_to_non_nullable
-                      as MessageStatus,
+            senderId: null == senderId
+                ? _value.senderId
+                : senderId // ignore: cast_nullable_to_non_nullable
+                      as String,
+            senderUsername: null == senderUsername
+                ? _value.senderUsername
+                : senderUsername // ignore: cast_nullable_to_non_nullable
+                      as String,
             content: null == content
                 ? _value.content
                 : content // ignore: cast_nullable_to_non_nullable
                       as String,
-            reactions: null == reactions
-                ? _value.reactions
-                : reactions // ignore: cast_nullable_to_non_nullable
-                      as List<MessageReaction>,
-            isFromMe: null == isFromMe
-                ? _value.isFromMe
-                : isFromMe // ignore: cast_nullable_to_non_nullable
-                      as bool,
+            messageType: null == messageType
+                ? _value.messageType
+                : messageType // ignore: cast_nullable_to_non_nullable
+                      as MessageType,
+            createdAt: null == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime,
+            updatedAt: freezed == updatedAt
+                ? _value.updatedAt
+                : updatedAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime?,
             isEdited: null == isEdited
                 ? _value.isEdited
                 : isEdited // ignore: cast_nullable_to_non_nullable
                       as bool,
-            editedAt: freezed == editedAt
-                ? _value.editedAt
-                : editedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
+            isDestroyed: null == isDestroyed
+                ? _value.isDestroyed
+                : isDestroyed // ignore: cast_nullable_to_non_nullable
+                      as bool,
             replyToMessageId: freezed == replyToMessageId
                 ? _value.replyToMessageId
                 : replyToMessageId // ignore: cast_nullable_to_non_nullable
                       as String?,
-            voiceMessage: freezed == voiceMessage
-                ? _value.voiceMessage
-                : voiceMessage // ignore: cast_nullable_to_non_nullable
-                      as VoiceMessage?,
-            imageMessage: freezed == imageMessage
-                ? _value.imageMessage
-                : imageMessage // ignore: cast_nullable_to_non_nullable
-                      as ImageMessage?,
-            connectionStone: freezed == connectionStone
-                ? _value.connectionStone
-                : connectionStone // ignore: cast_nullable_to_non_nullable
-                      as ConnectionStoneMessage?,
-            selfDestruct: freezed == selfDestruct
-                ? _value.selfDestruct
-                : selfDestruct // ignore: cast_nullable_to_non_nullable
-                      as SelfDestructMessage?,
+            attachments: null == attachments
+                ? _value.attachments
+                : attachments // ignore: cast_nullable_to_non_nullable
+                      as List<Attachment>,
+            reactions: null == reactions
+                ? _value.reactions
+                : reactions // ignore: cast_nullable_to_non_nullable
+                      as List<Reaction>,
+            readBy: null == readBy
+                ? _value.readBy
+                : readBy // ignore: cast_nullable_to_non_nullable
+                      as List<String>,
+            status: null == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                      as MessageStatus,
+            isFromMe: null == isFromMe
+                ? _value.isFromMe
+                : isFromMe // ignore: cast_nullable_to_non_nullable
+                      as bool,
           )
           as $Val,
     );
-  }
-
-  /// Create a copy of ChatMessage
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $VoiceMessageCopyWith<$Res>? get voiceMessage {
-    if (_value.voiceMessage == null) {
-      return null;
-    }
-
-    return $VoiceMessageCopyWith<$Res>(_value.voiceMessage!, (value) {
-      return _then(_value.copyWith(voiceMessage: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ChatMessage
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ImageMessageCopyWith<$Res>? get imageMessage {
-    if (_value.imageMessage == null) {
-      return null;
-    }
-
-    return $ImageMessageCopyWith<$Res>(_value.imageMessage!, (value) {
-      return _then(_value.copyWith(imageMessage: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ChatMessage
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ConnectionStoneMessageCopyWith<$Res>? get connectionStone {
-    if (_value.connectionStone == null) {
-      return null;
-    }
-
-    return $ConnectionStoneMessageCopyWith<$Res>(_value.connectionStone!, (
-      value,
-    ) {
-      return _then(_value.copyWith(connectionStone: value) as $Val);
-    });
-  }
-
-  /// Create a copy of ChatMessage
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $SelfDestructMessageCopyWith<$Res>? get selfDestruct {
-    if (_value.selfDestruct == null) {
-      return null;
-    }
-
-    return $SelfDestructMessageCopyWith<$Res>(_value.selfDestruct!, (value) {
-      return _then(_value.copyWith(selfDestruct: value) as $Val);
-    });
   }
 }
 
@@ -1482,32 +1855,22 @@ abstract class _$$ChatMessageImplCopyWith<$Res>
   @useResult
   $Res call({
     String id,
-    String senderId,
-    String senderName,
     String conversationId,
-    MessageType type,
-    DateTime timestamp,
-    MessageStatus status,
+    String senderId,
+    String senderUsername,
     String content,
-    List<MessageReaction> reactions,
-    bool isFromMe,
+    MessageType messageType,
+    DateTime createdAt,
+    DateTime? updatedAt,
     bool isEdited,
-    DateTime? editedAt,
+    bool isDestroyed,
     String? replyToMessageId,
-    VoiceMessage? voiceMessage,
-    ImageMessage? imageMessage,
-    ConnectionStoneMessage? connectionStone,
-    SelfDestructMessage? selfDestruct,
+    List<Attachment> attachments,
+    List<Reaction> reactions,
+    List<String> readBy,
+    MessageStatus status,
+    bool isFromMe,
   });
-
-  @override
-  $VoiceMessageCopyWith<$Res>? get voiceMessage;
-  @override
-  $ImageMessageCopyWith<$Res>? get imageMessage;
-  @override
-  $ConnectionStoneMessageCopyWith<$Res>? get connectionStone;
-  @override
-  $SelfDestructMessageCopyWith<$Res>? get selfDestruct;
 }
 
 /// @nodoc
@@ -1525,22 +1888,21 @@ class __$$ChatMessageImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? senderId = null,
-    Object? senderName = null,
     Object? conversationId = null,
-    Object? type = null,
-    Object? timestamp = null,
-    Object? status = null,
+    Object? senderId = null,
+    Object? senderUsername = null,
     Object? content = null,
-    Object? reactions = null,
-    Object? isFromMe = null,
+    Object? messageType = null,
+    Object? createdAt = null,
+    Object? updatedAt = freezed,
     Object? isEdited = null,
-    Object? editedAt = freezed,
+    Object? isDestroyed = null,
     Object? replyToMessageId = freezed,
-    Object? voiceMessage = freezed,
-    Object? imageMessage = freezed,
-    Object? connectionStone = freezed,
-    Object? selfDestruct = freezed,
+    Object? attachments = null,
+    Object? reactions = null,
+    Object? readBy = null,
+    Object? status = null,
+    Object? isFromMe = null,
   }) {
     return _then(
       _$ChatMessageImpl(
@@ -1548,70 +1910,66 @@ class __$$ChatMessageImplCopyWithImpl<$Res>
             ? _value.id
             : id // ignore: cast_nullable_to_non_nullable
                   as String,
-        senderId: null == senderId
-            ? _value.senderId
-            : senderId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        senderName: null == senderName
-            ? _value.senderName
-            : senderName // ignore: cast_nullable_to_non_nullable
-                  as String,
         conversationId: null == conversationId
             ? _value.conversationId
             : conversationId // ignore: cast_nullable_to_non_nullable
                   as String,
-        type: null == type
-            ? _value.type
-            : type // ignore: cast_nullable_to_non_nullable
-                  as MessageType,
-        timestamp: null == timestamp
-            ? _value.timestamp
-            : timestamp // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        status: null == status
-            ? _value.status
-            : status // ignore: cast_nullable_to_non_nullable
-                  as MessageStatus,
+        senderId: null == senderId
+            ? _value.senderId
+            : senderId // ignore: cast_nullable_to_non_nullable
+                  as String,
+        senderUsername: null == senderUsername
+            ? _value.senderUsername
+            : senderUsername // ignore: cast_nullable_to_non_nullable
+                  as String,
         content: null == content
             ? _value.content
             : content // ignore: cast_nullable_to_non_nullable
                   as String,
-        reactions: null == reactions
-            ? _value._reactions
-            : reactions // ignore: cast_nullable_to_non_nullable
-                  as List<MessageReaction>,
-        isFromMe: null == isFromMe
-            ? _value.isFromMe
-            : isFromMe // ignore: cast_nullable_to_non_nullable
-                  as bool,
+        messageType: null == messageType
+            ? _value.messageType
+            : messageType // ignore: cast_nullable_to_non_nullable
+                  as MessageType,
+        createdAt: null == createdAt
+            ? _value.createdAt
+            : createdAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
+        updatedAt: freezed == updatedAt
+            ? _value.updatedAt
+            : updatedAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime?,
         isEdited: null == isEdited
             ? _value.isEdited
             : isEdited // ignore: cast_nullable_to_non_nullable
                   as bool,
-        editedAt: freezed == editedAt
-            ? _value.editedAt
-            : editedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
+        isDestroyed: null == isDestroyed
+            ? _value.isDestroyed
+            : isDestroyed // ignore: cast_nullable_to_non_nullable
+                  as bool,
         replyToMessageId: freezed == replyToMessageId
             ? _value.replyToMessageId
             : replyToMessageId // ignore: cast_nullable_to_non_nullable
                   as String?,
-        voiceMessage: freezed == voiceMessage
-            ? _value.voiceMessage
-            : voiceMessage // ignore: cast_nullable_to_non_nullable
-                  as VoiceMessage?,
-        imageMessage: freezed == imageMessage
-            ? _value.imageMessage
-            : imageMessage // ignore: cast_nullable_to_non_nullable
-                  as ImageMessage?,
-        connectionStone: freezed == connectionStone
-            ? _value.connectionStone
-            : connectionStone // ignore: cast_nullable_to_non_nullable
-                  as ConnectionStoneMessage?,
-        selfDestruct: freezed == selfDestruct
-            ? _value.selfDestruct
-            : selfDestruct // ignore: cast_nullable_to_non_nullable
-                  as SelfDestructMessage?,
+        attachments: null == attachments
+            ? _value._attachments
+            : attachments // ignore: cast_nullable_to_non_nullable
+                  as List<Attachment>,
+        reactions: null == reactions
+            ? _value._reactions
+            : reactions // ignore: cast_nullable_to_non_nullable
+                  as List<Reaction>,
+        readBy: null == readBy
+            ? _value._readBy
+            : readBy // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
+        status: null == status
+            ? _value.status
+            : status // ignore: cast_nullable_to_non_nullable
+                  as MessageStatus,
+        isFromMe: null == isFromMe
+            ? _value.isFromMe
+            : isFromMe // ignore: cast_nullable_to_non_nullable
+                  as bool,
       ),
     );
   }
@@ -1622,23 +1980,24 @@ class __$$ChatMessageImplCopyWithImpl<$Res>
 class _$ChatMessageImpl extends _ChatMessage {
   const _$ChatMessageImpl({
     required this.id,
-    required this.senderId,
-    required this.senderName,
     required this.conversationId,
-    required this.type,
-    required this.timestamp,
-    required this.status,
-    this.content = '',
-    final List<MessageReaction> reactions = const [],
-    this.isFromMe = false,
+    required this.senderId,
+    required this.senderUsername,
+    required this.content,
+    required this.messageType,
+    required this.createdAt,
+    this.updatedAt,
     this.isEdited = false,
-    this.editedAt,
+    this.isDestroyed = false,
     this.replyToMessageId,
-    this.voiceMessage,
-    this.imageMessage,
-    this.connectionStone,
-    this.selfDestruct,
-  }) : _reactions = reactions,
+    final List<Attachment> attachments = const [],
+    final List<Reaction> reactions = const [],
+    final List<String> readBy = const [],
+    this.status = MessageStatus.sent,
+    this.isFromMe = false,
+  }) : _attachments = attachments,
+       _reactions = reactions,
+       _readBy = readBy,
        super._();
 
   factory _$ChatMessageImpl.fromJson(Map<String, dynamic> json) =>
@@ -1646,52 +2005,72 @@ class _$ChatMessageImpl extends _ChatMessage {
 
   @override
   final String id;
-  @override
-  final String senderId;
-  @override
-  final String senderName;
+  // UUID
   @override
   final String conversationId;
+  // UUID
   @override
-  final MessageType type;
+  final String senderId;
+  // UUID
   @override
-  final DateTime timestamp;
+  final String senderUsername;
   @override
-  final MessageStatus status;
-  @override
-  @JsonKey()
   final String content;
-  final List<MessageReaction> _reactions;
+  @override
+  final MessageType messageType;
+  @override
+  final DateTime createdAt;
+  @override
+  final DateTime? updatedAt;
   @override
   @JsonKey()
-  List<MessageReaction> get reactions {
+  final bool isEdited;
+  @override
+  @JsonKey()
+  final bool isDestroyed;
+  @override
+  final String? replyToMessageId;
+  // UUID or null
+  final List<Attachment> _attachments;
+  // UUID or null
+  @override
+  @JsonKey()
+  List<Attachment> get attachments {
+    if (_attachments is EqualUnmodifiableListView) return _attachments;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_attachments);
+  }
+
+  final List<Reaction> _reactions;
+  @override
+  @JsonKey()
+  List<Reaction> get reactions {
     if (_reactions is EqualUnmodifiableListView) return _reactions;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_reactions);
   }
 
+  final List<String> _readBy;
+  @override
+  @JsonKey()
+  List<String> get readBy {
+    if (_readBy is EqualUnmodifiableListView) return _readBy;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_readBy);
+  }
+
+  // List of user IDs
+  // Additional fields for UI state
+  @override
+  @JsonKey()
+  final MessageStatus status;
   @override
   @JsonKey()
   final bool isFromMe;
-  @override
-  @JsonKey()
-  final bool isEdited;
-  @override
-  final DateTime? editedAt;
-  @override
-  final String? replyToMessageId;
-  @override
-  final VoiceMessage? voiceMessage;
-  @override
-  final ImageMessage? imageMessage;
-  @override
-  final ConnectionStoneMessage? connectionStone;
-  @override
-  final SelfDestructMessage? selfDestruct;
 
   @override
   String toString() {
-    return 'ChatMessage(id: $id, senderId: $senderId, senderName: $senderName, conversationId: $conversationId, type: $type, timestamp: $timestamp, status: $status, content: $content, reactions: $reactions, isFromMe: $isFromMe, isEdited: $isEdited, editedAt: $editedAt, replyToMessageId: $replyToMessageId, voiceMessage: $voiceMessage, imageMessage: $imageMessage, connectionStone: $connectionStone, selfDestruct: $selfDestruct)';
+    return 'ChatMessage(id: $id, conversationId: $conversationId, senderId: $senderId, senderUsername: $senderUsername, content: $content, messageType: $messageType, createdAt: $createdAt, updatedAt: $updatedAt, isEdited: $isEdited, isDestroyed: $isDestroyed, replyToMessageId: $replyToMessageId, attachments: $attachments, reactions: $reactions, readBy: $readBy, status: $status, isFromMe: $isFromMe)';
   }
 
   @override
@@ -1700,37 +2079,37 @@ class _$ChatMessageImpl extends _ChatMessage {
         (other.runtimeType == runtimeType &&
             other is _$ChatMessageImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.senderId, senderId) ||
-                other.senderId == senderId) &&
-            (identical(other.senderName, senderName) ||
-                other.senderName == senderName) &&
             (identical(other.conversationId, conversationId) ||
                 other.conversationId == conversationId) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.timestamp, timestamp) ||
-                other.timestamp == timestamp) &&
-            (identical(other.status, status) || other.status == status) &&
+            (identical(other.senderId, senderId) ||
+                other.senderId == senderId) &&
+            (identical(other.senderUsername, senderUsername) ||
+                other.senderUsername == senderUsername) &&
             (identical(other.content, content) || other.content == content) &&
+            (identical(other.messageType, messageType) ||
+                other.messageType == messageType) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.isEdited, isEdited) ||
+                other.isEdited == isEdited) &&
+            (identical(other.isDestroyed, isDestroyed) ||
+                other.isDestroyed == isDestroyed) &&
+            (identical(other.replyToMessageId, replyToMessageId) ||
+                other.replyToMessageId == replyToMessageId) &&
+            const DeepCollectionEquality().equals(
+              other._attachments,
+              _attachments,
+            ) &&
             const DeepCollectionEquality().equals(
               other._reactions,
               _reactions,
             ) &&
+            const DeepCollectionEquality().equals(other._readBy, _readBy) &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.isFromMe, isFromMe) ||
-                other.isFromMe == isFromMe) &&
-            (identical(other.isEdited, isEdited) ||
-                other.isEdited == isEdited) &&
-            (identical(other.editedAt, editedAt) ||
-                other.editedAt == editedAt) &&
-            (identical(other.replyToMessageId, replyToMessageId) ||
-                other.replyToMessageId == replyToMessageId) &&
-            (identical(other.voiceMessage, voiceMessage) ||
-                other.voiceMessage == voiceMessage) &&
-            (identical(other.imageMessage, imageMessage) ||
-                other.imageMessage == imageMessage) &&
-            (identical(other.connectionStone, connectionStone) ||
-                other.connectionStone == connectionStone) &&
-            (identical(other.selfDestruct, selfDestruct) ||
-                other.selfDestruct == selfDestruct));
+                other.isFromMe == isFromMe));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1738,22 +2117,21 @@ class _$ChatMessageImpl extends _ChatMessage {
   int get hashCode => Object.hash(
     runtimeType,
     id,
-    senderId,
-    senderName,
     conversationId,
-    type,
-    timestamp,
-    status,
+    senderId,
+    senderUsername,
     content,
-    const DeepCollectionEquality().hash(_reactions),
-    isFromMe,
+    messageType,
+    createdAt,
+    updatedAt,
     isEdited,
-    editedAt,
+    isDestroyed,
     replyToMessageId,
-    voiceMessage,
-    imageMessage,
-    connectionStone,
-    selfDestruct,
+    const DeepCollectionEquality().hash(_attachments),
+    const DeepCollectionEquality().hash(_reactions),
+    const DeepCollectionEquality().hash(_readBy),
+    status,
+    isFromMe,
   );
 
   /// Create a copy of ChatMessage
@@ -1773,22 +2151,21 @@ class _$ChatMessageImpl extends _ChatMessage {
 abstract class _ChatMessage extends ChatMessage {
   const factory _ChatMessage({
     required final String id,
-    required final String senderId,
-    required final String senderName,
     required final String conversationId,
-    required final MessageType type,
-    required final DateTime timestamp,
-    required final MessageStatus status,
-    final String content,
-    final List<MessageReaction> reactions,
-    final bool isFromMe,
+    required final String senderId,
+    required final String senderUsername,
+    required final String content,
+    required final MessageType messageType,
+    required final DateTime createdAt,
+    final DateTime? updatedAt,
     final bool isEdited,
-    final DateTime? editedAt,
+    final bool isDestroyed,
     final String? replyToMessageId,
-    final VoiceMessage? voiceMessage,
-    final ImageMessage? imageMessage,
-    final ConnectionStoneMessage? connectionStone,
-    final SelfDestructMessage? selfDestruct,
+    final List<Attachment> attachments,
+    final List<Reaction> reactions,
+    final List<String> readBy,
+    final MessageStatus status,
+    final bool isFromMe,
   }) = _$ChatMessageImpl;
   const _ChatMessage._() : super._();
 
@@ -1796,39 +2173,38 @@ abstract class _ChatMessage extends ChatMessage {
       _$ChatMessageImpl.fromJson;
 
   @override
-  String get id;
+  String get id; // UUID
   @override
-  String get senderId;
+  String get conversationId; // UUID
   @override
-  String get senderName;
+  String get senderId; // UUID
   @override
-  String get conversationId;
-  @override
-  MessageType get type;
-  @override
-  DateTime get timestamp;
-  @override
-  MessageStatus get status;
+  String get senderUsername;
   @override
   String get content;
   @override
-  List<MessageReaction> get reactions;
+  MessageType get messageType;
   @override
-  bool get isFromMe;
+  DateTime get createdAt;
+  @override
+  DateTime? get updatedAt;
   @override
   bool get isEdited;
   @override
-  DateTime? get editedAt;
+  bool get isDestroyed;
   @override
-  String? get replyToMessageId;
+  String? get replyToMessageId; // UUID or null
   @override
-  VoiceMessage? get voiceMessage;
+  List<Attachment> get attachments;
   @override
-  ImageMessage? get imageMessage;
+  List<Reaction> get reactions;
   @override
-  ConnectionStoneMessage? get connectionStone;
+  List<String> get readBy; // List of user IDs
+  // Additional fields for UI state
   @override
-  SelfDestructMessage? get selfDestruct;
+  MessageStatus get status;
+  @override
+  bool get isFromMe;
 
   /// Create a copy of ChatMessage
   /// with the given fields replaced by the non-null parameter values.

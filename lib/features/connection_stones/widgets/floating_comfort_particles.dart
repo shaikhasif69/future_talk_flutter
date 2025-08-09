@@ -116,10 +116,10 @@ class _FloatingComfortParticlesState extends State<FloatingComfortParticles>
         height: particle.size,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: widget.particleColor.withOpacity(widget.opacity * opacity),
+          color: widget.particleColor.withValues(alpha: widget.opacity * opacity),
           boxShadow: widget.enableGlow ? [
             BoxShadow(
-              color: widget.particleColor.withOpacity(widget.opacity * opacity * 0.5),
+              color: widget.particleColor.withValues(alpha: widget.opacity * opacity * 0.5),
               blurRadius: particle.size * 2,
               spreadRadius: particle.size * 0.5,
             ),
@@ -472,7 +472,7 @@ class MagicalComfortBackground extends StatelessWidget {
         if (enableHearts)
           FloatingHeartParticles(
             heartCount: 3,
-            heartColor: primaryColor.withOpacity(0.4),
+            heartColor: primaryColor.withValues(alpha: 0.4),
             minSize: 12.0,
             maxSize: 18.0,
             animationDuration: const Duration(seconds: 15),
@@ -482,7 +482,7 @@ class MagicalComfortBackground extends StatelessWidget {
         if (enableSparkles)
           FloatingSparkleParticles(
             sparkleCount: 6,
-            sparkleColor: secondaryColor.withOpacity(0.5),
+            sparkleColor: secondaryColor.withValues(alpha: 0.5),
             minSize: 6.0,
             maxSize: 12.0,
             animationDuration: const Duration(seconds: 10),
@@ -510,7 +510,7 @@ class StoneComfortBackground extends StatelessWidget {
       enableSparkles: isActive,
       enableBasicParticles: true,
       primaryColor: stoneColor,
-      secondaryColor: stoneColor.withOpacity(0.7),
+      secondaryColor: stoneColor.withValues(alpha: 0.7),
     );
   }
 }

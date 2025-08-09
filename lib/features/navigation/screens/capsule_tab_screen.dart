@@ -28,7 +28,7 @@ class CapsuleTabScreen extends ConsumerWidget {
               width: 120.w,
               height: 120.w,
               decoration: BoxDecoration(
-                color: AppColors.lavenderMist.withOpacity(0.1),
+                color: AppColors.lavenderMist.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -70,7 +70,7 @@ class CapsuleTabScreen extends ConsumerWidget {
               child: Text(
                 'Send messages to the future. Create meaningful moments that will be delivered when the time is right.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.softCharcoalLight.withOpacity(0.8),
+                  color: AppColors.softCharcoalLight.withValues(alpha: 0.8),
                   height: 1.5,
                 ),
                 textAlign: TextAlign.center,
@@ -107,7 +107,7 @@ class CapsuleTabScreen extends ConsumerWidget {
                 color: AppColors.warmCream,
                 borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
                 border: Border.all(
-                  color: AppColors.lavenderMist.withOpacity(0.2),
+                  color: AppColors.lavenderMist.withValues(alpha: 0.2),
                   width: 1,
                 ),
                 boxShadow: [
@@ -156,7 +156,7 @@ class CapsuleTabScreen extends ConsumerWidget {
         color: AppColors.warmCream,
         borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
         border: Border.all(
-          color: color.withOpacity(0.2),
+          color: color.withValues(alpha: 0.2),
           width: 1,
         ),
         boxShadow: [
@@ -173,7 +173,7 @@ class CapsuleTabScreen extends ConsumerWidget {
             width: 40.w,
             height: 40.w,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
             ),
             child: Icon(

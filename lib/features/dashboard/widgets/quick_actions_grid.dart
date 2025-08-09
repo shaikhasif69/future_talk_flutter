@@ -290,7 +290,7 @@ class _QuickActionCardState extends State<QuickActionCard>
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            AppColors.lavenderMistLight.withOpacity( 0.1),
+                            AppColors.lavenderMistLight.withValues(alpha:  0.1),
                             AppColors.sageGreenWithOpacity(0.1),
                           ],
                         )
@@ -305,7 +305,7 @@ class _QuickActionCardState extends State<QuickActionCard>
                   borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
                   border: Border.all(
                     color: widget.action.isPremium
-                        ? AppColors.lavenderMist.withOpacity( 0.3)
+                        ? AppColors.lavenderMist.withValues(alpha:  0.3)
                         : AppColors.sageGreenWithOpacity(0.1),
                     width: 1.0,
                   ),
@@ -417,7 +417,7 @@ class _QuickActionCardState extends State<QuickActionCard>
           borderRadius: BorderRadius.circular(AppDimensions.radiusS),
           boxShadow: [
             BoxShadow(
-              color: AppColors.lavenderMist.withOpacity( 0.3),
+              color: AppColors.lavenderMist.withValues(alpha:  0.3),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -464,7 +464,7 @@ class CompactQuickActionCard extends StatelessWidget {
           gradient: action.isPremium
               ? LinearGradient(
                   colors: [
-                    AppColors.lavenderMistLight.withOpacity( 0.1),
+                    AppColors.lavenderMistLight.withValues(alpha:  0.1),
                     AppColors.sageGreenWithOpacity(0.1),
                   ],
                 )
@@ -473,7 +473,7 @@ class CompactQuickActionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppDimensions.radiusM),
           border: Border.all(
             color: action.isPremium
-                ? AppColors.lavenderMist.withOpacity( 0.3)
+                ? AppColors.lavenderMist.withValues(alpha:  0.3)
                 : AppColors.sageGreenWithOpacity(0.1),
           ),
         ),

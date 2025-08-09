@@ -151,7 +151,7 @@ class _WritingToolsWidgetState extends State<WritingToolsWidget>
       child: Container(
         padding: const EdgeInsets.all(AppDimensions.paddingM),
         decoration: BoxDecoration(
-          color: AppColors.warmCream.withOpacity(0.3),
+          color: AppColors.warmCream.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(AppDimensions.radiusL),
         ),
         child: Row(
@@ -264,7 +264,7 @@ class _WritingToolsWidgetState extends State<WritingToolsWidget>
                 vertical: AppDimensions.spacingS,
               ),
               decoration: BoxDecoration(
-                color: AppColors.warmCream.withOpacity(0.5),
+                color: AppColors.warmCream.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                 border: Border.all(
                   color: _showFontDropdown 
@@ -325,12 +325,12 @@ class _WritingToolsWidgetState extends State<WritingToolsWidget>
             decoration: BoxDecoration(
               color: widget.fontSize > 12.0 
                   ? AppColors.sageGreenWithOpacity(0.1)
-                  : AppColors.stoneGray.withOpacity(0.3),
+                  : AppColors.stoneGray.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(AppDimensions.radiusS),
               border: Border.all(
                 color: widget.fontSize > 12.0 
                     ? AppColors.sageGreenWithOpacity(0.3)
-                    : AppColors.stoneGray.withOpacity(0.5),
+                    : AppColors.stoneGray.withValues(alpha: 0.5),
                 width: 1,
               ),
             ),
@@ -351,7 +351,7 @@ class _WritingToolsWidgetState extends State<WritingToolsWidget>
           width: 60,
           height: 36,
           decoration: BoxDecoration(
-            color: AppColors.warmCream.withOpacity(0.5),
+            color: AppColors.warmCream.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(AppDimensions.radiusS),
             border: Border.all(
               color: AppColors.sageGreenWithOpacity(0.2),
@@ -380,12 +380,12 @@ class _WritingToolsWidgetState extends State<WritingToolsWidget>
             decoration: BoxDecoration(
               color: widget.fontSize < 28.0 
                   ? AppColors.sageGreenWithOpacity(0.1)
-                  : AppColors.stoneGray.withOpacity(0.3),
+                  : AppColors.stoneGray.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(AppDimensions.radiusS),
               border: Border.all(
                 color: widget.fontSize < 28.0 
                     ? AppColors.sageGreenWithOpacity(0.3)
-                    : AppColors.stoneGray.withOpacity(0.5),
+                    : AppColors.stoneGray.withValues(alpha: 0.5),
                 width: 1,
               ),
             ),
@@ -425,10 +425,10 @@ class _WritingToolsWidgetState extends State<WritingToolsWidget>
                 vertical: AppDimensions.spacingS,
               ),
               decoration: BoxDecoration(
-                color: AppColors.dustyRose.withOpacity(0.1),
+                color: AppColors.dustyRose.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                 border: Border.all(
-                  color: AppColors.dustyRose.withOpacity(0.3),
+                  color: AppColors.dustyRose.withValues(alpha: 0.3),
                   width: 1,
                 ),
               ),
@@ -517,7 +517,7 @@ class _WritingToolsWidgetState extends State<WritingToolsWidget>
                       vertical: 2,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.warmCream.withOpacity(0.5),
+                      color: AppColors.warmCream.withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(AppDimensions.radiusS),
                     ),
                     child: Text(

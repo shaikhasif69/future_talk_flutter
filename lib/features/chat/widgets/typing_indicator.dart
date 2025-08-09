@@ -200,7 +200,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
                   width: 3.0,
                   height: 3.0,
                   decoration: BoxDecoration(
-                    color: widget.dotColor.withOpacity(0.4 + (0.6 * progress)),
+                    color: widget.dotColor.withValues(alpha: 0.4 + (0.6 * progress)),
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -409,7 +409,7 @@ class _TypingDotsState extends State<_TypingDots>
                 width: widget.dotSize,
                 height: widget.dotSize,
                 decoration: BoxDecoration(
-                  color: widget.color.withOpacity(opacity),
+                  color: widget.color.withValues(alpha: opacity),
                   shape: BoxShape.circle,
                 ),
               ),

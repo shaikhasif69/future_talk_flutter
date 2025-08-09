@@ -6,7 +6,7 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/widgets/animations/ft_stagger_animation.dart';
 import '../models/chat_conversation.dart';
 import '../models/chat_message.dart' as msg;
-import '../providers/realtime_individual_chat_provider.dart';
+import '../providers/realtime_chat_provider.dart';
 import '../widgets/chat_header.dart';
 import '../widgets/message_bubble.dart';
 import '../widgets/message_input.dart';
@@ -29,7 +29,7 @@ class IndividualChatScreen extends StatefulWidget {
 
 class _IndividualChatScreenState extends State<IndividualChatScreen>
     with TickerProviderStateMixin {
-  late RealtimeIndividualChatProvider _chatProvider;
+  late RealtimeChatProvider _chatProvider;
   late ScrollController _scrollController;
   late AnimationController _fadeInController;
   late AnimationController _slideInController;
@@ -59,17 +59,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   }
 
   void _initializeChatProvider() {
-    final otherParticipant = widget.conversation.otherParticipant;
-    if (otherParticipant == null) {
-      // Handle error - should not happen for individual chats
-      Navigator.of(context).pop();
-      return;
-    }
-
-    _chatProvider = RealtimeIndividualChatProvider(
-      conversationId: widget.conversation.id,
-      otherParticipant: otherParticipant,
-    );
+    _chatProvider = RealtimeChatProvider();
 
     // Listen to provider changes
     _chatProvider.addListener(_onChatProviderChanged);
@@ -77,6 +67,8 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     // Initialize provider asynchronously
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _chatProvider.initialize();
+      // Select this conversation
+      await _chatProvider.selectConversation(widget.conversation.id);
       
       if (mounted) {
         _fadeInController.forward();
@@ -95,7 +87,8 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     
     // Auto-scroll to bottom when new messages arrive
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_chatProvider.messages.isNotEmpty) {
+      final messages = _chatProvider.getMessages(widget.conversation.id);
+      if (messages.isNotEmpty) {
         _scrollToBottom();
       }
     });
@@ -596,7 +589,7 @@ class _ChatBackgroundPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppColors.pearlWhite.withOpacity(0.3)
+      ..color = AppColors.pearlWhite.withValues(alpha: 0.3)
       ..style = PaintingStyle.fill;
 
     // Create subtle texture dots
