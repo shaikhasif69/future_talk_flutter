@@ -74,12 +74,36 @@ class WebSocketMessage {
 
   /// Create from incoming JSON
   factory WebSocketMessage.fromJson(Map<String, dynamic> json) {
+    debugPrint('🔍 [WebSocketMessage] Parsing message with keys: ${json.keys.toList()}');
+    
+    // Extract conversation_id from multiple possible locations
+    String? conversationId = json['conversation_id'] as String?;
+    
+    // If not found at top level, check in message_data
+    if (conversationId == null && json.containsKey('message_data')) {
+      final messageData = json['message_data'] as Map<String, dynamic>?;
+      if (messageData != null) {
+        conversationId = messageData['conversation_id'] as String?;
+        
+        // If not in message_data root, check in message object
+        if (conversationId == null && messageData.containsKey('message')) {
+          final messageObj = messageData['message'] as Map<String, dynamic>?;
+          if (messageObj != null) {
+            conversationId = messageObj['conversation_id'] as String?;
+          }
+        }
+      }
+    }
+    
+    debugPrint('🔍 [WebSocketMessage] Final extracted conversation_id: $conversationId');
+    debugPrint('🔍 [WebSocketMessage] Conversation_id type: ${conversationId.runtimeType}');
+    
     return WebSocketMessage(
       type: json['type'] as String,
       data: json.containsKey('data') 
           ? json['data'] as Map<String, dynamic>
           : json,
-      conversationId: json['conversation_id'] as String?,
+      conversationId: conversationId,
       messageId: json['message_id'] as String?,
       userId: json['user_id'] as String?,
       username: json['username'] as String?,
@@ -418,12 +442,20 @@ class ChatWebSocketService extends ChangeNotifier {
           
         case WebSocketEventType.chatMessage:
           debugPrint('🎉 [WebSocket] *** CHAT MESSAGE EVENT RECEIVED ***');
-          debugPrint('💬 [WebSocket] - Conversation ID: ${message.conversationId}');
+          
+          // Use the properly extracted conversation_id from the message object
+          final conversationId = message.conversationId;
+          debugPrint('💬 [WebSocket] - Conversation ID (from message): $conversationId');
           debugPrint('💬 [WebSocket] - Message data keys: ${messageData.keys.toList()}');
           debugPrint('💬 [WebSocket] - Full message data: ${jsonEncode(messageData)}');
           
-          _chatMessageController.add(messageData);
-          debugPrint('💬 [WebSocket] Chat message added to stream for conversation: ${message.conversationId}');
+          if (conversationId != null) {
+            _chatMessageController.add(messageData);
+            debugPrint('💬 [WebSocket] Chat message added to stream for conversation: $conversationId');
+          } else {
+            debugPrint('❌ [WebSocket] Cannot process chat message - conversation_id is null');
+            debugPrint('❌ [WebSocket] Raw message structure: ${jsonEncode(messageData)}');
+          }
           break;
           
         case WebSocketEventType.typingIndicator:

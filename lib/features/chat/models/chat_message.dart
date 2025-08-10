@@ -443,9 +443,15 @@ class ChatMessage with _$ChatMessage {
       debugPrint('🔍 [ChatMessage] Message info keys: ${messageInfo.keys.toList()}');
       debugPrint('🔍 [ChatMessage] Sender info: $senderInfo');
       
-      // Extract basic message fields
+      // Extract basic message fields with robust conversation_id handling
       final String id = messageInfo['id'] as String;
-      final String conversationId = messageInfo['conversation_id'] as String;
+      
+      // Extract conversation_id from multiple possible locations
+      String conversationId = messageInfo['conversation_id'] as String? ?? '';
+      if (conversationId.isEmpty && data.containsKey('conversation_id')) {
+        conversationId = data['conversation_id'] as String? ?? '';
+      }
+      
       final String senderId = messageInfo['sender_id'] as String;
       final String content = messageInfo['content'] as String;
       final String messageTypeStr = messageInfo['message_type'] as String? ?? 'text';

@@ -317,15 +317,36 @@ class RealtimeChatProvider extends ChangeNotifier {
       debugPrint('💬 [RealtimeChatProvider] Full event data: ${jsonEncode(data)}');
       debugPrint('💬 [RealtimeChatProvider] Event keys: ${data.keys.toList()}');
       
-      // Extract conversation ID
-      final conversationId = data['conversation_id'] as String?;
+      // Extract message_data first 
+      final messageData = data['message_data'] as Map<String, dynamic>?;
+      
+      // Extract conversation ID from multiple possible locations
+      String? conversationId = data['conversation_id'] as String?;
+      
+      // If not found at top level, check in message_data
+      if (conversationId == null && messageData != null) {
+        conversationId = messageData['conversation_id'] as String?;
+        
+        // If not in message_data root, check in message object
+        if (conversationId == null && messageData.containsKey('message')) {
+          final messageObj = messageData['message'] as Map<String, dynamic>?;
+          if (messageObj != null) {
+            conversationId = messageObj['conversation_id'] as String?;
+          }
+        }
+      }
+      
+      debugPrint('🔍 [RealtimeChatProvider] Final extracted conversation_id: $conversationId');
+      debugPrint('🔍 [RealtimeChatProvider] Data contains conversation_id key: ${data.containsKey('conversation_id')}');
+      
       if (conversationId == null) {
-        debugPrint('❌ [RealtimeChatProvider] No conversation_id in message data');
+        debugPrint('❌ [RealtimeChatProvider] No conversation_id found in message data');
+        debugPrint('❌ [RealtimeChatProvider] Available keys: ${data.keys.toList()}');
+        debugPrint('❌ [RealtimeChatProvider] Full data dump: ${data.toString()}');
         return;
       }
       
-      // Extract message_data according to documentation
-      final messageData = data['message_data'] as Map<String, dynamic>?;
+      // Check if message_data exists
       if (messageData == null) {
         debugPrint('❌ [RealtimeChatProvider] No message_data in WebSocket event');
         return;
