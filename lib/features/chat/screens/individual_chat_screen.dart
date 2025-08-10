@@ -72,6 +72,11 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
 
     // Initialize provider asynchronously
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Ensure provider is initialized first
+      if (!_chatProvider.isInitialized) {
+        await _chatProvider.initialize();
+      }
+      
       // Ensure the conversation is selected
       await _chatProvider.selectConversation(widget.conversation.id);
       
@@ -93,7 +98,8 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   void _onChatProviderChanged() {
     if (!mounted) return;
     
-    debugPrint('🔄 [IndividualChatScreen] Provider changed, updating messages');
+    debugPrint('🔄 [IndividualChatScreen] Provider changed for conversation: ${widget.conversation.id}');
+    debugPrint('🔄 [IndividualChatScreen] Current user ID: ${_chatProvider.currentUserId}');
     
     // Update current messages from provider
     _loadCurrentMessages();
@@ -640,10 +646,6 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       itemCount: _currentMessages.length,
       itemBuilder: (context, index) {
         final message = _currentMessages[index];
-        // Debug message alignment (simplified to avoid log spam)
-        if (index == 0) {
-          debugPrint('🔍 [IndividualChatScreen] Sample message - IsFromMe: ${message.isFromMe}, Sender: ${message.senderId}');
-        }
         
         return Align(
           alignment: message.isFromMe ? Alignment.centerRight : Alignment.centerLeft,

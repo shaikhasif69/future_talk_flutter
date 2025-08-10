@@ -257,7 +257,7 @@ class RealtimeChatProvider extends ChangeNotifier {
   Future<void> sendMessage(String conversationId, String content) async {
     if (content.trim().isEmpty) return;
     
-    debugPrint('📤 [RealtimeChatProvider] Sending message to $conversationId: ${content.length > 30 ? '${content.substring(0, 30)}...' : content}');
+    print('📤 SENDING: "$content" to conversation $conversationId');
     
     final result = await _chatRepository.sendMessage(
       conversationId: conversationId,
@@ -274,11 +274,11 @@ class RealtimeChatProvider extends ChangeNotifier {
         // Update conversation order (move to top)
         _moveConversationToTop(conversationId, message);
         
-        debugPrint('✅ [RealtimeChatProvider] Message sent successfully');
+        print('✅ SENT: "${message.content}" (ID: ${message.id})');
         notifyListeners();
       },
       failure: (error) {
-        debugPrint('❌ [RealtimeChatProvider] Failed to send message: ${error.message}');
+        print('❌ SEND FAILED: ${error.message}');
       },
     );
   }
@@ -313,9 +313,7 @@ class RealtimeChatProvider extends ChangeNotifier {
   /// Handle incoming chat message from WebSocket
   void _handleChatMessage(Map<String, dynamic> data) {
     try {
-      debugPrint('💬 [RealtimeChatProvider] ==== CHAT MESSAGE EVENT START ====');
-      debugPrint('💬 [RealtimeChatProvider] Full event data: ${jsonEncode(data)}');
-      debugPrint('💬 [RealtimeChatProvider] Event keys: ${data.keys.toList()}');
+      // WebSocket message received
       
       // Extract message_data first 
       final messageData = data['message_data'] as Map<String, dynamic>?;
@@ -336,24 +334,16 @@ class RealtimeChatProvider extends ChangeNotifier {
         }
       }
       
-      debugPrint('🔍 [RealtimeChatProvider] Final extracted conversation_id: $conversationId');
-      debugPrint('🔍 [RealtimeChatProvider] Data contains conversation_id key: ${data.containsKey('conversation_id')}');
-      
       if (conversationId == null) {
-        debugPrint('❌ [RealtimeChatProvider] No conversation_id found in message data');
-        debugPrint('❌ [RealtimeChatProvider] Available keys: ${data.keys.toList()}');
-        debugPrint('❌ [RealtimeChatProvider] Full data dump: ${data.toString()}');
+        print('❌ ERROR: No conversation_id in WebSocket message');
         return;
       }
       
-      // Check if message_data exists
       if (messageData == null) {
-        debugPrint('❌ [RealtimeChatProvider] No message_data in WebSocket event');
         return;
       }
       
       final eventType = messageData['type'] as String?;
-      debugPrint('💬 [RealtimeChatProvider] Event type: $eventType');
       
       if (eventType == 'new_message') {
         // Extract message according to documentation structure
@@ -361,7 +351,6 @@ class RealtimeChatProvider extends ChangeNotifier {
         final senderInfo = messageData['sender_info'] as Map<String, dynamic>?;
         
         if (messageJson == null) {
-          debugPrint('❌ [RealtimeChatProvider] No message in message_data');
           return;
         }
         
@@ -374,44 +363,25 @@ class RealtimeChatProvider extends ChangeNotifier {
           messageJson['sender_display_name'] = senderInfo['display_name'];
         }
         
-        debugPrint('🚀 [RealtimeChatProvider] Creating ChatMessage from WebSocket data...');
-        debugPrint('💬 [RealtimeChatProvider] Full WebSocket data structure: ${jsonEncode(data)}');
-        
         final message = ChatMessage.fromWebSocketMessage(data, _currentUserId ?? '');
-        
-        debugPrint('✅ [RealtimeChatProvider] ChatMessage created successfully:');
-        debugPrint('💬 [RealtimeChatProvider] - Message ID: ${message.id}');
-        debugPrint('💬 [RealtimeChatProvider] - Content: ${message.content}');
-        debugPrint('💬 [RealtimeChatProvider] - Sender: ${message.senderUsername}');
-        debugPrint('💬 [RealtimeChatProvider] - Is from me: ${message.isFromMe}');
-        debugPrint('💬 [RealtimeChatProvider] - Created at: ${message.createdAt}');
         
         // Add message to cache for ANY conversation (active or not)
         if (_messageCache.containsKey(conversationId)) {
           final messages = _messageCache[conversationId] ?? [];
           _messageCache[conversationId] = [...messages, message];
-          debugPrint('✅ [RealtimeChatProvider] Message added to EXISTING cache for conversation: $conversationId');
-          debugPrint('💬 [RealtimeChatProvider] Total messages in cache: ${_messageCache[conversationId]!.length}');
+          print('🔄 Added message to EXISTING cache. Total messages: ${_messageCache[conversationId]!.length}');
         } else {
-          debugPrint('🆕 [RealtimeChatProvider] Conversation $conversationId not in cache - CREATING NEW CACHE');
           // Initialize the conversation cache with this message
           _messageCache[conversationId] = [message];
-          debugPrint('✅ [RealtimeChatProvider] Initialized NEW cache for conversation: $conversationId with 1 message');
+          print('🆕 Created NEW cache with 1 message');
         }
         
-        // Check if this is the currently selected conversation  
-        debugPrint('🔍 [RealtimeChatProvider] Current conversation ID: $_currentConversationId');
-        debugPrint('🔍 [RealtimeChatProvider] Message conversation ID: $conversationId');
-        debugPrint('🔍 [RealtimeChatProvider] Is current conversation: ${conversationId == _currentConversationId}');
-        
         // ALWAYS reorder conversations - this is key for real-time updates for ALL participants
-        debugPrint('📈 [RealtimeChatProvider] Moving conversation to top...');
         _moveConversationToTop(conversationId, message);
         
-        debugPrint('🔔 [RealtimeChatProvider] Calling notifyListeners() to update UI...');
         notifyListeners();
         
-        debugPrint('✅ [RealtimeChatProvider] New message processed successfully: ${message.content.substring(0, message.content.length > 30 ? 30 : message.content.length)}...');
+        print('📥 RECEIVED: "${message.content}" from ${message.senderUsername} (ID: ${message.id})');
         
       } else if (eventType == 'typing_indicator') {
         debugPrint('⌨️ [RealtimeChatProvider] Processing TYPING_INDICATOR event');
