@@ -168,7 +168,7 @@ class _ConnectionStatusCardState extends State<ConnectionStatusCard>
         vertical: AppDimensions.spacingXS + 2,
       ),
       decoration: BoxDecoration(
-        color: _batteryColor.withValues(alpha: 0.1),
+        color: _batteryColor.withAlpha(26),
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
       child: Row(
@@ -187,7 +187,7 @@ class _ConnectionStatusCardState extends State<ConnectionStatusCard>
                     color: _batteryColor,
                     boxShadow: [
                       BoxShadow(
-                        color: _batteryColor.withValues(alpha: 0.4),
+                        color: _batteryColor.withAlpha(102),
                         blurRadius: 8,
                         spreadRadius: 1,
                       ),
@@ -260,7 +260,7 @@ class _ConnectionStatusCardState extends State<ConnectionStatusCard>
             borderRadius: BorderRadius.circular(AppDimensions.radiusM),
             boxShadow: [
               BoxShadow(
-                color: AppColors.sageGreen.withValues(alpha: 0.3),
+                color: AppColors.sageGreen.withAlpha(77),
                 blurRadius: 16,
                 offset: const Offset(0, 4),
               ),
@@ -304,9 +304,9 @@ class _ConnectionStatusCardState extends State<ConnectionStatusCard>
             vertical: AppDimensions.spacingM,
           ),
           decoration: BoxDecoration(
-            color: AppColors.sageGreen.withValues(alpha: 0.1),
+            color: AppColors.sageGreen.withAlpha(26),
             border: Border.all(
-              color: AppColors.sageGreen.withValues(alpha: 0.2),
+              color: AppColors.sageGreen.withAlpha(51),
               width: 1,
             ),
             borderRadius: BorderRadius.circular(AppDimensions.radiusM),
@@ -345,7 +345,7 @@ class _ConnectionStatusCardState extends State<ConnectionStatusCard>
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 600),
           decoration: BoxDecoration(
-            color: AppColors.sageGreen.withValues(alpha: 0.1),
+            color: AppColors.sageGreen.withAlpha(26),
           ),
           child: Center(
             child: Container(
@@ -353,7 +353,7 @@ class _ConnectionStatusCardState extends State<ConnectionStatusCard>
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.sageGreen.withValues(alpha: 0.2),
+                color: AppColors.sageGreen.withAlpha(51),
               ),
             ),
           ),
@@ -451,18 +451,18 @@ class _ConnectionActionButtonState extends State<ConnectionActionButton>
                       : null,
                   color: widget.isPrimary 
                       ? null 
-                      : (widget.customColor ?? AppColors.sageGreen).withValues(alpha: 0.1),
+                      : (widget.customColor ?? AppColors.sageGreen).withAlpha(26),
                   border: widget.isPrimary 
                       ? null 
                       : Border.all(
-                          color: (widget.customColor ?? AppColors.sageGreen).withValues(alpha: 0.2),
+                          color: (widget.customColor ?? AppColors.sageGreen).withAlpha(51),
                           width: 1,
                         ),
                   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                   boxShadow: widget.isPrimary 
                       ? [
                           BoxShadow(
-                            color: AppColors.sageGreen.withValues(alpha: 0.3),
+                            color: AppColors.sageGreen.withAlpha(77),
                             blurRadius: 16,
                             offset: const Offset(0, 4),
                           ),

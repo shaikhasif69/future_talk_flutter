@@ -279,7 +279,7 @@ class _StoneVisualWidgetState extends State<StoneVisualWidget>
   List<BoxShadow> _buildStoneShadows() {
     final baseShadows = [
       BoxShadow(
-        color: Colors.black.withValues(alpha: 0.1),
+        color: Colors.black.withAlpha(26),
         blurRadius: 8,
         offset: const Offset(0, 2),
       ),
@@ -288,7 +288,7 @@ class _StoneVisualWidgetState extends State<StoneVisualWidget>
     if (widget.stone.isReceivingComfort) {
       baseShadows.add(
         BoxShadow(
-          color: widget.stone.stoneType.glowColor.withValues(alpha: 0.4),
+          color: widget.stone.stoneType.glowColor.withAlpha(102),
           blurRadius: 16,
           spreadRadius: 2,
         ),
@@ -298,7 +298,7 @@ class _StoneVisualWidgetState extends State<StoneVisualWidget>
     if (widget.stone.isSendingComfort) {
       baseShadows.add(
         BoxShadow(
-          color: widget.stone.stoneType.primaryColor.withValues(alpha: 0.3),
+          color: widget.stone.stoneType.primaryColor.withAlpha(77),
           blurRadius: 12,
           spreadRadius: 1,
         ),

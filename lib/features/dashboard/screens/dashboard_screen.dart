@@ -344,7 +344,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                             boxShadow: _contentSlideAnimation.value > 0.1
                                 ? [
                                     BoxShadow(
-                                      color: AppColors.sageGreen.withValues(alpha: 0.1),
+                                      color: AppColors.sageGreen.withAlpha(26),
                                       blurRadius: 8,
                                       spreadRadius: 0,
                                       offset: const Offset(-2, 0),

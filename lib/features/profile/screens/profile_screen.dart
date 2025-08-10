@@ -210,7 +210,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: AppColors.dustyRose.withValues(alpha: 0.1),
+                color: AppColors.dustyRose.withAlpha(26),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
@@ -351,13 +351,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppColors.sageGreen.withValues(alpha: 0.1),
-              AppColors.lavenderMist.withValues(alpha: 0.1),
+              AppColors.sageGreen.withAlpha(26),
+              AppColors.lavenderMist.withAlpha(26),
             ],
           ),
           borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
           border: Border.all(
-            color: AppColors.sageGreen.withValues(alpha: 0.3),
+            color: AppColors.sageGreen.withAlpha(77),
             width: 1,
           ),
         ),

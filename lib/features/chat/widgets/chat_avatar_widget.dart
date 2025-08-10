@@ -256,7 +256,7 @@ class _AnimatedChatAvatarState extends State<AnimatedChatAvatar>
         builder: (context, child) {
           return Transform.scale(
             scale: _scaleAnimation.value,
-            child: widget.conversation.isIndividual
+            child: widget.conversation.participants.length == 1
                 ? ChatAvatarWidget(
                     participant: widget.conversation.otherParticipant!,
                     size: widget.size,
@@ -295,7 +295,7 @@ class ChatAvatarWithStatus extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         // Avatar
-        if (conversation.isIndividual)
+        if (conversation.participants.length == 1)
           ChatAvatarWidget(
             participant: conversation.otherParticipant!,
             size: size,
@@ -311,7 +311,7 @@ class ChatAvatarWithStatus extends StatelessWidget {
         const SizedBox(height: AppDimensions.spacingS),
         
         // Status information
-        if (conversation.isIndividual && showOnlineStatus) ...[
+        if (conversation.participants.length == 1 && showOnlineStatus) ...[
           Text(
             conversation.otherParticipant!.isOnline ? 'Online' : 'Offline',
             style: AppTextStyles.labelSmall.copyWith(
@@ -379,7 +379,7 @@ class CompactChatAvatar extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         child: Center(
-          child: conversation.isIndividual
+          child: conversation.participants.length == 1
               ? Text(
                   conversation.otherParticipant?.initials ?? '?',
                   style: TextStyle(

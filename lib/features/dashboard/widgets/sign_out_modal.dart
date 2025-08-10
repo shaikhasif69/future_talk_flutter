@@ -29,7 +29,7 @@ class SignOutModal extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
           boxShadow: [
             BoxShadow(
-              color: AppColors.softCharcoal.withValues(alpha: 0.1),
+              color: AppColors.softCharcoal.withAlpha(26),
               blurRadius: 20,
               spreadRadius: 0,
               offset: const Offset(0, 10),
@@ -46,7 +46,7 @@ class SignOutModal extends StatelessWidget {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: AppColors.dustyRose.withValues(alpha: 0.1),
+                  color: AppColors.dustyRose.withAlpha(26),
                   shape: BoxShape.circle,
                 ),
                 child: const Center(
@@ -109,7 +109,7 @@ class SignOutModal extends StatelessWidget {
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.softCharcoal,
                         side: BorderSide(
-                          color: AppColors.stoneGray.withValues(alpha: 0.5),
+                          color: AppColors.stoneGray.withAlpha(128),
                         ),
                         padding: const EdgeInsets.symmetric(
                           vertical: AppDimensions.spacingL,
@@ -182,7 +182,7 @@ class SignOutModal extends StatelessWidget {
     return showDialog<bool>(
       context: context,
       barrierDismissible: true,
-      barrierColor: AppColors.softCharcoal.withValues(alpha: 0.5),
+      barrierColor: AppColors.softCharcoal.withAlpha(128),
       builder: (BuildContext context) {
         return SignOutModal(
           onConfirm: () => Navigator.of(context).pop(true),

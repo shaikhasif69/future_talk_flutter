@@ -77,7 +77,7 @@ class _ChatFilterTabsState extends State<ChatFilterTabs>
       height: 40.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
-        color: AppColors.sageGreen.withValues(alpha: 0.05),
+        color: AppColors.sageGreen.withAlpha(13),
       ),
       child: TabBar(
         controller: _tabController,

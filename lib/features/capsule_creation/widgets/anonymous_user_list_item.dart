@@ -145,19 +145,19 @@ class _AnonymousUserListItemState extends State<AnonymousUserListItem>
                     padding: const EdgeInsets.all(AppDimensions.paddingL),
                     decoration: BoxDecoration(
                       color: widget.isSelected
-                          ? AppColors.lavenderMist.withValues(alpha: 0.05)
+                          ? AppColors.lavenderMist.withAlpha(13)
                           : AppColors.pearlWhite,
                       borderRadius: BorderRadius.circular(AppDimensions.radiusL),
                       border: Border.all(
                         color: widget.isSelected
                             ? AppColors.lavenderMist
-                            : AppColors.whisperGray.withValues(alpha: 0.3),
+                            : AppColors.whisperGray.withAlpha(77),
                         width: 2,
                       ),
                       boxShadow: widget.isSelected
                           ? [
                               BoxShadow(
-                                color: AppColors.lavenderMist.withValues(alpha: 0.2),
+                                color: AppColors.lavenderMist.withAlpha(51),
                                 blurRadius: 16,
                                 offset: const Offset(0, 4),
                               ),
@@ -265,7 +265,7 @@ class _AnonymousUserListItemState extends State<AnonymousUserListItem>
                                       vertical: 4,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: AppColors.lavenderMist.withValues(alpha: 0.1),
+                                      color: AppColors.lavenderMist.withAlpha(26),
                                       borderRadius: BorderRadius.circular(AppDimensions.radiusS),
                                     ),
                                     child: Row(

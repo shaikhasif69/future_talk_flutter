@@ -198,13 +198,13 @@ class _MessageInputState extends State<MessageInput>
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      AppColors.warmPeach.withValues(alpha: 0.1),
-                      AppColors.sageGreen.withValues(alpha: 0.1),
+                      AppColors.warmPeach.withAlpha(26),
+                      AppColors.sageGreen.withAlpha(26),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                   border: Border.all(
-                    color: AppColors.warmPeach.withValues(alpha: 0.2),
+                    color: AppColors.warmPeach.withAlpha(51),
                     width: 1.0,
                   ),
                 ),
@@ -355,7 +355,7 @@ class _MessageInputState extends State<MessageInput>
           height: 36.0,
           decoration: BoxDecoration(
             color: _isRecordingVoice 
-                ? AppColors.dustyRose.withValues(alpha: 0.2)
+                ? AppColors.dustyRose.withAlpha(51)
                 : AppColors.sageGreenWithOpacity(0.1),
             shape: BoxShape.circle,
             border: Border.all(
@@ -456,7 +456,7 @@ class _MessageInputState extends State<MessageInput>
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Replying to ${replyToMessage.senderName}',
+                  'Replying to ${replyToMessage.senderUsername}',
                   style: AppTextStyles.labelSmall.copyWith(
                     color: AppColors.sageGreen,
                     fontWeight: FontWeight.w500,

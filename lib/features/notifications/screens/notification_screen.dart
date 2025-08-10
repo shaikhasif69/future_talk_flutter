@@ -252,7 +252,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.sageGreen.withValues(alpha: 0.2),
+                    color: AppColors.sageGreen.withAlpha(51),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -268,7 +268,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        color: AppColors.pearlWhite.withValues(alpha: 0.1),
+                        color: AppColors.pearlWhite.withAlpha(26),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -297,7 +297,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                                 width: 40,
                                 height: 40,
                                 decoration: BoxDecoration(
-                                  color: AppColors.pearlWhite.withValues(alpha: 0.2),
+                                  color: AppColors.pearlWhite.withAlpha(51),
                                   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                                 ),
                                 child: const Icon(
@@ -330,7 +330,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                                   vertical: AppDimensions.spacingXS,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: AppColors.pearlWhite.withValues(alpha: 0.2),
+                                  color: AppColors.pearlWhite.withAlpha(51),
                                   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                                 ),
                                 child: Text(
@@ -353,7 +353,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                             Text(
                               'Your thoughtful updates',
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.pearlWhite.withValues(alpha: 0.9),
+                                color: AppColors.pearlWhite.withAlpha(230),
                               ),
                             ),
                             
@@ -366,7 +366,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                                 vertical: AppDimensions.spacingXS,
                               ),
                               decoration: BoxDecoration(
-                                color: AppColors.pearlWhite.withValues(alpha: 0.3),
+                                color: AppColors.pearlWhite.withAlpha(77),
                                 borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                               ),
                               child: Text(
@@ -409,7 +409,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.softCharcoal.withValues(alpha: 0.05),
+                    color: AppColors.softCharcoal.withAlpha(13),
                     blurRadius: 20,
                     offset: const Offset(0, -8),
                   ),
@@ -549,7 +549,7 @@ class _NotificationScreenState extends State<NotificationScreen>
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: AppColors.whisperGray.withValues(alpha: 0.5),
+                color: AppColors.whisperGray.withAlpha(128),
                 shape: BoxShape.circle,
               ),
               child: const Icon(

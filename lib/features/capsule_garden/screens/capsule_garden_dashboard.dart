@@ -282,7 +282,7 @@ class _CapsuleGardenDashboardState extends State<CapsuleGardenDashboard>
           Text(
             'Messages growing through time',
             style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.pearlWhite.withValues(alpha: 0.9),
+              color: AppColors.pearlWhite.withAlpha(230),
             ),
           ),
           const SizedBox(height: AppDimensions.spacingL),
@@ -324,7 +324,7 @@ class _CapsuleGardenDashboardState extends State<CapsuleGardenDashboard>
           Text(
             label,
             style: AppTextStyles.labelSmall.copyWith(
-              color: AppColors.pearlWhite.withValues(alpha: 0.8),
+              color: AppColors.pearlWhite.withAlpha(204),
               letterSpacing: 0.5,
               fontWeight: FontWeight.w500,
             ),
@@ -338,7 +338,7 @@ class _CapsuleGardenDashboardState extends State<CapsuleGardenDashboard>
     return Container(
       width: 1,
       height: 32,
-      color: AppColors.pearlWhite.withValues(alpha: 0.3),
+      color: AppColors.pearlWhite.withAlpha(77),
       margin: const EdgeInsets.symmetric(horizontal: AppDimensions.spacingS),
     );
   }
@@ -428,7 +428,7 @@ class _CapsuleGardenDashboardState extends State<CapsuleGardenDashboard>
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.sageGreen.withValues(alpha: 0.1),
+                  color: AppColors.sageGreen.withAlpha(26),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(

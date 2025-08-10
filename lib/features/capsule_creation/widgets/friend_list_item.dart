@@ -116,7 +116,7 @@ class _FriendListItemState extends State<FriendListItem>
                         color: widget.isSelected
                             ? AppColors.sageGreen
                             : _isHovered
-                                ? AppColors.sageGreen.withValues(alpha: 0.5)
+                                ? AppColors.sageGreen.withAlpha(128)
                                 : AppColors.whisperGray,
                         width: 2,
                       ),
@@ -125,7 +125,7 @@ class _FriendListItemState extends State<FriendListItem>
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
-                                AppColors.sageGreen.withValues(alpha: 0.05),
+                                AppColors.sageGreen.withAlpha(13),
                                 Colors.white,
                               ],
                             )
@@ -195,7 +195,7 @@ class _FriendListItemState extends State<FriendListItem>
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.sageGreen.withValues(alpha: 0.2),
+            color: AppColors.sageGreen.withAlpha(51),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -330,7 +330,7 @@ class SocialBatteryIndicator extends StatelessWidget {
           BoxShadow(
             color: Color(int.parse(
               batteryLevel.colorHex.replaceFirst('#', '0xFF')
-            )).withValues(alpha: 0.3),
+            )).withAlpha(77),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -388,7 +388,7 @@ class _FriendSearchBarState extends State<FriendSearchBar> {
         boxShadow: _focusNode.hasFocus
             ? [
                 BoxShadow(
-                  color: AppColors.sageGreen.withValues(alpha: 0.1),
+                  color: AppColors.sageGreen.withAlpha(26),
                   blurRadius: 12,
                   offset: const Offset(0, 0),
                 ),

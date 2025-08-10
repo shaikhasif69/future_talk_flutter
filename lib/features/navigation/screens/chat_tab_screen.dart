@@ -28,7 +28,7 @@ class ChatTabScreen extends ConsumerWidget {
               width: 120.w,
               height: 120.w,
               decoration: BoxDecoration(
-                color: AppColors.cloudBlue.withValues(alpha: 0.1),
+                color: AppColors.cloudBlue.withAlpha(26),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -70,7 +70,7 @@ class ChatTabScreen extends ConsumerWidget {
               child: Text(
                 'Connect with others at your own pace. No pressure, just meaningful exchanges when you\'re ready.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.softCharcoalLight.withValues(alpha: 0.8),
+                  color: AppColors.softCharcoalLight.withAlpha(204),
                   height: 1.5,
                 ),
                 textAlign: TextAlign.center,
@@ -86,7 +86,7 @@ class ChatTabScreen extends ConsumerWidget {
                 color: AppColors.warmCream,
                 borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
                 border: Border.all(
-                  color: AppColors.cloudBlue.withValues(alpha: 0.2),
+                  color: AppColors.cloudBlue.withAlpha(51),
                   width: 1,
                 ),
                 boxShadow: [

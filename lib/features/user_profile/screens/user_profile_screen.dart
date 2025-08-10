@@ -211,7 +211,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
             ),
             borderRadius: BorderRadius.circular(AppDimensions.radiusL),
             border: Border.all(
-              color: AppColors.sageGreen.withValues(alpha: 0.1),
+              color: AppColors.sageGreen.withAlpha(26),
               width: 1,
             ),
             boxShadow: [
@@ -292,7 +292,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                borderColor.withValues(alpha: 0.05),
+                borderColor.withAlpha(13),
                 AppColors.pearlWhite,
               ],
             ),
@@ -388,7 +388,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppColors.warmPeach.withValues(alpha: 0.05),
+                AppColors.warmPeach.withAlpha(13),
                 AppColors.pearlWhite,
               ],
             ),
@@ -533,15 +533,15 @@ class _UserProfileScreenState extends State<UserProfileScreen>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppColors.dustyRose.withValues(alpha: 0.1),
-                AppColors.warmPeach.withValues(alpha: 0.1),
+                AppColors.dustyRose.withAlpha(26),
+                AppColors.warmPeach.withAlpha(26),
               ],
             ),
             borderRadius: BorderRadius.circular(AppDimensions.radiusL),
             boxShadow: stone.isActive 
                 ? [
                     BoxShadow(
-                      color: AppColors.dustyRose.withValues(alpha: 0.3),
+                      color: AppColors.dustyRose.withAlpha(77),
                       blurRadius: 16,
                       spreadRadius: 2,
                     ),
@@ -607,7 +607,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
         borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
         boxShadow: [
           BoxShadow(
-            color: AppColors.sageGreen.withValues(alpha: 0.3),
+            color: AppColors.sageGreen.withAlpha(77),
             blurRadius: 24,
             offset: const Offset(0, 8),
           ),
@@ -630,7 +630,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
+                  color: Colors.white.withAlpha(51),
                   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                 ),
                 child: const Text(
@@ -670,7 +670,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
         return Container(
           padding: const EdgeInsets.all(AppDimensions.spacingL),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.1),
+            color: Colors.white.withAlpha(26),
             borderRadius: BorderRadius.circular(AppDimensions.radiusM),
           ),
           child: Column(
@@ -690,7 +690,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                 label,
                 style: TextStyle(
                   fontSize: 11,
-                  color: Colors.white.withValues(alpha: 0.9),
+                  color: Colors.white.withAlpha(230),
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
@@ -752,7 +752,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                   vertical: AppDimensions.spacingXS,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.sageGreen.withValues(alpha: 0.1),
+                  color: AppColors.sageGreen.withAlpha(26),
                   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                 ),
                 child: Text(

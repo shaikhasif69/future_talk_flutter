@@ -123,12 +123,12 @@ class _NotificationTabOverlayState extends State<NotificationTabOverlay>
           borderRadius: BorderRadius.circular(AppDimensions.radiusL),
           boxShadow: [
             BoxShadow(
-              color: AppColors.softCharcoal.withValues(alpha: 0.1),
+              color: AppColors.softCharcoal.withAlpha(26),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
             BoxShadow(
-              color: AppColors.softCharcoal.withValues(alpha: 0.05),
+              color: AppColors.softCharcoal.withAlpha(13),
               blurRadius: 40,
               offset: const Offset(0, 16),
             ),
@@ -223,7 +223,7 @@ class _NotificationTabOverlayState extends State<NotificationTabOverlay>
                     boxShadow: isSelected
                         ? [
                             BoxShadow(
-                              color: AppColors.sageGreen.withValues(alpha: 0.3),
+                              color: AppColors.sageGreen.withAlpha(77),
                               blurRadius: 8,
                               offset: const Offset(0, 2),
                             ),
@@ -259,15 +259,15 @@ class _NotificationTabOverlayState extends State<NotificationTabOverlay>
                         ),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? AppColors.pearlWhite.withValues(alpha: 0.2)
-                              : AppColors.sageGreen.withValues(alpha: 0.1),
+                              ? AppColors.pearlWhite.withAlpha(51)
+                              : AppColors.sageGreen.withAlpha(26),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: AnimatedDefaultTextStyle(
                           duration: const Duration(milliseconds: 300),
                           style: AppTextStyles.labelSmall.copyWith(
                             color: isSelected
-                                ? AppColors.pearlWhite.withValues(alpha: 0.9)
+                                ? AppColors.pearlWhite.withAlpha(230)
                                 : AppColors.softCharcoalLight,
                             fontSize: 9,
                             fontWeight: FontWeight.w500,

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 import '../models/chat_conversation.dart';
+import '../models/chat_message.dart';
 import '../models/group_chat.dart';
 import '../models/social_battery_status.dart';
 
@@ -64,7 +65,7 @@ class ChatListProvider extends ChangeNotifier {
   Map<ChatFilter, int> get filterCounts {
     return {
       ChatFilter.all: _allConversations.length,
-      ChatFilter.friends: _allConversations.where((c) => c.isIndividual).length,
+      ChatFilter.friends: _allConversations.where((c) => c.isDirect).length,
       ChatFilter.groups: _allConversations.where((c) => c.isGroup).length,
       ChatFilter.unread: _allConversations.where((c) => c.hasUnreadMessages).length,
     };
@@ -166,7 +167,7 @@ class ChatListProvider extends ChangeNotifier {
     for (int i = 0; i < _allConversations.length; i++) {
       final conversation = _allConversations[i];
       
-      if (conversation.isIndividual && conversation.otherParticipant?.id == userId) {
+      if (conversation.isDirect && conversation.otherParticipant?.id == userId) {
         final updatedParticipant = conversation.otherParticipant!.copyWith(
           socialBattery: newStatus,
         );
@@ -207,7 +208,7 @@ class ChatListProvider extends ChangeNotifier {
         // No additional filtering
         break;
       case ChatFilter.friends:
-        filtered = filtered.where((c) => c.isIndividual).toList();
+        filtered = filtered.where((c) => c.isDirect).toList();
         break;
       case ChatFilter.groups:
         filtered = filtered.where((c) => c.isGroup).toList();
@@ -226,7 +227,7 @@ class ChatListProvider extends ChangeNotifier {
         }
         
         // Search by last message content
-        if (c.lastMessage.content.toLowerCase().contains(_searchQuery)) {
+        if (c.lastMessage?.content.toLowerCase().contains(_searchQuery) == true) {
           return true;
         }
         
@@ -257,7 +258,7 @@ class ChatListProvider extends ChangeNotifier {
       ChatConversation(
         id: '1',
         name: 'Sarah Chen',
-        type: ChatType.individual,
+        type: ConversationType.direct,
         participants: [
           ChatParticipant(
             id: 'sarah_001',
@@ -269,12 +270,16 @@ class ChatListProvider extends ChangeNotifier {
             isOnline: true,
           ),
         ],
-        lastMessage: LastMessage(
-          content: 'Perfect! I\'m feeling yellow today - selective responses mode. Thanks for checking in 💛',
-          timestamp: DateTime.now().subtract(const Duration(minutes: 32)),
+        lastMessage: ChatMessage(
+          id: 'msg_1',
+          conversationId: '1',
           senderId: 'sarah_001',
-          senderName: 'Sarah Chen',
+          senderUsername: 'Sarah Chen',
+          content: 'Perfect! I\'m feeling yellow today - selective responses mode. Thanks for checking in 💛',
+          messageType: MessageType.text,
+          createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
           status: MessageStatus.read,
+          isFromMe: false,
         ),
         updatedAt: DateTime.now().subtract(const Duration(minutes: 32)),
         unreadCount: 2,
@@ -320,12 +325,16 @@ class ChatListProvider extends ChangeNotifier {
             joinedAt: DateTime.now().subtract(const Duration(days: 45)),
           ),
         ],
-        lastMessage: LastMessage(
-          content: 'Jamie: Should we start "Quiet" by Susan Cain next?',
-          timestamp: DateTime.now().subtract(const Duration(hours: 18)),
+        lastMessage: ChatMessage(
+          id: 'msg_2',
+          conversationId: '2',
           senderId: 'jamie_002',
-          senderName: 'Jamie',
+          senderUsername: 'Jamie',
+          content: 'Should we start "Quiet" by Susan Cain next?',
+          messageType: MessageType.text,
+          createdAt: DateTime.now().subtract(const Duration(hours: 18)),
           status: MessageStatus.delivered,
+          isFromMe: false,
         ),
         updatedAt: DateTime.now().subtract(const Duration(hours: 18)),
         unreadCount: 3,
@@ -337,7 +346,7 @@ class ChatListProvider extends ChangeNotifier {
       ChatConversation(
         id: '3',
         name: 'Morgan Kim',
-        type: ChatType.individual,
+        type: ConversationType.direct,
         participants: [
           ChatParticipant(
             id: 'morgan_004',
@@ -347,11 +356,14 @@ class ChatListProvider extends ChangeNotifier {
             isOnline: true,
           ),
         ],
-        lastMessage: LastMessage(
-          content: 'Thanks for the comfort stone touch earlier! Really needed that ✨',
-          timestamp: DateTime.now().subtract(const Duration(hours: 20)),
+        lastMessage: ChatMessage(
+          id: 'msg_3',
+          conversationId: '3',
           senderId: 'morgan_004',
-          senderName: 'Morgan Kim',
+          senderUsername: 'Morgan Kim',
+          content: 'Thanks for the comfort stone touch earlier! Really needed that ✨',
+          messageType: MessageType.text,
+          createdAt: DateTime.now().subtract(const Duration(hours: 20)),
           status: MessageStatus.read,
           isFromMe: false,
         ),
@@ -390,12 +402,16 @@ class ChatListProvider extends ChangeNotifier {
             socialBattery: SocialBatteryPresets.selective(),
           ),
         ],
-        lastMessage: LastMessage(
-          content: 'Alex: Chess rematch tonight? 😊',
-          timestamp: DateTime.now().subtract(const Duration(days: 2)),
+        lastMessage: ChatMessage(
+          id: 'msg_4',
+          conversationId: '4',
           senderId: 'alex_003',
-          senderName: 'Alex',
+          senderUsername: 'Alex',
+          content: 'Chess rematch tonight? 😊',
+          messageType: MessageType.text,
+          createdAt: DateTime.now().subtract(const Duration(days: 2)),
           status: MessageStatus.sent,
+          isFromMe: false,
         ),
         updatedAt: DateTime.now().subtract(const Duration(days: 2)),
         createdAt: DateTime.now().subtract(const Duration(days: 60)),
@@ -406,7 +422,7 @@ class ChatListProvider extends ChangeNotifier {
       ChatConversation(
         id: '5',
         name: 'Jamie Rivera',
-        type: ChatType.individual,
+        type: ConversationType.direct,
         participants: [
           ChatParticipant(
             id: 'jamie_002',
@@ -419,12 +435,16 @@ class ChatListProvider extends ChangeNotifier {
             lastSeen: DateTime.now().subtract(const Duration(hours: 12)),
           ),
         ],
-        lastMessage: LastMessage(
-          content: '💤 Recharging mode activated for the week',
-          timestamp: DateTime.now().subtract(const Duration(days: 3)),
+        lastMessage: ChatMessage(
+          id: 'msg_5',
+          conversationId: '5',
           senderId: 'jamie_002',
-          senderName: 'Jamie Rivera',
+          senderUsername: 'Jamie Rivera',
+          content: '💤 Recharging mode activated for the week',
+          messageType: MessageType.text,
+          createdAt: DateTime.now().subtract(const Duration(days: 3)),
           status: MessageStatus.read,
+          isFromMe: false,
         ),
         updatedAt: DateTime.now().subtract(const Duration(days: 3)),
       ),
@@ -433,7 +453,7 @@ class ChatListProvider extends ChangeNotifier {
       ChatConversation(
         id: '6',
         name: 'Alex Rivera',
-        type: ChatType.individual,
+        type: ConversationType.direct,
         participants: [
           ChatParticipant(
             id: 'alex_007',
@@ -443,12 +463,16 @@ class ChatListProvider extends ChangeNotifier {
             isOnline: true,
           ),
         ],
-        lastMessage: LastMessage(
-          content: 'Good morning! How was your reading session?',
-          timestamp: DateTime.now().subtract(const Duration(days: 4)),
+        lastMessage: ChatMessage(
+          id: 'msg_6',
+          conversationId: '6',
           senderId: 'alex_007',
-          senderName: 'Alex Rivera',
+          senderUsername: 'Alex Rivera',
+          content: 'Good morning! How was your reading session?',
+          messageType: MessageType.text,
+          createdAt: DateTime.now().subtract(const Duration(days: 4)),
           status: MessageStatus.sent,
+          isFromMe: false,
         ),
         updatedAt: DateTime.now().subtract(const Duration(days: 4)),
         isMuted: true,
@@ -500,12 +524,16 @@ class ChatListProvider extends ChangeNotifier {
             joinedAt: DateTime.now().subtract(const Duration(days: 365)),
           ),
         ],
-        lastMessage: LastMessage(
-          content: 'Mom: Looking forward to our reading session this weekend!',
-          timestamp: DateTime.now().subtract(const Duration(days: 7)),
+        lastMessage: ChatMessage(
+          id: 'msg_7',
+          conversationId: '7',
           senderId: 'mom_001',
-          senderName: 'Mom',
+          senderUsername: 'Mom',
+          content: 'Looking forward to our reading session this weekend!',
+          messageType: MessageType.text,
+          createdAt: DateTime.now().subtract(const Duration(days: 7)),
           status: MessageStatus.read,
+          isFromMe: false,
         ),
         updatedAt: DateTime.now().subtract(const Duration(days: 7)),
         createdAt: DateTime.now().subtract(const Duration(days: 365)),

@@ -369,7 +369,7 @@ class _HeartTouchDetectorState extends State<HeartTouchDetector>
     return CustomPaint(
       painter: HeartTrailPainter(
         points: _touchPoints,
-        color: widget.heartColor.withValues(alpha: 0.6),
+        color: widget.heartColor.withAlpha(153),
       ),
       size: Size.infinite,
     );

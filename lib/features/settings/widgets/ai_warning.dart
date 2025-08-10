@@ -76,12 +76,12 @@ class _AIWarningState extends State<AIWarning>
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    AppColors.warmPeach.withValues(alpha: 0.1),
-                    AppColors.dustyRose.withValues(alpha: 0.1),
+                    AppColors.warmPeach.withAlpha(26),
+                    AppColors.dustyRose.withAlpha(26),
                   ],
                 ),
                 border: Border.all(
-                  color: AppColors.warmPeach.withValues(alpha: 0.3),
+                  color: AppColors.warmPeach.withAlpha(77),
                   width: 1,
                 ),
                 borderRadius: BorderRadius.circular(AppDimensions.radiusM),

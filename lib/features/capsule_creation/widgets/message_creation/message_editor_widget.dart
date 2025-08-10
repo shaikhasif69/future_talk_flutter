@@ -327,7 +327,7 @@ class _MessageEditorWidgetState extends State<MessageEditorWidget>
     return Container(
       padding: const EdgeInsets.all(AppDimensions.paddingM),
       decoration: BoxDecoration(
-        color: AppColors.warmCream.withValues(alpha: 0.3),
+        color: AppColors.warmCream.withAlpha(77),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(AppDimensions.radiusL),
           topRight: Radius.circular(AppDimensions.radiusL),
@@ -404,7 +404,7 @@ class _MessageEditorWidgetState extends State<MessageEditorWidget>
     return Container(
       padding: const EdgeInsets.all(AppDimensions.paddingM),
       decoration: BoxDecoration(
-        color: AppColors.warmCream.withValues(alpha: 0.2),
+        color: AppColors.warmCream.withAlpha(51),
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(AppDimensions.radiusL),
           bottomRight: Radius.circular(AppDimensions.radiusL),

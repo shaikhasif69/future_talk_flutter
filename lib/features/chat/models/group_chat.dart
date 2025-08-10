@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'chat_conversation.dart';
+import 'chat_message.dart';
 import 'social_battery_status.dart';
 
 /// Group chat roles
@@ -219,7 +220,7 @@ class GroupChat extends ChatConversation {
     this.settings = const GroupSettings(),
     this.inviteCode,
   }) : super(
-          type: ChatType.group,
+          type: ConversationType.group,
           participants: members,
         );
 
@@ -284,7 +285,7 @@ class GroupChat extends ChatConversation {
   @override
   List<Color> get avatarGradient {
     if (avatarColor != null) {
-      return [avatarColor!, avatarColor!.withValues(alpha:  0.7)];
+      return [avatarColor!, avatarColor!.withAlpha(179)];
     }
 
     // Use colors from first few members
@@ -293,7 +294,7 @@ class GroupChat extends ChatConversation {
       if (colors.length >= 2) {
         return [colors[0], colors[1]];
       } else if (colors.length == 1) {
-        return [colors[0], colors[0].withValues(alpha:  0.7)];
+        return [colors[0], colors[0].withAlpha(179)];
       }
     }
 
@@ -336,7 +337,7 @@ class GroupChat extends ChatConversation {
     List<GroupMember>? members,
     DateTime? createdAt,
     String? createdBy,
-    LastMessage? lastMessage,
+    ChatMessage? lastMessage,
     DateTime? updatedAt,
     int? unreadCount,
     bool? isPinned,

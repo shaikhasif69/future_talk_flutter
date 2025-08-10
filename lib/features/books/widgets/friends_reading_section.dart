@@ -191,7 +191,7 @@ class _FriendsReadingSectionState extends State<FriendsReadingSection>
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: _getStatusColor(friend.status).withValues(alpha: 0.5),
+                  color: _getStatusColor(friend.status).withAlpha(128),
                   blurRadius: 4,
                   spreadRadius: 1,
                 ),

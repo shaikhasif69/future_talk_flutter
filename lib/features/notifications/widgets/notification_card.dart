@@ -229,7 +229,7 @@ class _NotificationCardState extends State<NotificationCard>
             child: CustomPaint(
               painter: RipplePainter(
                 progress: _rippleAnimation.value,
-                color: _getTypeColor().withValues(alpha: 0.3),
+                color: _getTypeColor().withAlpha(77),
               ),
             ),
           );
@@ -268,7 +268,7 @@ class _NotificationCardState extends State<NotificationCard>
               end: Alignment.bottomRight,
               colors: [
                 _getTypeColor(),
-                _getTypeColor().withValues(alpha: 0.7),
+                _getTypeColor().withAlpha(179),
               ],
             ),
             shape: BoxShape.circle,
@@ -329,7 +329,7 @@ class _NotificationCardState extends State<NotificationCard>
     return Container(
       padding: const EdgeInsets.all(AppDimensions.spacingM),
       decoration: BoxDecoration(
-        color: _getTypeColor().withValues(alpha: 0.1),
+        color: _getTypeColor().withAlpha(26),
         borderRadius: BorderRadius.circular(AppDimensions.radiusS),
         border: Border(
           left: BorderSide(
@@ -397,7 +397,7 @@ class _NotificationCardState extends State<NotificationCard>
             ),
             decoration: BoxDecoration(
               color: isPrimary 
-                  ? _getTypeColor().withValues(alpha: 0.1)
+                  ? _getTypeColor().withAlpha(26)
                   : AppColors.whisperGray,
               borderRadius: BorderRadius.circular(AppDimensions.radiusS),
             ),

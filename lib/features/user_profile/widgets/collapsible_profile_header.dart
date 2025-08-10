@@ -152,7 +152,7 @@ class _CollapsibleProfileHeaderState extends State<CollapsibleProfileHeader>
     return Padding(
       padding: const EdgeInsets.all(AppDimensions.spacingS),
       child: Material(
-        color: Colors.white.withValues(alpha: 0.2),
+        color: Colors.white.withAlpha(51),
         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
         child: InkWell(
           borderRadius: BorderRadius.circular(AppDimensions.radiusM),
@@ -164,7 +164,7 @@ class _CollapsibleProfileHeaderState extends State<CollapsibleProfileHeader>
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.1),
+                color: Colors.white.withAlpha(26),
                 width: 1,
               ),
             ),
@@ -200,7 +200,7 @@ class _CollapsibleProfileHeaderState extends State<CollapsibleProfileHeader>
     return Padding(
       padding: const EdgeInsets.only(right: AppDimensions.spacingS),
       child: Material(
-        color: Colors.white.withValues(alpha: 0.2),
+        color: Colors.white.withAlpha(51),
         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
         child: InkWell(
           borderRadius: BorderRadius.circular(AppDimensions.radiusM),
@@ -214,7 +214,7 @@ class _CollapsibleProfileHeaderState extends State<CollapsibleProfileHeader>
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.1),
+                color: Colors.white.withAlpha(26),
                 width: 1,
               ),
             ),
@@ -275,7 +275,7 @@ class _CollapsibleProfileHeaderState extends State<CollapsibleProfileHeader>
             height: 120,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.white.withValues(alpha: 0.1),
+              color: Colors.white.withAlpha(26),
             ),
           ),
         ),
@@ -288,7 +288,7 @@ class _CollapsibleProfileHeaderState extends State<CollapsibleProfileHeader>
             height: 80,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.white.withValues(alpha: 0.05),
+              color: Colors.white.withAlpha(13),
             ),
           ),
         ),
@@ -301,7 +301,7 @@ class _CollapsibleProfileHeaderState extends State<CollapsibleProfileHeader>
             height: 12,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.white.withValues(alpha: 0.3),
+              color: Colors.white.withAlpha(77),
             ),
           ),
         ),
@@ -313,7 +313,7 @@ class _CollapsibleProfileHeaderState extends State<CollapsibleProfileHeader>
             height: 8,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.white.withValues(alpha: 0.2),
+              color: Colors.white.withAlpha(51),
             ),
           ),
         ),
@@ -358,7 +358,7 @@ class _CollapsibleProfileHeaderState extends State<CollapsibleProfileHeader>
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
+              color: Colors.black.withAlpha(51),
               blurRadius: 16,
               offset: const Offset(0, 8),
             ),
@@ -400,7 +400,7 @@ class _CollapsibleProfileHeaderState extends State<CollapsibleProfileHeader>
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: _batteryColor.withValues(alpha: 0.4),
+                            color: _batteryColor.withAlpha(102),
                             blurRadius: 8,
                             spreadRadius: 2,
                           ),
@@ -441,7 +441,7 @@ class _CollapsibleProfileHeaderState extends State<CollapsibleProfileHeader>
           widget.userProfile.username,
           style: TextStyle(
             fontSize: 14,
-            color: Colors.white.withValues(alpha: 0.9),
+            color: Colors.white.withAlpha(230),
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -452,7 +452,7 @@ class _CollapsibleProfileHeaderState extends State<CollapsibleProfileHeader>
           'Friends since ${_formatDate(widget.userProfile.friendsSince)}',
           style: TextStyle(
             fontSize: 12,
-            color: Colors.white.withValues(alpha: 0.8),
+            color: Colors.white.withAlpha(204),
           ),
         ),
         const SizedBox(height: 8),
@@ -464,7 +464,7 @@ class _CollapsibleProfileHeaderState extends State<CollapsibleProfileHeader>
             widget.userProfile.bio,
             style: TextStyle(
               fontSize: 13,
-              color: Colors.white.withValues(alpha: 0.9),
+              color: Colors.white.withAlpha(230),
               fontStyle: FontStyle.italic,
               height: 1.4,
               fontFamily: 'Crimson Pro',

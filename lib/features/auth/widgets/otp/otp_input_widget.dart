@@ -160,8 +160,8 @@ class _OtpInputWidgetState extends State<OtpInputWidget> with TickerProviderStat
             height: 60,
             decoration: BoxDecoration(
               color: widget.enabled 
-                  ? (hasText ? AppColors.lavenderMist.withValues(alpha: 0.3) : AppColors.warmCreamAlt)
-                  : AppColors.stoneGray.withValues(alpha: 0.1),
+                  ? (hasText ? AppColors.lavenderMist.withAlpha(77) : AppColors.warmCreamAlt)
+                  : AppColors.stoneGray.withAlpha(26),
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
               border: Border.all(
                 color: _getBorderColor(index),
@@ -169,7 +169,7 @@ class _OtpInputWidgetState extends State<OtpInputWidget> with TickerProviderStat
               ),
               boxShadow: [
                 if (isCurrentField) BoxShadow(
-                  color: AppColors.sageGreen.withValues(alpha: 0.2),
+                  color: AppColors.sageGreen.withAlpha(51),
                   blurRadius: 8.0,
                   offset: const Offset(0, 2),
                 ),

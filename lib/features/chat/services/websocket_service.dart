@@ -370,17 +370,22 @@ class ChatWebSocketService extends ChangeNotifier {
   /// Handle incoming WebSocket messages
   void _handleMessage(dynamic rawMessage) {
     try {
+      debugPrint('📥 [WebSocket] RAW MESSAGE RECEIVED: $rawMessage');
       final messageData = jsonDecode(rawMessage as String) as Map<String, dynamic>;
       final message = WebSocketMessage.fromJson(messageData);
       
-      debugPrint('📥 [WebSocket] Received: ${message.type}');
+      debugPrint('📥 [WebSocket] PARSED MESSAGE: ${message.type}');
+      debugPrint('📥 [WebSocket] MESSAGE DATA: ${jsonEncode(messageData)}');
       
       // Route message to appropriate stream
       switch (message.eventType) {
         case WebSocketEventType.connectionEstablished:
           _userId = messageData['user_id'] as String?;
+          debugPrint('🔌 [WebSocket] CONNECTION ESTABLISHED:');
+          debugPrint('🔌 [WebSocket] - User ID: $_userId');
+          debugPrint('🔌 [WebSocket] - Full data: ${jsonEncode(messageData)}');
           _connectionController.add(messageData);
-          debugPrint('🔌 [WebSocket] Connection established for user: $_userId');
+          debugPrint('🔌 [WebSocket] Connection event added to stream');
           break;
           
         case WebSocketEventType.heartbeatAck:
@@ -388,8 +393,13 @@ class ChatWebSocketService extends ChangeNotifier {
           break;
           
         case WebSocketEventType.chatMessage:
+          debugPrint('💬 [WebSocket] CHAT MESSAGE EVENT PROCESSING:');
+          debugPrint('💬 [WebSocket] - Conversation ID: ${message.conversationId}');
+          debugPrint('💬 [WebSocket] - Message data keys: ${messageData.keys.toList()}');
+          debugPrint('💬 [WebSocket] - Full message data: ${jsonEncode(messageData)}');
+          
           _chatMessageController.add(messageData);
-          debugPrint('💬 [WebSocket] Chat message received for conversation: ${message.conversationId}');
+          debugPrint('💬 [WebSocket] Chat message added to stream for conversation: ${message.conversationId}');
           break;
           
         case WebSocketEventType.typingIndicator:

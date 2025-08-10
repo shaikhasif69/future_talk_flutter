@@ -135,7 +135,7 @@ class _ProfileStatsSectionState extends State<ProfileStatsSection>
             vertical: AppDimensions.spacingXS,
           ),
           decoration: BoxDecoration(
-            color: AppColors.sageGreen.withValues(alpha: 0.1),
+            color: AppColors.sageGreen.withAlpha(26),
             borderRadius: BorderRadius.circular(AppDimensions.radiusM),
           ),
           child: Text(
@@ -214,12 +214,12 @@ class _ProfileStatsSectionState extends State<ProfileStatsSection>
             ),
             borderRadius: BorderRadius.circular(AppDimensions.radiusL),
             border: Border.all(
-              color: color.withValues(alpha: 0.1),
+              color: color.withAlpha(26),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: color.withValues(alpha: 0.05),
+                color: color.withAlpha(13),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -233,7 +233,7 @@ class _ProfileStatsSectionState extends State<ProfileStatsSection>
                 width: 32,
                 height: 32,
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
+                  color: color.withAlpha(26),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
@@ -466,12 +466,12 @@ class _StatCardState extends State<StatCard>
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(AppDimensions.radiusL),
                   border: Border.all(
-                    color: widget.color.withValues(alpha: 0.2),
+                    color: widget.color.withAlpha(51),
                     width: _isHovered ? 2.0 : 1.0,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: widget.color.withValues(alpha: 0.1),
+                      color: widget.color.withAlpha(26),
                       blurRadius: _elevationAnimation.value,
                       offset: const Offset(0, 2),
                     ),

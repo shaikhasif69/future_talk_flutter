@@ -109,7 +109,7 @@ class _PreferenceItemState extends State<PreferenceItem>
     
     _backgroundAnimation = ColorTween(
       begin: AppColors.warmCream,
-      end: AppColors.sageGreen.withValues(alpha: 0.1),
+      end: AppColors.sageGreen.withAlpha(26),
     ).animate(CurvedAnimation(
       parent: _selectionController,
       curve: Curves.easeOut,
@@ -173,14 +173,14 @@ class _PreferenceItemState extends State<PreferenceItem>
               boxShadow: widget.preference.isSelected
                   ? [
                       BoxShadow(
-                        color: AppColors.sageGreen.withValues(alpha: 0.2),
+                        color: AppColors.sageGreen.withAlpha(51),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
                     ]
                   : [
                       BoxShadow(
-                        color: AppColors.softCharcoal.withValues(alpha: 0.05),
+                        color: AppColors.softCharcoal.withAlpha(13),
                         blurRadius: 4,
                         offset: const Offset(0, 1),
                       ),

@@ -81,7 +81,7 @@ class _PremiumFeaturesSectionState extends State<PremiumFeaturesSection>
         borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
         boxShadow: [
           BoxShadow(
-            color: AppColors.lavenderMist.withValues(alpha: 0.3),
+            color: AppColors.lavenderMist.withAlpha(77),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -106,7 +106,7 @@ class _PremiumFeaturesSectionState extends State<PremiumFeaturesSection>
              .fadeIn(duration: 800.ms)
              .scale(begin: const Offset(0.5, 0.5))
              .then()
-             .shimmer(duration: 2000.ms, color: Colors.white.withValues(alpha: 0.5)),
+             .shimmer(duration: 2000.ms, color: Colors.white.withAlpha(128)),
           ),
           
           // Main content
@@ -136,7 +136,7 @@ class _PremiumFeaturesSectionState extends State<PremiumFeaturesSection>
                 end: Alignment.centerRight,
                 colors: [
                   Colors.transparent,
-                  Colors.white.withValues(alpha: 0.1),
+                  Colors.white.withAlpha(26),
                   Colors.transparent,
                 ],
                 stops: [
@@ -170,7 +170,7 @@ class _PremiumFeaturesSectionState extends State<PremiumFeaturesSection>
         Text(
           'Your premium features for deeper connections',
           style: AppTextStyles.bodyMedium.copyWith(
-            color: Colors.white.withValues(alpha: 0.9),
+            color: Colors.white.withAlpha(230),
             fontSize: 13,
           ),
         ).animate(delay: 100.ms).fadeIn(duration: 600.ms).slideX(begin: -0.3),
@@ -218,10 +218,10 @@ class _PremiumFeaturesSectionState extends State<PremiumFeaturesSection>
     return Container(
       padding: const EdgeInsets.all(AppDimensions.spacingL),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.2),
+        color: Colors.white.withAlpha(51),
         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.1),
+          color: Colors.white.withAlpha(26),
           width: 1,
         ),
       ),
@@ -232,7 +232,7 @@ class _PremiumFeaturesSectionState extends State<PremiumFeaturesSection>
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.2),
+              color: Colors.white.withAlpha(51),
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -264,7 +264,7 @@ class _PremiumFeaturesSectionState extends State<PremiumFeaturesSection>
                 Text(
                   description,
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: Colors.white.withValues(alpha: 0.8),
+                    color: Colors.white.withAlpha(204),
                     fontSize: 11,
                   ),
                 ),
@@ -313,7 +313,7 @@ class PremiumBadge extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppDimensions.radiusM),
           boxShadow: [
             BoxShadow(
-              color: AppColors.lavenderMist.withValues(alpha: 0.3),
+              color: AppColors.lavenderMist.withAlpha(77),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -441,7 +441,7 @@ class _PremiumFeatureCardState extends State<PremiumFeatureCard>
                   ),
                   borderRadius: BorderRadius.circular(AppDimensions.radiusL),
                   border: Border.all(
-                    color: accentColor.withValues(alpha: 0.3),
+                    color: accentColor.withAlpha(77),
                     width: 1,
                   ),
                   boxShadow: [
@@ -461,7 +461,7 @@ class _PremiumFeatureCardState extends State<PremiumFeatureCard>
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
-                            color: accentColor.withValues(alpha: 0.1),
+                            color: accentColor.withAlpha(26),
                             shape: BoxShape.circle,
                           ),
                           child: Center(
@@ -531,13 +531,13 @@ class UpgradeToPremiumCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.sageGreen.withValues(alpha: 0.1),
-            AppColors.lavenderMist.withValues(alpha: 0.1),
+            AppColors.sageGreen.withAlpha(26),
+            AppColors.lavenderMist.withAlpha(26),
           ],
         ),
         borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
         border: Border.all(
-          color: AppColors.sageGreen.withValues(alpha: 0.3),
+          color: AppColors.sageGreen.withAlpha(77),
           width: 1,
         ),
       ),

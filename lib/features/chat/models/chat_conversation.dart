@@ -16,6 +16,27 @@ class Participant with _$Participant {
     required DateTime joinedAt,
   }) = _Participant;
 
+  /// Create from API participant data with proper null safety
+  static Participant fromApiParticipant(Map<String, dynamic> json) {
+    // Safe string extraction with null checks and API field mapping
+    final String userId = (json['user_id'] as String?) ?? (json['userId'] as String?) ?? '';
+    final String username = (json['username'] as String?) ?? (json['display_name'] as String?) ?? 'Unknown User';
+    
+    // Safe role parsing
+    final String roleStr = (json['role'] as String?) ?? 'member';
+    final ParticipantRole role = roleStr == 'admin' ? ParticipantRole.admin : ParticipantRole.member;
+    
+    // Safe date parsing
+    final String joinedAtStr = (json['joined_at'] as String?) ?? (json['joinedAt'] as String?) ?? DateTime.now().toIso8601String();
+    
+    return Participant(
+      userId: userId,
+      username: username,
+      role: role,
+      joinedAt: DateTime.parse(joinedAtStr),
+    );
+  }
+
   factory Participant.fromJson(Map<String, Object?> json) =>
       _$ParticipantFromJson(json);
 }
@@ -188,16 +209,25 @@ class Conversation with _$Conversation {
     Map<String, dynamic> json,
     String currentUserId,
   ) {
+    // Safe string extraction with null checks
+    final String id = (json['id'] as String?) ?? '';
+    final String conversationTypeStr = (json['conversation_type'] as String?) ?? 'direct';
+    final String createdAtStr = (json['created_at'] as String?) ?? DateTime.now().toIso8601String();
+    final String lastMessageAtStr = (json['last_message_at'] as String?) ?? DateTime.now().toIso8601String();
+    
+    // Safe list extraction
+    final List<dynamic> participantsList = (json['participants'] as List<dynamic>?) ?? [];
+    
     return Conversation(
-      id: json['id'] as String,
-      conversationType: json['conversation_type'] == 'direct'
+      id: id,
+      conversationType: conversationTypeStr == 'direct'
           ? ConversationType.direct
           : ConversationType.group,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      lastMessageAt: DateTime.parse(json['last_message_at'] as String),
+      createdAt: DateTime.parse(createdAtStr),
+      lastMessageAt: DateTime.parse(lastMessageAtStr),
       isArchived: json['is_archived'] as bool? ?? false,
-      participants: (json['participants'] as List<dynamic>)
-          .map((p) => Participant.fromJson(p as Map<String, dynamic>))
+      participants: participantsList
+          .map((p) => Participant.fromApiParticipant(p as Map<String, dynamic>))
           .toList(),
       lastMessage: json['last_message'] != null
           ? ChatMessage.fromApiMessage(

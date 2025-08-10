@@ -7,7 +7,8 @@ import '../../../core/constants/app_durations.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/widgets/ft_card.dart';
 import '../models/chat_conversation.dart';
-import 'chat_avatar_widget.dart';
+import '../models/chat_message.dart';
+// import 'chat_avatar_widget.dart'; // Not needed - using custom avatar
 
 /// Premium chat item tile with rich interactions and introvert-friendly design
 /// Features staggered animations, social battery awareness, and gentle notifications
@@ -93,8 +94,34 @@ class _ChatItemTileState extends State<ChatItemTile>
     widget.onLongPress?.call();
   }
 
+  /// Format time exactly like HTML reference (9:28 AM format)
+  String _formatTime(DateTime? dateTime) {
+    if (dateTime == null) return '';
+    
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+    
+    if (difference.inDays == 0) {
+      // Today - show time like "9:28 AM"
+      final hour = dateTime.hour == 0 ? 12 : (dateTime.hour > 12 ? dateTime.hour - 12 : dateTime.hour);
+      final minute = dateTime.minute.toString().padLeft(2, '0');
+      final amPm = dateTime.hour < 12 ? 'AM' : 'PM';
+      return '$hour:$minute $amPm';
+    } else if (difference.inDays == 1) {
+      return 'Yesterday';
+    } else if (difference.inDays < 7) {
+      // This week - show day name
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return days[dateTime.weekday % 7];
+    } else {
+      return 'Last week';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    debugPrint('🏗️ [ChatItemTile] Building tile for: ${widget.conversation.displayName}');
+    
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
@@ -149,42 +176,123 @@ class _ChatItemTileState extends State<ChatItemTile>
   }
 
   Widget _buildAvatar() {
-    if (widget.conversation.isIndividual) {
-      return ChatAvatarWidget(
-        participant: widget.conversation.otherParticipant!,
-        size: 52.0,
-        showSocialBattery: true,
-      );
-    } else {
-      return GroupAvatarWidget(
-        conversation: widget.conversation,
-        size: 52.0,
-      );
-    }
+    debugPrint('🎨 [ChatItemTile] Building avatar for conversation: ${widget.conversation.id}');
+    
+    return Stack(
+      children: [
+        // Main avatar
+        Container(
+          width: 52.0,
+          height: 52.0,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: widget.conversation.avatarGradient,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.sageGreen.withValues(alpha: 0.2),
+                blurRadius: 8.0,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Center(
+            child: widget.conversation.isGroup
+                ? Text(
+                    widget.conversation.avatarEmoji ?? '👥',
+                    style: const TextStyle(fontSize: 24.0),
+                  )
+                : Text(
+                    widget.conversation.otherParticipant?.initials ?? '?',
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      color: AppColors.pearlWhite,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20.0,
+                    ),
+                  ),
+          ),
+        ),
+        
+        // Social battery indicator for individual chats (matches HTML exactly)
+        if (!widget.conversation.isGroup && widget.conversation.socialBattery != null)
+          Positioned(
+            bottom: -2,
+            right: -2,
+            child: Container(
+              width: 16.0,
+              height: 16.0,
+              decoration: BoxDecoration(
+                color: widget.conversation.socialBattery!.color,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppColors.pearlWhite,
+                  width: 2.0,
+                ),
+              ),
+            ).animate().fadeIn().scaleXY(
+              begin: 0.0,
+              curve: Curves.easeOutBack,
+              duration: AppDurations.fast,
+            ),
+          ),
+        
+        // Group indicator (matches HTML design)
+        if (widget.conversation.isGroup)
+          Positioned(
+            top: -2,
+            right: -2,
+            child: Container(
+              width: 18.0,
+              height: 18.0,
+              decoration: BoxDecoration(
+                color: AppColors.sageGreen,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppColors.pearlWhite,
+                  width: 2.0,
+                ),
+              ),
+              child: const Center(
+                child: Text(
+                  '👥',
+                  style: TextStyle(
+                    fontSize: 10.0,
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
   }
 
   Widget _buildContent() {
+    debugPrint('📋 [ChatItemTile] Building content for: ${widget.conversation.displayName}');
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Name and timestamp row
+        // Chat header row (name and timestamp) - exactly matching HTML structure
         Row(
           children: [
-            // Name with group indicator
+            // Name section with indicators
             Expanded(
               child: Row(
                 children: [
-                  // Pinned indicator
+                  // Pinned indicator (matching HTML 📌 pin)
                   if (widget.conversation.isPinned) ...[
                     Icon(
                       Icons.push_pin,
                       size: 12.0,
-                      color: AppColors.sageGreen.withValues(alpha:  0.7),
+                      color: AppColors.sageGreen.withValues(alpha: 0.7),
                     ),
                     const SizedBox(width: 4.0),
                   ],
                   
-                  // Name
+                  // Conversation name (matching HTML chat-name)
                   Flexible(
                     child: Text(
                       widget.conversation.displayName,
@@ -193,30 +301,33 @@ class _ChatItemTileState extends State<ChatItemTile>
                             ? FontWeight.w600 
                             : FontWeight.w500,
                         color: widget.conversation.isMuted 
-                            ? AppColors.softCharcoalLight
+                            ? AppColors.softCharcoalLight.withValues(alpha: 0.6)
                             : AppColors.softCharcoal,
+                        fontSize: 16.0, // Match HTML font-size
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   
-                  // Group member count
+                  // Group member count indicator (matching HTML group-indicator)
                   if (widget.conversation.isGroup) ...[
-                    const SizedBox(width: AppDimensions.spacingS),
+                    const SizedBox(width: 6.0),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 6.0,
                         vertical: 2.0,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.lavenderMist.withValues(alpha:  0.2),
+                        color: AppColors.lavenderMist.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: Text(
                         widget.conversation.memberCountText,
                         style: AppTextStyles.labelSmall.copyWith(
                           color: AppColors.softCharcoalLight,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
@@ -225,14 +336,15 @@ class _ChatItemTileState extends State<ChatItemTile>
               ),
             ),
             
-            // Timestamp
+            // Timestamp (matching HTML chat-time)
             Text(
-              widget.conversation.lastMessage.formattedTime,
+              _formatTime(widget.conversation.lastMessage?.createdAt),
               style: AppTextStyles.labelSmall.copyWith(
                 color: AppColors.softCharcoalLight,
                 fontWeight: widget.conversation.hasUnreadMessages 
                     ? FontWeight.w500 
                     : FontWeight.w400,
+                fontSize: 12.0, // Match HTML font-size
               ),
             ),
           ],
@@ -240,15 +352,15 @@ class _ChatItemTileState extends State<ChatItemTile>
         
         const SizedBox(height: 4.0),
         
-        // Last message and indicators row
+        // Chat preview row (message and indicators) - matching HTML structure
         Row(
           children: [
-            // Last message
+            // Last message preview (matching HTML last-message)
             Expanded(
               child: _buildLastMessage(),
             ),
             
-            // Message status and count
+            // Message status and notification indicators
             _buildMessageIndicators(),
           ],
         ),
@@ -259,10 +371,36 @@ class _ChatItemTileState extends State<ChatItemTile>
   Widget _buildLastMessage() {
     final lastMessage = widget.conversation.lastMessage;
     
-    // Show sender name for group chats
-    String displayText = lastMessage.previewText;
-    if (widget.conversation.isGroup && !lastMessage.isFromMe) {
-      displayText = '${lastMessage.senderName}: ${lastMessage.previewText}';
+    debugPrint('💬 [ChatItemTile] Building last message for conversation: ${widget.conversation.id}');
+    debugPrint('💬 [ChatItemTile] Last message content: ${lastMessage?.content}');
+    debugPrint('💬 [ChatItemTile] Is from me: ${lastMessage?.isFromMe}');
+    debugPrint('💬 [ChatItemTile] Sender username: ${lastMessage?.senderUsername}');
+    
+    // Get message content - exactly like HTML reference
+    String displayText = lastMessage?.content ?? 'No messages yet';
+    
+    // For group chats, show sender name prefix (matching HTML pattern)
+    if (widget.conversation.isGroup && lastMessage != null && !(lastMessage.isFromMe)) {
+      final senderName = lastMessage.senderUsername ?? 'Unknown';
+      displayText = '$senderName: $displayText';
+    }
+    
+    // Handle special message types (matching HTML examples)
+    if (lastMessage != null) {
+      switch (lastMessage.messageType) {
+        case MessageType.voice:
+          displayText = '🎵 Voice message';
+          break;
+        case MessageType.image:
+          displayText = '📷 Photo';
+          break;
+        case MessageType.video:
+          displayText = '🎥 Video';
+          break;
+        case MessageType.text:
+          // Keep the text as is
+          break;
+      }
     }
     
     return Text(
@@ -274,6 +412,7 @@ class _ChatItemTileState extends State<ChatItemTile>
         fontWeight: widget.conversation.hasUnreadMessages 
             ? FontWeight.w500 
             : FontWeight.w400,
+        fontFamily: 'Nunito Sans', // Match HTML font family
       ),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
@@ -287,9 +426,9 @@ class _ChatItemTileState extends State<ChatItemTile>
       mainAxisSize: MainAxisSize.min,
       children: [
         // Message status (for sent messages)
-        if (lastMessage.isFromMe) ...[
+        if (lastMessage?.isFromMe == true) ...[
           Icon(
-            _getStatusIcon(lastMessage.status),
+            _getStatusIcon(lastMessage!.status),
             size: 14.0,
             color: _getStatusColor(lastMessage.status),
           ),
@@ -338,26 +477,14 @@ class _ChatItemTileState extends State<ChatItemTile>
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Muted indicator
+        // Muted indicator (matching HTML 🔇 muted icon)
         if (widget.conversation.isMuted)
-          Icon(
-            Icons.volume_off,
-            size: 16.0,
-            color: AppColors.softCharcoalLight.withValues(alpha:  0.7),
-          ),
-        
-        // Social battery quick indicator (for individual chats)
-        if (widget.conversation.isIndividual && 
-            widget.conversation.socialBattery != null)
           Padding(
-            padding: const EdgeInsets.only(top: 4.0),
-            child: Container(
-              width: 8.0,
-              height: 8.0,
-              decoration: BoxDecoration(
-                color: widget.conversation.socialBattery!.color,
-                shape: BoxShape.circle,
-              ),
+            padding: const EdgeInsets.only(bottom: 4.0),
+            child: Icon(
+              Icons.volume_off,
+              size: 16.0,
+              color: AppColors.softCharcoalLight.withValues(alpha: 0.5),
             ),
           ),
       ],
@@ -374,6 +501,8 @@ class _ChatItemTileState extends State<ChatItemTile>
         return Icons.done_all;
       case MessageStatus.read:
         return Icons.done_all;
+      case MessageStatus.failed:
+        return Icons.error;
     }
   }
 
@@ -387,6 +516,8 @@ class _ChatItemTileState extends State<ChatItemTile>
         return AppColors.softCharcoalLight;
       case MessageStatus.read:
         return AppColors.sageGreen;
+      case MessageStatus.failed:
+        return AppColors.error;
     }
   }
 }
@@ -427,7 +558,7 @@ class CompactChatItemTile extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Center(
-                  child: conversation.isIndividual
+                  child: conversation.participants.length == 1
                       ? Text(
                           conversation.otherParticipant?.initials ?? '?',
                           style: AppTextStyles.bodyMedium.copyWith(
@@ -460,7 +591,7 @@ class CompactChatItemTile extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      conversation.lastMessage.previewText,
+                      conversation.lastMessage?.contentPreview ?? 'No message',
                       style: AppTextStyles.labelMedium.copyWith(
                         color: AppColors.softCharcoalLight,
                       ),

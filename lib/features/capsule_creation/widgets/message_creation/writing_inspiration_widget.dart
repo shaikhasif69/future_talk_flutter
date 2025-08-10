@@ -124,10 +124,10 @@ class _WritingInspirationWidgetState extends State<WritingInspirationWidget>
       child: Container(
         padding: const EdgeInsets.all(AppDimensions.paddingM),
         decoration: BoxDecoration(
-          color: AppColors.lavenderMist.withValues(alpha: 0.1),
+          color: AppColors.lavenderMist.withAlpha(26),
           borderRadius: BorderRadius.circular(AppDimensions.radiusM),
           border: Border.all(
-            color: AppColors.lavenderMist.withValues(alpha: 0.3),
+            color: AppColors.lavenderMist.withAlpha(77),
             width: 1,
           ),
         ),
@@ -137,7 +137,7 @@ class _WritingInspirationWidgetState extends State<WritingInspirationWidget>
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.lavenderMist.withValues(alpha: 0.2),
+                color: AppColors.lavenderMist.withAlpha(51),
                 borderRadius: BorderRadius.circular(AppDimensions.radiusS),
               ),
               child: const Icon(
@@ -179,7 +179,7 @@ class _WritingInspirationWidgetState extends State<WritingInspirationWidget>
         color: AppColors.pearlWhite,
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
         border: Border.all(
-          color: AppColors.lavenderMist.withValues(alpha: 0.2),
+          color: AppColors.lavenderMist.withAlpha(51),
           width: 1,
         ),
         boxShadow: [
@@ -217,7 +217,7 @@ class _WritingInspirationWidgetState extends State<WritingInspirationWidget>
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppColors.lavenderMist.withValues(alpha: 0.1),
+            color: AppColors.lavenderMist.withAlpha(26),
             borderRadius: BorderRadius.circular(AppDimensions.radiusS),
           ),
           child: const Icon(
@@ -246,7 +246,7 @@ class _WritingInspirationWidgetState extends State<WritingInspirationWidget>
           child: Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: AppColors.lavenderMist.withValues(alpha: 0.1),
+              color: AppColors.lavenderMist.withAlpha(26),
               borderRadius: BorderRadius.circular(AppDimensions.radiusS),
             ),
             child: Icon(
@@ -279,7 +279,7 @@ class _WritingInspirationWidgetState extends State<WritingInspirationWidget>
               ),
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
               border: Border.all(
-                color: AppColors.lavenderMist.withValues(alpha: 0.2),
+                color: AppColors.lavenderMist.withAlpha(51),
                 width: 1,
               ),
             ),
@@ -291,7 +291,7 @@ class _WritingInspirationWidgetState extends State<WritingInspirationWidget>
                   children: [
                     Icon(
                       Icons.format_quote,
-                      color: AppColors.lavenderMist.withValues(alpha: 0.6),
+                      color: AppColors.lavenderMist.withAlpha(153),
                       size: 18,
                     ),
                     
@@ -314,7 +314,7 @@ class _WritingInspirationWidgetState extends State<WritingInspirationWidget>
                       child: Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: AppColors.lavenderMist.withValues(alpha: 0.1),
+                          color: AppColors.lavenderMist.withAlpha(26),
                           borderRadius: BorderRadius.circular(AppDimensions.radiusS),
                         ),
                         child: Icon(
@@ -359,7 +359,7 @@ class _WritingInspirationWidgetState extends State<WritingInspirationWidget>
           children: [
             Icon(
               Icons.edit_outlined,
-              color: AppColors.sageGreen.withValues(alpha: 0.7),
+              color: AppColors.sageGreen.withAlpha(179),
               size: 18,
             ),
             
@@ -388,10 +388,10 @@ class _WritingInspirationWidgetState extends State<WritingInspirationWidget>
       margin: const EdgeInsets.only(bottom: AppDimensions.spacingM),
       padding: const EdgeInsets.all(AppDimensions.paddingM),
       decoration: BoxDecoration(
-        color: AppColors.warmCream.withValues(alpha: 0.3),
+        color: AppColors.warmCream.withAlpha(77),
         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
         border: Border.all(
-          color: AppColors.sageGreen.withValues(alpha: 0.1),
+          color: AppColors.sageGreen.withAlpha(26),
           width: 1,
         ),
       ),
@@ -426,7 +426,7 @@ class _WritingInspirationWidgetState extends State<WritingInspirationWidget>
                 vertical: 2,
               ),
               decoration: BoxDecoration(
-                color: AppColors.sageGreen.withValues(alpha: 0.1),
+                color: AppColors.sageGreen.withAlpha(26),
                 borderRadius: BorderRadius.circular(AppDimensions.radiusS),
               ),
               child: Text(

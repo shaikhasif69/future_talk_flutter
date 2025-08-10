@@ -292,19 +292,29 @@ class ChatMessage with _$ChatMessage {
 
   /// Create from API message data
   static ChatMessage fromApiMessage(Map<String, dynamic> json, String currentUserId) {
+    // Safe string extraction with null checks
+    final String id = (json['id'] as String?) ?? '';
+    final String conversationId = (json['conversation_id'] as String?) ?? '';
+    final String senderId = (json['sender_id'] as String?) ?? '';
+    final String senderUsername = (json['sender_username'] as String?) ?? (json['sender'] as String?) ?? 'Unknown';
+    final String content = (json['content'] as String?) ?? '';
+    final String messageTypeStr = (json['message_type'] as String?) ?? 'text';
+    final String createdAtStr = (json['created_at'] as String?) ?? DateTime.now().toIso8601String();
+    final String? updatedAtStr = json['updated_at'] as String?;
+    
     return ChatMessage(
-      id: json['id'] as String,
-      conversationId: json['conversation_id'] as String,
-      senderId: json['sender_id'] as String,
-      senderUsername: json['sender_username'] as String? ?? 'Unknown',
-      content: json['content'] as String,
+      id: id,
+      conversationId: conversationId,
+      senderId: senderId,
+      senderUsername: senderUsername,
+      content: content,
       messageType: MessageType.values.firstWhere(
-        (e) => e.name == json['message_type'],
+        (e) => e.name == messageTypeStr,
         orElse: () => MessageType.text,
       ),
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: json['updated_at'] != null 
-        ? DateTime.parse(json['updated_at'] as String)
+      createdAt: DateTime.parse(createdAtStr),
+      updatedAt: updatedAtStr != null 
+        ? DateTime.parse(updatedAtStr)
         : null,
       isEdited: json['is_edited'] as bool? ?? false,
       isDestroyed: json['is_destroyed'] as bool? ?? false,
@@ -318,7 +328,7 @@ class ChatMessage with _$ChatMessage {
       readBy: (json['read_by'] as List<dynamic>? ?? [])
         .map((id) => id as String)
         .toList(),
-      isFromMe: json['sender_id'] as String == currentUserId,
+      isFromMe: senderId == currentUserId,
     );
   }
 

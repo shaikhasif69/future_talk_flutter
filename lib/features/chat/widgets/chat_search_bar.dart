@@ -165,7 +165,7 @@ class _ChatSearchBarState extends State<ChatSearchBar>
             borderRadius: BorderRadius.circular(AppDimensions.radiusL),
             boxShadow: _isFocused ? [
               BoxShadow(
-                color: AppColors.sageGreen.withValues(alpha: 0.1),
+                color: AppColors.sageGreen.withAlpha(26),
                 blurRadius: 8.0,
                 spreadRadius: 0,
               ),
@@ -205,7 +205,7 @@ class _ChatSearchBarState extends State<ChatSearchBar>
                   decoration: InputDecoration(
                     hintText: _currentPlaceholder,
                     hintStyle: TextStyle(
-                      color: AppColors.softCharcoalLight.withValues(alpha: 0.7),
+                      color: AppColors.softCharcoalLight.withAlpha(179),
                       fontSize: 15.0,
                     ),
                     border: InputBorder.none,
@@ -232,7 +232,7 @@ class _ChatSearchBarState extends State<ChatSearchBar>
                         width: 32.0,
                         height: 32.0,
                         decoration: BoxDecoration(
-                          color: AppColors.softCharcoalLight.withValues(alpha: 0.1),
+                          color: AppColors.softCharcoalLight.withAlpha(26),
                           borderRadius: BorderRadius.circular(16.0),
                         ),
                         child: const Icon(

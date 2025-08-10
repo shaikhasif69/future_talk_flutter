@@ -193,7 +193,7 @@ class _DynamicProfileScreenState extends ConsumerState<DynamicProfileScreen> {
         borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
         boxShadow: [
           BoxShadow(
-            color: AppColors.sageGreen.withValues(alpha: 0.1),
+            color: AppColors.sageGreen.withAlpha(26),
             blurRadius: 20,
             spreadRadius: 0,
             offset: const Offset(0, 8),
@@ -259,13 +259,13 @@ class _DynamicProfileScreenState extends ConsumerState<DynamicProfileScreen> {
             ),
             decoration: BoxDecoration(
               color: profileData.user.isPremium 
-                  ? AppColors.sageGreen.withValues(alpha: 0.1)
-                  : AppColors.lavenderMist.withValues(alpha: 0.1),
+                  ? AppColors.sageGreen.withAlpha(26)
+                  : AppColors.lavenderMist.withAlpha(26),
               borderRadius: BorderRadius.circular(AppDimensions.radiusS),
               border: Border.all(
                 color: profileData.user.isPremium 
-                    ? AppColors.sageGreen.withValues(alpha: 0.3)
-                    : AppColors.lavenderMist.withValues(alpha: 0.3),
+                    ? AppColors.sageGreen.withAlpha(77)
+                    : AppColors.lavenderMist.withAlpha(77),
               ),
             ),
             child: Row(
@@ -305,7 +305,7 @@ class _DynamicProfileScreenState extends ConsumerState<DynamicProfileScreen> {
         borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
         boxShadow: [
           BoxShadow(
-            color: AppColors.sageGreen.withValues(alpha: 0.1),
+            color: AppColors.sageGreen.withAlpha(26),
             blurRadius: 20,
             spreadRadius: 0,
             offset: const Offset(0, 8),
@@ -411,7 +411,7 @@ class _DynamicProfileScreenState extends ConsumerState<DynamicProfileScreen> {
         borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
         boxShadow: [
           BoxShadow(
-            color: AppColors.sageGreen.withValues(alpha: 0.1),
+            color: AppColors.sageGreen.withAlpha(26),
             blurRadius: 20,
             spreadRadius: 0,
             offset: const Offset(0, 8),
@@ -445,8 +445,8 @@ class _DynamicProfileScreenState extends ConsumerState<DynamicProfileScreen> {
                     height: 48,
                     decoration: BoxDecoration(
                       color: (action['isDestructive'] == true)
-                          ? AppColors.dustyRose.withValues(alpha: 0.1)
-                          : AppColors.sageGreen.withValues(alpha: 0.1),
+                          ? AppColors.dustyRose.withAlpha(26)
+                          : AppColors.sageGreen.withAlpha(26),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Center(

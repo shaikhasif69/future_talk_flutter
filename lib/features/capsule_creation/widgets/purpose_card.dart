@@ -263,13 +263,13 @@ class _PurposeCardState extends State<PurposeCard>
                                         end: Alignment.bottomRight,
                                         colors: [
                                           _iconBackgroundColor,
-                                          _iconBackgroundColor.withValues(alpha: 0.8),
+                                          _iconBackgroundColor.withAlpha(204),
                                         ],
                                       ),
                                       borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: _iconBackgroundColor.withValues(alpha: 0.3),
+                                          color: _iconBackgroundColor.withAlpha(77),
                                           blurRadius: 8,
                                           offset: const Offset(0, 2),
                                         ),

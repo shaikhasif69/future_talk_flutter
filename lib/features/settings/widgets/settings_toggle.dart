@@ -193,7 +193,7 @@ class _SettingsToggleState extends State<SettingsToggle>
                   ? []
                   : [
                       BoxShadow(
-                        color: AppColors.softCharcoal.withValues(alpha: 0.1),
+                        color: AppColors.softCharcoal.withAlpha(26),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),

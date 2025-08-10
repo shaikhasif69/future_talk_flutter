@@ -28,7 +28,7 @@ class ReadTabScreen extends ConsumerWidget {
               width: 120.w,
               height: 120.w,
               decoration: BoxDecoration(
-                color: AppColors.warmPeach.withValues(alpha: 0.1),
+                color: AppColors.warmPeach.withAlpha(26),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -70,7 +70,7 @@ class ReadTabScreen extends ConsumerWidget {
               child: Text(
                 'Share the joy of reading with friends. Discuss insights, exchange thoughts, and discover new perspectives together.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.softCharcoalLight.withValues(alpha: 0.8),
+                  color: AppColors.softCharcoalLight.withAlpha(204),
                   height: 1.5,
                 ),
                 textAlign: TextAlign.center,
@@ -117,7 +117,7 @@ class ReadTabScreen extends ConsumerWidget {
                 color: AppColors.warmCream,
                 borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
                 border: Border.all(
-                  color: AppColors.warmPeach.withValues(alpha: 0.2),
+                  color: AppColors.warmPeach.withAlpha(51),
                   width: 1,
                 ),
                 boxShadow: [
@@ -166,7 +166,7 @@ class ReadTabScreen extends ConsumerWidget {
         color: AppColors.warmCream,
         borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
         border: Border.all(
-          color: color.withValues(alpha: 0.2),
+          color: color.withAlpha(51),
           width: 1,
         ),
         boxShadow: [
@@ -183,7 +183,7 @@ class ReadTabScreen extends ConsumerWidget {
             width: 40.w,
             height: 40.w,
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
+              color: color.withAlpha(26),
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
             ),
             child: Icon(

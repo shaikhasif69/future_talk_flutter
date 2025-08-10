@@ -222,10 +222,10 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.spacingL),
       decoration: BoxDecoration(
-        color: AppColors.whisperGray.withValues(alpha: 0.3),
+        color: AppColors.whisperGray.withAlpha(77),
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
         border: Border.all(
-          color: AppColors.whisperGray.withValues(alpha: 0.5),
+          color: AppColors.whisperGray.withAlpha(128),
           width: 1.0,
         ),
       ),
@@ -248,10 +248,10 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                 vertical: AppDimensions.spacingM,
               ),
               decoration: BoxDecoration(
-                color: AppColors.dustyRose.withValues(alpha: 0.1),
+                color: AppColors.dustyRose.withAlpha(26),
                 borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                 border: Border.all(
-                  color: AppColors.dustyRose.withValues(alpha: 0.3),
+                  color: AppColors.dustyRose.withAlpha(77),
                   width: 1.0,
                 ),
               ),
@@ -324,10 +324,10 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.spacingM),
       decoration: BoxDecoration(
-        color: AppColors.dustyRose.withValues(alpha: 0.1),
+        color: AppColors.dustyRose.withAlpha(26),
         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
         border: Border.all(
-          color: AppColors.dustyRose.withValues(alpha: 0.3),
+          color: AppColors.dustyRose.withAlpha(77),
           width: 1.0,
         ),
       ),
@@ -358,7 +358,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.spacingL),
       decoration: BoxDecoration(
-        color: AppColors.lavenderMist.withValues(alpha: 0.3),
+        color: AppColors.lavenderMist.withAlpha(77),
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
       child: Column(

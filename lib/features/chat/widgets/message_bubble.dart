@@ -116,12 +116,13 @@ class _MessageBubbleState extends State<MessageBubble>
   ) {
     debugPrint('📦 [MessageBubble] Building message content for: ${message.content}');
     debugPrint('📦 [MessageBubble] isFromMe: $isFromMe, showSenderName: $showSenderName, showTimestamp: $showTimestamp');
+    debugPrint('📦 [MessageBubble] senderId: ${message.senderId}, senderUsername: ${message.senderUsername}');
     
     return Column(
       crossAxisAlignment: isFromMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
-        // Sender name (for group chats)
-        if (showSenderName)
+        // Sender name (for group chats only - skip for individual chats)
+        if (showSenderName && !isFromMe) // Only show for received messages in group chats
           Padding(
             padding: EdgeInsets.only(
               left: isFromMe ? 80.0 : AppDimensions.paddingM,

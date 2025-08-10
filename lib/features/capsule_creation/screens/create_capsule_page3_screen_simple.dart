@@ -239,7 +239,7 @@ class _CreateCapsulePage3ScreenSimpleState extends ConsumerState<CreateCapsulePa
         vertical: AppDimensions.spacingS,
       ),
       decoration: BoxDecoration(
-        color: AppColors.pearlWhite.withValues(alpha: 0.8),
+        color: AppColors.pearlWhite.withAlpha(204),
         borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
         border: Border.all(
           color: AppColors.sageGreenWithOpacity(0.2),
@@ -305,7 +305,7 @@ class _CreateCapsulePage3ScreenSimpleState extends ConsumerState<CreateCapsulePa
               vertical: 2,
             ),
             decoration: BoxDecoration(
-              color: AppColors.warmPeach.withValues(alpha: 0.1),
+              color: AppColors.warmPeach.withAlpha(26),
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
             ),
             child: Row(
@@ -371,7 +371,7 @@ class _CreateCapsulePage3ScreenSimpleState extends ConsumerState<CreateCapsulePa
                 Container(
                   padding: const EdgeInsets.all(AppDimensions.paddingM),
                   decoration: BoxDecoration(
-                    color: AppColors.warmCream.withValues(alpha: 0.3),
+                    color: AppColors.warmCream.withAlpha(77),
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(AppDimensions.radiusL),
                       topRight: Radius.circular(AppDimensions.radiusL),

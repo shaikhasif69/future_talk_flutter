@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import '../models/chat_message.dart';
 import '../models/chat_conversation.dart';
@@ -83,16 +84,27 @@ class RealtimeChatProvider extends ChangeNotifier {
   /// Load conversations from API
   Future<void> loadConversations() async {
     debugPrint('📥 [RealtimeChatProvider] Loading conversations...');
+    debugPrint('📥 [RealtimeChatProvider] Current user ID: $_currentUserId');
     
     final result = await _chatRepository.getConversations(limit: 50);
     
     result.when(
       success: (conversations) {
+        debugPrint('📥 [RealtimeChatProvider] API returned ${conversations.length} conversations');
+        
         _conversations = conversations;
         // Sort by last_message_at DESC (most recent first) - exactly like HTML reference
         _conversations.sort((a, b) => b.lastMessageAt.compareTo(a.lastMessageAt));
         
-        debugPrint('✅ [RealtimeChatProvider] Loaded ${_conversations.length} conversations');
+        debugPrint('✅ [RealtimeChatProvider] Conversations loaded and sorted:');
+        for (int i = 0; i < _conversations.length; i++) {
+          final conv = _conversations[i];
+          final lastMsg = conv.lastMessage?.content ?? 'No message';
+          debugPrint('✅ [RealtimeChatProvider] [$i] ${conv.displayName}: ${lastMsg.substring(0, lastMsg.length > 30 ? 30 : lastMsg.length)}...');
+          debugPrint('✅ [RealtimeChatProvider]     - Participants: ${conv.participants.map((p) => p.username).join(', ')}');
+          debugPrint('✅ [RealtimeChatProvider]     - Last message time: ${conv.lastMessage?.createdAt}');
+        }
+        
         notifyListeners();
       },
       failure: (error) {
@@ -232,63 +244,152 @@ class RealtimeChatProvider extends ChangeNotifier {
   /// Handle incoming chat message from WebSocket
   void _handleChatMessage(Map<String, dynamic> data) {
     try {
-      debugPrint('💬 [RealtimeChatProvider] Processing chat_message event');
+      debugPrint('💬 [RealtimeChatProvider] ==== CHAT MESSAGE EVENT START ====');
+      debugPrint('💬 [RealtimeChatProvider] Full event data: ${jsonEncode(data)}');
+      debugPrint('💬 [RealtimeChatProvider] Event keys: ${data.keys.toList()}');
       
       final messageData = data['message_data'] as Map<String, dynamic>?;
       if (messageData == null) {
-        debugPrint('⚠️ [RealtimeChatProvider] No message_data in chat_message event');
+        debugPrint('❌ [RealtimeChatProvider] CRITICAL: No message_data in chat_message event');
+        debugPrint('❌ [RealtimeChatProvider] Available keys: ${data.keys.toList()}');
         return;
       }
       
+      debugPrint('💬 [RealtimeChatProvider] Message data found: ${jsonEncode(messageData)}');
+      debugPrint('💬 [RealtimeChatProvider] Message data type: ${messageData['type']}');
+      
       if (messageData['type'] == 'new_message') {
+        debugPrint('🖕 [RealtimeChatProvider] Processing NEW_MESSAGE type');
+        
         final messageJson = messageData['message'] as Map<String, dynamic>?;
         final conversationId = data['conversation_id'] as String?;
+        
+        debugPrint('💬 [RealtimeChatProvider] Message JSON: ${messageJson != null ? jsonEncode(messageJson) : 'NULL'}');
+        debugPrint('💬 [RealtimeChatProvider] Conversation ID: $conversationId');
+        debugPrint('💬 [RealtimeChatProvider] Current user ID: $_currentUserId');
         
         if (messageJson != null && conversationId != null) {
           // Ensure conversation_id is set in message
           messageJson['conversation_id'] = conversationId;
           
+          debugPrint('🚀 [RealtimeChatProvider] Creating ChatMessage from API data...');
           final message = ChatMessage.fromApiMessage(messageJson, _currentUserId ?? '');
+          
+          debugPrint('✅ [RealtimeChatProvider] ChatMessage created successfully:');
+          debugPrint('💬 [RealtimeChatProvider] - Message ID: ${message.id}');
+          debugPrint('💬 [RealtimeChatProvider] - Content: ${message.content}');
+          debugPrint('💬 [RealtimeChatProvider] - Sender: ${message.senderUsername}');
+          debugPrint('💬 [RealtimeChatProvider] - Is from me: ${message.isFromMe}');
+          debugPrint('💬 [RealtimeChatProvider] - Created at: ${message.createdAt}');
           
           // Add message to cache if it's for an active conversation
           if (_messageCache.containsKey(conversationId)) {
             final messages = _messageCache[conversationId] ?? [];
             _messageCache[conversationId] = [...messages, message];
+            debugPrint('💬 [RealtimeChatProvider] Message added to cache for conversation: $conversationId');
+            debugPrint('💬 [RealtimeChatProvider] Total messages in cache: ${_messageCache[conversationId]!.length}');
+          } else {
+            debugPrint('⚠️ [RealtimeChatProvider] Conversation $conversationId not in message cache');
           }
           
           // ALWAYS reorder conversations - this is key for real-time updates for ALL participants
+          debugPrint('📈 [RealtimeChatProvider] Moving conversation to top...');
           _moveConversationToTop(conversationId, message);
           
-          debugPrint('✅ [RealtimeChatProvider] New message processed: ${message.content.substring(0, 30)}...');
+          debugPrint('🔔 [RealtimeChatProvider] Calling notifyListeners() to update UI...');
           notifyListeners();
+          
+          debugPrint('✅ [RealtimeChatProvider] New message processed successfully: ${message.content.substring(0, message.content.length > 30 ? 30 : message.content.length)}...');
+        } else {
+          debugPrint('❌ [RealtimeChatProvider] CRITICAL: Missing required data for new message');
+          debugPrint('❌ [RealtimeChatProvider] - messageJson is null: ${messageJson == null}');
+          debugPrint('❌ [RealtimeChatProvider] - conversationId is null: ${conversationId == null}');
         }
+      } else if (messageData['type'] == 'typing_indicator') {
+        debugPrint('⌨️ [RealtimeChatProvider] Processing TYPING_INDICATOR type from message_data');
+        
+        final conversationId = data['conversation_id'] as String?;
+        final userId = messageData['user_id'] as String?;
+        final username = messageData['username'] as String?;
+        final isTyping = messageData['is_typing'] as bool? ?? false;
+        
+        debugPrint('⌨️ [RealtimeChatProvider] Typing indicator details:');
+        debugPrint('⌨️ [RealtimeChatProvider] - Conversation ID: $conversationId');
+        debugPrint('⌨️ [RealtimeChatProvider] - User ID: $userId');
+        debugPrint('⌨️ [RealtimeChatProvider] - Username: $username');
+        debugPrint('⌨️ [RealtimeChatProvider] - Is typing: $isTyping');
+        debugPrint('⌨️ [RealtimeChatProvider] - Current user ID: $_currentUserId');
+        
+        if (conversationId != null && userId != null && userId != _currentUserId) {
+          final typingUsers = _typingUsers[conversationId] ?? <String>{};
+          
+          if (isTyping) {
+            typingUsers.add(userId);
+            debugPrint('⌨️ [RealtimeChatProvider] Added $userId to typing users for $conversationId');
+          } else {
+            typingUsers.remove(userId);
+            debugPrint('⌨️ [RealtimeChatProvider] Removed $userId from typing users for $conversationId');
+          }
+          
+          _typingUsers[conversationId] = typingUsers;
+          debugPrint('⌨️ [RealtimeChatProvider] Current typing users for $conversationId: ${typingUsers.toList()}');
+          
+          debugPrint('🔔 [RealtimeChatProvider] Notifying listeners for typing indicator change');
+          notifyListeners();
+        } else {
+          debugPrint('⚠️ [RealtimeChatProvider] Ignoring typing indicator - missing data or from current user');
+        }
+      } else {
+        debugPrint('⚠️ [RealtimeChatProvider] Unknown message_data type: ${messageData['type']}');
       }
-    } catch (e) {
-      debugPrint('❌ [RealtimeChatProvider] Error processing chat message: $e');
+      
+      debugPrint('💬 [RealtimeChatProvider] ==== CHAT MESSAGE EVENT END ====');
+    } catch (e, stackTrace) {
+      debugPrint('💥 [RealtimeChatProvider] FATAL ERROR processing chat message: $e');
+      debugPrint('💥 [RealtimeChatProvider] Stack trace: $stackTrace');
+      debugPrint('💥 [RealtimeChatProvider] Original data: ${jsonEncode(data)}');
     }
   }
 
   /// Handle typing indicator from WebSocket
   void _handleTypingIndicator(Map<String, dynamic> data) {
     try {
+      debugPrint('⌨️ [RealtimeChatProvider] ==== TYPING INDICATOR EVENT START ====');
+      debugPrint('⌨️ [RealtimeChatProvider] Full event data: ${jsonEncode(data)}');
+      
       final conversationId = data['conversation_id'] as String?;
       final userId = data['user_id'] as String?;
+      final username = data['username'] as String?;
       final isTyping = data['is_typing'] as bool? ?? false;
+      
+      debugPrint('⌨️ [RealtimeChatProvider] Direct typing indicator details:');
+      debugPrint('⌨️ [RealtimeChatProvider] - Conversation ID: $conversationId');
+      debugPrint('⌨️ [RealtimeChatProvider] - User ID: $userId');
+      debugPrint('⌨️ [RealtimeChatProvider] - Username: $username');
+      debugPrint('⌨️ [RealtimeChatProvider] - Is typing: $isTyping');
+      debugPrint('⌨️ [RealtimeChatProvider] - Current user ID: $_currentUserId');
       
       if (conversationId != null && userId != null && userId != _currentUserId) {
         final typingUsers = _typingUsers[conversationId] ?? <String>{};
         
         if (isTyping) {
           typingUsers.add(userId);
+          debugPrint('⌨️ [RealtimeChatProvider] Added $userId to typing users for $conversationId');
         } else {
           typingUsers.remove(userId);
+          debugPrint('⌨️ [RealtimeChatProvider] Removed $userId from typing users for $conversationId');
         }
         
         _typingUsers[conversationId] = typingUsers;
+        debugPrint('⌨️ [RealtimeChatProvider] Current typing users for $conversationId: ${typingUsers.toList()}');
         
-        debugPrint('⌨️ [RealtimeChatProvider] Typing indicator: $userId ${isTyping ? 'started' : 'stopped'} typing in $conversationId');
+        debugPrint('🔔 [RealtimeChatProvider] Notifying listeners for direct typing indicator');
         notifyListeners();
+      } else {
+        debugPrint('⚠️ [RealtimeChatProvider] Ignoring direct typing indicator - missing data or from current user');
       }
+      
+      debugPrint('⌨️ [RealtimeChatProvider] ==== TYPING INDICATOR EVENT END ====');
     } catch (e) {
       debugPrint('❌ [RealtimeChatProvider] Error processing typing indicator: $e');
     }
@@ -334,9 +435,20 @@ class RealtimeChatProvider extends ChangeNotifier {
 
   /// Move conversation to top of list (for real-time reordering)
   void _moveConversationToTop(String conversationId, ChatMessage lastMessage) {
+    debugPrint('📊 [RealtimeChatProvider] ==== MOVE CONVERSATION TO TOP START ====');
+    debugPrint('📊 [RealtimeChatProvider] Target conversation ID: $conversationId');
+    debugPrint('📊 [RealtimeChatProvider] New last message: ${lastMessage.content}');
+    debugPrint('📊 [RealtimeChatProvider] Current conversations count: ${_conversations.length}');
+    
+    for (int i = 0; i < _conversations.length; i++) {
+      debugPrint('📊 [RealtimeChatProvider] [$i] ${_conversations[i].id} - ${_conversations[i].displayName}');
+    }
+    
     final index = _conversations.indexWhere((c) => c.id == conversationId);
+    debugPrint('📊 [RealtimeChatProvider] Found conversation at index: $index');
     
     if (index > 0) {
+      debugPrint('📊 [RealtimeChatProvider] Moving conversation from position $index to top');
       // Move conversation to top
       final conversation = _conversations.removeAt(index);
       final updatedConversation = conversation.copyWith(
@@ -345,8 +457,9 @@ class RealtimeChatProvider extends ChangeNotifier {
       );
       _conversations.insert(0, updatedConversation);
       
-      debugPrint('📊 [RealtimeChatProvider] Moved conversation $conversationId to top');
+      debugPrint('✅ [RealtimeChatProvider] Successfully moved conversation $conversationId to top');
     } else if (index == 0) {
+      debugPrint('📊 [RealtimeChatProvider] Conversation already at top, updating last message');
       // Already at top, just update last message
       final conversation = _conversations[0];
       _conversations[0] = conversation.copyWith(
@@ -354,13 +467,26 @@ class RealtimeChatProvider extends ChangeNotifier {
         lastMessageAt: lastMessage.createdAt,
       );
       
-      debugPrint('📊 [RealtimeChatProvider] Updated conversation $conversationId at top');
+      debugPrint('✅ [RealtimeChatProvider] Updated conversation $conversationId at top');
     } else {
-      // Conversation not in list, reload conversations
-      debugPrint('📊 [RealtimeChatProvider] Conversation $conversationId not found, reloading...');
+      debugPrint('⚠️ [RealtimeChatProvider] Conversation $conversationId NOT FOUND in list!');
+      debugPrint('⚠️ [RealtimeChatProvider] Available conversation IDs:');
+      for (final conv in _conversations) {
+        debugPrint('   - ${conv.id} (${conv.displayName})');
+      }
+      debugPrint('📊 [RealtimeChatProvider] Reloading conversations to fix missing conversation...');
       loadConversations();
       return;
     }
+    
+    debugPrint('📊 [RealtimeChatProvider] Final conversation order:');
+    for (int i = 0; i < _conversations.length; i++) {
+      final conv = _conversations[i];
+      final lastMsg = conv.lastMessage?.content ?? 'No message';
+      debugPrint('📊 [RealtimeChatProvider] [$i] ${conv.displayName}: ${lastMsg.substring(0, lastMsg.length > 30 ? 30 : lastMsg.length)}...');
+    }
+    
+    debugPrint('📊 [RealtimeChatProvider] ==== MOVE CONVERSATION TO TOP END ====');
   }
 
   /// Disconnect and cleanup

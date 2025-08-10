@@ -75,7 +75,7 @@ class _ModeSwitcherWidgetState extends State<ModeSwitcherWidget>
       child: Container(
         height: 48,
         decoration: BoxDecoration(
-          color: AppColors.pearlWhite.withValues(alpha: 0.9),
+          color: AppColors.pearlWhite.withAlpha(230),
           borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
           border: Border.all(
             color: AppColors.sageGreenWithOpacity(0.15),

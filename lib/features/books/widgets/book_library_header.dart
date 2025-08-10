@@ -101,7 +101,7 @@ class _BookLibraryHeaderState extends State<BookLibraryHeader>
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: AppColors.pearlWhite.withValues(alpha: 0.1),
+                      color: AppColors.pearlWhite.withAlpha(26),
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -123,7 +123,7 @@ class _BookLibraryHeaderState extends State<BookLibraryHeader>
                     '📚',
                     style: TextStyle(
                       fontSize: 20,
-                      color: AppColors.pearlWhite.withValues(alpha: 0.6),
+                      color: AppColors.pearlWhite.withAlpha(153),
                     ),
                   ),
                 );
@@ -182,7 +182,7 @@ class _BookLibraryHeaderState extends State<BookLibraryHeader>
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-        color: AppColors.pearlWhite.withValues(alpha: 0.2),
+        color: AppColors.pearlWhite.withAlpha(51),
         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
       ),
       child: Material(
@@ -215,7 +215,7 @@ class _BookLibraryHeaderState extends State<BookLibraryHeader>
               vertical: AppDimensions.spacingS,
             ),
             decoration: BoxDecoration(
-              color: AppColors.pearlWhite.withValues(alpha: 0.2),
+              color: AppColors.pearlWhite.withAlpha(51),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
@@ -252,7 +252,7 @@ class _BookLibraryHeaderState extends State<BookLibraryHeader>
         Text(
           widget.greeting,
           style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.pearlWhite.withValues(alpha: 0.9),
+            color: AppColors.pearlWhite.withAlpha(230),
             height: 1.4,
           ),
         ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.3, end: 0),
@@ -262,7 +262,7 @@ class _BookLibraryHeaderState extends State<BookLibraryHeader>
         Text(
           widget.moodSuggestion,
           style: AppTextStyles.personalContent.copyWith(
-            color: AppColors.pearlWhite.withValues(alpha: 0.8),
+            color: AppColors.pearlWhite.withAlpha(204),
             fontSize: 13,
           ),
         ).animate().fadeIn(delay: 400.ms).slideY(begin: 0.3, end: 0),
@@ -277,7 +277,7 @@ class _BookLibraryHeaderState extends State<BookLibraryHeader>
         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softCharcoal.withValues(alpha: 0.1),
+            color: AppColors.softCharcoal.withAlpha(26),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

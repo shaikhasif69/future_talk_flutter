@@ -123,7 +123,7 @@ class _SideMenuState extends ConsumerState<SideMenu> {
                 child: Text(
                   "Browse",
                   style: AppTextStyles.headlineSmall.copyWith(
-                    color: AppColors.pearlWhite.withValues(alpha: 0.8),
+                    color: AppColors.pearlWhite.withAlpha(204),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -148,7 +148,7 @@ class _SideMenuState extends ConsumerState<SideMenu> {
                 child: Text(
                   "Activity",
                   style: AppTextStyles.headlineSmall.copyWith(
-                    color: AppColors.pearlWhite.withValues(alpha: 0.8),
+                    color: AppColors.pearlWhite.withAlpha(204),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -172,12 +172,12 @@ class _SideMenuState extends ConsumerState<SideMenu> {
                       contentPadding: EdgeInsets.zero,
                       leading: Icon(
                         Icons.settings_rounded,
-                        color: AppColors.pearlWhite.withValues(alpha: 0.8),
+                        color: AppColors.pearlWhite.withAlpha(204),
                       ),
                       title: Text(
                         'Settings',
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.pearlWhite.withValues(alpha: 0.9),
+                          color: AppColors.pearlWhite.withAlpha(230),
                         ),
                       ),
                       onTap: () {

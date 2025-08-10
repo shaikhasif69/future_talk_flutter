@@ -295,7 +295,7 @@ class _QuickReactionsState extends State<QuickReactions>
               height: 56.0,
               decoration: BoxDecoration(
                 color: isSelected
-                    ? AppColors.sageGreen.withValues(alpha: 0.2)
+                    ? AppColors.sageGreen.withAlpha(51)
                     : AppColors.sageGreenWithOpacity(0.1),
                 shape: BoxShape.circle,
                 border: Border.all(
@@ -307,7 +307,7 @@ class _QuickReactionsState extends State<QuickReactions>
                 boxShadow: isSelected
                     ? [
                         BoxShadow(
-                          color: AppColors.sageGreen.withValues(alpha: 0.3),
+                          color: AppColors.sageGreen.withAlpha(77),
                           blurRadius: 8.0,
                           offset: const Offset(0, 2),
                         ),
@@ -359,7 +359,7 @@ class ContextualQuickReactions {
     }
     
     // Connection stones context
-    if (message.type == MessageType.connectionStone ||
+    if (message.messageType == MessageType.text ||
         content.contains('connection') ||
         content.contains('stone') ||
         content.contains('energy')) {
@@ -469,7 +469,7 @@ class _ReactionPickerState extends State<ReactionPicker> {
                     height: 40.0,
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? AppColors.sageGreen.withValues(alpha: 0.2)
+                          ? AppColors.sageGreen.withAlpha(51)
                           : AppColors.sageGreenWithOpacity(0.1),
                       shape: BoxShape.circle,
                       border: Border.all(

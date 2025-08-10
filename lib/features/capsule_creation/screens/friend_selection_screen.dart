@@ -159,7 +159,7 @@ class _FriendSelectionScreenState extends ConsumerState<FriendSelectionScreen>
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.sageGreen.withValues(alpha: 0.1),
+                        color: AppColors.sageGreen.withAlpha(26),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -322,7 +322,7 @@ class _FriendSelectionScreenState extends ConsumerState<FriendSelectionScreen>
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
-                color: AppColors.sageGreen.withValues(alpha: 0.1),
+                color: AppColors.sageGreen.withAlpha(26),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
@@ -415,7 +415,7 @@ class _FriendSelectionScreenState extends ConsumerState<FriendSelectionScreen>
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.sageGreen.withValues(alpha: 0.3),
+                  color: AppColors.sageGreen.withAlpha(77),
                   blurRadius: 20,
                   offset: const Offset(0, 4),
                 ),

@@ -152,10 +152,10 @@ class _SocialBatterySectionState extends State<SocialBatterySection>
               vertical: AppDimensions.spacingXS,
             ),
             decoration: BoxDecoration(
-              color: widget.batteryStatus.color.withValues(alpha: 0.1),
+              color: widget.batteryStatus.color.withAlpha(26),
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
               border: Border.all(
-                color: widget.batteryStatus.color.withValues(alpha: 0.3),
+                color: widget.batteryStatus.color.withAlpha(77),
                 width: 1,
               ),
             ),
@@ -232,7 +232,7 @@ class _SocialBatterySectionState extends State<SocialBatterySection>
                   color: isActive
                       ? status.color
                       : (isSelected
-                          ? status.color.withValues(alpha: 0.5)
+                          ? status.color.withAlpha(128)
                           : AppColors.whisperGray),
                   width: isActive ? 2.0 : 1.0,
                 ),
@@ -336,10 +336,10 @@ class CompactSocialBatteryIndicator extends StatelessWidget {
           vertical: AppDimensions.spacingXS,
         ),
         decoration: BoxDecoration(
-          color: batteryStatus.color.withValues(alpha: 0.1),
+          color: batteryStatus.color.withAlpha(26),
           borderRadius: BorderRadius.circular(AppDimensions.radiusM),
           border: Border.all(
-            color: batteryStatus.color.withValues(alpha: 0.3),
+            color: batteryStatus.color.withAlpha(77),
             width: 1,
           ),
         ),
@@ -421,7 +421,7 @@ class BatteryLevelDialog extends StatelessWidget {
                     onStatusChanged(level, null);
                   },
                   selected: level == currentStatus.level,
-                  selectedTileColor: status.color.withValues(alpha: 0.1),
+                  selectedTileColor: status.color.withAlpha(26),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                   ),

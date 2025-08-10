@@ -386,11 +386,11 @@ class NavigationExampleScreen extends ConsumerWidget {
                     padding: const EdgeInsets.all(AppDimensions.spacingM),
                     decoration: BoxDecoration(
                       color: isCurrent 
-                        ? AppColors.sageGreen.withValues(alpha: 0.1)
+                        ? AppColors.sageGreen.withAlpha(26)
                         : AppColors.whisperGray,
                       borderRadius: BorderRadius.circular(AppDimensions.radiusS),
                       border: isCurrent ? Border.all(
-                        color: AppColors.sageGreen.withValues(alpha: 0.3),
+                        color: AppColors.sageGreen.withAlpha(77),
                         width: 1,
                       ) : null,
                     ),

@@ -477,7 +477,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           Text(
                             'Version 1.0.0 (Beta)',
                             style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.pearlWhite.withValues(alpha: 0.8),
+                              color: AppColors.pearlWhite.withAlpha(204),
                             ),
                           ),
                         ],
@@ -488,7 +488,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Text(
                     'Your sanctuary for thoughtful communication. Built with love for introverts who value meaningful connections over noise.',
                     style: AppTextStyles.personalContent.copyWith(
-                      color: AppColors.pearlWhite.withValues(alpha: 0.9),
+                      color: AppColors.pearlWhite.withAlpha(230),
                       fontSize: 13,
                       height: 1.4,
                     ),

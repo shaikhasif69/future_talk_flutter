@@ -144,7 +144,7 @@ class _AnonymousUserSearchBarState extends State<AnonymousUserSearchBar>
             Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: AppColors.lavenderMist.withValues(alpha: 0.1),
+                color: AppColors.lavenderMist.withAlpha(26),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: const Icon(
@@ -178,7 +178,7 @@ class _AnonymousUserSearchBarState extends State<AnonymousUserSearchBar>
                   boxShadow: _focusNode.hasFocus
                       ? [
                           BoxShadow(
-                            color: AppColors.lavenderMist.withValues(alpha: 0.1),
+                            color: AppColors.lavenderMist.withAlpha(26),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),
@@ -206,14 +206,14 @@ class _AnonymousUserSearchBarState extends State<AnonymousUserSearchBar>
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppDimensions.radiusL),
                             borderSide: BorderSide(
-                              color: AppColors.whisperGray.withValues(alpha: 0.3),
+                              color: AppColors.whisperGray.withAlpha(77),
                               width: 2,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppDimensions.radiusL),
                             borderSide: BorderSide(
-                              color: AppColors.whisperGray.withValues(alpha: 0.3),
+                              color: AppColors.whisperGray.withAlpha(77),
                               width: 2,
                             ),
                           ),
@@ -302,7 +302,7 @@ class _AnonymousUserSearchBarState extends State<AnonymousUserSearchBar>
             Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: AppColors.warmPeach.withValues(alpha: 0.1),
+                color: AppColors.warmPeach.withAlpha(26),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: const Icon(

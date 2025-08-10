@@ -75,7 +75,7 @@ class FriendsPreviewSection extends StatelessWidget {
             vertical: AppDimensions.spacingXS,
           ),
           decoration: BoxDecoration(
-            color: AppColors.sageGreen.withValues(alpha: 0.1),
+            color: AppColors.sageGreen.withAlpha(26),
             borderRadius: BorderRadius.circular(AppDimensions.radiusM),
           ),
           child: Text(
@@ -236,7 +236,7 @@ class _FriendAvatarItemState extends State<FriendAvatarItem>
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.1),
+                              color: Colors.black.withAlpha(26),
                               blurRadius: _isHovered ? 12 : 6,
                               offset: const Offset(0, 2),
                             ),
@@ -275,7 +275,7 @@ class _FriendAvatarItemState extends State<FriendAvatarItem>
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: _getBatteryColor().withValues(alpha: 0.3),
+                                      color: _getBatteryColor().withAlpha(77),
                                       blurRadius: 4,
                                       offset: const Offset(0, 1),
                                     ),
@@ -420,18 +420,18 @@ class _MoreFriendsIndicatorState extends State<MoreFriendsIndicator>
                         end: Alignment.bottomRight,
                         colors: [
                           AppColors.whisperGray,
-                          AppColors.stoneGray.withValues(alpha: 0.5),
+                          AppColors.stoneGray.withAlpha(128),
                         ],
                       ),
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AppColors.sageGreen.withValues(alpha: 0.3),
+                        color: AppColors.sageGreen.withAlpha(77),
                         width: 2,
                         style: BorderStyle.solid,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
+                          color: Colors.black.withAlpha(26),
                           blurRadius: _isHovered ? 12 : 6,
                           offset: const Offset(0, 2),
                         ),
@@ -491,10 +491,10 @@ class CompactFriendsCount extends StatelessWidget {
           vertical: AppDimensions.spacingXS,
         ),
         decoration: BoxDecoration(
-          color: AppColors.sageGreen.withValues(alpha: 0.1),
+          color: AppColors.sageGreen.withAlpha(26),
           borderRadius: BorderRadius.circular(AppDimensions.radiusM),
           border: Border.all(
-            color: AppColors.sageGreen.withValues(alpha: 0.3),
+            color: AppColors.sageGreen.withAlpha(77),
             width: 1,
           ),
         ),

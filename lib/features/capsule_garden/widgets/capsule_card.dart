@@ -131,8 +131,8 @@ class _CapsuleCardState extends State<CapsuleCard>
       ),
       decoration: BoxDecoration(
         color: isReady
-            ? AppColors.warmPeach.withValues(alpha: 0.2)
-            : AppColors.sageGreen.withValues(alpha: 0.1),
+            ? AppColors.warmPeach.withAlpha(51)
+            : AppColors.sageGreen.withAlpha(26),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
@@ -222,7 +222,7 @@ class _CapsuleCardState extends State<CapsuleCard>
                   ),
                   if (widget.capsule.isReady)
                     BoxShadow(
-                      color: AppColors.warmPeach.withValues(alpha: 0.3),
+                      color: AppColors.warmPeach.withAlpha(77),
                       blurRadius: _elevationAnimation.value * 0.5,
                       offset: const Offset(0, 0),
                     ),
@@ -402,7 +402,7 @@ class _QuickActionButtonState extends State<QuickActionButton>
                   boxShadow: [
                     if (widget.isPrimary)
                       BoxShadow(
-                        color: AppColors.sageGreen.withValues(alpha: 0.3),
+                        color: AppColors.sageGreen.withAlpha(77),
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),

@@ -28,7 +28,7 @@ class SettingsSection extends StatelessWidget {
         decoration: BoxDecoration(
           border: isDangerZone
               ? Border.all(
-                  color: AppColors.dustyRose.withValues(alpha: 0.3),
+                  color: AppColors.dustyRose.withAlpha(77),
                   width: 1,
                 )
               : null,

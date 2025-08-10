@@ -129,8 +129,8 @@ class _ProfileActionItemState extends State<ProfileActionItem>
     ));
     
     final hoverColor = widget.action.isDestructive
-        ? AppColors.dustyRose.withValues(alpha: 0.05)
-        : AppColors.sageGreen.withValues(alpha: 0.05);
+        ? AppColors.dustyRose.withAlpha(13)
+        : AppColors.sageGreen.withAlpha(13);
     
     _backgroundColorAnimation = ColorTween(
       begin: Colors.transparent,
@@ -222,8 +222,8 @@ class _ProfileActionItemState extends State<ProfileActionItem>
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-        color: widget.action.customColor?.withValues(alpha: 0.1) ??
-            iconColor.withValues(alpha: 0.1),
+        color: widget.action.customColor?.withAlpha(26) ??
+            iconColor.withAlpha(26),
         shape: BoxShape.circle,
       ),
       child: Center(
@@ -277,7 +277,7 @@ class _ProfileActionItemState extends State<ProfileActionItem>
       child: Icon(
         Icons.arrow_forward_ios_rounded,
         size: 16,
-        color: arrowColor.withValues(alpha: 0.6),
+        color: arrowColor.withAlpha(153),
       ),
     );
   }
@@ -355,7 +355,7 @@ class LogoutConfirmationDialog extends StatelessWidget {
               width: 64,
               height: 64,
               decoration: BoxDecoration(
-                color: AppColors.dustyRose.withValues(alpha: 0.1),
+                color: AppColors.dustyRose.withAlpha(26),
                 shape: BoxShape.circle,
               ),
               child: const Center(

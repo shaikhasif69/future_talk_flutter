@@ -37,7 +37,7 @@ class SocialBatteryIndicator extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: status.color.withValues(alpha: 0.3),
+            color: status.color.withAlpha(77),
             blurRadius: 4.0,
             spreadRadius: 1.0,
           ),
@@ -88,7 +88,7 @@ class SocialBatteryIndicatorWithTooltip extends StatelessWidget {
     return Tooltip(
       message: _buildTooltipMessage(),
       decoration: BoxDecoration(
-        color: AppColors.softCharcoal.withValues(alpha: 0.9),
+        color: AppColors.softCharcoal.withAlpha(230),
         borderRadius: BorderRadius.circular(AppDimensions.radiusS),
       ),
       textStyle: const TextStyle(
@@ -151,10 +151,10 @@ class SocialBatteryStatusCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppDimensions.spacingL),
         decoration: BoxDecoration(
-          color: status.color.withValues(alpha: 0.1),
+          color: status.color.withAlpha(26),
           borderRadius: BorderRadius.circular(AppDimensions.radiusL),
           border: Border.all(
-            color: status.color.withValues(alpha: 0.2),
+            color: status.color.withAlpha(51),
             width: 1.0,
           ),
         ),
@@ -252,7 +252,7 @@ class SocialBatterySelector extends StatelessWidget {
                 padding: const EdgeInsets.all(AppDimensions.spacingL),
                 decoration: BoxDecoration(
                   color: isSelected 
-                      ? dummyStatus.color.withValues(alpha: 0.1)
+                      ? dummyStatus.color.withAlpha(26)
                       : AppColors.pearlWhite,
                   borderRadius: BorderRadius.circular(AppDimensions.radiusL),
                   border: Border.all(

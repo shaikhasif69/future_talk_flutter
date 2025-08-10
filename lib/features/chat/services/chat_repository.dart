@@ -151,11 +151,13 @@ class ChatRepository {
         final userId = await _getCurrentUserId();
         
         try {
+          debugPrint('🔍 [ChatRepository] Parsing single conversation response data keys: ${responseData.keys.toList()}');
           final conversation = Conversation.fromApiConversation(responseData, userId);
           return ApiResult.success(conversation);
-        } catch (parseError) {
+        } catch (parseError, stackTrace) {
           debugPrint('❌ [ChatRepository] JSON parsing error: $parseError');
-          debugPrint('❌ [ChatRepository] Failed to parse response: ${responseData.toString()}');
+          debugPrint('❌ [ChatRepository] Stack trace: $stackTrace');
+          debugPrint('❌ [ChatRepository] Failed to parse response structure: ${responseData.toString()}');
           return ApiResult.failure(ApiError(
             message: 'Failed to parse response: $parseError',
             statusCode: response.statusCode,
@@ -201,12 +203,24 @@ class ChatRepository {
           // Get current user ID for message processing
           final userId = await _getCurrentUserId();
           
-          final conversations = responseData
-              .map((item) => Conversation.fromApiConversation(
-                  item as Map<String, dynamic>, 
-                  userId,
-                ))
-              .toList();
+          debugPrint('🔍 [ChatRepository] Processing ${responseData.length} conversations');
+          
+          final conversations = <Conversation>[];
+          for (int i = 0; i < responseData.length; i++) {
+            try {
+              final item = responseData[i] as Map<String, dynamic>;
+              debugPrint('🔍 [ChatRepository] Processing conversation $i with keys: ${item.keys.toList()}');
+              final conversation = Conversation.fromApiConversation(item, userId);
+              conversations.add(conversation);
+            } catch (e, stackTrace) {
+              debugPrint('❌ [ChatRepository] Failed to parse conversation $i: $e');
+              debugPrint('❌ [ChatRepository] Stack trace: $stackTrace');
+              debugPrint('❌ [ChatRepository] Conversation data: ${responseData[i]}');
+              // Continue processing other conversations instead of failing completely
+              continue;
+            }
+          }
+          
           return ApiResult.success(conversations);
         } else {
           return ApiResult.failure(ApiError(
@@ -673,9 +687,14 @@ class ChatRepository {
   /// Get current user ID from storage
   Future<String> _getCurrentUserId() async {
     try {
-      // This would need to be implemented based on your auth system
-      // For now, return a placeholder
-      return 'current-user-id'; // TODO: Implement proper user ID retrieval
+      // Try to get user ID from secure storage
+      final userId = await SecureStorageService.getUserId();
+      if (userId != null && userId.isNotEmpty) {
+        return userId;
+      }
+      
+      debugPrint('⚠️ [ChatRepository] No user ID found in storage, using fallback');
+      return 'unknown-user';
     } catch (e) {
       debugPrint('❌ [ChatRepository] Failed to get current user ID: $e');
       return 'unknown-user';

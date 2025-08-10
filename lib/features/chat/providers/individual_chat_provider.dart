@@ -96,31 +96,29 @@ class IndividualChatProvider extends ChangeNotifier {
       msg.ChatMessage(
         id: 'msg_1',
         senderId: otherParticipant.id,
-        senderName: otherParticipant.name,
+        senderUsername: otherParticipant.name,
         conversationId: conversationId,
-        type: msg.MessageType.text,
-        timestamp: DateTime.now().subtract(const Duration(minutes: 45)),
+        messageType: msg.MessageType.text,
+        createdAt: DateTime.now().subtract(const Duration(minutes: 45)),
         status: msg.MessageStatus.read,
         content: "Hey! How are you feeling today? I'm in a selective mood but always have energy for you 😊",
         reactions: [
-          msg.MessageReaction(
-            id: 'reaction_1',
-            emoji: '❤️',
+          msg.Reaction(
             userId: 'current_user',
-            userName: 'You',
-            timestamp: DateTime.now().subtract(const Duration(minutes: 44)),
-            isFromMe: true,
+            emoji: '❤️',
+            createdAt: DateTime.now().subtract(const Duration(minutes: 44)),
           ),
         ],
+        isFromMe: false,
       ),
       
       msg.ChatMessage(
         id: 'msg_2',
         senderId: 'current_user',
-        senderName: 'You',
+        senderUsername: 'You',
         conversationId: conversationId,
-        type: msg.MessageType.text,
-        timestamp: DateTime.now().subtract(const Duration(minutes: 42)),
+        messageType: msg.MessageType.text,
+        createdAt: DateTime.now().subtract(const Duration(minutes: 42)),
         status: msg.MessageStatus.read,
         content: "I'm doing wonderful! Just finished my morning meditation and I'm feeling really centered. How's your social battery looking today?",
         isFromMe: true,
@@ -129,70 +127,58 @@ class IndividualChatProvider extends ChangeNotifier {
       msg.ChatMessage(
         id: 'msg_3',
         senderId: otherParticipant.id,
-        senderName: otherParticipant.name,
+        senderUsername: otherParticipant.name,
         conversationId: conversationId,
-        type: msg.MessageType.voice,
-        timestamp: DateTime.now().subtract(const Duration(minutes: 40)),
+        messageType: msg.MessageType.voice,
+        createdAt: DateTime.now().subtract(const Duration(minutes: 40)),
         status: msg.MessageStatus.delivered,
-        content: '',
-        voiceMessage: const msg.VoiceMessage(
-          audioUrl: 'mock_audio_url',
-          duration: Duration(seconds: 23),
-        ),
+        content: 'Voice message',
+        isFromMe: false,
       ),
       
       msg.ChatMessage(
         id: 'msg_4',
         senderId: 'current_user',
-        senderName: 'You',
+        senderUsername: 'You',
         conversationId: conversationId,
-        type: msg.MessageType.selfDestruct,
-        timestamp: DateTime.now().subtract(const Duration(minutes: 38)),
+        messageType: msg.MessageType.text,
+        createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
         status: msg.MessageStatus.read,
         content: "This message will disappear soon - just wanted to say you're amazing 💫",
         isFromMe: true,
-        selfDestruct: msg.SelfDestructMessage(
-          countdown: const Duration(minutes: 5),
-          createdAt: DateTime.now().subtract(const Duration(minutes: 38)),
-        ),
       ),
       
       msg.ChatMessage(
         id: 'msg_5',
         senderId: otherParticipant.id,
-        senderName: otherParticipant.name,
+        senderUsername: otherParticipant.name,
         conversationId: conversationId,
-        type: msg.MessageType.text,
-        timestamp: DateTime.now().subtract(const Duration(minutes: 35)),
+        messageType: msg.MessageType.text,
+        createdAt: DateTime.now().subtract(const Duration(minutes: 35)),
         status: msg.MessageStatus.read,
         content: "Perfect! I'm feeling yellow today - selective responses mode. Thanks for being so understanding about my energy levels 💛",
         reactions: [
-          msg.MessageReaction(
-            id: 'reaction_2',
+          msg.Reaction(
+            userId: 'current_user',
             emoji: '🤗',
-            userId: 'current_user',
-            userName: 'You',
-            timestamp: DateTime.now().subtract(const Duration(minutes: 34)),
-            isFromMe: true,
+            createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
           ),
-          msg.MessageReaction(
-            id: 'reaction_3',
-            emoji: '💛',
+          msg.Reaction(
             userId: 'current_user',
-            userName: 'You',
-            timestamp: DateTime.now().subtract(const Duration(minutes: 34)),
-            isFromMe: true,
+            emoji: '💛',
+            createdAt: DateTime.now().subtract(const Duration(minutes: 34)),
           ),
         ],
+        isFromMe: false,
       ),
       
       msg.ChatMessage(
         id: 'msg_6',
         senderId: 'current_user',
-        senderName: 'You',
+        senderUsername: 'You',
         conversationId: conversationId,
-        type: msg.MessageType.text,
-        timestamp: DateTime.now().subtract(const Duration(minutes: 32)),
+        messageType: msg.MessageType.text,
+        createdAt: DateTime.now().subtract(const Duration(minutes: 32)),
         status: msg.MessageStatus.delivered,
         content: "No worries at all! Take your time with responses. Want to do some parallel reading later when you're feeling more social? No pressure at all 📚",
         isFromMe: true,
@@ -243,22 +229,14 @@ class IndividualChatProvider extends ChangeNotifier {
     final newMessage = msg.ChatMessage(
       id: messageId,
       senderId: 'current_user',
-      senderName: 'You',
+      senderUsername: 'You',
       conversationId: conversationId,
-      type: _currentDraft.type,
-      timestamp: DateTime.now(),
+      messageType: _currentDraft.type,
+      createdAt: DateTime.now(),
       status: msg.MessageStatus.sending,
       content: messageContent,
       isFromMe: true,
       replyToMessageId: _replyToMessageId,
-      voiceMessage: _currentDraft.voiceMessage,
-      imageMessage: _currentDraft.imageMessage,
-      selfDestruct: _currentDraft.isSelfDestruct 
-          ? msg.SelfDestructMessage(
-              countdown: _currentDraft.selfDestructDuration ?? const Duration(minutes: 5),
-              createdAt: DateTime.now(),
-            )
-          : null,
     );
 
     // Add message to list
@@ -332,22 +310,19 @@ class IndividualChatProvider extends ChangeNotifier {
     final message = _messages[messageIndex];
     
     // Check if user already reacted with this emoji
-    if (message.hasMyReaction(emoji)) {
+    if (message.hasUserReaction(emoji, 'current_user')) {
       // Remove existing reaction
       final updatedReactions = message.reactions
-          .where((r) => !(r.isFromMe && r.emoji == emoji))
+          .where((r) => !(r.userId == 'current_user' && r.emoji == emoji))
           .toList();
       
       _messages[messageIndex] = message.copyWith(reactions: updatedReactions);
     } else {
       // Add new reaction
-      final newReaction = msg.MessageReaction(
-        id: 'reaction_${DateTime.now().millisecondsSinceEpoch}',
-        emoji: emoji,
+      final newReaction = msg.Reaction(
         userId: 'current_user',
-        userName: 'You',
-        timestamp: DateTime.now(),
-        isFromMe: true,
+        emoji: emoji,
+        createdAt: DateTime.now(),
       );
       
       final updatedReactions = [...message.reactions, newReaction];
@@ -370,7 +345,7 @@ class IndividualChatProvider extends ChangeNotifier {
     // Only allow deletion of own messages within 5 minutes
     if (!message.isFromMe) return;
     
-    final timeSinceSent = DateTime.now().difference(message.timestamp).inMinutes;
+    final timeSinceSent = DateTime.now().difference(message.createdAt).inMinutes;
     if (timeSinceSent > 5) return;
 
     _messages.removeAt(messageIndex);

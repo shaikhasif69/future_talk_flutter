@@ -602,48 +602,83 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
         final message = _currentMessages[index];
         debugPrint('🔍 [IndividualChatScreen] Building simple message $index: ${message.content}');
         
-        return Container(
-          margin: const EdgeInsets.symmetric(
-            horizontal: AppDimensions.paddingM,
-            vertical: AppDimensions.spacingXS,
-          ),
-          decoration: BoxDecoration(
-            color: message.isFromMe ? AppColors.sageGreen : AppColors.pearlWhite,
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.cardShadow,
-                blurRadius: 4.0,
-                offset: const Offset(0, 1),
+        return Align(
+          alignment: message.isFromMe ? Alignment.centerRight : Alignment.centerLeft,
+          child: Container(
+            margin: EdgeInsets.only(
+              left: message.isFromMe ? 80.0 : AppDimensions.paddingM,
+              right: message.isFromMe ? AppDimensions.paddingM : 80.0,
+              top: AppDimensions.spacingXS,
+              bottom: AppDimensions.spacingXS,
+            ),
+            constraints: const BoxConstraints(maxWidth: 280.0),
+            decoration: BoxDecoration(
+              color: message.isFromMe ? AppColors.sageGreen : AppColors.pearlWhite,
+              borderRadius: BorderRadius.circular(AppDimensions.radiusL).copyWith(
+                bottomRight: message.isFromMe 
+                    ? const Radius.circular(AppDimensions.spacingS)
+                    : null,
+                bottomLeft: !message.isFromMe 
+                    ? const Radius.circular(AppDimensions.spacingS)
+                    : null,
               ),
-            ],
-          ),
-          padding: const EdgeInsets.all(AppDimensions.paddingM),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                message.senderUsername,
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: message.isFromMe ? AppColors.pearlWhite.withAlpha(200) : AppColors.softCharcoalLight,
-                  fontWeight: FontWeight.w500,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.cardShadow,
+                  blurRadius: 8.0,
+                  offset: const Offset(0, 2),
                 ),
-              ),
-              const SizedBox(height: AppDimensions.spacingXS),
-              Text(
-                message.content,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: message.isFromMe ? AppColors.pearlWhite : AppColors.softCharcoal,
+              ],
+              border: message.isFromMe
+                  ? null
+                  : Border.all(
+                      color: AppColors.sageGreenWithOpacity(0.1),
+                      width: 1.0,
+                    ),
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppDimensions.paddingM,
+              vertical: AppDimensions.spacingM,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Remove sender username from individual chats
+                Text(
+                  message.content,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: message.isFromMe ? AppColors.pearlWhite : AppColors.softCharcoal,
+                  ),
                 ),
-              ),
-              const SizedBox(height: AppDimensions.spacingXS),
-              Text(
-                message.formattedTime,
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: message.isFromMe ? AppColors.pearlWhite.withAlpha(180) : AppColors.softCharcoalLight,
+                const SizedBox(height: AppDimensions.spacingS),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      message.formattedTime,
+                      style: AppTextStyles.labelSmall.copyWith(
+                        color: message.isFromMe 
+                            ? AppColors.pearlWhite.withAlpha(180) 
+                            : AppColors.softCharcoalLight,
+                        fontSize: 11.0,
+                      ),
+                    ),
+                    if (message.isFromMe) ...[
+                      const SizedBox(width: AppDimensions.spacingXS),
+                      Text(
+                        message.statusIcon,
+                        style: TextStyle(
+                          fontSize: 10.0,
+                          color: message.status == msg.MessageStatus.read
+                              ? AppColors.warmPeach
+                              : AppColors.pearlWhite.withAlpha(153),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

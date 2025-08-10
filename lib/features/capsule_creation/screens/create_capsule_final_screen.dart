@@ -952,7 +952,7 @@ class _CreateCapsuleFinalScreenState extends ConsumerState<CreateCapsuleFinalScr
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        color: AppColors.pearlWhite.withValues(alpha: 0.2),
+                        color: AppColors.pearlWhite.withAlpha(51),
                         shape: BoxShape.circle,
                       ),
                       child: const Center(
@@ -978,7 +978,7 @@ class _CreateCapsuleFinalScreenState extends ConsumerState<CreateCapsuleFinalScr
                     Text(
                       'Your message has been planted in time\'s garden and will grow over the next ${_getDeliveryTimelineText().toLowerCase()}.',
                       style: AppTextStyles.bodyLarge.copyWith(
-                        color: AppColors.pearlWhite.withValues(alpha: 0.9),
+                        color: AppColors.pearlWhite.withAlpha(230),
                         height: 1.5,
                       ),
                       textAlign: TextAlign.center,
@@ -989,10 +989,10 @@ class _CreateCapsuleFinalScreenState extends ConsumerState<CreateCapsuleFinalScr
                     // Tracking ID
                     Container(
                       decoration: BoxDecoration(
-                        color: AppColors.pearlWhite.withValues(alpha: 0.1),
+                        color: AppColors.pearlWhite.withAlpha(26),
                         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                         border: Border.all(
-                          color: AppColors.pearlWhite.withValues(alpha: 0.3),
+                          color: AppColors.pearlWhite.withAlpha(77),
                           width: 1.0,
                         ),
                       ),
@@ -1002,7 +1002,7 @@ class _CreateCapsuleFinalScreenState extends ConsumerState<CreateCapsuleFinalScr
                           Text(
                             'Tracking ID',
                             style: AppTextStyles.labelMedium.copyWith(
-                              color: AppColors.pearlWhite.withValues(alpha: 0.8),
+                              color: AppColors.pearlWhite.withAlpha(204),
                             ),
                           ),
                           const SizedBox(height: AppDimensions.spacingXS),

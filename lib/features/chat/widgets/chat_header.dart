@@ -173,13 +173,13 @@ class _ChatHeaderState extends State<ChatHeader>
               end: Alignment.bottomRight,
               colors: [
                 participant.avatarColor,
-                participant.avatarColor.withValues(alpha: 0.7),
+                participant.avatarColor.withAlpha(179),
               ],
             ),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: participant.avatarColor.withValues(alpha: 0.3),
+                color: participant.avatarColor.withAlpha(77),
                 blurRadius: 8.0,
                 offset: const Offset(0, 2),
               ),
@@ -218,7 +218,7 @@ class _ChatHeaderState extends State<ChatHeader>
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: socialBattery.color.withValues(alpha: 0.4),
+                          color: socialBattery.color.withAlpha(102),
                           blurRadius: 4.0,
                           offset: const Offset(0, 1),
                         ),
@@ -289,7 +289,7 @@ class _ChatHeaderState extends State<ChatHeader>
         ),
         decoration: BoxDecoration(
           color: isOnline 
-              ? AppColors.success.withValues(alpha: 0.1)
+              ? AppColors.success.withAlpha(26)
               : AppColors.softCharcoalWithOpacity(0.1),
           borderRadius: BorderRadius.circular(AppDimensions.spacingS),
         ),

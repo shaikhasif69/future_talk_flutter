@@ -472,7 +472,7 @@ class MagicalComfortBackground extends StatelessWidget {
         if (enableHearts)
           FloatingHeartParticles(
             heartCount: 3,
-            heartColor: primaryColor.withValues(alpha: 0.4),
+            heartColor: primaryColor.withAlpha(102),
             minSize: 12.0,
             maxSize: 18.0,
             animationDuration: const Duration(seconds: 15),
@@ -482,7 +482,7 @@ class MagicalComfortBackground extends StatelessWidget {
         if (enableSparkles)
           FloatingSparkleParticles(
             sparkleCount: 6,
-            sparkleColor: secondaryColor.withValues(alpha: 0.5),
+            sparkleColor: secondaryColor.withAlpha(128),
             minSize: 6.0,
             maxSize: 12.0,
             animationDuration: const Duration(seconds: 10),
@@ -510,7 +510,7 @@ class StoneComfortBackground extends StatelessWidget {
       enableSparkles: isActive,
       enableBasicParticles: true,
       primaryColor: stoneColor,
-      secondaryColor: stoneColor.withValues(alpha: 0.7),
+      secondaryColor: stoneColor.withAlpha(179),
     );
   }
 }

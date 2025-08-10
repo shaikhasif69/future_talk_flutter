@@ -100,7 +100,7 @@ class _SettingsHeaderState extends State<SettingsHeader>
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: AppColors.pearlWhite.withValues(alpha: 0.1),
+                color: AppColors.pearlWhite.withAlpha(26),
                 shape: BoxShape.circle,
               ),
             ),
@@ -175,11 +175,11 @@ class _SettingsHeaderState extends State<SettingsHeader>
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-        color: AppColors.pearlWhite.withValues(alpha: 0.2),
+        color: AppColors.pearlWhite.withAlpha(51),
         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
         boxShadow: [
           BoxShadow(
-            color: AppColors.softCharcoal.withValues(alpha: 0.1),
+            color: AppColors.softCharcoal.withAlpha(26),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

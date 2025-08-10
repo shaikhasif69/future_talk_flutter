@@ -195,7 +195,7 @@ class _CreateCapsulePage2ScreenState extends ConsumerState<CreateCapsulePage2Scr
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.sageGreen.withValues(alpha: 0.3),
+                          color: AppColors.sageGreen.withAlpha(77),
                           blurRadius: 20,
                           offset: const Offset(0, 4),
                         ),

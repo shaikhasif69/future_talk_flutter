@@ -190,7 +190,7 @@ class BookLibraryDemo extends StatelessWidget {
           Text(
             'Built with Flutter\'s premium animation system, responsive design patterns, and introvert-friendly user experience principles.',
             style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.pearlWhite.withValues(alpha: 0.9),
+              color: AppColors.pearlWhite.withAlpha(230),
             ),
             textAlign: TextAlign.center,
           ),

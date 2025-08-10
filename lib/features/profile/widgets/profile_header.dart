@@ -159,7 +159,7 @@ class _ProfileHeaderState extends State<ProfileHeader>
                 height: 120,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.1),
+                  color: Colors.white.withAlpha(26),
                 ),
               ),
             ),
@@ -173,7 +173,7 @@ class _ProfileHeaderState extends State<ProfileHeader>
                 height: 80,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.05),
+                  color: Colors.white.withAlpha(13),
                 ),
               ),
             ),
@@ -269,7 +269,7 @@ class _ProfileHeaderState extends State<ProfileHeader>
                     gradient: widget.profileData.avatarGradient,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.2),
+                        color: Colors.black.withAlpha(51),
                         blurRadius: 16,
                         offset: const Offset(0, 8),
                       ),
@@ -305,7 +305,7 @@ class _ProfileHeaderState extends State<ProfileHeader>
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
+                            color: Colors.black.withAlpha(26),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
@@ -348,7 +348,7 @@ class _ProfileHeaderState extends State<ProfileHeader>
         Text(
           widget.profileData.username,
           style: AppTextStyles.bodyMedium.copyWith(
-            color: Colors.white.withValues(alpha: 0.9),
+            color: Colors.white.withAlpha(230),
             fontSize: 14,
           ),
         ).animate(delay: 100.ms).fadeIn(duration: 600.ms).slideX(begin: 0.3),
@@ -361,7 +361,7 @@ class _ProfileHeaderState extends State<ProfileHeader>
           child: Text(
             widget.profileData.bio,
             style: AppTextStyles.personalContent.copyWith(
-              color: Colors.white.withValues(alpha: 0.9),
+              color: Colors.white.withAlpha(230),
               fontSize: 14,
               height: 1.4,
             ),
@@ -453,13 +453,13 @@ class _HeaderActionButtonState extends State<_HeaderActionButton>
                 borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                 color: Colors.white.withValues(alpha: _isPressed ? 0.3 : 0.2),
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.1),
+                  color: Colors.white.withAlpha(26),
                   width: 1,
                 ),
                 boxShadow: [
                   if (_isPressed)
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
+                      color: Colors.black.withAlpha(26),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
