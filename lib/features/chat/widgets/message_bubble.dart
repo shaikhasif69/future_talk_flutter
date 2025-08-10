@@ -5,7 +5,7 @@ import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/widgets/animations/ft_fade_in.dart';
 import '../models/chat_message.dart';
-import 'voice_message_player.dart';
+// import 'voice_message_player.dart'; // Unused for now
 
 /// Premium message bubble with sophisticated styling and animations
 class MessageBubble extends StatefulWidget {
@@ -57,24 +57,8 @@ class _MessageBubbleState extends State<MessageBubble>
   }
 
   void _setupSelfDestructTimer() {
-    if (widget.message.type != MessageType.selfDestruct || 
-        widget.message.selfDestruct == null) return;
-
-    final selfDestruct = widget.message.selfDestruct!;
-    if (selfDestruct.hasExpired) {
-      _destructController.value = 1.0;
-      return;
-    }
-
-    // Start destruction animation when timer expires
-    final remaining = selfDestruct.remainingTime;
-    if (remaining > Duration.zero) {
-      Future.delayed(remaining, () {
-        if (mounted) {
-          _destructController.forward();
-        }
-      });
-    }
+    // Self-destruct functionality removed for now
+    // TODO: Implement self-destruct when supported by API
   }
 
   @override
@@ -111,68 +95,18 @@ class _MessageBubbleState extends State<MessageBubble>
     );
     final showTimestamp = message.shouldShowTimestamp(widget.previousMessage) || _showTimestamp;
 
-    return AnimatedBuilder(
-      animation: _destructAnimation,
-      builder: (context, child) {
-        if (message.type == MessageType.selfDestruct && _destructAnimation.value > 0.5) {
-          return _buildExpiredMessage();
-        }
+    debugPrint('📦 [MessageBubble] Building bubble for message: ${message.content.length > 30 ? '${message.content.substring(0, 30)}...' : message.content}');
 
-        return Opacity(
-          opacity: 1.0 - _destructAnimation.value,
-          child: _buildMessageContent(
-            message,
-            isFromMe,
-            showSenderName,
-            showTimestamp,
-          ),
-        );
-      },
+    // Simplified rendering - remove opacity animation that might be causing issues
+    return _buildMessageContent(
+      message,
+      isFromMe,
+      showSenderName,
+      showTimestamp,
     );
   }
 
-  Widget _buildExpiredMessage() {
-    return Align(
-      alignment: widget.message.isFromMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: EdgeInsets.only(
-          left: widget.message.isFromMe ? 80.0 : 0.0,
-          right: widget.message.isFromMe ? 0.0 : 80.0,
-          bottom: AppDimensions.spacingS,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingM,
-          vertical: AppDimensions.spacingM,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.softCharcoalWithOpacity(0.1),
-          borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-          border: Border.all(
-            color: AppColors.softCharcoalWithOpacity(0.2),
-            width: 1.0,
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              Icons.auto_delete_outlined,
-              size: 16.0,
-              color: AppColors.softCharcoalLight,
-            ),
-            const SizedBox(width: AppDimensions.spacingS),
-            Text(
-              'This message has disappeared',
-              style: AppTextStyles.labelMedium.copyWith(
-                color: AppColors.softCharcoalLight,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // _buildExpiredMessage removed - self-destruct not implemented
 
   Widget _buildMessageContent(
     ChatMessage message,
@@ -180,6 +114,9 @@ class _MessageBubbleState extends State<MessageBubble>
     bool showSenderName,
     bool showTimestamp,
   ) {
+    debugPrint('📦 [MessageBubble] Building message content for: ${message.content}');
+    debugPrint('📦 [MessageBubble] isFromMe: $isFromMe, showSenderName: $showSenderName, showTimestamp: $showTimestamp');
+    
     return Column(
       crossAxisAlignment: isFromMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
@@ -192,7 +129,7 @@ class _MessageBubbleState extends State<MessageBubble>
               bottom: AppDimensions.spacingXS,
             ),
             child: Text(
-              message.senderName,
+              message.senderUsername,
               style: AppTextStyles.labelSmall.copyWith(
                 color: AppColors.softCharcoalLight,
                 fontWeight: FontWeight.w500,
@@ -222,7 +159,8 @@ class _MessageBubbleState extends State<MessageBubble>
   }
 
   Widget _buildBubbleContainer(ChatMessage message, bool isFromMe) {
-    final isSelfDestruct = message.type == MessageType.selfDestruct;
+    final isSelfDestruct = false; // Self-destruct not implemented yet
+    debugPrint('🎆 [MessageBubble] Building bubble container for: ${message.content}');
     
     return Container(
       margin: EdgeInsets.only(
@@ -235,35 +173,19 @@ class _MessageBubbleState extends State<MessageBubble>
           // Main bubble
           Container(
             constraints: const BoxConstraints(maxWidth: 280.0),
-            padding: _getBubblePadding(message.type),
+            padding: _getBubblePadding(message.messageType),
             decoration: _getBubbleDecoration(isFromMe, isSelfDestruct),
             child: _buildMessageTypeContent(message),
           ),
 
-          // Self-destruct timer
-          if (isSelfDestruct && message.selfDestruct != null)
-            _buildSelfDestructTimer(message.selfDestruct!),
 
-          // Self-destruct fire icon
-          if (isSelfDestruct)
-            Positioned(
-              top: 8.0,
-              right: 8.0,
-              child: Text(
-                '🔥',
-                style: TextStyle(
-                  fontSize: 12.0,
-                  color: AppColors.softCharcoalWithOpacity(0.7),
-                ),
-              ),
-            ),
         ],
       ),
     );
   }
 
-  EdgeInsets _getBubblePadding(MessageType type) {
-    switch (type) {
+  EdgeInsets _getBubblePadding(MessageType messageType) {
+    switch (messageType) {
       case MessageType.voice:
         return const EdgeInsets.all(AppDimensions.paddingM);
       case MessageType.image:
@@ -321,7 +243,7 @@ class _MessageBubbleState extends State<MessageBubble>
         ),
         borderRadius: borderRadius,
         border: Border.all(
-          color: AppColors.dustyRose.withValues(alpha: 0.3),
+          color: AppColors.dustyRose.withAlpha(77),
           width: 1.0,
         ),
         boxShadow: shadows,
@@ -349,21 +271,21 @@ class _MessageBubbleState extends State<MessageBubble>
   }
 
   Widget _buildMessageTypeContent(ChatMessage message) {
-    switch (message.type) {
+    switch (message.messageType) {
       case MessageType.text:
-      case MessageType.selfDestruct:
         return _buildTextContent(message);
       case MessageType.voice:
         return _buildVoiceContent(message);
       case MessageType.image:
         return _buildImageContent(message);
-      default:
-        return _buildTextContent(message);
+      case MessageType.video:
+        return _buildTextContent(message); // Placeholder
     }
   }
 
   Widget _buildTextContent(ChatMessage message) {
     final isFromMe = message.isFromMe;
+    debugPrint('📝 [MessageBubble] Building text content: "${message.displayContent}" (isFromMe: $isFromMe)');
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -389,7 +311,7 @@ class _MessageBubbleState extends State<MessageBubble>
               message.formattedTime,
               style: AppTextStyles.labelSmall.copyWith(
                 color: isFromMe 
-                    ? AppColors.pearlWhite.withValues(alpha: 0.8)
+                    ? AppColors.pearlWhite.withAlpha(204)
                     : AppColors.softCharcoalLight,
                 fontSize: 11.0,
               ),
@@ -403,7 +325,7 @@ class _MessageBubbleState extends State<MessageBubble>
                   fontSize: 10.0,
                   color: message.status == MessageStatus.read
                       ? AppColors.warmPeach
-                      : AppColors.pearlWhite.withValues(alpha: 0.6),
+                      : AppColors.pearlWhite.withAlpha(153),
                 ),
               ),
               
@@ -425,25 +347,28 @@ class _MessageBubbleState extends State<MessageBubble>
   }
 
   Widget _buildVoiceContent(ChatMessage message) {
-    if (message.voiceMessage == null) return const SizedBox.shrink();
-    
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        VoiceMessagePlayer(voiceMessage: message.voiceMessage!),
-        
-        const SizedBox(height: AppDimensions.spacingS),
-        
-        Text(
-          message.formattedTime,
-          style: AppTextStyles.labelSmall.copyWith(
+    // TODO: Implement voice message display when VoiceMessage model is available
+    return Container(
+      padding: const EdgeInsets.all(AppDimensions.paddingM),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.mic_outlined,
+            size: 20.0,
             color: AppColors.softCharcoalLight,
-            fontSize: 11.0,
           ),
-        ),
-      ],
+          const SizedBox(width: AppDimensions.spacingS),
+          Text(
+            'Voice message',
+            style: AppTextStyles.personalContent.copyWith(
+              color: AppColors.softCharcoalLight,
+            ),
+          ),
+        ],
+      ),
     );
+    
   }
 
   Widget _buildImageContent(ChatMessage message) {
@@ -465,35 +390,8 @@ class _MessageBubbleState extends State<MessageBubble>
     );
   }
 
-  Widget _buildSelfDestructTimer(SelfDestructMessage selfDestruct) {
-    return Positioned(
-      top: 0,
-      left: 0,
-      right: 0,
-      child: AnimatedBuilder(
-        animation: _destructController,
-        builder: (context, child) {
-          final progress = selfDestruct.destructionProgress;
-          
-          return Container(
-            height: 3.0,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(AppDimensions.radiusL),
-              ),
-            ),
-            child: LinearProgressIndicator(
-              value: progress,
-              backgroundColor: Colors.transparent,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                AppColors.dustyRose.withValues(alpha: 0.8),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
+  // Self-destruct timer removed - not implemented in current model
+  // TODO: Add back when SelfDestructMessage is properly implemented
 
   Widget _buildMessageReactions(ChatMessage message, bool isFromMe) {
     final groupedReactions = message.groupedReactions;
@@ -510,7 +408,8 @@ class _MessageBubbleState extends State<MessageBubble>
         children: groupedReactions.entries.map((entry) {
           final emoji = entry.key;
           final reactions = entry.value;
-          final hasMyReaction = reactions.any((r) => r.isFromMe);
+          // Check if current user has reacted with this emoji
+          final hasMyReaction = reactions.any((r) => r.userId == message.senderId); // TODO: Use actual current user ID
           
           return GestureDetector(
             onTap: () => _onReactionTap(emoji),

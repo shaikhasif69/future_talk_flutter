@@ -3,15 +3,15 @@ import 'package:flutter/services.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
-import '../../../shared/widgets/animations/ft_stagger_animation.dart';
+// import '../../../shared/widgets/animations/ft_stagger_animation.dart';
 import '../models/chat_conversation.dart';
 import '../models/chat_message.dart' as msg;
 import '../providers/realtime_chat_provider.dart';
-import '../widgets/chat_header.dart';
 import '../widgets/message_bubble.dart';
-import '../widgets/message_input.dart';
 import '../widgets/quick_reactions.dart' as reactions;
 import '../widgets/typing_indicator.dart' as typing;
+import '../widgets/connection_status_indicator.dart';
+import '../services/websocket_service.dart';
 
 /// Premium individual chat screen with sanctuary-like communication experience
 /// Features smooth animations, social battery awareness, and introvert-friendly interactions
@@ -36,6 +36,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   
   bool _showQuickReactions = false;
   bool _isInitialized = false;
+  List<msg.ChatMessage> _currentMessages = [];
 
   @override
   void initState() {
@@ -59,16 +60,21 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   }
 
   void _initializeChatProvider() {
-    _chatProvider = RealtimeChatProvider();
+    debugPrint('🚀 [IndividualChatScreen] Initializing chat provider for conversation: ${widget.conversation.id}');
+    
+    // Use the global RealtimeChatProvider instance
+    _chatProvider = realtimeChatProvider;
 
     // Listen to provider changes
     _chatProvider.addListener(_onChatProviderChanged);
 
     // Initialize provider asynchronously
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _chatProvider.initialize();
-      // Select this conversation
+      // Ensure the conversation is selected
       await _chatProvider.selectConversation(widget.conversation.id);
+      
+      // Load current messages
+      _loadCurrentMessages();
       
       if (mounted) {
         _fadeInController.forward();
@@ -85,19 +91,161 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   void _onChatProviderChanged() {
     if (!mounted) return;
     
+    debugPrint('🔄 [IndividualChatScreen] Provider changed, updating messages');
+    
+    // Update current messages from provider
+    _loadCurrentMessages();
+    
     // Auto-scroll to bottom when new messages arrive
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final messages = _chatProvider.getMessages(widget.conversation.id);
-      if (messages.isNotEmpty) {
+      if (_currentMessages.isNotEmpty) {
         _scrollToBottom();
       }
     });
   }
+  
+  /// Load current messages for this conversation from the provider
+  void _loadCurrentMessages() {
+    final conversationMessages = _chatProvider.getMessages(widget.conversation.id);
+    
+    debugPrint('📝 [IndividualChatScreen] Loading ${conversationMessages.length} messages for conversation ${widget.conversation.id}');
+    
+    // Only update if messages have actually changed to avoid unnecessary rebuilds
+    if (conversationMessages.length != _currentMessages.length ||
+        (conversationMessages.isNotEmpty && _currentMessages.isNotEmpty &&
+         conversationMessages.last.id != _currentMessages.last.id)) {
+      
+      debugPrint('🔄 [IndividualChatScreen] Messages changed, updating UI messages');
+      
+      // Convert ChatMessage from API to UI ChatMessage if needed
+      final newMessages = conversationMessages.map((apiMessage) {
+        debugPrint('🔄 [IndividualChatScreen] Converting API message: ${apiMessage.content.length > 30 ? '${apiMessage.content.substring(0, 30)}...' : apiMessage.content}');
+        
+        return msg.ChatMessage(
+          id: apiMessage.id,
+          senderId: apiMessage.senderId,
+          senderUsername: apiMessage.senderUsername,
+          conversationId: apiMessage.conversationId,
+          messageType: _mapMessageType(apiMessage.messageType.toString()),
+          createdAt: apiMessage.createdAt,
+          status: _mapMessageStatus(apiMessage.status?.toString()),
+          content: apiMessage.content,
+          isFromMe: apiMessage.senderId == (_chatProvider.currentUserId ?? ''),
+          readBy: apiMessage.readBy,
+          reactions: (apiMessage.reactions ?? []).map((r) => msg.Reaction(
+            userId: r.userId,
+            emoji: r.emoji,
+            createdAt: r.createdAt,
+          )).toList(),
+        );
+      }).toList();
+      
+      _currentMessages = newMessages;
+      debugPrint('✅ [IndividualChatScreen] Updated _currentMessages with ${_currentMessages.length} messages');
+      
+      // Schedule a setState to trigger rebuild and auto-scroll to bottom
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {});
+          // Auto-scroll to bottom for new messages
+          _scrollToBottom();
+        }
+      });
+    } else {
+      debugPrint('💡 [IndividualChatScreen] Messages unchanged, no UI update needed');
+    }
+  }
+  
+  /// Map API message type to UI message type
+  msg.MessageType _mapMessageType(String? type) {
+    switch (type?.toLowerCase()) {
+      case 'text':
+        return msg.MessageType.text;
+      case 'voice':
+        return msg.MessageType.voice;
+      case 'image':
+        return msg.MessageType.image;
+      default:
+        return msg.MessageType.text;
+    }
+  }
+  
+  /// Map API message status to UI message status
+  msg.MessageStatus _mapMessageStatus(String? status) {
+    switch (status?.toLowerCase()) {
+      case 'sending':
+        return msg.MessageStatus.sending;
+      case 'sent':
+        return msg.MessageStatus.sent;
+      case 'delivered':
+        return msg.MessageStatus.delivered;
+      case 'read':
+        return msg.MessageStatus.read;
+      default:
+        return msg.MessageStatus.sent;
+    }
+  }
+  
+  /// Check if other user is typing
+  bool _isOtherUserTyping() {
+    final conversationId = widget.conversation.id;
+    final typingUsers = _chatProvider.getTypingUsers(conversationId);
+    final isTyping = typingUsers.isNotEmpty;
+    
+    if (isTyping) {
+      debugPrint('⌨️ [IndividualChatScreen] Other user is typing in $conversationId: ${typingUsers.toList()}');
+    }
+    
+    return isTyping;
+  }
+  
+  /// Get connection status text for header
+  String _getConnectionStatusText() {
+    switch (_chatProvider.connectionState) {
+      case WebSocketConnectionState.connected:
+        return 'Online';
+      case WebSocketConnectionState.connecting:
+        return 'Connecting...';
+      case WebSocketConnectionState.reconnecting:
+        return 'Reconnecting...';
+      case WebSocketConnectionState.disconnected:
+        return 'Offline';
+      case WebSocketConnectionState.error:
+        return 'Connection Error';
+    }
+  }
+  
+  /// Get connection status color for header
+  Color _getConnectionStatusColor() {
+    switch (_chatProvider.connectionState) {
+      case WebSocketConnectionState.connected:
+        return AppColors.sageGreen;
+      case WebSocketConnectionState.connecting:
+      case WebSocketConnectionState.reconnecting:
+        return AppColors.warmPeach;
+      case WebSocketConnectionState.disconnected:
+        return AppColors.softCharcoalLight;
+      case WebSocketConnectionState.error:
+        return AppColors.dustyRose;
+    }
+  }
+  
+  /// Group messages by date
+  Map<String, List<msg.ChatMessage>> _groupMessagesByDate(List<msg.ChatMessage> messages) {
+    final Map<String, List<msg.ChatMessage>> grouped = {};
+    
+    for (final message in messages) {
+      final dateKey = message.formattedDate;
+      grouped.putIfAbsent(dateKey, () => []).add(message);
+    }
+    
+    return grouped;
+  }
 
   @override
   void dispose() {
+    _messageController.dispose();
     _chatProvider.removeListener(_onChatProviderChanged);
-    _chatProvider.dispose();
     _scrollController.dispose();
     _fadeInController.dispose();
     _slideInController.dispose();
@@ -119,7 +267,16 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   }
 
   void _onQuickReactionTap(String emoji) {
-    _chatProvider.sendQuickReaction(emoji);
+    // Send quick reaction to last received message
+    final lastReceivedMessage = _currentMessages
+        .where((m) => !m.isFromMe)
+        .lastOrNull;
+    
+    if (lastReceivedMessage != null) {
+      // TODO: Implement reaction API call
+      debugPrint('🎭 [IndividualChatScreen] Adding reaction $emoji to message ${lastReceivedMessage.id}');
+    }
+    
     _hideQuickReactions();
   }
 
@@ -142,12 +299,9 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     });
   }
 
-  void _onMessageSent() {
-    HapticFeedback.lightImpact();
-    _scrollToBottom();
-  }
 
   void _onMessageLongPress(msg.ChatMessage message) {
+    debugPrint('📝 [IndividualChatScreen] Long press on message: ${message.id}');
     _showMessageOptions(message);
   }
 
@@ -193,7 +347,8 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
                 style: AppTextStyles.bodyMedium,
               ),
               onTap: () {
-                _chatProvider.setReplyToMessage(message.id);
+                // TODO: Implement reply functionality with API
+                debugPrint('💬 [IndividualChatScreen] Reply to message: ${message.id}');
                 Navigator.pop(context);
               },
             ),
@@ -215,7 +370,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
             ),
             
             // Copy text (if text message)
-            if (message.type == msg.MessageType.text)
+            if (message.messageType == msg.MessageType.text)
               ListTile(
                 leading: const Icon(
                   Icons.copy,
@@ -260,7 +415,8 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
                   ),
                 ),
                 onTap: () {
-                  _chatProvider.deleteMessage(message.id);
+                  // TODO: Implement delete message API call
+                  debugPrint('🗑️ [IndividualChatScreen] Delete message: ${message.id}');
                   Navigator.pop(context);
                 },
               ),
@@ -290,17 +446,14 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
           opacity: _fadeInController,
           child: Column(
             children: [
-              // Chat Header
-              ChatHeader(
-                conversation: widget.conversation,
-                provider: _chatProvider,
-                onBackPressed: () => Navigator.of(context).pop(),
-                onConnectionStonesPressed: () {
-                  // TODO: Navigate to connection stones
-                },
-                onSettingsPressed: () {
-                  // TODO: Show chat settings
-                },
+              // Chat Header  
+              _buildChatHeader(),
+              
+              // Connection Status Banner (when not connected)
+              ConnectionStatusBanner(
+                connectionState: _chatProvider.connectionState,
+                lastError: _chatProvider.lastError,
+                onRetry: () => _chatProvider.initialize(),
               ),
               
               // Messages Area
@@ -354,11 +507,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
               ),
               
               // Message Input Area
-              MessageInput(
-                provider: _chatProvider,
-                onMessageSent: _onMessageSent,
-                onQuickReactionPressed: _openQuickReactions,
-              ),
+              _buildMessageInputArea(),
             ],
           ),
         ),
@@ -370,7 +519,17 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     return ListenableBuilder(
       listenable: _chatProvider,
       builder: (context, _) {
-        if (_chatProvider.isInitializing || _chatProvider.isLoading) {
+        // Refresh messages from provider whenever it changes
+        _loadCurrentMessages();
+        
+        // Show loading indicator while messages are loading
+        final conversationId = widget.conversation.id;
+        final isLoadingMessages = _chatProvider.isLoadingMessages(conversationId);
+        
+        debugPrint('🏗️ [IndividualChatScreen] Building messages list: ${_currentMessages.length} messages');
+        
+        if (isLoadingMessages && _currentMessages.isEmpty) {
+          debugPrint('🔄 [IndividualChatScreen] Showing loading indicator');
           return const Center(
             child: CircularProgressIndicator(
               strokeWidth: 2.0,
@@ -379,7 +538,8 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
           );
         }
 
-        if (_chatProvider.errorMessage != null) {
+        if (_chatProvider.lastError != null && _currentMessages.isEmpty) {
+          debugPrint('❌ [IndividualChatScreen] Showing error state');
           return Center(
             child: Padding(
               padding: const EdgeInsets.all(AppDimensions.paddingXXL),
@@ -400,7 +560,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
                   ),
                   const SizedBox(height: AppDimensions.spacingM),
                   Text(
-                    _chatProvider.errorMessage!,
+                    _chatProvider.lastError!,
                     style: AppTextStyles.bodyMedium.copyWith(
                       color: AppColors.softCharcoalLight,
                     ),
@@ -417,11 +577,75 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
           );
         }
 
-        if (!_chatProvider.hasMessages) {
+        if (_currentMessages.isEmpty) {
+          debugPrint('📭 [IndividualChatScreen] Showing empty state');
           return _buildEmptyState();
         }
 
-        return _buildMessagesListView();
+        debugPrint('📱 [IndividualChatScreen] Building messages list view with ${_currentMessages.length} messages');
+        
+        // Add a simple ListView.builder as fallback for debugging
+        return _buildSimpleMessagesList();
+      },
+    );
+  }
+
+  /// Simple ListView.builder for debugging message display issues
+  Widget _buildSimpleMessagesList() {
+    debugPrint('🔍 [IndividualChatScreen] Building SIMPLE messages list with ${_currentMessages.length} messages');
+    
+    return ListView.builder(
+      controller: _scrollController,
+      physics: const AlwaysScrollableScrollPhysics(),
+      itemCount: _currentMessages.length,
+      itemBuilder: (context, index) {
+        final message = _currentMessages[index];
+        debugPrint('🔍 [IndividualChatScreen] Building simple message $index: ${message.content}');
+        
+        return Container(
+          margin: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.paddingM,
+            vertical: AppDimensions.spacingXS,
+          ),
+          decoration: BoxDecoration(
+            color: message.isFromMe ? AppColors.sageGreen : AppColors.pearlWhite,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.cardShadow,
+                blurRadius: 4.0,
+                offset: const Offset(0, 1),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(AppDimensions.paddingM),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                message.senderUsername,
+                style: AppTextStyles.labelSmall.copyWith(
+                  color: message.isFromMe ? AppColors.pearlWhite.withAlpha(200) : AppColors.softCharcoalLight,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: AppDimensions.spacingXS),
+              Text(
+                message.content,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: message.isFromMe ? AppColors.pearlWhite : AppColors.softCharcoal,
+                ),
+              ),
+              const SizedBox(height: AppDimensions.spacingXS),
+              Text(
+                message.formattedTime,
+                style: AppTextStyles.labelSmall.copyWith(
+                  color: message.isFromMe ? AppColors.pearlWhite.withAlpha(180) : AppColors.softCharcoalLight,
+                ),
+              ),
+            ],
+          ),
+        );
       },
     );
   }
@@ -455,7 +679,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
             ),
             const SizedBox(height: AppDimensions.spacingM),
             Text(
-              'Send your first message to ${_chatProvider.otherUserName}',
+              'Send your first message to ${widget.conversation.name}',
               style: AppTextStyles.bodyMedium.copyWith(
                 color: AppColors.softCharcoalLight,
               ),
@@ -468,7 +692,13 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   }
 
   Widget _buildMessagesListView() {
-    final messagesByDate = _chatProvider.messagesByDate;
+    debugPrint('📱 [IndividualChatScreen] Building messages list view with ${_currentMessages.length} messages');
+    final messagesByDate = _groupMessagesByDate(_currentMessages);
+    
+    debugPrint('🗓️ [IndividualChatScreen] Messages grouped by ${messagesByDate.length} dates');
+    for (var entry in messagesByDate.entries) {
+      debugPrint('📅 [IndividualChatScreen] Date: ${entry.key} - Messages: ${entry.value.length}');
+    }
     
     return CustomScrollView(
       controller: _scrollController,
@@ -478,6 +708,8 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
         ...messagesByDate.entries.map((entry) {
           final dateText = entry.key;
           final messages = entry.value;
+          
+          debugPrint('🏗️ [IndividualChatScreen] Building sliver group for $dateText with ${messages.length} messages');
           
           return SliverMainAxisGroup(
             slivers: [
@@ -490,7 +722,10 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    if (index >= messages.length) return null;
+                    if (index >= messages.length) {
+                      debugPrint('⚠️ [IndividualChatScreen] Index $index out of bounds for ${messages.length} messages');
+                      return null;
+                    }
                     
                     final message = messages[index];
                     final previousMessage = index > 0 ? messages[index - 1] : null;
@@ -498,20 +733,25 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
                         ? messages[index + 1] 
                         : null;
                     
+                    debugPrint('🧱 [IndividualChatScreen] Building message $index: ${message.content.length > 20 ? '${message.content.substring(0, 20)}...' : message.content}');
+                    
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppDimensions.paddingM,
                         vertical: AppDimensions.spacingXS,
                       ),
-                      child: FTStaggerAnimation(
-                        delay: Duration(milliseconds: index * 50),
-                        slideDirection: FTStaggerSlideDirection.fromBottom,
+                      child: Container(
+                        // Add temporary background to debug visibility
+                        color: Colors.transparent,
                         child: MessageBubble(
                           message: message,
                           previousMessage: previousMessage,
                           nextMessage: nextMessage,
                           onLongPress: () => _onMessageLongPress(message),
-                          onReactionTap: (emoji) => _chatProvider.addReaction(message.id, emoji),
+                          onReactionTap: (emoji) {
+                            // TODO: Implement reaction API call
+                            debugPrint('🎭 [IndividualChatScreen] Adding reaction $emoji to message ${message.id}');
+                          },
                         ),
                       ),
                     );
@@ -524,18 +764,30 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
         }),
         
         // Typing indicator
-        if (_chatProvider.isOtherUserTyping)
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppDimensions.paddingM,
-                vertical: AppDimensions.spacingM,
-              ),
-              child: typing.TypingIndicator(
-                userName: _chatProvider.otherUserName,
-              ),
-            ),
-          ),
+        Builder(
+          builder: (context) {
+            final isTyping = _isOtherUserTyping();
+            debugPrint('🏗️ [IndividualChatScreen] Building typing indicator - show: $isTyping');
+            
+            if (isTyping) {
+              return SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppDimensions.paddingM,
+                    vertical: AppDimensions.spacingM,
+                  ),
+                  child: typing.TypingIndicator(
+                    userName: widget.conversation.name,
+                  ),
+                ),
+              );
+            } else {
+              return const SliverToBoxAdapter(
+                child: SizedBox.shrink(),
+              );
+            }
+          },
+        ),
         
         // Bottom padding
         const SliverToBoxAdapter(
@@ -547,7 +799,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
 
   Widget _buildDateSeparator(String dateText) {
     final isToday = dateText == 'Today';
-    final socialBattery = _chatProvider.otherUserSocialBattery;
+    final socialBattery = widget.conversation.otherParticipant?.socialBattery;
     
     String displayText = dateText;
     if (isToday && socialBattery != null) {
@@ -582,6 +834,333 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       ),
     );
   }
+
+  /// Build chat header with back button and participant info
+  Widget _buildChatHeader() {
+    return Container(
+      padding: const EdgeInsets.all(AppDimensions.paddingM),
+      decoration: BoxDecoration(
+        color: AppColors.pearlWhite.withValues(alpha: 0.95),
+        border: Border(
+          bottom: BorderSide(
+            color: AppColors.sageGreenWithOpacity(0.1),
+            width: 1.0,
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          // Back button
+          IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(Icons.arrow_back_ios, size: 20),
+            style: IconButton.styleFrom(
+              backgroundColor: AppColors.sageGreenWithOpacity(0.1),
+              foregroundColor: AppColors.sageGreen,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+          
+          const SizedBox(width: AppDimensions.spacingM),
+          
+          // Participant info
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.conversation.name,
+                  style: AppTextStyles.headlineSmall.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Builder(
+                  builder: (context) {
+                    final isTyping = _isOtherUserTyping();
+                    debugPrint('🏗️ [IndividualChatScreen] Building header status - typing: $isTyping');
+                    
+                    if (isTyping) {
+                      return Text(
+                        'typing...',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.sageGreen,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      );
+                    } else {
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ConnectionStatusIndicator(
+                            connectionState: _chatProvider.connectionState,
+                            size: 6.0,
+                            showLabel: false,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            _getConnectionStatusText(),
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: _getConnectionStatusColor(),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+          
+          // Header actions
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  // TODO: Navigate to connection stones
+                },
+                icon: const Text('🪨', style: TextStyle(fontSize: 18)),
+                style: IconButton.styleFrom(
+                  backgroundColor: AppColors.sageGreenWithOpacity(0.1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+              
+              const SizedBox(width: AppDimensions.spacingS),
+              
+              IconButton(
+                onPressed: () {
+                  // TODO: Show chat settings
+                },
+                icon: const Icon(Icons.settings, size: 18),
+                style: IconButton.styleFrom(
+                  backgroundColor: AppColors.sageGreenWithOpacity(0.1),
+                  foregroundColor: AppColors.sageGreen,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Build message input area with send functionality
+  Widget _buildMessageInputArea() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.pearlWhite.withValues(alpha: 0.95),
+        border: Border(
+          top: BorderSide(
+            color: AppColors.sageGreenWithOpacity(0.1),
+            width: 1.0,
+          ),
+        ),
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(AppDimensions.paddingM),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Quick reactions
+              _buildQuickReactionsRow(),
+              
+              const SizedBox(height: AppDimensions.spacingM),
+              
+              // Message input
+              _buildMessageInputContainer(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Build quick reactions row
+  Widget _buildQuickReactionsRow() {
+    const quickReactions = ['❤️', '😊', '👍', '🤗', '💛', '✨', '🙏'];
+    
+    return SizedBox(
+      height: 44,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: quickReactions.length,
+        separatorBuilder: (_, __) => const SizedBox(width: AppDimensions.spacingS),
+        itemBuilder: (context, index) {
+          final emoji = quickReactions[index];
+          return GestureDetector(
+            onTap: () => _onQuickReactionTap(emoji),
+            child: Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: AppColors.sageGreenWithOpacity(0.1),
+                borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+                border: Border.all(
+                  color: AppColors.sageGreenWithOpacity(0.15),
+                  width: 1.0,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  emoji,
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  /// Build message input container with text field and send button
+  Widget _buildMessageInputContainer() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.pearlWhite,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
+        border: Border.all(
+          color: AppColors.sageGreenWithOpacity(0.15),
+          width: 1.0,
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          // Add button
+          Container(
+            margin: const EdgeInsets.all(AppDimensions.spacingS),
+            child: Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: AppColors.sageGreenWithOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.add,
+                color: AppColors.sageGreen,
+                size: 20,
+              ),
+            ),
+          ),
+          
+          // Text input
+          Expanded(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                minHeight: 36,
+                maxHeight: 100,
+              ),
+              child: TextField(
+                controller: _messageController,
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.newline,
+                style: AppTextStyles.personalContent.copyWith(
+                  fontSize: 15,
+                  color: AppColors.softCharcoal,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Share your thoughts mindfully...',
+                  hintStyle: AppTextStyles.personalContent.copyWith(
+                    fontSize: 15,
+                    color: AppColors.softCharcoalLight,
+                    fontStyle: FontStyle.italic,
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: AppDimensions.paddingM,
+                    vertical: AppDimensions.spacingM,
+                  ),
+                ),
+                onChanged: (text) {
+                  setState(() {});
+                  _handleTyping(text);
+                },
+              ),
+            ),
+          ),
+          
+          // Send button
+          Container(
+            margin: const EdgeInsets.all(AppDimensions.spacingS),
+            child: GestureDetector(
+              onTap: _messageController.text.trim().isNotEmpty ? _sendMessage : null,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  gradient: _messageController.text.trim().isNotEmpty
+                      ? LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [AppColors.sageGreen, AppColors.sageGreenHover],
+                        )
+                      : null,
+                  color: _messageController.text.trim().isNotEmpty
+                      ? null
+                      : AppColors.sageGreenWithOpacity(0.3),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.send_rounded,
+                  color: AppColors.pearlWhite,
+                  size: 20,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  late final TextEditingController _messageController = TextEditingController();
+
+  /// Handle typing indicators
+  void _handleTyping(String text) {
+    final conversationId = widget.conversation.id;
+    
+    if (text.trim().isNotEmpty) {
+      _chatProvider.startTyping(conversationId);
+    } else {
+      _chatProvider.stopTyping(conversationId);
+    }
+  }
+
+  /// Send message
+  Future<void> _sendMessage() async {
+    final content = _messageController.text.trim();
+    if (content.isEmpty) return;
+
+    debugPrint('📤 [IndividualChatScreen] Sending message: $content');
+
+    final conversationId = widget.conversation.id;
+    
+    // Clear input immediately
+    _messageController.clear();
+    setState(() {});
+
+    // Send via provider
+    await _chatProvider.sendMessage(conversationId, content);
+
+    // Give haptic feedback
+    HapticFeedback.lightImpact();
+    
+    // Scroll to bottom
+    _scrollToBottom();
+  }
+
 }
 
 /// Custom painter for chat background texture
@@ -589,7 +1168,7 @@ class _ChatBackgroundPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppColors.pearlWhite.withValues(alpha: 0.3)
+      ..color = AppColors.pearlWhite.withAlpha(77)
       ..style = PaintingStyle.fill;
 
     // Create subtle texture dots
