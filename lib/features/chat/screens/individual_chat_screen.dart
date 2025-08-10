@@ -7,11 +7,7 @@ import '../../../core/constants/app_text_styles.dart';
 import '../models/chat_conversation.dart';
 import '../models/chat_message.dart' as msg;
 import '../providers/realtime_chat_provider.dart';
-import '../widgets/message_bubble.dart';
-import '../widgets/quick_reactions.dart' as reactions;
-import '../widgets/typing_indicator.dart' as typing;
 import '../widgets/connection_status_indicator.dart';
-import '../widgets/whatsapp_bubble.dart';
 import '../services/websocket_service.dart';
 
 /// Premium individual chat screen with sanctuary-like communication experience
@@ -36,7 +32,6 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   late AnimationController _slideInController;
   late TextEditingController _messageController;
   
-  bool _showQuickReactions = false;
   bool _isInitialized = false;
   List<msg.ChatMessage> _currentMessages = [];
 
@@ -149,11 +144,11 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
           conversationId: apiMessage.conversationId,
           messageType: _mapMessageType(apiMessage.messageType.toString()),
           createdAt: apiMessage.createdAt,
-          status: _mapMessageStatus(apiMessage.status?.toString()),
+          status: _mapMessageStatus(apiMessage.status.toString()),
           content: apiMessage.content,
           isFromMe: isFromMe, // USE THE PROPERLY CALCULATED VALUE
           readBy: apiMessage.readBy,
-          reactions: (apiMessage.reactions ?? []).map((r) => msg.Reaction(
+          reactions: apiMessage.reactions.map((r) => msg.Reaction(
             userId: r.userId,
             emoji: r.emoji,
             createdAt: r.createdAt,
@@ -325,17 +320,6 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     return widget.conversation.name;
   }
   
-  /// Group messages by date
-  Map<String, List<msg.ChatMessage>> _groupMessagesByDate(List<msg.ChatMessage> messages) {
-    final Map<String, List<msg.ChatMessage>> grouped = {};
-    
-    for (final message in messages) {
-      final dateKey = message.formattedDate;
-      grouped.putIfAbsent(dateKey, () => []).add(message);
-    }
-    
-    return grouped;
-  }
 
   @override
   void dispose() {
@@ -372,154 +356,11 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       debugPrint('🎭 [IndividualChatScreen] Adding reaction $emoji to message ${lastReceivedMessage.id}');
     }
     
-    _hideQuickReactions();
-  }
-
-  void _openQuickReactions() {
-    setState(() {
-      _showQuickReactions = true;
-    });
-    
-    // Auto-hide after 5 seconds
-    Future.delayed(const Duration(seconds: 5), () {
-      if (mounted) {
-        _hideQuickReactions();
-      }
-    });
-  }
-
-  void _hideQuickReactions() {
-    setState(() {
-      _showQuickReactions = false;
-    });
+    // Quick reaction sent
   }
 
 
-  void _onMessageLongPress(msg.ChatMessage message) {
-    debugPrint('📝 [IndividualChatScreen] Long press on message: ${message.id}');
-    _showMessageOptions(message);
-  }
 
-  void _showMessageOptions(msg.ChatMessage message) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppColors.pearlWhite,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(AppDimensions.radiusXXL),
-        ),
-      ),
-      builder: (context) => _buildMessageOptionsSheet(message),
-    );
-  }
-
-  Widget _buildMessageOptionsSheet(msg.ChatMessage message) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(AppDimensions.paddingM),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Handle bar
-            Container(
-              width: 40.0,
-              height: 4.0,
-              margin: const EdgeInsets.only(bottom: AppDimensions.paddingM),
-              decoration: BoxDecoration(
-                color: AppColors.whisperGray,
-                borderRadius: BorderRadius.circular(2.0),
-              ),
-            ),
-            
-            // Reply option
-            ListTile(
-              leading: const Icon(
-                Icons.reply,
-                color: AppColors.sageGreen,
-              ),
-              title: Text(
-                'Reply',
-                style: AppTextStyles.bodyMedium,
-              ),
-              onTap: () {
-                // TODO: Implement reply functionality with API
-                debugPrint('💬 [IndividualChatScreen] Reply to message: ${message.id}');
-                Navigator.pop(context);
-              },
-            ),
-            
-            // React option
-            ListTile(
-              leading: const Icon(
-                Icons.emoji_emotions_outlined,
-                color: AppColors.warmPeach,
-              ),
-              title: Text(
-                'Add reaction',
-                style: AppTextStyles.bodyMedium,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                _openQuickReactions();
-              },
-            ),
-            
-            // Copy text (if text message)
-            if (message.messageType == msg.MessageType.text)
-              ListTile(
-                leading: const Icon(
-                  Icons.copy,
-                  color: AppColors.softCharcoal,
-                ),
-                title: Text(
-                  'Copy text',
-                  style: AppTextStyles.bodyMedium,
-                ),
-                onTap: () {
-                  Clipboard.setData(ClipboardData(text: message.content));
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Text copied to clipboard',
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.pearlWhite,
-                        ),
-                      ),
-                      backgroundColor: AppColors.softCharcoal,
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            
-            // Delete message (if own message)
-            if (message.isFromMe)
-              ListTile(
-                leading: const Icon(
-                  Icons.delete_outline,
-                  color: AppColors.dustyRose,
-                ),
-                title: Text(
-                  'Delete',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.dustyRose,
-                  ),
-                ),
-                onTap: () {
-                  // TODO: Implement delete message API call
-                  debugPrint('🗑️ [IndividualChatScreen] Delete message: ${message.id}');
-                  Navigator.pop(context);
-                },
-              ),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -535,12 +376,23 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     }
 
     return Scaffold(
-      backgroundColor: AppColors.warmCream,
-      body: SafeArea(
-        child: FadeTransition(
-          opacity: _fadeInController,
-          child: Column(
-            children: [
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColors.warmCream,
+              AppColors.pearlWhite,
+            ],
+            stops: [0.0, 1.0],
+          ),
+        ),
+        child: SafeArea(
+          child: FadeTransition(
+            opacity: _fadeInController,
+            child: Column(
+              children: [
               // Chat Header  
               _buildChatHeader(),
               
@@ -563,12 +415,12 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
                   )),
                   child: Stack(
                     children: [
-                      // Background with subtle texture
+                      // Enhanced background with subtle texture
                       Container(
                         decoration: const BoxDecoration(
                           gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
                             colors: [
                               AppColors.warmCream,
                               AppColors.pearlWhite,
@@ -576,32 +428,26 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
                             stops: [0.0, 1.0],
                           ),
                         ),
-                        // Temporary: Remove broken custom painter for now  
-                        child: Container(),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            // Add subtle grain texture overlay
+                            color: AppColors.pearlWhite.withValues(alpha: 0.1),
+                          ),
+                        ),
                       ),
                       
                       // Messages List
                       _buildMessagesList(),
                       
-                      // Quick Reactions Overlay
-                      if (_showQuickReactions)
-                        Positioned(
-                          bottom: 80,
-                          left: AppDimensions.paddingM,
-                          right: AppDimensions.paddingM,
-                          child: reactions.QuickReactions(
-                            onReactionTap: _onQuickReactionTap,
-                            onDismiss: _hideQuickReactions,
-                          ),
-                        ),
                     ],
                   ),
                 ),
               ),
               
-              // Message Input Area
-              _buildMessageInputArea(),
-            ],
+                // Message Input Area
+                _buildMessageInputArea(),
+              ],
+            ),
           ),
         ),
       ),
@@ -713,56 +559,94 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
         
         final message = _currentMessages[messageIndex];
         
-        return Align(
-          alignment: message.isFromMe ? Alignment.centerRight : Alignment.centerLeft,
-          child: Container(
-            margin: EdgeInsets.only(
-              left: message.isFromMe ? 80.0 : AppDimensions.paddingM,
-              right: message.isFromMe ? AppDimensions.paddingM : 80.0,
-              top: AppDimensions.spacingXS,
-              bottom: AppDimensions.spacingXS,
-            ),
-            constraints: const BoxConstraints(maxWidth: 280.0),
-            child: WhatsAppBubble(
-              isFromMe: message.isFromMe,
-              color: message.isFromMe ? null : AppColors.pearlWhite,
-              gradient: message.isFromMe 
-                ? const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [AppColors.sageGreen, AppColors.sageGreenHover],
-                  )
-                : null,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Remove sender username from individual chats
-                  Text(
-                    message.content,
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: message.isFromMe ? AppColors.pearlWhite : AppColors.softCharcoal,
-                    ),
-                  ),
-                  const SizedBox(height: AppDimensions.spacingS),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        message.formattedTime,
-                        style: AppTextStyles.labelSmall.copyWith(
-                          color: message.isFromMe 
-                              ? AppColors.pearlWhite.withAlpha(180) 
-                              : AppColors.softCharcoalLight,
-                          fontSize: 11.0,
+        return Container(
+          margin: const EdgeInsets.symmetric(vertical: 3),
+          child: Align(
+            alignment: message.isFromMe ? Alignment.centerRight : Alignment.centerLeft,
+            child: Container(
+              margin: EdgeInsets.only(
+                left: message.isFromMe ? 80.0 : AppDimensions.paddingM,
+                right: message.isFromMe ? AppDimensions.paddingM : 80.0,
+              ),
+              constraints: const BoxConstraints(maxWidth: 280.0),
+              child: TweenAnimationBuilder<double>(
+                duration: const Duration(milliseconds: 400),
+                tween: Tween(begin: 0.0, end: 1.0),
+                curve: Curves.easeOutCubic,
+                builder: (context, animation, child) {
+                  return Transform.translate(
+                    offset: Offset(0, 20 * (1 - animation)),
+                    child: Opacity(
+                      opacity: animation,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 18,
+                          vertical: 14,
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: message.isFromMe 
+                            ? const LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [AppColors.sageGreen, Color(0xFF7A9761)],
+                              )
+                            : null,
+                          color: message.isFromMe ? null : AppColors.pearlWhite,
+                          borderRadius: BorderRadius.only(
+                            topLeft: const Radius.circular(20),
+                            topRight: const Radius.circular(20),
+                            bottomLeft: Radius.circular(message.isFromMe ? 20 : 8),
+                            bottomRight: Radius.circular(message.isFromMe ? 8 : 20),
+                          ),
+                          border: message.isFromMe ? null : Border.all(
+                            color: AppColors.sageGreenWithOpacity(0.1),
+                            width: 1.0,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.08),
+                              blurRadius: 12,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              message.content,
+                              style: AppTextStyles.personalContent.copyWith(
+                                color: message.isFromMe ? AppColors.pearlWhite : AppColors.softCharcoal,
+                                fontSize: 15,
+                                height: 1.5,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  message.formattedTime,
+                                  style: AppTextStyles.labelSmall.copyWith(
+                                    color: message.isFromMe 
+                                        ? AppColors.pearlWhite.withValues(alpha: 0.7)
+                                        : AppColors.softCharcoalLight,
+                                    fontSize: 11.0,
+                                  ),
+                                ),
+                                if (message.isFromMe) ...[
+                                  const SizedBox(width: AppDimensions.spacingXS),
+                                  _buildWhatsAppStatusIcon(message),
+                                ],
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      if (message.isFromMe) ...[
-                        const SizedBox(width: AppDimensions.spacingXS),
-                        _buildWhatsAppStatusIcon(message),
-                      ],
-                    ],
-                  ),
-                ],
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -842,149 +726,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     );
   }
 
-  Widget _buildMessagesListView() {
-    debugPrint('📱 [IndividualChatScreen] Building messages list view with ${_currentMessages.length} messages');
-    final messagesByDate = _groupMessagesByDate(_currentMessages);
-    
-    debugPrint('🗓️ [IndividualChatScreen] Messages grouped by ${messagesByDate.length} dates');
-    for (var entry in messagesByDate.entries) {
-      debugPrint('📅 [IndividualChatScreen] Date: ${entry.key} - Messages: ${entry.value.length}');
-    }
-    
-    return CustomScrollView(
-      controller: _scrollController,
-      physics: const AlwaysScrollableScrollPhysics(),
-      slivers: [
-        // Messages grouped by date
-        ...messagesByDate.entries.map((entry) {
-          final dateText = entry.key;
-          final messages = entry.value;
-          
-          debugPrint('🏗️ [IndividualChatScreen] Building sliver group for $dateText with ${messages.length} messages');
-          
-          return SliverMainAxisGroup(
-            slivers: [
-              // Date separator
-              SliverToBoxAdapter(
-                child: _buildDateSeparator(dateText),
-              ),
-              
-              // Messages for this date
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    if (index >= messages.length) {
-                      debugPrint('⚠️ [IndividualChatScreen] Index $index out of bounds for ${messages.length} messages');
-                      return null;
-                    }
-                    
-                    final message = messages[index];
-                    final previousMessage = index > 0 ? messages[index - 1] : null;
-                    final nextMessage = index < messages.length - 1 
-                        ? messages[index + 1] 
-                        : null;
-                    
-                    debugPrint('🧱 [IndividualChatScreen] Building message $index: ${message.content.length > 20 ? '${message.content.substring(0, 20)}...' : message.content}');
-                    
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppDimensions.paddingM,
-                        vertical: AppDimensions.spacingXS,
-                      ),
-                      child: Container(
-                        // Add temporary background to debug visibility
-                        color: Colors.transparent,
-                        child: MessageBubble(
-                          message: message,
-                          previousMessage: previousMessage,
-                          nextMessage: nextMessage,
-                          onLongPress: () => _onMessageLongPress(message),
-                          onReactionTap: (emoji) {
-                            // TODO: Implement reaction API call
-                            debugPrint('🎭 [IndividualChatScreen] Adding reaction $emoji to message ${message.id}');
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                  childCount: messages.length,
-                ),
-              ),
-            ],
-          );
-        }),
-        
-        // Typing indicator
-        Builder(
-          builder: (context) {
-            final isTyping = _isOtherUserTyping();
-            debugPrint('🏗️ [IndividualChatScreen] Building typing indicator - show: $isTyping');
-            
-            if (isTyping) {
-              return SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppDimensions.paddingM,
-                    vertical: AppDimensions.spacingM,
-                  ),
-                  child: typing.TypingIndicator(
-                    userName: widget.conversation.name,
-                  ),
-                ),
-              );
-            } else {
-              return const SliverToBoxAdapter(
-                child: SizedBox.shrink(),
-              );
-            }
-          },
-        ),
-        
-        // Bottom padding
-        const SliverToBoxAdapter(
-          child: SizedBox(height: AppDimensions.spacingM),
-        ),
-      ],
-    );
-  }
 
-  Widget _buildDateSeparator(String dateText) {
-    final isToday = dateText == 'Today';
-    final socialBattery = widget.conversation.otherParticipant?.socialBattery;
-    
-    String displayText = dateText;
-    if (isToday && socialBattery != null) {
-      displayText = '$dateText • ${socialBattery.description}';
-    }
-    
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        vertical: AppDimensions.spacingM,
-      ),
-      child: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppDimensions.paddingL,
-            vertical: AppDimensions.spacingS,
-          ),
-          decoration: BoxDecoration(
-            color: AppColors.sageGreenWithOpacity(0.1),
-            borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-            border: Border.all(
-              color: AppColors.sageGreenWithOpacity(0.1),
-              width: 1.0,
-            ),
-          ),
-          child: Text(
-            displayText,
-            style: AppTextStyles.labelMedium.copyWith(
-              color: AppColors.softCharcoalLight,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   /// Build chat header with back button and participant info
   Widget _buildChatHeader() {
@@ -994,105 +736,224 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
         color: AppColors.pearlWhite.withValues(alpha: 0.95),
         border: Border(
           bottom: BorderSide(
-            color: AppColors.sageGreenWithOpacity(0.1),
+            color: AppColors.sageGreenWithOpacity(0.08),
             width: 1.0,
           ),
         ),
       ),
       child: Row(
         children: [
-          // Back button
-          IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(Icons.arrow_back_ios, size: 20),
-            style: IconButton.styleFrom(
-              backgroundColor: AppColors.sageGreenWithOpacity(0.1),
-              foregroundColor: AppColors.sageGreen,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+          // Enhanced Back button
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: AppColors.sageGreenWithOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: const Icon(Icons.arrow_back_ios, size: 16),
+              style: IconButton.styleFrom(
+                foregroundColor: AppColors.sageGreen,
+                padding: EdgeInsets.zero,
               ),
             ),
           ),
           
           const SizedBox(width: AppDimensions.spacingM),
           
-          // Participant info
+          // Enhanced friend info with avatar
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Text(
-                  _getChatTitle(),
-                  style: AppTextStyles.headlineSmall.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Builder(
-                  builder: (context) {
-                    final isTyping = _isOtherUserTyping();
-                    debugPrint('🏗️ [IndividualChatScreen] Building header status - typing: $isTyping');
-                    
-                    if (isTyping) {
-                      return Text(
-                        'typing...',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.sageGreen,
-                          fontStyle: FontStyle.italic,
+                // Friend avatar with social battery indicator
+                Stack(
+                  children: [
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [AppColors.sageGreen, AppColors.lavenderMist],
                         ),
-                      );
-                    } else {
-                      return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ConnectionStatusIndicator(
-                            connectionState: _chatProvider.connectionState,
-                            size: 6.0,
-                            showLabel: false,
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            _getConnectionStatusText(),
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: _getConnectionStatusColor(),
-                            ),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.sageGreen.withValues(alpha: 0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
                           ),
                         ],
-                      );
-                    }
-                  },
+                      ),
+                      child: Center(
+                        child: Text(
+                          _getChatTitle().isNotEmpty ? _getChatTitle()[0].toUpperCase() : 'U',
+                          style: AppTextStyles.headlineSmall.copyWith(
+                            color: AppColors.pearlWhite,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Social battery indicator
+                    Positioned(
+                      bottom: -2,
+                      right: -2,
+                      child: Container(
+                        width: 16,
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: AppColors.warmPeach,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColors.pearlWhite,
+                            width: 3,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                
+                const SizedBox(width: 12),
+                
+                // Friend details
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _getChatTitle(),
+                        style: AppTextStyles.headlineSmall.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Row(
+                        children: [
+                          // Online status
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: AppColors.sageGreenWithOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  width: 6,
+                                  height: 6,
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFF4CAF50),
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  _getConnectionStatusText(),
+                                  style: AppTextStyles.bodySmall.copyWith(
+                                    color: _getConnectionStatusColor(),
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          
+                          const SizedBox(width: 12),
+                          
+                          // Typing indicator
+                          Builder(
+                            builder: (context) {
+                              final isTyping = _isOtherUserTyping();
+                              
+                              if (isTyping) {
+                                return Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.sageGreenWithOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        'typing',
+                                        style: AppTextStyles.bodySmall.copyWith(
+                                          color: AppColors.sageGreen,
+                                          fontStyle: FontStyle.italic,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Row(
+                                        children: [
+                                          _buildTypingDot(0),
+                                          const SizedBox(width: 2),
+                                          _buildTypingDot(1),
+                                          const SizedBox(width: 2),
+                                          _buildTypingDot(2),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
           
-          // Header actions
+          // Enhanced Header actions
           Row(
             children: [
-              IconButton(
-                onPressed: () {
-                  // TODO: Navigate to connection stones
-                },
-                icon: const Text('🪨', style: TextStyle(fontSize: 18)),
-                style: IconButton.styleFrom(
-                  backgroundColor: AppColors.sageGreenWithOpacity(0.1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: AppColors.sageGreenWithOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    // TODO: Navigate to connection stones
+                  },
+                  icon: const Text('🪨', style: TextStyle(fontSize: 16)),
+                  style: IconButton.styleFrom(
+                    padding: EdgeInsets.zero,
                   ),
                 ),
               ),
               
               const SizedBox(width: AppDimensions.spacingS),
               
-              IconButton(
-                onPressed: () {
-                  // TODO: Show chat settings
-                },
-                icon: const Icon(Icons.settings, size: 18),
-                style: IconButton.styleFrom(
-                  backgroundColor: AppColors.sageGreenWithOpacity(0.1),
-                  foregroundColor: AppColors.sageGreen,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: AppColors.sageGreenWithOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    // TODO: Show chat settings
+                  },
+                  icon: const Text('⚙️', style: TextStyle(fontSize: 16)),
+                  style: IconButton.styleFrom(
+                    padding: EdgeInsets.zero,
                   ),
                 ),
               ),
@@ -1100,6 +961,26 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
           ),
         ],
       ),
+    );
+  }
+  
+  /// Build animated typing dot
+  Widget _buildTypingDot(int index) {
+    return TweenAnimationBuilder<double>(
+      duration: const Duration(milliseconds: 600),
+      tween: Tween(begin: 0.0, end: 1.0),
+      builder: (context, value, child) {
+        return Container(
+          width: 3,
+          height: 3,
+          decoration: BoxDecoration(
+            color: AppColors.sageGreen.withValues(
+              alpha: 0.3 + (0.7 * ((value + index * 0.33) % 1.0)),
+            ),
+            shape: BoxShape.circle,
+          ),
+        );
+      },
     );
   }
 
@@ -1121,21 +1002,93 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Slow mode indicator
+              _buildSlowModeIndicator(),
+              
               // Quick reactions
               _buildQuickReactionsRow(),
               
               const SizedBox(height: AppDimensions.spacingM),
               
-              // Message input
-              _buildMessageInputContainer(),
+              // Enhanced message input
+              _buildEnhancedMessageInputContainer(),
             ],
           ),
         ),
       ),
     );
   }
+  
+  /// Build slow mode indicator for thoughtful conversation
+  Widget _buildSlowModeIndicator() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppDimensions.paddingM),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppDimensions.paddingM,
+        vertical: AppDimensions.spacingS,
+      ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [
+            AppColors.warmPeach.withValues(alpha: 0.1),
+            AppColors.sageGreenWithOpacity(0.1),
+          ],
+        ),
+        border: Border.all(
+          color: AppColors.warmPeach.withValues(alpha: 0.2),
+          width: 1.0,
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              color: AppColors.warmPeach.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Center(
+              child: Text('🐌', style: TextStyle(fontSize: 12)),
+            ),
+          ),
+          const SizedBox(width: AppDimensions.spacingS),
+          Expanded(
+            child: Text(
+              'Slow mode active - Thoughtful conversation pace',
+              style: AppTextStyles.personalContent.copyWith(
+                color: AppColors.softCharcoalLight,
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+          Container(
+            width: 24,
+            height: 24,
+            decoration: BoxDecoration(
+              color: AppColors.sageGreenWithOpacity(0.1),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: IconButton(
+              onPressed: () {
+                // TODO: Show slow mode settings
+              },
+              icon: const Text('⚙️', style: TextStyle(fontSize: 12)),
+              style: IconButton.styleFrom(
+                padding: EdgeInsets.zero,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-  /// Build quick reactions row
+  /// Build enhanced quick reactions row
   Widget _buildQuickReactionsRow() {
     const quickReactions = ['❤️', '😊', '👍', '🤗', '💛', '✨', '🙏'];
     
@@ -1143,53 +1096,78 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       height: 44,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
         itemCount: quickReactions.length,
         separatorBuilder: (_, __) => const SizedBox(width: AppDimensions.spacingS),
         itemBuilder: (context, index) {
           final emoji = quickReactions[index];
-          return GestureDetector(
-            onTap: () => _onQuickReactionTap(emoji),
-            child: Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: AppColors.sageGreenWithOpacity(0.1),
-                borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-                border: Border.all(
-                  color: AppColors.sageGreenWithOpacity(0.15),
-                  width: 1.0,
+          return TweenAnimationBuilder<double>(
+            duration: Duration(milliseconds: 300 + (index * 50)),
+            tween: Tween(begin: 0.0, end: 1.0),
+            curve: Curves.elasticOut,
+            builder: (context, animation, child) {
+              return Transform.scale(
+                scale: animation,
+                child: GestureDetector(
+                  onTap: () => _onQuickReactionTap(emoji),
+                  child: Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: AppColors.sageGreenWithOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: AppColors.sageGreenWithOpacity(0.15),
+                        width: 1.0,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.04),
+                          blurRadius: 4,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        emoji,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              child: Center(
-                child: Text(
-                  emoji,
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
+              );
+            },
           );
         },
       ),
     );
   }
 
-  /// Build message input container with text field and send button
-  Widget _buildMessageInputContainer() {
+  /// Build enhanced message input container with text field and send button
+  Widget _buildEnhancedMessageInputContainer() {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.pearlWhite,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: AppColors.sageGreenWithOpacity(0.15),
           width: 1.0,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          // Add button
+          // Enhanced add button
           Container(
-            margin: const EdgeInsets.all(AppDimensions.spacingS),
+            margin: const EdgeInsets.all(8),
             child: Container(
               width: 36,
               height: 36,
@@ -1197,15 +1175,23 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
                 color: AppColors.sageGreenWithOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
-                Icons.add,
-                color: AppColors.sageGreen,
-                size: 20,
+              child: IconButton(
+                onPressed: () {
+                  // TODO: Show attachment options
+                },
+                icon: const Icon(
+                  Icons.add,
+                  color: AppColors.sageGreen,
+                  size: 20,
+                ),
+                style: IconButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                ),
               ),
             ),
           ),
           
-          // Text input
+          // Enhanced text input
           Expanded(
             child: ConstrainedBox(
               constraints: const BoxConstraints(
@@ -1220,6 +1206,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
                 style: AppTextStyles.personalContent.copyWith(
                   fontSize: 15,
                   color: AppColors.softCharcoal,
+                  height: 1.4,
                 ),
                 decoration: InputDecoration(
                   hintText: 'Share your thoughts mindfully...',
@@ -1231,7 +1218,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: AppDimensions.paddingM,
-                    vertical: AppDimensions.spacingM,
+                    vertical: 10,
                   ),
                 ),
                 onChanged: (text) {
@@ -1242,31 +1229,42 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
             ),
           ),
           
-          // Send button
+          // Enhanced send button with animation
           Container(
-            margin: const EdgeInsets.all(AppDimensions.spacingS),
-            child: GestureDetector(
-              onTap: _messageController.text.trim().isNotEmpty ? _sendMessage : null,
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  gradient: _messageController.text.trim().isNotEmpty
-                      ? LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [AppColors.sageGreen, AppColors.sageGreenHover],
-                        )
-                      : null,
-                  color: _messageController.text.trim().isNotEmpty
-                      ? null
-                      : AppColors.sageGreenWithOpacity(0.3),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.send_rounded,
-                  color: AppColors.pearlWhite,
-                  size: 20,
+            margin: const EdgeInsets.all(8),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeOut,
+              child: GestureDetector(
+                onTap: _messageController.text.trim().isNotEmpty ? _sendMessage : null,
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    gradient: _messageController.text.trim().isNotEmpty
+                        ? const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [AppColors.sageGreen, Color(0xFF7A9761)],
+                          )
+                        : null,
+                    color: _messageController.text.trim().isNotEmpty
+                        ? null
+                        : AppColors.sageGreenWithOpacity(0.3),
+                    shape: BoxShape.circle,
+                    boxShadow: _messageController.text.trim().isNotEmpty ? [
+                      BoxShadow(
+                        color: AppColors.sageGreen.withValues(alpha: 0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ] : null,
+                  ),
+                  child: const Icon(
+                    Icons.send_rounded,
+                    color: AppColors.pearlWhite,
+                    size: 18,
+                  ),
                 ),
               ),
             ),
@@ -1275,6 +1273,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       ),
     );
   }
+  
 
 
   /// Handle typing indicators

@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/widgets/animations/ft_stagger_animation.dart';
 import '../providers/realtime_chat_provider.dart';
+import '../services/websocket_service.dart';
 import '../models/chat_conversation.dart';
 import '../models/chat_message.dart';
-// import '../widgets/chat_list_header.dart'; // TODO: Update to work with RealtimeChatProvider
+import '../models/social_battery_status.dart';
 import '../widgets/chat_item_tile.dart';
-// import '../widgets/quiet_hours_banner.dart'; // TODO: Implement quiet hours
+import '../widgets/quiet_hours_banner.dart';
 import '../widgets/chat_section_divider.dart';
 import '../widgets/chat_floating_action_button.dart';
 import '../widgets/connection_status_indicator.dart';
 import '../screens/individual_chat_screen.dart';
+import '../services/pinned_conversations_service.dart';
 
 /// Premium chat list screen with introvert-friendly design
 /// Features staggered animations, social battery awareness, and gentle interactions
@@ -24,51 +27,106 @@ class ChatListScreen extends StatefulWidget {
 }
 
 class _ChatListScreenState extends State<ChatListScreen> {
-  late RealtimeChatProvider _chatProvider;
+  RealtimeChatProvider? _chatProvider;
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
+  
+  // UI State
+  String _selectedFilter = 'All';
+  String _searchQuery = '';
+  bool _isSearchFocused = false;
+  
+  // Filter options
+  final List<String> _filterOptions = ['All', 'Friends', 'Groups', 'Unread'];
 
   @override
   void initState() {
     super.initState();
-    _chatProvider = RealtimeChatProvider();
-    _chatProvider.initialize(); // Initialize the provider
+    _initializeServices();
+  }
+  
+  Future<void> _initializeServices() async {
+    // Initialize Hive for local storage
+    await PinnedConversationsService.initialize();
     
-    // Add scroll listener for potential pull-to-refresh
+    // Initialize quiet hours service
+    QuietHoursService.initialize();
+    
+    // Use the singleton chat provider
+    _chatProvider = realtimeChatProvider;
+    
+    // Initialize provider only if not already initialized
+    if (!_chatProvider!.isInitialized) {
+      await _chatProvider!.initialize();
+    }
+    
+    // Add scroll listener
     _scrollController.addListener(_onScroll);
+    
+    // Add search listener
+    _searchController.addListener(_onSearchChanged);
+    
+    // Update UI
+    if (mounted) setState(() {});
   }
 
   @override
   void dispose() {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
-    _chatProvider.dispose();
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    // Don't dispose the singleton provider - it should persist across the app
     super.dispose();
   }
 
   void _onScroll() {
-    // Future: Implement scroll-based loading or header animations
+    // Hide keyboard when scrolling
+    if (_isSearchFocused) {
+      FocusScope.of(context).unfocus();
+    }
+  }
+  
+  void _onSearchChanged() {
+    setState(() {
+      _searchQuery = _searchController.text.toLowerCase();
+    });
+  }
+  
+  void _onFilterChanged(String filter) {
+    setState(() {
+      _selectedFilter = filter;
+    });
   }
 
   Future<void> _onRefresh() async {
-    await _chatProvider.loadConversations();
+    await _chatProvider?.loadConversations();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(
+      canPop: false, // Prevent default back action
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          // Navigate to dashboard instead of exiting the app
+          context.go('/dashboard');
+        }
+      },
+      child: Scaffold(
       backgroundColor: AppColors.warmCream,
       body: SafeArea(
         child: Column(
           children: [
-            // Connection status banner (matching HTML WebSocket indicator)
-            // ConnectionStatusBanner(
-            //   connectionState: _chatProvider.connectionState,
-            //   lastError: _chatProvider.lastError,
-            //   onRetry: () => _chatProvider.initialize(),
-            // ),
-            
             // Header with search and filters (matching HTML app-header)
             _buildChatListHeader(),
+            
+            // Quiet hours banner (matching HTML quiet-hours)
+            QuietHoursBanner(
+              isVisible: QuietHoursService.isQuietHours,
+              endTime: QuietHoursService.endTime,
+              onDismiss: () => setState(() {}),
+            ),
             
             // Chat list content
             Expanded(
@@ -77,20 +135,22 @@ class _ChatListScreenState extends State<ChatListScreen> {
                 backgroundColor: AppColors.pearlWhite,
                 color: AppColors.sageGreen,
                 strokeWidth: 2.0,
-                child: ListenableBuilder(
-                  listenable: _chatProvider,
-                  builder: (context, _) {
-                    if (!_chatProvider.isInitialized) {
-                      return _buildLoadingState();
-                    }
+                child: _chatProvider == null
+                    ? _buildLoadingState()
+                    : ListenableBuilder(
+                        listenable: _chatProvider!,
+                        builder: (context, _) {
+                          if (!_chatProvider!.isInitialized) {
+                            return _buildLoadingState();
+                          }
 
-                    if (_chatProvider.conversations.isEmpty) {
-                      return _buildEmptyState();
-                    }
+                          if (_chatProvider!.conversations.isEmpty) {
+                            return _buildEmptyState();
+                          }
 
-                    return _buildChatList();
-                  },
-                ),
+                          return _buildChatList();
+                        },
+                      ),
               ),
             ),
           ],
@@ -102,22 +162,20 @@ class _ChatListScreenState extends State<ChatListScreen> {
         onPressed: _showNewChatDialog,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      ),
     );
   }
 
   Widget _buildChatList() {
-    final conversations = _chatProvider.conversations;
+    final conversations = _getFilteredConversations();
     debugPrint('📋 [ChatListScreen] Building chat list with ${conversations.length} conversations');
     
-    for (int i = 0; i < conversations.length; i++) {
-      final conv = conversations[i];
-      final lastMsg = conv.lastMessage?.content ?? 'No message';
-      debugPrint('📋 [ChatListScreen] [$i] ${conv.displayName}: ${lastMsg.substring(0, lastMsg.length > 30 ? 30 : lastMsg.length)}...');
-      debugPrint('📋 [ChatListScreen]     - Last message time: ${conv.lastMessage?.createdAt}');
-      debugPrint('📋 [ChatListScreen]     - Unread count: ${conv.unreadCount}');
+    if (conversations.isEmpty && _searchQuery.isNotEmpty) {
+      return _buildSearchEmptyState();
     }
     
-    final groupedConversations = {'Recent': conversations}; // Simple grouping for now
+    // Group conversations properly (Pinned, Recent, Earlier)
+    final groupedConversations = _groupConversations(conversations);
     
     return CustomScrollView(
       controller: _scrollController,
@@ -161,12 +219,15 @@ class _ChatListScreenState extends State<ChatListScreen> {
                       groupedConversations,
                     );
                     
+                    // Add animation delay based on section and index
+                    final animationDelay = globalIndex * 50;
+                    
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppDimensions.paddingM,
                       ),
                       child: FTStaggerAnimation(
-                        delay: Duration(milliseconds: globalIndex * 50),
+                        delay: Duration(milliseconds: animationDelay),
                         slideDirection: FTStaggerSlideDirection.fromBottom,
                         child: ChatItemTile(
                           conversation: uiConversation,
@@ -276,6 +337,133 @@ class _ChatListScreenState extends State<ChatListScreen> {
     );
   }
 
+  /// Filter conversations based on search and filter criteria
+  List<Conversation> _getFilteredConversations() {
+    if (_chatProvider == null) return [];
+    List<Conversation> conversations = List.from(_chatProvider!.conversations);
+    
+    // Apply search filter
+    if (_searchQuery.isNotEmpty) {
+      conversations = conversations.where((conversation) {
+        final displayName = conversation.displayName.toLowerCase();
+        final lastMessageContent = (conversation.lastMessage?.content ?? '').toLowerCase();
+        return displayName.contains(_searchQuery) || 
+               lastMessageContent.contains(_searchQuery);
+      }).toList();
+    }
+    
+    // Apply category filter
+    switch (_selectedFilter) {
+      case 'Friends':
+        conversations = conversations.where((c) => c.isDirect).toList();
+        break;
+      case 'Groups':
+        conversations = conversations.where((c) => c.isGroup).toList();
+        break;
+      case 'Unread':
+        conversations = conversations.where((c) => c.hasUnreadMessages).toList();
+        break;
+      case 'All':
+      default:
+        // No additional filtering
+        break;
+    }
+    
+    // Sort conversations: pinned first, then by last message time
+    conversations.sort((a, b) {
+      final aPinned = PinnedConversationsService.isConversationPinned(a.id);
+      final bPinned = PinnedConversationsService.isConversationPinned(b.id);
+      
+      if (aPinned && !bPinned) return -1;
+      if (!aPinned && bPinned) return 1;
+      
+      return b.lastMessageAt.compareTo(a.lastMessageAt);
+    });
+    
+    return conversations;
+  }
+  
+  /// Group conversations by sections (Pinned, Recent, Earlier)
+  Map<String, List<Conversation>> _groupConversations(List<Conversation> conversations) {
+    final Map<String, List<Conversation>> grouped = {};
+    
+    final pinnedConversations = <Conversation>[];
+    final recentConversations = <Conversation>[];
+    final earlierConversations = <Conversation>[];
+    
+    final now = DateTime.now();
+    
+    for (final conversation in conversations) {
+      final isPinned = PinnedConversationsService.isConversationPinned(conversation.id);
+      
+      if (isPinned) {
+        pinnedConversations.add(conversation);
+      } else {
+        final daysDifference = now.difference(conversation.lastMessageAt).inDays;
+        
+        if (daysDifference < 7) {
+          recentConversations.add(conversation);
+        } else {
+          earlierConversations.add(conversation);
+        }
+      }
+    }
+    
+    if (pinnedConversations.isNotEmpty) {
+      grouped['Pinned'] = pinnedConversations;
+    }
+    if (recentConversations.isNotEmpty) {
+      grouped['Recent'] = recentConversations;
+    }
+    if (earlierConversations.isNotEmpty) {
+      grouped['Earlier'] = earlierConversations;
+    }
+    
+    return grouped;
+  }
+  
+  /// Build empty state for search results
+  Widget _buildSearchEmptyState() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppDimensions.paddingXXL),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 80.0,
+              height: 80.0,
+              decoration: BoxDecoration(
+                color: AppColors.sageGreen.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.search_off,
+                size: 40.0,
+                color: AppColors.sageGreen,
+              ),
+            ),
+            const SizedBox(height: AppDimensions.spacingXL),
+            Text(
+              'No conversations found',
+              style: AppTextStyles.headlineSmall.copyWith(
+                color: AppColors.softCharcoal,
+              ),
+            ),
+            const SizedBox(height: AppDimensions.spacingM),
+            Text(
+              'Try adjusting your search or filters',
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.softCharcoalLight,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
   /// Convert Conversation model to ChatConversation for UI compatibility
   ChatConversation _convertToUiModel(Conversation conversation) {
     debugPrint('🔄 [ChatListScreen] Converting conversation to UI model: ${conversation.id}');
@@ -290,7 +478,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
     final relevantParticipants = conversation.participants.where((participant) {
       // For direct chats, exclude current user; for groups, include all
       if (conversation.conversationType == ConversationType.direct) {
-        final isCurrentUser = participant.userId == (_chatProvider.currentUserId ?? '');
+        final isCurrentUser = participant.userId == (_chatProvider?.currentUserId ?? '');
         debugPrint('🔄 [ChatListScreen] - Checking participant ${participant.username}: isCurrentUser=$isCurrentUser');
         return !isCurrentUser;
       }
@@ -303,6 +491,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
         id: participant.userId,
         name: participant.username,
         avatarColor: _getAvatarColorFromId(participant.userId),
+        socialBattery: _getSocialBatteryForUser(participant.userId), // Add social battery
         isOnline: false, // TODO: Integrate with presence system
         lastSeen: null, // TODO: Integrate with presence system
       );
@@ -313,9 +502,17 @@ class _ChatListScreenState extends State<ChatListScreen> {
       debugPrint('🔄 [ChatListScreen] - First participant: ${chatParticipants.first.name}');
     }
 
+    // Apply local UI preferences from Hive storage
+    final isPinned = PinnedConversationsService.isConversationPinned(conversation.id);
+    final isMuted = PinnedConversationsService.isConversationMuted(conversation.id);
+    
     final uiConversation = ChatConversation.fromConversation(
       conversation,
       chatParticipants: chatParticipants,
+    ).copyWith(
+      isPinned: isPinned,
+      isMuted: isMuted,
+      isQuietHours: QuietHoursService.isQuietHours,
     );
     
     debugPrint('✅ [ChatListScreen] UI model created successfully');
@@ -339,6 +536,23 @@ class _ChatListScreenState extends State<ChatListScreen> {
     final index = userId.hashCode % colors.length;
     return colors[index.abs()];
   }
+  
+  /// Get social battery status for a user (mock implementation)
+  /// TODO: Replace with real social battery data from API
+  SocialBatteryStatus? _getSocialBatteryForUser(String userId) {
+    // Generate consistent battery status based on user ID hash
+    final statusIndex = userId.hashCode % 4;
+    switch (statusIndex.abs()) {
+      case 0:
+        return SocialBatteryPresets.energized();
+      case 1:
+        return SocialBatteryPresets.selective();
+      case 2:
+        return SocialBatteryPresets.recharging();
+      default:
+        return null; // No battery status
+    }
+  }
 
   /// Get global animation index for staggered animations across all sections
   int _getGlobalAnimationIndex(
@@ -361,14 +575,16 @@ class _ChatListScreenState extends State<ChatListScreen> {
   void _navigateToChat(String conversationId) {
     debugPrint('🚀 [ChatListScreen] Navigating to chat: $conversationId');
     
+    if (_chatProvider == null) return;
+    
     // Find the conversation
-    final conversation = _chatProvider.conversations.firstWhere(
+    final conversation = _chatProvider!.conversations.firstWhere(
       (c) => c.id == conversationId,
       orElse: () => throw Exception('Conversation not found: $conversationId'),
     );
     
     // Select the conversation in the provider
-    _chatProvider.selectConversation(conversationId);
+    _chatProvider!.selectConversation(conversationId);
     
     // Convert to UI model for navigation
     final chatConversation = _convertToUiModel(conversation);
@@ -418,32 +634,38 @@ class _ChatListScreenState extends State<ChatListScreen> {
             
             // Options
             ListTile(
-              leading: const Icon(
-                Icons.push_pin_outlined,
+              leading: Icon(
+                conversation.isPinned ? Icons.push_pin : Icons.push_pin_outlined,
                 color: AppColors.sageGreen,
               ),
               title: Text(
-                'Pin', // TODO: Implement pinning
+                conversation.isPinned ? 'Unpin' : 'Pin',
                 style: AppTextStyles.bodyMedium,
               ),
-              onTap: () {
-                // TODO: Implement toggle pin
-                Navigator.pop(context);
+              onTap: () async {
+                Navigator.pop(context); // Pop first to avoid async context usage
+                final success = await PinnedConversationsService.togglePinConversation(conversation.id);
+                if (success && mounted) {
+                  setState(() {}); // Refresh UI
+                }
               },
             ),
             
             ListTile(
-              leading: const Icon(
-                Icons.volume_off_outlined,
+              leading: Icon(
+                conversation.isMuted ? Icons.volume_up : Icons.volume_off_outlined,
                 color: AppColors.softCharcoal,
               ),
               title: Text(
-                'Mute', // TODO: Implement muting
+                conversation.isMuted ? 'Unmute' : 'Mute',
                 style: AppTextStyles.bodyMedium,
               ),
-              onTap: () {
-                // TODO: Implement toggle mute
-                Navigator.pop(context);
+              onTap: () async {
+                Navigator.pop(context); // Pop first to avoid async context usage
+                final success = await PinnedConversationsService.toggleMuteConversation(conversation.id);
+                if (success && mounted) {
+                  setState(() {}); // Refresh UI
+                }
               },
             ),
             
@@ -562,7 +784,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                         top: -2,
                         right: -2,
                         child: ConnectionStatusIndicator(
-                          connectionState: _chatProvider.connectionState,
+                          connectionState: _chatProvider?.connectionState ?? WebSocketConnectionState.disconnected,
                           showLabel: false,
                           size: 8.0,
                         ),
@@ -586,8 +808,11 @@ class _ChatListScreenState extends State<ChatListScreen> {
               borderRadius: BorderRadius.circular(12.0),
             ),
             child: TextField(
+              controller: _searchController,
+              onTap: () => setState(() => _isSearchFocused = true),
+              onEditingComplete: () => setState(() => _isSearchFocused = false),
               decoration: InputDecoration(
-                hintText: 'Search conversations...',
+                hintText: _isSearchFocused ? 'Search by name or message...' : 'Search conversations...',
                 hintStyle: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.softCharcoalLight,
                 ),
@@ -596,6 +821,17 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   size: 16.0,
                   color: AppColors.softCharcoalLight.withValues(alpha: 0.7),
                 ),
+                suffixIcon: _searchQuery.isNotEmpty ? IconButton(
+                  icon: Icon(
+                    Icons.clear,
+                    size: 16.0,
+                    color: AppColors.softCharcoalLight.withValues(alpha: 0.7),
+                  ),
+                  onPressed: () {
+                    _searchController.clear();
+                    setState(() => _searchQuery = '');
+                  },
+                ) : null,
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
@@ -611,16 +847,17 @@ class _ChatListScreenState extends State<ChatListScreen> {
           const SizedBox(height: 16.0),
           
           // Filter tabs (matching HTML filter-tabs)
-          Row(
-            children: [
-              _buildFilterTab('All', true),
-              const SizedBox(width: 8.0),
-              _buildFilterTab('Friends', false),
-              const SizedBox(width: 8.0),
-              _buildFilterTab('Groups', false),
-              const SizedBox(width: 8.0),
-              _buildFilterTab('Unread', false),
-            ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: _filterOptions.map((filter) {
+                final isActive = filter == _selectedFilter;
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: _buildFilterTab(filter, isActive),
+                );
+              }).toList(),
+            ),
           ),
         ],
       ),
@@ -629,28 +866,31 @@ class _ChatListScreenState extends State<ChatListScreen> {
   
   /// Build filter tab matching HTML design
   Widget _buildFilterTab(String label, bool isActive) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16.0,
-        vertical: 8.0,
-      ),
-      decoration: BoxDecoration(
-        color: isActive 
-            ? AppColors.sageGreen 
-            : AppColors.sageGreen.withValues(alpha: 0.05),
-        border: Border.all(
+    return GestureDetector(
+      onTap: () => _onFilterChanged(label),
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16.0,
+          vertical: 8.0,
+        ),
+        decoration: BoxDecoration(
           color: isActive 
               ? AppColors.sageGreen 
-              : AppColors.sageGreen.withValues(alpha: 0.1),
+              : AppColors.sageGreen.withValues(alpha: 0.05),
+          border: Border.all(
+            color: isActive 
+                ? AppColors.sageGreen 
+                : AppColors.sageGreen.withValues(alpha: 0.1),
+          ),
+          borderRadius: BorderRadius.circular(20.0),
         ),
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Text(
-        label,
-        style: AppTextStyles.labelMedium.copyWith(
-          color: isActive ? AppColors.pearlWhite : AppColors.softCharcoalLight,
-          fontWeight: FontWeight.w500,
-          fontSize: 14.0,
+        child: Text(
+          label,
+          style: AppTextStyles.labelMedium.copyWith(
+            color: isActive ? AppColors.pearlWhite : AppColors.softCharcoalLight,
+            fontWeight: FontWeight.w500,
+            fontSize: 14.0,
+          ),
         ),
       ),
     );

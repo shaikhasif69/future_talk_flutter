@@ -5,135 +5,127 @@ import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_durations.dart';
 import '../../../core/constants/app_text_styles.dart';
 
-/// Gentle quiet hours banner for introvert-friendly notification awareness
-/// Features soft styling and optional toggle interaction
-class QuietHoursBanner extends StatelessWidget {
+/// Quiet hours banner matching HTML reference design exactly
+/// Shows during quiet hours to indicate gentle notification mode
+class QuietHoursBanner extends StatefulWidget {
   const QuietHoursBanner({
     super.key,
-    required this.isActive,
-    this.onToggle,
+    this.isVisible = true,
     this.endTime,
-    this.showToggle = true,
+    this.onDismiss,
   });
 
-  final bool isActive;
-  final VoidCallback? onToggle;
-  final String? endTime;
-  final bool showToggle;
+  final bool isVisible;
+  final DateTime? endTime;
+  final VoidCallback? onDismiss;
+
+  @override
+  State<QuietHoursBanner> createState() => _QuietHoursBannerState();
+}
+
+class _QuietHoursBannerState extends State<QuietHoursBanner> {
+  bool _isDismissed = false;
+
+  /// Format end time (e.g., "9 AM")
+  String _formatEndTime(DateTime? endTime) {
+    if (endTime == null) return '9 AM';
+    
+    final hour = endTime.hour == 0 
+        ? 12 
+        : (endTime.hour > 12 ? endTime.hour - 12 : endTime.hour);
+    final amPm = endTime.hour < 12 ? 'AM' : 'PM';
+    
+    return '$hour $amPm';
+  }
+
+  void _handleDismiss() {
+    setState(() => _isDismissed = true);
+    widget.onDismiss?.call();
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (!isActive) return const SizedBox.shrink();
-    
+    if (!widget.isVisible || _isDismissed) {
+      return const SizedBox.shrink();
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: AppDimensions.paddingM,
         vertical: AppDimensions.spacingS,
       ),
-      padding: const EdgeInsets.all(AppDimensions.paddingM),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppDimensions.paddingM,
+        vertical: AppDimensions.spacingS,
+      ),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppColors.dustyRose.withValues(alpha:  0.1),
-            AppColors.lavenderMist.withValues(alpha:  0.1),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+        // Matching HTML: rgba(212, 165, 165, 0.1)
+        color: AppColors.dustyRose.withValues(alpha: 0.1),
+        // Matching HTML: 1px solid rgba(212, 165, 165, 0.2)
         border: Border.all(
-          color: AppColors.dustyRose.withValues(alpha:  0.2),
+          color: AppColors.dustyRose.withValues(alpha: 0.2),
           width: 1.0,
         ),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusM),
       ),
       child: Row(
         children: [
-          // Moon icon with gentle glow
+          // Moon icon (matching HTML 🌙)
           Container(
-            width: 32.0,
-            height: 32.0,
+            width: 24.0,
+            height: 24.0,
             decoration: BoxDecoration(
-              color: AppColors.dustyRose.withValues(alpha:  0.2),
+              color: AppColors.dustyRose.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
             child: const Icon(
-              Icons.nightlight_round,
-              size: 18.0,
+              Icons.nights_stay,
+              size: 14.0,
               color: AppColors.dustyRose,
-            ),
-          ).animate(onPlay: (controller) => controller.repeat())
-              .shimmer(
-                duration: const Duration(seconds: 2),
-                color: AppColors.pearlWhite.withValues(alpha:  0.3),
-              ),
-          
-          const SizedBox(width: AppDimensions.spacingM),
-          
-          // Content
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'Quiet Hours Active',
-                      style: AppTextStyles.labelLarge.copyWith(
-                        color: AppColors.dustyRose,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    if (endTime != null) ...[
-                      const SizedBox(width: AppDimensions.spacingS),
-                      Text(
-                        'until $endTime',
-                        style: AppTextStyles.labelMedium.copyWith(
-                          color: AppColors.softCharcoalLight,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-                const SizedBox(height: 2.0),
-                Text(
-                  'Gentle notifications only - messages will arrive softly',
-                  style: AppTextStyles.labelMedium.copyWith(
-                    color: AppColors.softCharcoalLight,
-                  ),
-                ),
-              ],
             ),
           ),
           
-          // Toggle button (optional)
-          if (showToggle && onToggle != null) ...[
-            const SizedBox(width: AppDimensions.spacingM),
-            Material(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(AppDimensions.radiusS),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusS),
-                onTap: onToggle,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppDimensions.spacingM,
-                    vertical: AppDimensions.spacingS,
-                  ),
-                  child: Text(
-                    'Disable',
-                    style: AppTextStyles.labelMedium.copyWith(
-                      color: AppColors.dustyRose,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+          const SizedBox(width: AppDimensions.spacingS),
+          
+          // Text content (matching HTML exactly)
+          Expanded(
+            child: Text(
+              'Quiet hours active until ${_formatEndTime(widget.endTime)} - Gentle notifications only',
+              style: AppTextStyles.labelMedium.copyWith(
+                color: AppColors.softCharcoalLight,
+                fontSize: 12.0, // Match HTML font-size
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          
+          // Dismiss button
+          if (widget.onDismiss != null)
+            GestureDetector(
+              onTap: _handleDismiss,
+              child: Container(
+                width: 20.0,
+                height: 20.0,
+                decoration: BoxDecoration(
+                  color: AppColors.dustyRose.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.close,
+                  size: 12.0,
+                  color: AppColors.dustyRose.withValues(alpha: 0.7),
                 ),
               ),
             ),
-          ],
         ],
       ),
-    ).animate().fadeIn().slideY(
-      begin: -0.5,
+    ).animate().fadeIn(
       duration: AppDurations.medium,
-      curve: Curves.easeOutCubic,
+      curve: Curves.easeOut,
+    ).slideY(
+      begin: -0.2,
+      duration: AppDurations.medium,
+      curve: Curves.easeOut,
     );
   }
 }
@@ -320,5 +312,72 @@ class _QuietHoursToggleCardState extends State<QuietHoursToggleCard> {
         ],
       ),
     );
+  }
+}
+
+/// Service for managing quiet hours state
+class QuietHoursService {
+  static DateTime? _quietHoursEndTime;
+  static bool _isQuietHours = false;
+  
+  /// Check if currently in quiet hours
+  static bool get isQuietHours => _isQuietHours;
+  
+  /// Get quiet hours end time
+  static DateTime? get endTime => _quietHoursEndTime;
+  
+  /// Set quiet hours (typically called at night)
+  static void enableQuietHours({DateTime? endTime}) {
+    _isQuietHours = true;
+    _quietHoursEndTime = endTime ?? _getDefaultMorningTime();
+    debugPrint('🌙 [QuietHoursService] Enabled quiet hours until $_quietHoursEndTime');
+  }
+  
+  /// Disable quiet hours (typically called in the morning)
+  static void disableQuietHours() {
+    _isQuietHours = false;
+    _quietHoursEndTime = null;
+    debugPrint('☀️ [QuietHoursService] Disabled quiet hours');
+  }
+  
+  /// Auto-check and update quiet hours based on current time
+  static void updateQuietHoursStatus() {
+    final now = DateTime.now();
+    final hour = now.hour;
+    
+    // Quiet hours: 10 PM to 9 AM (22:00 to 09:00)
+    if (hour >= 22 || hour < 9) {
+      if (!_isQuietHours) {
+        enableQuietHours(endTime: _getNextMorningTime());
+      }
+    } else {
+      if (_isQuietHours) {
+        disableQuietHours();
+      }
+    }
+  }
+  
+  /// Get default morning time (9 AM today)
+  static DateTime _getDefaultMorningTime() {
+    final now = DateTime.now();
+    return DateTime(now.year, now.month, now.day, 9, 0);
+  }
+  
+  /// Get next morning time (9 AM tomorrow if current time is past 9 AM)
+  static DateTime _getNextMorningTime() {
+    final now = DateTime.now();
+    if (now.hour >= 9) {
+      // If it's already past 9 AM, return tomorrow's 9 AM
+      return DateTime(now.year, now.month, now.day + 1, 9, 0);
+    } else {
+      // If it's before 9 AM, return today's 9 AM
+      return DateTime(now.year, now.month, now.day, 9, 0);
+    }
+  }
+  
+  /// Initialize quiet hours service
+  static void initialize() {
+    updateQuietHoursStatus();
+    debugPrint('🌙 [QuietHoursService] Initialized - isQuietHours: $_isQuietHours');
   }
 }

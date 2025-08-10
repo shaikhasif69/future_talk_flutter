@@ -33,6 +33,7 @@ enum WebSocketEventType {
   messageDeliveryStatusUpdate,
   messageOverallStatusUpdate,
   userDeliveryConfirmation,
+  userStatus,
   
   // Typing events
   typingIndicator,
@@ -149,6 +150,8 @@ class WebSocketMessage {
         return 'message_overall_status_update';
       case WebSocketEventType.userDeliveryConfirmation:
         return 'user_delivery_confirmation';
+      case WebSocketEventType.userStatus:
+        return 'user_status';
       case WebSocketEventType.typingIndicator:
         return 'typing_indicator';
       case WebSocketEventType.typingIndicatorSent:
@@ -184,6 +187,8 @@ class WebSocketMessage {
         return WebSocketEventType.messageOverallStatusUpdate;
       case 'user_delivery_confirmation':
         return WebSocketEventType.userDeliveryConfirmation;
+      case 'user_status':
+        return WebSocketEventType.userStatus;
       case 'typing_indicator':
         return WebSocketEventType.typingIndicator;
       case 'typing_indicator_sent':
@@ -206,8 +211,17 @@ class WebSocketMessage {
 
 /// Comprehensive WebSocket service matching API documentation
 class ChatWebSocketService extends ChangeNotifier {
+  // Environment configuration
+  static const bool _useProduction = true; // Change to false for development
+  
   // Connection configuration
   static String get _baseUrl {
+    if (_useProduction) {
+      // Production WebSocket URL (use wss for HTTPS)
+      return 'wss://future.bytefuse.in/api/v1/chat/ws';
+    }
+    
+    // Development URLs based on platform
     if (kIsWeb) {
       return 'ws://127.0.0.1:8000/api/v1/chat/ws';
     } else if (Platform.isAndroid) {
@@ -534,6 +548,11 @@ class ChatWebSocketService extends ChangeNotifier {
         case WebSocketEventType.userDeliveryConfirmation:
           _chatMessageController.add(messageData);
           debugPrint('✅ [WebSocket] User delivery confirmation from: ${message.userId}');
+          break;
+          
+        case WebSocketEventType.userStatus:
+          debugPrint('👤 [WebSocket] User status update: ${message.userId} is ${messageData['status']}');
+          // Could be used for online/offline status in the UI
           break;
           
         case WebSocketEventType.conversationJoined:

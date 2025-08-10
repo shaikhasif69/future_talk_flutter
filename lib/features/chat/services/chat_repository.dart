@@ -56,8 +56,17 @@ class SendMessageRequest {
 
 /// Repository for chat-related API calls
 class ChatRepository {
+  // Environment configuration
+  static const bool _useProduction = true; // Change to false for development
+  
   // Dynamic base URL that matches ApiClient configuration
   static String get _baseUrl {
+    if (_useProduction) {
+      // Production backend URL
+      return 'https://future.bytefuse.in/api/v1/messages';
+    }
+    
+    // Development URLs based on platform
     if (kIsWeb) {
       // Web - use localhost
       return 'http://127.0.0.1:8000/api/v1/messages';

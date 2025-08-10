@@ -1,9 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:future_talk_frontend/core/network/api_client.dart';
 import 'package:future_talk_frontend/core/network/api_endpoints.dart';
 import 'package:future_talk_frontend/core/network/api_result.dart';
 import 'package:future_talk_frontend/core/storage/secure_storage_service.dart';
 import 'package:future_talk_frontend/features/auth/models/auth_models.dart';
+import '../../../features/chat/providers/realtime_chat_provider.dart';
+import '../../../features/chat/services/pinned_conversations_service.dart';
 
 class AuthService {
   final ApiClient _apiClient = ApiClient();
@@ -185,14 +188,54 @@ class AuthService {
   Future<ApiResult<void>> logout() async {
     try {
       await _apiClient.post(ApiEndpoints.logout);
-      await SecureStorageService.clearTokens();
+      await _clearAllUserData();
       return const ApiResult.success(null);
     } on DioException catch (e) {
-      await SecureStorageService.clearTokens();
+      await _clearAllUserData();
       return ApiResult.failure(_handleDioError(e));
     } catch (e) {
-      await SecureStorageService.clearTokens();
+      await _clearAllUserData();
       return ApiResult.failure(ApiError.unknown());
+    }
+  }
+
+  /// Clear all user data during logout to prevent cache issues
+  Future<void> _clearAllUserData() async {
+    // Clear secure storage (tokens, user ID, etc.)
+    await SecureStorageService.clearTokens();
+    
+    // Clear chat-related data
+    await _clearChatData();
+    
+    // Clear any other cached data
+    debugPrint('🧹 [AuthService] All user data cleared during logout');
+  }
+
+  /// Clear all chat-related data and disconnect WebSocket
+  Future<void> _clearChatData() async {
+    try {
+      debugPrint('🧹 [AuthService] Clearing chat data...');
+      
+      // Clear RealtimeChatProvider data and disconnect WebSocket
+      try {
+        await realtimeChatProvider.disconnect();
+        debugPrint('🧹 [AuthService] Chat provider disconnected');
+      } catch (e) {
+        debugPrint('⚠️ [AuthService] Error disconnecting chat provider: $e');
+      }
+      
+      // Clear local storage for UI preferences (pinned chats, etc.)
+      try {
+        await PinnedConversationsService.clearAllData();
+        debugPrint('🧹 [AuthService] Pinned conversations cleared');
+      } catch (e) {
+        debugPrint('⚠️ [AuthService] Error clearing pinned conversations: $e');
+      }
+      
+      debugPrint('✅ [AuthService] Chat data cleared successfully');
+      
+    } catch (e) {
+      debugPrint('⚠️ [AuthService] Error clearing chat data: $e');
     }
   }
 
