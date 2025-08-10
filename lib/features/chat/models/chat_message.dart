@@ -300,7 +300,18 @@ class ChatMessage with _$ChatMessage {
     final String content = (json['content'] as String?) ?? '';
     final String messageTypeStr = (json['message_type'] as String?) ?? 'text';
     final String createdAtStr = (json['created_at'] as String?) ?? DateTime.now().toIso8601String();
-    final String? updatedAtStr = json['updated_at'] as String?;
+    
+    // Handle updatedAtStr safely
+    final String? updatedAtStr = json['updated_at'] is String ? json['updated_at'] as String? : null;
+    
+    // Handle replyToMessageId safely - it might come as array or string
+    String? replyToMessageId;
+    final replyToValue = json['reply_to_message_id'];
+    if (replyToValue is String) {
+      replyToMessageId = replyToValue;
+    } else if (replyToValue is List && replyToValue.isNotEmpty && replyToValue.first is String) {
+      replyToMessageId = replyToValue.first as String;
+    }
     
     return ChatMessage(
       id: id,
@@ -318,7 +329,7 @@ class ChatMessage with _$ChatMessage {
         : null,
       isEdited: json['is_edited'] as bool? ?? false,
       isDestroyed: json['is_destroyed'] as bool? ?? false,
-      replyToMessageId: json['reply_to_message_id'] as String?,
+      replyToMessageId: replyToMessageId,
       attachments: (json['attachments'] as List<dynamic>? ?? [])
         .map((a) => Attachment.fromJson(a as Map<String, dynamic>))
         .toList(),

@@ -66,6 +66,10 @@ class RealtimeChatProvider extends ChangeNotifier {
     
     debugPrint('🚀 [RealtimeChatProvider] Initializing...');
     
+    // Get current user ID from secure storage immediately
+    _currentUserId = await _chatRepository.getCurrentUserId();
+    debugPrint('🔑 [RealtimeChatProvider] Current user ID set to: $_currentUserId');
+    
     // Set up WebSocket listeners
     _setupWebSocketListeners();
     
@@ -171,6 +175,12 @@ class RealtimeChatProvider extends ChangeNotifier {
           }
           
           debugPrint('✅ [RealtimeChatProvider] Loaded ${newMessages.length} messages for $conversationId (total: ${_messageCache[conversationId]!.length})');
+          
+          // Debug: Show alignment for loaded messages
+          for (int i = 0; i < newMessages.length; i++) {
+            final msg = newMessages[i];
+            debugPrint('📥 [RealtimeChatProvider] Loaded message $i: \"${msg.content.substring(0, msg.content.length > 20 ? 20 : msg.content.length)}...\" - isFromMe: ${msg.isFromMe} - senderId: ${msg.senderId} - currentUserId: $_currentUserId');
+          }
         }
         
         _isLoadingMessages[conversationId] = false;
@@ -188,7 +198,7 @@ class RealtimeChatProvider extends ChangeNotifier {
   Future<void> sendMessage(String conversationId, String content) async {
     if (content.trim().isEmpty) return;
     
-    debugPrint('📤 [RealtimeChatProvider] Sending message to $conversationId: ${content.substring(0, 30)}...');
+    debugPrint('📤 [RealtimeChatProvider] Sending message to $conversationId: ${content.length > 30 ? '${content.substring(0, 30)}...' : content}');
     
     final result = await _chatRepository.sendMessage(
       conversationId: conversationId,

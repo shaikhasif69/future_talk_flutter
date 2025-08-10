@@ -700,6 +700,11 @@ class ChatRepository {
       return 'unknown-user';
     }
   }
+
+  /// Get current user ID from storage (public method)
+  Future<String> getCurrentUserId() async {
+    return await _getCurrentUserId();
+  }
 }
 
 /// Singleton instance

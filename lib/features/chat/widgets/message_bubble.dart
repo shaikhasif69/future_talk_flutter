@@ -89,10 +89,7 @@ class _MessageBubbleState extends State<MessageBubble>
   Widget build(BuildContext context) {
     final message = widget.message;
     final isFromMe = message.isFromMe;
-    final showSenderName = message.shouldShowSenderName(
-      widget.previousMessage, 
-      false, // Individual chat, so always false
-    );
+    final showSenderName = false; // Never show sender names in individual chats
     final showTimestamp = message.shouldShowTimestamp(widget.previousMessage) || _showTimestamp;
 
     debugPrint('📦 [MessageBubble] Building bubble for message: ${message.content.length > 30 ? '${message.content.substring(0, 30)}...' : message.content}');

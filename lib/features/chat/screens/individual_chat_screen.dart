@@ -33,6 +33,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   late ScrollController _scrollController;
   late AnimationController _fadeInController;
   late AnimationController _slideInController;
+  late TextEditingController _messageController;
   
   bool _showQuickReactions = false;
   bool _isInitialized = false;
@@ -47,6 +48,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
 
   void _initializeControllers() {
     _scrollController = ScrollController();
+    _messageController = TextEditingController();
     
     _fadeInController = AnimationController(
       duration: const Duration(milliseconds: 600),
@@ -109,6 +111,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     final conversationMessages = _chatProvider.getMessages(widget.conversation.id);
     
     debugPrint('📝 [IndividualChatScreen] Loading ${conversationMessages.length} messages for conversation ${widget.conversation.id}');
+    debugPrint('📝 [IndividualChatScreen] Current user ID: ${_chatProvider.currentUserId}');
     
     // Only update if messages have actually changed to avoid unnecessary rebuilds
     if (conversationMessages.length != _currentMessages.length ||
@@ -119,7 +122,15 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       
       // Convert ChatMessage from API to UI ChatMessage if needed
       final newMessages = conversationMessages.map((apiMessage) {
-        debugPrint('🔄 [IndividualChatScreen] Converting API message: ${apiMessage.content.length > 30 ? '${apiMessage.content.substring(0, 30)}...' : apiMessage.content}');
+        // CRITICAL FIX: Use the isFromMe property that's already calculated in the API message
+        final isFromMe = apiMessage.isFromMe;
+        
+        debugPrint('🔄 [IndividualChatScreen] Converting message:');
+        debugPrint('   - Content: ${apiMessage.content.length > 30 ? '${apiMessage.content.substring(0, 30)}...' : apiMessage.content}');
+        debugPrint('   - Sender ID: ${apiMessage.senderId}');
+        debugPrint('   - Current User ID: ${_chatProvider.currentUserId}');
+        debugPrint('   - Is From Me: $isFromMe');
+        debugPrint('   - Alignment: ${isFromMe ? "RIGHT (sent)" : "LEFT (received)"}');
         
         return msg.ChatMessage(
           id: apiMessage.id,
@@ -130,7 +141,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
           createdAt: apiMessage.createdAt,
           status: _mapMessageStatus(apiMessage.status?.toString()),
           content: apiMessage.content,
-          isFromMe: apiMessage.senderId == (_chatProvider.currentUserId ?? ''),
+          isFromMe: isFromMe, // USE THE PROPERLY CALCULATED VALUE
           readBy: apiMessage.readBy,
           reactions: (apiMessage.reactions ?? []).map((r) => msg.Reaction(
             userId: r.userId,
@@ -142,6 +153,12 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       
       _currentMessages = newMessages;
       debugPrint('✅ [IndividualChatScreen] Updated _currentMessages with ${_currentMessages.length} messages');
+      
+      // Debug: Show alignment for all messages
+      for (int i = 0; i < _currentMessages.length; i++) {
+        final msg = _currentMessages[i];
+        debugPrint('   Message $i: "${msg.content.substring(0, msg.content.length > 20 ? 20 : msg.content.length)}..." - isFromMe: ${msg.isFromMe} - align: ${msg.isFromMe ? "RIGHT" : "LEFT"}');
+      }
       
       // Schedule a setState to trigger rebuild and auto-scroll to bottom
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -228,6 +245,30 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       case WebSocketConnectionState.error:
         return AppColors.dustyRose;
     }
+  }
+  
+  /// Get chat title - show other user's name for individual chats
+  String _getChatTitle() {
+    final currentUserId = _chatProvider.currentUserId;
+    debugPrint('🏷️ [IndividualChatScreen] Getting chat title, current user: $currentUserId');
+    debugPrint('🏷️ [IndividualChatScreen] Conversation name: ${widget.conversation.name}');
+    
+    // For individual chats, find the other participant's name
+    if (widget.conversation.type == msg.ConversationType.direct) {
+      // Find the participant who is not the current user
+      final otherParticipant = widget.conversation.participants
+          .where((p) => p.id != currentUserId)
+          .firstOrNull;
+      
+      if (otherParticipant != null) {
+        debugPrint('🏷️ [IndividualChatScreen] Found other participant: ${otherParticipant.name}');
+        return otherParticipant.name;
+      }
+    }
+    
+    // Fallback to conversation name
+    debugPrint('🏷️ [IndividualChatScreen] Using fallback conversation name: ${widget.conversation.name}');
+    return widget.conversation.name;
   }
   
   /// Group messages by date
@@ -481,10 +522,8 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
                             stops: [0.0, 1.0],
                           ),
                         ),
-                        child: CustomPaint(
-                          painter: _ChatBackgroundPainter(),
-                          size: Size.infinite,
-                        ),
+                        // Temporary: Remove broken custom painter for now  
+                        child: Container(),
                       ),
                       
                       // Messages List
@@ -593,6 +632,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   /// Simple ListView.builder for debugging message display issues
   Widget _buildSimpleMessagesList() {
     debugPrint('🔍 [IndividualChatScreen] Building SIMPLE messages list with ${_currentMessages.length} messages');
+    debugPrint('🔍 [IndividualChatScreen] Current user ID: ${_chatProvider.currentUserId}');
     
     return ListView.builder(
       controller: _scrollController,
@@ -600,7 +640,11 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       itemCount: _currentMessages.length,
       itemBuilder: (context, index) {
         final message = _currentMessages[index];
-        debugPrint('🔍 [IndividualChatScreen] Building simple message $index: ${message.content}');
+        debugPrint('🔍 [IndividualChatScreen] Building message $index:');
+        debugPrint('   - Content: "${message.content}"');
+        debugPrint('   - Sender: ${message.senderUsername} (${message.senderId})');
+        debugPrint('   - Is from me: ${message.isFromMe}');
+        debugPrint('   - ALIGNMENT: ${message.isFromMe ? "RIGHT (sent/green)" : "LEFT (received/white)"}');
         
         return Align(
           alignment: message.isFromMe ? Alignment.centerRight : Alignment.centerLeft,
@@ -906,7 +950,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.conversation.name,
+                  _getChatTitle(),
                   style: AppTextStyles.headlineSmall.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -1160,7 +1204,6 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     );
   }
 
-  late final TextEditingController _messageController = TextEditingController();
 
   /// Handle typing indicators
   void _handleTyping(String text) {
@@ -1195,29 +1238,4 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     // Scroll to bottom
     _scrollToBottom();
   }
-
-}
-
-/// Custom painter for chat background texture
-class _ChatBackgroundPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = AppColors.pearlWhite.withAlpha(77)
-      ..style = PaintingStyle.fill;
-
-    // Create subtle texture dots
-    for (int i = 0; i < 20; i++) {
-      final x = (i * 100.0) % size.width;
-      final y = (i * 80.0) % size.height;
-      canvas.drawCircle(
-        Offset(x, y),
-        0.5,
-        paint,
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
