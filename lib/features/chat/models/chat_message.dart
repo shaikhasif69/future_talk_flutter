@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'chat_message.freezed.dart';
@@ -162,12 +164,17 @@ class ChatMessage with _$ChatMessage {
     required MessageType messageType,
     required DateTime createdAt,
     DateTime? updatedAt,
+    DateTime? editedAt, // Added missing field
     @Default(false) bool isEdited,
     @Default(false) bool isDestroyed,
     String? replyToMessageId, // UUID or null
     @Default([]) List<Attachment> attachments,
     @Default([]) List<Reaction> reactions,
     @Default([]) List<String> readBy, // List of user IDs
+    DateTime? selfDestructAt, // Added missing field
+    @Default(true) bool encrypted, // Added missing field
+    String? encryptionType, // Added missing field
+    String? securityLevel, // Added missing field
     // Additional fields for UI state
     @Default(MessageStatus.sent) MessageStatus status,
     @Default(false) bool isFromMe,
@@ -290,19 +297,40 @@ class ChatMessage with _$ChatMessage {
     return senderId != previousMessage.senderId;
   }
 
-  /// Create from API message data
+  /// Create from API message data (for REST API responses)
   static ChatMessage fromApiMessage(Map<String, dynamic> json, String currentUserId) {
+    debugPrint('🔍 [ChatMessage] Parsing API message with keys: ${json.keys.toList()}');
+    
     // Safe string extraction with null checks
     final String id = (json['id'] as String?) ?? '';
     final String conversationId = (json['conversation_id'] as String?) ?? '';
     final String senderId = (json['sender_id'] as String?) ?? '';
-    final String senderUsername = (json['sender_username'] as String?) ?? (json['sender'] as String?) ?? 'Unknown';
+    
+    // Handle sender field safely - it could be string, object, or array
+    String senderUsername = 'Unknown';
+    final senderValue = json['sender_username'] ?? json['sender'];
+    if (senderValue is String) {
+      senderUsername = senderValue;
+    } else if (senderValue is Map<String, dynamic>) {
+      senderUsername = (senderValue['username'] as String?) ?? (senderValue['name'] as String?) ?? 'Unknown';
+    } else if (senderValue is List && senderValue.isNotEmpty) {
+      final firstSender = senderValue.first;
+      if (firstSender is String) {
+        senderUsername = firstSender;
+      } else if (firstSender is Map<String, dynamic>) {
+        senderUsername = (firstSender['username'] as String?) ?? (firstSender['name'] as String?) ?? 'Unknown';
+      }
+    }
+    
     final String content = (json['content'] as String?) ?? '';
     final String messageTypeStr = (json['message_type'] as String?) ?? 'text';
     final String createdAtStr = (json['created_at'] as String?) ?? DateTime.now().toIso8601String();
     
     // Handle updatedAtStr safely
     final String? updatedAtStr = json['updated_at'] is String ? json['updated_at'] as String? : null;
+    
+    // Handle editedAt safely
+    final String? editedAtStr = json['edited_at'] is String ? json['edited_at'] as String? : null;
     
     // Handle replyToMessageId safely - it might come as array or string
     String? replyToMessageId;
@@ -311,6 +339,64 @@ class ChatMessage with _$ChatMessage {
       replyToMessageId = replyToValue;
     } else if (replyToValue is List && replyToValue.isNotEmpty && replyToValue.first is String) {
       replyToMessageId = replyToValue.first as String;
+    }
+    
+    // CRITICAL FIX: Handle list fields safely - backend always returns these as Lists
+    List<Attachment> attachments = [];
+    List<Reaction> reactions = [];
+    List<String> readBy = [];
+    
+    try {
+      // Attachments handling - backend always returns [] (empty array)
+      final attachmentData = json['attachments'];
+      if (attachmentData is List) {
+        debugPrint('🔍 [ChatMessage] Attachments data: $attachmentData');
+        attachments = attachmentData
+            .whereType<Map<String, dynamic>>()
+            .map((a) => Attachment.fromJson(a))
+            .toList();
+      } else {
+        debugPrint('⚠️ [ChatMessage] Attachments is not a list: ${attachmentData.runtimeType}');
+      }
+      
+      // Reactions handling - backend always returns [] (empty array)
+      final reactionData = json['reactions'];
+      if (reactionData is List) {
+        debugPrint('🔍 [ChatMessage] Reactions data: $reactionData');
+        reactions = reactionData
+            .whereType<Map<String, dynamic>>()
+            .map((r) => Reaction.fromJson(r))
+            .toList();
+      } else {
+        debugPrint('⚠️ [ChatMessage] Reactions is not a list: ${reactionData.runtimeType}');
+      }
+      
+      // ReadBy handling - backend always returns [] (empty array)
+      final readByData = json['read_by'];
+      if (readByData is List) {
+        debugPrint('🔍 [ChatMessage] ReadBy data: $readByData');
+        readBy = readByData
+            .whereType<String>()
+            .toList();
+      } else {
+        debugPrint('⚠️ [ChatMessage] ReadBy is not a list: ${readByData.runtimeType}');
+      }
+    } catch (e, stackTrace) {
+      // If parsing fails, use empty lists - don't crash the app
+      debugPrint('❌ [ChatMessage] Failed to parse list fields: $e');
+      debugPrint('❌ [ChatMessage] Stack trace: $stackTrace');
+      debugPrint('❌ [ChatMessage] Raw JSON: ${jsonEncode(json)}');
+    }
+    
+    // Handle self destruct time
+    DateTime? selfDestructAt;
+    final selfDestructAtStr = json['self_destruct_at'];
+    if (selfDestructAtStr is String) {
+      try {
+        selfDestructAt = DateTime.parse(selfDestructAtStr);
+      } catch (e) {
+        debugPrint('⚠️ [ChatMessage] Failed to parse self_destruct_at: $e');
+      }
     }
     
     return ChatMessage(
@@ -327,20 +413,139 @@ class ChatMessage with _$ChatMessage {
       updatedAt: updatedAtStr != null 
         ? DateTime.parse(updatedAtStr)
         : null,
+      editedAt: editedAtStr != null 
+        ? DateTime.parse(editedAtStr)
+        : null,
       isEdited: json['is_edited'] as bool? ?? false,
       isDestroyed: json['is_destroyed'] as bool? ?? false,
       replyToMessageId: replyToMessageId,
-      attachments: (json['attachments'] as List<dynamic>? ?? [])
-        .map((a) => Attachment.fromJson(a as Map<String, dynamic>))
-        .toList(),
-      reactions: (json['reactions'] as List<dynamic>? ?? [])
-        .map((r) => Reaction.fromJson(r as Map<String, dynamic>))
-        .toList(),
-      readBy: (json['read_by'] as List<dynamic>? ?? [])
-        .map((id) => id as String)
-        .toList(),
+      attachments: attachments,
+      reactions: reactions,
+      readBy: readBy,
+      selfDestructAt: selfDestructAt,
+      encrypted: json['encrypted'] as bool? ?? true,
+      encryptionType: json['encryption_type'] as String?,
+      securityLevel: json['security_level'] as String?,
       isFromMe: senderId == currentUserId,
     );
+  }
+
+  /// Create from WebSocket message data (for real-time WebSocket events)
+  static ChatMessage fromWebSocketMessage(Map<String, dynamic> data, String currentUserId) {
+    debugPrint('🔍 [ChatMessage] Parsing WebSocket message with keys: ${data.keys.toList()}');
+    
+    try {
+      // Extract message_data according to documentation
+      final messageData = data['message_data'] as Map<String, dynamic>;
+      final messageInfo = messageData['message'] as Map<String, dynamic>;
+      final senderInfo = messageData['sender_info'] as Map<String, dynamic>?;
+      
+      debugPrint('🔍 [ChatMessage] Message info keys: ${messageInfo.keys.toList()}');
+      debugPrint('🔍 [ChatMessage] Sender info: $senderInfo');
+      
+      // Extract basic message fields
+      final String id = messageInfo['id'] as String;
+      final String conversationId = messageInfo['conversation_id'] as String;
+      final String senderId = messageInfo['sender_id'] as String;
+      final String content = messageInfo['content'] as String;
+      final String messageTypeStr = messageInfo['message_type'] as String? ?? 'text';
+      final String createdAtStr = messageInfo['created_at'] as String;
+      
+      // Handle optional datetime fields
+      final String? updatedAtStr = messageInfo['updated_at'] as String?;
+      final String? editedAtStr = messageInfo['edited_at'] as String?;
+      
+      // Get sender username from sender_info or message data
+      String senderUsername = 'Unknown';
+      if (senderInfo != null) {
+        senderUsername = senderInfo['username'] as String? ?? 
+                        senderInfo['display_name'] as String? ?? 
+                        messageInfo['sender_username'] as String? ?? 
+                        'Unknown';
+      } else {
+        senderUsername = messageInfo['sender_username'] as String? ?? 'Unknown';
+      }
+      
+      // Handle replyToMessageId
+      final String? replyToMessageId = messageInfo['reply_to_message_id'] as String?;
+      
+      // CRITICAL FIX: Handle WebSocket arrays correctly
+      List<Attachment> attachments = [];
+      List<Reaction> reactions = [];
+      List<String> readBy = [];
+      
+      try {
+        // Attachments - always empty array [] in WebSocket messages
+        final attachmentData = messageInfo['attachments'];
+        if (attachmentData is List) {
+          attachments = attachmentData
+              .whereType<Map<String, dynamic>>()
+              .map((a) => Attachment.fromJson(a))
+              .toList();
+        }
+        
+        // Reactions - always empty array [] in WebSocket messages
+        final reactionData = messageInfo['reactions'];
+        if (reactionData is List) {
+          reactions = reactionData
+              .whereType<Map<String, dynamic>>()
+              .map((r) => Reaction.fromJson(r))
+              .toList();
+        }
+        
+        // ReadBy - always empty array [] in WebSocket messages
+        final readByData = messageInfo['read_by'];
+        if (readByData is List) {
+          readBy = readByData
+              .whereType<String>()
+              .toList();
+        }
+      } catch (e) {
+        debugPrint('⚠️ [ChatMessage] Failed to parse WebSocket list fields: $e');
+      }
+      
+      // Handle self destruct time
+      DateTime? selfDestructAt;
+      final selfDestructAtStr = messageInfo['self_destruct_at'] as String?;
+      if (selfDestructAtStr != null) {
+        try {
+          selfDestructAt = DateTime.parse(selfDestructAtStr);
+        } catch (e) {
+          debugPrint('⚠️ [ChatMessage] Failed to parse WebSocket self_destruct_at: $e');
+        }
+      }
+      
+      return ChatMessage(
+        id: id,
+        conversationId: conversationId,
+        senderId: senderId,
+        senderUsername: senderUsername,
+        content: content,
+        messageType: MessageType.values.firstWhere(
+          (e) => e.name == messageTypeStr,
+          orElse: () => MessageType.text,
+        ),
+        createdAt: DateTime.parse(createdAtStr),
+        updatedAt: updatedAtStr != null ? DateTime.parse(updatedAtStr) : null,
+        editedAt: editedAtStr != null ? DateTime.parse(editedAtStr) : null,
+        isEdited: messageInfo['is_edited'] as bool? ?? false,
+        isDestroyed: messageInfo['is_destroyed'] as bool? ?? false,
+        replyToMessageId: replyToMessageId,
+        attachments: attachments,
+        reactions: reactions,
+        readBy: readBy,
+        selfDestructAt: selfDestructAt,
+        encrypted: messageInfo['encrypted'] as bool? ?? true,
+        encryptionType: messageInfo['encryption_type'] as String?,
+        securityLevel: messageInfo['security_level'] as String?,
+        isFromMe: senderId == currentUserId,
+      );
+    } catch (e, stackTrace) {
+      debugPrint('❌ [ChatMessage] Failed to parse WebSocket message: $e');
+      debugPrint('❌ [ChatMessage] Stack trace: $stackTrace');
+      debugPrint('❌ [ChatMessage] Raw data: ${jsonEncode(data)}');
+      rethrow;
+    }
   }
 
   factory ChatMessage.fromJson(Map<String, Object?> json) =>

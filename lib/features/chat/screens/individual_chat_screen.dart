@@ -640,11 +640,10 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       itemCount: _currentMessages.length,
       itemBuilder: (context, index) {
         final message = _currentMessages[index];
-        debugPrint('🔍 [IndividualChatScreen] Building message $index:');
-        debugPrint('   - Content: "${message.content}"');
-        debugPrint('   - Sender: ${message.senderUsername} (${message.senderId})');
-        debugPrint('   - Is from me: ${message.isFromMe}');
-        debugPrint('   - ALIGNMENT: ${message.isFromMe ? "RIGHT (sent/green)" : "LEFT (received/white)"}');
+        // Debug message alignment (simplified to avoid log spam)
+        if (index == 0) {
+          debugPrint('🔍 [IndividualChatScreen] Sample message - IsFromMe: ${message.isFromMe}, Sender: ${message.senderId}');
+        }
         
         return Align(
           alignment: message.isFromMe ? Alignment.centerRight : Alignment.centerLeft,

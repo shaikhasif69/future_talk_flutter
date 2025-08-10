@@ -169,7 +169,7 @@ class __$$AttachmentImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$AttachmentImpl implements _Attachment {
+class _$AttachmentImpl with DiagnosticableTreeMixin implements _Attachment {
   const _$AttachmentImpl({
     required this.id,
     required this.fileName,
@@ -193,8 +193,20 @@ class _$AttachmentImpl implements _Attachment {
   final int fileSize;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'Attachment(id: $id, fileName: $fileName, fileUrl: $fileUrl, fileType: $fileType, fileSize: $fileSize)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'Attachment'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('fileName', fileName))
+      ..add(DiagnosticsProperty('fileUrl', fileUrl))
+      ..add(DiagnosticsProperty('fileType', fileType))
+      ..add(DiagnosticsProperty('fileSize', fileSize));
   }
 
   @override
@@ -380,7 +392,7 @@ class __$$ReactionImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ReactionImpl implements _Reaction {
+class _$ReactionImpl with DiagnosticableTreeMixin implements _Reaction {
   const _$ReactionImpl({
     required this.userId,
     required this.emoji,
@@ -398,8 +410,18 @@ class _$ReactionImpl implements _Reaction {
   final DateTime createdAt;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'Reaction(userId: $userId, emoji: $emoji, createdAt: $createdAt)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'Reaction'))
+      ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('emoji', emoji))
+      ..add(DiagnosticsProperty('createdAt', createdAt));
   }
 
   @override
@@ -610,7 +632,7 @@ class __$$VoiceMessageImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$VoiceMessageImpl implements _VoiceMessage {
+class _$VoiceMessageImpl with DiagnosticableTreeMixin implements _VoiceMessage {
   const _$VoiceMessageImpl({
     required this.audioUrl,
     required this.duration,
@@ -636,8 +658,20 @@ class _$VoiceMessageImpl implements _VoiceMessage {
   final String? waveformData;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VoiceMessage(audioUrl: $audioUrl, duration: $duration, isPlaying: $isPlaying, progress: $progress, waveformData: $waveformData)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'VoiceMessage'))
+      ..add(DiagnosticsProperty('audioUrl', audioUrl))
+      ..add(DiagnosticsProperty('duration', duration))
+      ..add(DiagnosticsProperty('isPlaying', isPlaying))
+      ..add(DiagnosticsProperty('progress', progress))
+      ..add(DiagnosticsProperty('waveformData', waveformData));
   }
 
   @override
@@ -867,7 +901,7 @@ class __$$ImageMessageImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ImageMessageImpl implements _ImageMessage {
+class _$ImageMessageImpl with DiagnosticableTreeMixin implements _ImageMessage {
   const _$ImageMessageImpl({
     required this.imageUrl,
     this.thumbnailUrl,
@@ -891,8 +925,20 @@ class _$ImageMessageImpl implements _ImageMessage {
   final double? height;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'ImageMessage(imageUrl: $imageUrl, thumbnailUrl: $thumbnailUrl, caption: $caption, width: $width, height: $height)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'ImageMessage'))
+      ..add(DiagnosticsProperty('imageUrl', imageUrl))
+      ..add(DiagnosticsProperty('thumbnailUrl', thumbnailUrl))
+      ..add(DiagnosticsProperty('caption', caption))
+      ..add(DiagnosticsProperty('width', width))
+      ..add(DiagnosticsProperty('height', height));
   }
 
   @override
@@ -1106,7 +1152,9 @@ class __$$ConnectionStoneMessageImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ConnectionStoneMessageImpl implements _ConnectionStoneMessage {
+class _$ConnectionStoneMessageImpl
+    with DiagnosticableTreeMixin
+    implements _ConnectionStoneMessage {
   const _$ConnectionStoneMessageImpl({
     required this.stoneType,
     required this.emotion,
@@ -1128,8 +1176,19 @@ class _$ConnectionStoneMessageImpl implements _ConnectionStoneMessage {
   final DateTime? timestamp;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'ConnectionStoneMessage(stoneType: $stoneType, emotion: $emotion, message: $message, timestamp: $timestamp)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'ConnectionStoneMessage'))
+      ..add(DiagnosticsProperty('stoneType', stoneType))
+      ..add(DiagnosticsProperty('emotion', emotion))
+      ..add(DiagnosticsProperty('message', message))
+      ..add(DiagnosticsProperty('timestamp', timestamp));
   }
 
   @override
@@ -1363,7 +1422,9 @@ class __$$MessageReactionImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$MessageReactionImpl implements _MessageReaction {
+class _$MessageReactionImpl
+    with DiagnosticableTreeMixin
+    implements _MessageReaction {
   const _$MessageReactionImpl({
     required this.id,
     required this.emoji,
@@ -1391,8 +1452,21 @@ class _$MessageReactionImpl implements _MessageReaction {
   final bool isFromMe;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'MessageReaction(id: $id, emoji: $emoji, userId: $userId, userName: $userName, timestamp: $timestamp, isFromMe: $isFromMe)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'MessageReaction'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('emoji', emoji))
+      ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('userName', userName))
+      ..add(DiagnosticsProperty('timestamp', timestamp))
+      ..add(DiagnosticsProperty('isFromMe', isFromMe));
   }
 
   @override
@@ -1594,7 +1668,8 @@ class __$$SelfDestructMessageImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SelfDestructMessageImpl extends _SelfDestructMessage {
+class _$SelfDestructMessageImpl extends _SelfDestructMessage
+    with DiagnosticableTreeMixin {
   const _$SelfDestructMessageImpl({
     required this.countdown,
     required this.createdAt,
@@ -1613,8 +1688,18 @@ class _$SelfDestructMessageImpl extends _SelfDestructMessage {
   final bool isExpired;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'SelfDestructMessage(countdown: $countdown, createdAt: $createdAt, isExpired: $isExpired)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'SelfDestructMessage'))
+      ..add(DiagnosticsProperty('countdown', countdown))
+      ..add(DiagnosticsProperty('createdAt', createdAt))
+      ..add(DiagnosticsProperty('isExpired', isExpired));
   }
 
   @override
@@ -1691,6 +1776,8 @@ mixin _$ChatMessage {
   MessageType get messageType => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get editedAt =>
+      throw _privateConstructorUsedError; // Added missing field
   bool get isEdited => throw _privateConstructorUsedError;
   bool get isDestroyed => throw _privateConstructorUsedError;
   String? get replyToMessageId =>
@@ -1699,6 +1786,14 @@ mixin _$ChatMessage {
   List<Reaction> get reactions => throw _privateConstructorUsedError;
   List<String> get readBy =>
       throw _privateConstructorUsedError; // List of user IDs
+  DateTime? get selfDestructAt =>
+      throw _privateConstructorUsedError; // Added missing field
+  bool get encrypted =>
+      throw _privateConstructorUsedError; // Added missing field
+  String? get encryptionType =>
+      throw _privateConstructorUsedError; // Added missing field
+  String? get securityLevel =>
+      throw _privateConstructorUsedError; // Added missing field
   // Additional fields for UI state
   MessageStatus get status => throw _privateConstructorUsedError;
   bool get isFromMe => throw _privateConstructorUsedError;
@@ -1729,12 +1824,17 @@ abstract class $ChatMessageCopyWith<$Res> {
     MessageType messageType,
     DateTime createdAt,
     DateTime? updatedAt,
+    DateTime? editedAt,
     bool isEdited,
     bool isDestroyed,
     String? replyToMessageId,
     List<Attachment> attachments,
     List<Reaction> reactions,
     List<String> readBy,
+    DateTime? selfDestructAt,
+    bool encrypted,
+    String? encryptionType,
+    String? securityLevel,
     MessageStatus status,
     bool isFromMe,
   });
@@ -1763,12 +1863,17 @@ class _$ChatMessageCopyWithImpl<$Res, $Val extends ChatMessage>
     Object? messageType = null,
     Object? createdAt = null,
     Object? updatedAt = freezed,
+    Object? editedAt = freezed,
     Object? isEdited = null,
     Object? isDestroyed = null,
     Object? replyToMessageId = freezed,
     Object? attachments = null,
     Object? reactions = null,
     Object? readBy = null,
+    Object? selfDestructAt = freezed,
+    Object? encrypted = null,
+    Object? encryptionType = freezed,
+    Object? securityLevel = freezed,
     Object? status = null,
     Object? isFromMe = null,
   }) {
@@ -1806,6 +1911,10 @@ class _$ChatMessageCopyWithImpl<$Res, $Val extends ChatMessage>
                 ? _value.updatedAt
                 : updatedAt // ignore: cast_nullable_to_non_nullable
                       as DateTime?,
+            editedAt: freezed == editedAt
+                ? _value.editedAt
+                : editedAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime?,
             isEdited: null == isEdited
                 ? _value.isEdited
                 : isEdited // ignore: cast_nullable_to_non_nullable
@@ -1830,6 +1939,22 @@ class _$ChatMessageCopyWithImpl<$Res, $Val extends ChatMessage>
                 ? _value.readBy
                 : readBy // ignore: cast_nullable_to_non_nullable
                       as List<String>,
+            selfDestructAt: freezed == selfDestructAt
+                ? _value.selfDestructAt
+                : selfDestructAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime?,
+            encrypted: null == encrypted
+                ? _value.encrypted
+                : encrypted // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            encryptionType: freezed == encryptionType
+                ? _value.encryptionType
+                : encryptionType // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            securityLevel: freezed == securityLevel
+                ? _value.securityLevel
+                : securityLevel // ignore: cast_nullable_to_non_nullable
+                      as String?,
             status: null == status
                 ? _value.status
                 : status // ignore: cast_nullable_to_non_nullable
@@ -1862,12 +1987,17 @@ abstract class _$$ChatMessageImplCopyWith<$Res>
     MessageType messageType,
     DateTime createdAt,
     DateTime? updatedAt,
+    DateTime? editedAt,
     bool isEdited,
     bool isDestroyed,
     String? replyToMessageId,
     List<Attachment> attachments,
     List<Reaction> reactions,
     List<String> readBy,
+    DateTime? selfDestructAt,
+    bool encrypted,
+    String? encryptionType,
+    String? securityLevel,
     MessageStatus status,
     bool isFromMe,
   });
@@ -1895,12 +2025,17 @@ class __$$ChatMessageImplCopyWithImpl<$Res>
     Object? messageType = null,
     Object? createdAt = null,
     Object? updatedAt = freezed,
+    Object? editedAt = freezed,
     Object? isEdited = null,
     Object? isDestroyed = null,
     Object? replyToMessageId = freezed,
     Object? attachments = null,
     Object? reactions = null,
     Object? readBy = null,
+    Object? selfDestructAt = freezed,
+    Object? encrypted = null,
+    Object? encryptionType = freezed,
+    Object? securityLevel = freezed,
     Object? status = null,
     Object? isFromMe = null,
   }) {
@@ -1938,6 +2073,10 @@ class __$$ChatMessageImplCopyWithImpl<$Res>
             ? _value.updatedAt
             : updatedAt // ignore: cast_nullable_to_non_nullable
                   as DateTime?,
+        editedAt: freezed == editedAt
+            ? _value.editedAt
+            : editedAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime?,
         isEdited: null == isEdited
             ? _value.isEdited
             : isEdited // ignore: cast_nullable_to_non_nullable
@@ -1962,6 +2101,22 @@ class __$$ChatMessageImplCopyWithImpl<$Res>
             ? _value._readBy
             : readBy // ignore: cast_nullable_to_non_nullable
                   as List<String>,
+        selfDestructAt: freezed == selfDestructAt
+            ? _value.selfDestructAt
+            : selfDestructAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime?,
+        encrypted: null == encrypted
+            ? _value.encrypted
+            : encrypted // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        encryptionType: freezed == encryptionType
+            ? _value.encryptionType
+            : encryptionType // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        securityLevel: freezed == securityLevel
+            ? _value.securityLevel
+            : securityLevel // ignore: cast_nullable_to_non_nullable
+                  as String?,
         status: null == status
             ? _value.status
             : status // ignore: cast_nullable_to_non_nullable
@@ -1977,7 +2132,7 @@ class __$$ChatMessageImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ChatMessageImpl extends _ChatMessage {
+class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
   const _$ChatMessageImpl({
     required this.id,
     required this.conversationId,
@@ -1987,12 +2142,17 @@ class _$ChatMessageImpl extends _ChatMessage {
     required this.messageType,
     required this.createdAt,
     this.updatedAt,
+    this.editedAt,
     this.isEdited = false,
     this.isDestroyed = false,
     this.replyToMessageId,
     final List<Attachment> attachments = const [],
     final List<Reaction> reactions = const [],
     final List<String> readBy = const [],
+    this.selfDestructAt,
+    this.encrypted = true,
+    this.encryptionType,
+    this.securityLevel,
     this.status = MessageStatus.sent,
     this.isFromMe = false,
   }) : _attachments = attachments,
@@ -2022,6 +2182,9 @@ class _$ChatMessageImpl extends _ChatMessage {
   final DateTime createdAt;
   @override
   final DateTime? updatedAt;
+  @override
+  final DateTime? editedAt;
+  // Added missing field
   @override
   @JsonKey()
   final bool isEdited;
@@ -2060,6 +2223,19 @@ class _$ChatMessageImpl extends _ChatMessage {
   }
 
   // List of user IDs
+  @override
+  final DateTime? selfDestructAt;
+  // Added missing field
+  @override
+  @JsonKey()
+  final bool encrypted;
+  // Added missing field
+  @override
+  final String? encryptionType;
+  // Added missing field
+  @override
+  final String? securityLevel;
+  // Added missing field
   // Additional fields for UI state
   @override
   @JsonKey()
@@ -2069,8 +2245,36 @@ class _$ChatMessageImpl extends _ChatMessage {
   final bool isFromMe;
 
   @override
-  String toString() {
-    return 'ChatMessage(id: $id, conversationId: $conversationId, senderId: $senderId, senderUsername: $senderUsername, content: $content, messageType: $messageType, createdAt: $createdAt, updatedAt: $updatedAt, isEdited: $isEdited, isDestroyed: $isDestroyed, replyToMessageId: $replyToMessageId, attachments: $attachments, reactions: $reactions, readBy: $readBy, status: $status, isFromMe: $isFromMe)';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ChatMessage(id: $id, conversationId: $conversationId, senderId: $senderId, senderUsername: $senderUsername, content: $content, messageType: $messageType, createdAt: $createdAt, updatedAt: $updatedAt, editedAt: $editedAt, isEdited: $isEdited, isDestroyed: $isDestroyed, replyToMessageId: $replyToMessageId, attachments: $attachments, reactions: $reactions, readBy: $readBy, selfDestructAt: $selfDestructAt, encrypted: $encrypted, encryptionType: $encryptionType, securityLevel: $securityLevel, status: $status, isFromMe: $isFromMe)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'ChatMessage'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('conversationId', conversationId))
+      ..add(DiagnosticsProperty('senderId', senderId))
+      ..add(DiagnosticsProperty('senderUsername', senderUsername))
+      ..add(DiagnosticsProperty('content', content))
+      ..add(DiagnosticsProperty('messageType', messageType))
+      ..add(DiagnosticsProperty('createdAt', createdAt))
+      ..add(DiagnosticsProperty('updatedAt', updatedAt))
+      ..add(DiagnosticsProperty('editedAt', editedAt))
+      ..add(DiagnosticsProperty('isEdited', isEdited))
+      ..add(DiagnosticsProperty('isDestroyed', isDestroyed))
+      ..add(DiagnosticsProperty('replyToMessageId', replyToMessageId))
+      ..add(DiagnosticsProperty('attachments', attachments))
+      ..add(DiagnosticsProperty('reactions', reactions))
+      ..add(DiagnosticsProperty('readBy', readBy))
+      ..add(DiagnosticsProperty('selfDestructAt', selfDestructAt))
+      ..add(DiagnosticsProperty('encrypted', encrypted))
+      ..add(DiagnosticsProperty('encryptionType', encryptionType))
+      ..add(DiagnosticsProperty('securityLevel', securityLevel))
+      ..add(DiagnosticsProperty('status', status))
+      ..add(DiagnosticsProperty('isFromMe', isFromMe));
   }
 
   @override
@@ -2092,6 +2296,8 @@ class _$ChatMessageImpl extends _ChatMessage {
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
+            (identical(other.editedAt, editedAt) ||
+                other.editedAt == editedAt) &&
             (identical(other.isEdited, isEdited) ||
                 other.isEdited == isEdited) &&
             (identical(other.isDestroyed, isDestroyed) ||
@@ -2107,6 +2313,14 @@ class _$ChatMessageImpl extends _ChatMessage {
               _reactions,
             ) &&
             const DeepCollectionEquality().equals(other._readBy, _readBy) &&
+            (identical(other.selfDestructAt, selfDestructAt) ||
+                other.selfDestructAt == selfDestructAt) &&
+            (identical(other.encrypted, encrypted) ||
+                other.encrypted == encrypted) &&
+            (identical(other.encryptionType, encryptionType) ||
+                other.encryptionType == encryptionType) &&
+            (identical(other.securityLevel, securityLevel) ||
+                other.securityLevel == securityLevel) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.isFromMe, isFromMe) ||
                 other.isFromMe == isFromMe));
@@ -2114,7 +2328,7 @@ class _$ChatMessageImpl extends _ChatMessage {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     runtimeType,
     id,
     conversationId,
@@ -2124,15 +2338,20 @@ class _$ChatMessageImpl extends _ChatMessage {
     messageType,
     createdAt,
     updatedAt,
+    editedAt,
     isEdited,
     isDestroyed,
     replyToMessageId,
     const DeepCollectionEquality().hash(_attachments),
     const DeepCollectionEquality().hash(_reactions),
     const DeepCollectionEquality().hash(_readBy),
+    selfDestructAt,
+    encrypted,
+    encryptionType,
+    securityLevel,
     status,
     isFromMe,
-  );
+  ]);
 
   /// Create a copy of ChatMessage
   /// with the given fields replaced by the non-null parameter values.
@@ -2158,12 +2377,17 @@ abstract class _ChatMessage extends ChatMessage {
     required final MessageType messageType,
     required final DateTime createdAt,
     final DateTime? updatedAt,
+    final DateTime? editedAt,
     final bool isEdited,
     final bool isDestroyed,
     final String? replyToMessageId,
     final List<Attachment> attachments,
     final List<Reaction> reactions,
     final List<String> readBy,
+    final DateTime? selfDestructAt,
+    final bool encrypted,
+    final String? encryptionType,
+    final String? securityLevel,
     final MessageStatus status,
     final bool isFromMe,
   }) = _$ChatMessageImpl;
@@ -2189,6 +2413,8 @@ abstract class _ChatMessage extends ChatMessage {
   @override
   DateTime? get updatedAt;
   @override
+  DateTime? get editedAt; // Added missing field
+  @override
   bool get isEdited;
   @override
   bool get isDestroyed;
@@ -2200,6 +2426,14 @@ abstract class _ChatMessage extends ChatMessage {
   List<Reaction> get reactions;
   @override
   List<String> get readBy; // List of user IDs
+  @override
+  DateTime? get selfDestructAt; // Added missing field
+  @override
+  bool get encrypted; // Added missing field
+  @override
+  String? get encryptionType; // Added missing field
+  @override
+  String? get securityLevel; // Added missing field
   // Additional fields for UI state
   @override
   MessageStatus get status;
@@ -2430,7 +2664,7 @@ class __$$MessageDraftImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$MessageDraftImpl extends _MessageDraft {
+class _$MessageDraftImpl extends _MessageDraft with DiagnosticableTreeMixin {
   const _$MessageDraftImpl({
     this.content = '',
     this.type = MessageType.text,
@@ -2463,8 +2697,22 @@ class _$MessageDraftImpl extends _MessageDraft {
   final Duration? selfDestructDuration;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'MessageDraft(content: $content, type: $type, replyToMessageId: $replyToMessageId, voiceMessage: $voiceMessage, imageMessage: $imageMessage, isSelfDestruct: $isSelfDestruct, selfDestructDuration: $selfDestructDuration)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'MessageDraft'))
+      ..add(DiagnosticsProperty('content', content))
+      ..add(DiagnosticsProperty('type', type))
+      ..add(DiagnosticsProperty('replyToMessageId', replyToMessageId))
+      ..add(DiagnosticsProperty('voiceMessage', voiceMessage))
+      ..add(DiagnosticsProperty('imageMessage', imageMessage))
+      ..add(DiagnosticsProperty('isSelfDestruct', isSelfDestruct))
+      ..add(DiagnosticsProperty('selfDestructDuration', selfDestructDuration));
   }
 
   @override
@@ -2692,7 +2940,8 @@ class __$$TypingIndicatorImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$TypingIndicatorImpl extends _TypingIndicator {
+class _$TypingIndicatorImpl extends _TypingIndicator
+    with DiagnosticableTreeMixin {
   const _$TypingIndicatorImpl({
     required this.userId,
     required this.userName,
@@ -2714,8 +2963,19 @@ class _$TypingIndicatorImpl extends _TypingIndicator {
   final bool isActive;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'TypingIndicator(userId: $userId, userName: $userName, startedAt: $startedAt, isActive: $isActive)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'TypingIndicator'))
+      ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('userName', userName))
+      ..add(DiagnosticsProperty('startedAt', startedAt))
+      ..add(DiagnosticsProperty('isActive', isActive));
   }
 
   @override
@@ -2924,7 +3184,7 @@ class __$$ReadReceiptImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ReadReceiptImpl implements _ReadReceipt {
+class _$ReadReceiptImpl with DiagnosticableTreeMixin implements _ReadReceipt {
   const _$ReadReceiptImpl({
     required this.messageId,
     required this.userId,
@@ -2945,8 +3205,19 @@ class _$ReadReceiptImpl implements _ReadReceipt {
   final DateTime readAt;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'ReadReceipt(messageId: $messageId, userId: $userId, userName: $userName, readAt: $readAt)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'ReadReceipt'))
+      ..add(DiagnosticsProperty('messageId', messageId))
+      ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('userName', userName))
+      ..add(DiagnosticsProperty('readAt', readAt));
   }
 
   @override

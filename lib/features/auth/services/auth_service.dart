@@ -167,7 +167,10 @@ class AuthService {
           accessToken: authResponse.accessToken,
           refreshToken: authResponse.refreshToken,
         );
-
+        
+        // Save user ID when refreshing tokens
+        await SecureStorageService.saveUserId(authResponse.user.id);
+        
         return ApiResult.success(authResponse);
       } else {
         return ApiResult.failure(_parseError(response));

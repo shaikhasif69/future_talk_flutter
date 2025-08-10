@@ -5,6 +5,8 @@ import '../models/chat_message.dart';
 import '../models/chat_conversation.dart';
 import '../services/websocket_service.dart';
 import '../services/chat_repository.dart';
+import '../../../core/storage/secure_storage_service.dart';
+import '../../auth/services/auth_service.dart';
 
 /// Comprehensive real-time chat provider integrating WebSocket service
 /// Handles all real-time chat functionality exactly as specified in the HTML reference
@@ -66,9 +68,66 @@ class RealtimeChatProvider extends ChangeNotifier {
     
     debugPrint('🚀 [RealtimeChatProvider] Initializing...');
     
-    // Get current user ID from secure storage immediately
-    _currentUserId = await _chatRepository.getCurrentUserId();
-    debugPrint('🔑 [RealtimeChatProvider] Current user ID set to: $_currentUserId');
+    // Get current user ID from secure storage immediately with retry
+    try {
+      _currentUserId = await _chatRepository.getCurrentUserId();
+      debugPrint('🔑 [RealtimeChatProvider] Current user ID from repository: $_currentUserId');
+      
+      // If still null or empty, try alternative method
+      if (_currentUserId == null || _currentUserId!.isEmpty || _currentUserId == 'unknown-user') {
+        debugPrint('⚠️ [RealtimeChatProvider] User ID is null/empty, trying SecureStorageService directly...');
+        _currentUserId = await SecureStorageService.getUserId();
+        debugPrint('🔑 [RealtimeChatProvider] Direct storage user ID: $_currentUserId');
+        
+        // If still null or empty, check for any stored data
+        if (_currentUserId == null || _currentUserId!.isEmpty) {
+          debugPrint('❌ [RealtimeChatProvider] CRITICAL: Cannot get user ID from storage');
+          
+          // Try to get user ID from API as last resort
+          try {
+            final accessToken = await SecureStorageService.getAccessToken();
+            debugPrint('🔑 [RealtimeChatProvider] Access token exists: ${accessToken != null}');
+            
+            if (accessToken != null) {
+              debugPrint('🔄 [RealtimeChatProvider] Token exists but no user ID - fetching from API...');
+              
+              // Import auth service if not already imported
+              try {
+                // Call the API to get current user
+                final authService = AuthService();
+                final userResult = await authService.getCurrentUser();
+                
+                userResult.when(
+                  success: (user) async {
+                    _currentUserId = user.id;
+                    await SecureStorageService.saveUserId(user.id);
+                    debugPrint('✅ [RealtimeChatProvider] Retrieved user ID from API: $_currentUserId');
+                  },
+                  failure: (error) {
+                    debugPrint('❌ [RealtimeChatProvider] Failed to get user from API: ${error.message}');
+                    _currentUserId = null;
+                  },
+                );
+              } catch (apiError) {
+                debugPrint('❌ [RealtimeChatProvider] API call error: $apiError');
+                _currentUserId = null;
+              }
+            } else {
+              debugPrint('❌ [RealtimeChatProvider] No access token available');
+              _currentUserId = null;
+            }
+          } catch (e) {
+            debugPrint('❌ [RealtimeChatProvider] Error in user ID recovery: $e');
+            _currentUserId = null;
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('❌ [RealtimeChatProvider] Error getting user ID: $e');
+      _currentUserId = null;
+    }
+    
+    debugPrint('✅ [RealtimeChatProvider] Final user ID: $_currentUserId');
     
     // Set up WebSocket listeners
     _setupWebSocketListeners();
@@ -82,7 +141,7 @@ class RealtimeChatProvider extends ChangeNotifier {
     _isInitialized = true;
     notifyListeners();
     
-    debugPrint('✅ [RealtimeChatProvider] Initialized successfully');
+    debugPrint('✅ [RealtimeChatProvider] Initialized successfully with user ID: $_currentUserId');
   }
 
   /// Load conversations from API
@@ -179,7 +238,7 @@ class RealtimeChatProvider extends ChangeNotifier {
           // Debug: Show alignment for loaded messages
           for (int i = 0; i < newMessages.length; i++) {
             final msg = newMessages[i];
-            debugPrint('📥 [RealtimeChatProvider] Loaded message $i: \"${msg.content.substring(0, msg.content.length > 20 ? 20 : msg.content.length)}...\" - isFromMe: ${msg.isFromMe} - senderId: ${msg.senderId} - currentUserId: $_currentUserId');
+            debugPrint('📥 [RealtimeChatProvider] Loaded message $i: "${msg.content.substring(0, msg.content.length > 20 ? 20 : msg.content.length)}..." - isFromMe: ${msg.isFromMe} - senderId: ${msg.senderId} - currentUserId: $_currentUserId');
           }
         }
         
@@ -258,67 +317,84 @@ class RealtimeChatProvider extends ChangeNotifier {
       debugPrint('💬 [RealtimeChatProvider] Full event data: ${jsonEncode(data)}');
       debugPrint('💬 [RealtimeChatProvider] Event keys: ${data.keys.toList()}');
       
-      final messageData = data['message_data'] as Map<String, dynamic>?;
-      if (messageData == null) {
-        debugPrint('❌ [RealtimeChatProvider] CRITICAL: No message_data in chat_message event');
-        debugPrint('❌ [RealtimeChatProvider] Available keys: ${data.keys.toList()}');
+      // Extract conversation ID
+      final conversationId = data['conversation_id'] as String?;
+      if (conversationId == null) {
+        debugPrint('❌ [RealtimeChatProvider] No conversation_id in message data');
         return;
       }
       
-      debugPrint('💬 [RealtimeChatProvider] Message data found: ${jsonEncode(messageData)}');
-      debugPrint('💬 [RealtimeChatProvider] Message data type: ${messageData['type']}');
+      // Extract message_data according to documentation
+      final messageData = data['message_data'] as Map<String, dynamic>?;
+      if (messageData == null) {
+        debugPrint('❌ [RealtimeChatProvider] No message_data in WebSocket event');
+        return;
+      }
       
-      if (messageData['type'] == 'new_message') {
-        debugPrint('🖕 [RealtimeChatProvider] Processing NEW_MESSAGE type');
-        
+      final eventType = messageData['type'] as String?;
+      debugPrint('💬 [RealtimeChatProvider] Event type: $eventType');
+      
+      if (eventType == 'new_message') {
+        // Extract message according to documentation structure
         final messageJson = messageData['message'] as Map<String, dynamic>?;
-        final conversationId = data['conversation_id'] as String?;
+        final senderInfo = messageData['sender_info'] as Map<String, dynamic>?;
         
-        debugPrint('💬 [RealtimeChatProvider] Message JSON: ${messageJson != null ? jsonEncode(messageJson) : 'NULL'}');
-        debugPrint('💬 [RealtimeChatProvider] Conversation ID: $conversationId');
-        debugPrint('💬 [RealtimeChatProvider] Current user ID: $_currentUserId');
-        
-        if (messageJson != null && conversationId != null) {
-          // Ensure conversation_id is set in message
-          messageJson['conversation_id'] = conversationId;
-          
-          debugPrint('🚀 [RealtimeChatProvider] Creating ChatMessage from API data...');
-          final message = ChatMessage.fromApiMessage(messageJson, _currentUserId ?? '');
-          
-          debugPrint('✅ [RealtimeChatProvider] ChatMessage created successfully:');
-          debugPrint('💬 [RealtimeChatProvider] - Message ID: ${message.id}');
-          debugPrint('💬 [RealtimeChatProvider] - Content: ${message.content}');
-          debugPrint('💬 [RealtimeChatProvider] - Sender: ${message.senderUsername}');
-          debugPrint('💬 [RealtimeChatProvider] - Is from me: ${message.isFromMe}');
-          debugPrint('💬 [RealtimeChatProvider] - Created at: ${message.createdAt}');
-          
-          // Add message to cache if it's for an active conversation
-          if (_messageCache.containsKey(conversationId)) {
-            final messages = _messageCache[conversationId] ?? [];
-            _messageCache[conversationId] = [...messages, message];
-            debugPrint('💬 [RealtimeChatProvider] Message added to cache for conversation: $conversationId');
-            debugPrint('💬 [RealtimeChatProvider] Total messages in cache: ${_messageCache[conversationId]!.length}');
-          } else {
-            debugPrint('⚠️ [RealtimeChatProvider] Conversation $conversationId not in message cache');
-          }
-          
-          // ALWAYS reorder conversations - this is key for real-time updates for ALL participants
-          debugPrint('📈 [RealtimeChatProvider] Moving conversation to top...');
-          _moveConversationToTop(conversationId, message);
-          
-          debugPrint('🔔 [RealtimeChatProvider] Calling notifyListeners() to update UI...');
-          notifyListeners();
-          
-          debugPrint('✅ [RealtimeChatProvider] New message processed successfully: ${message.content.substring(0, message.content.length > 30 ? 30 : message.content.length)}...');
-        } else {
-          debugPrint('❌ [RealtimeChatProvider] CRITICAL: Missing required data for new message');
-          debugPrint('❌ [RealtimeChatProvider] - messageJson is null: ${messageJson == null}');
-          debugPrint('❌ [RealtimeChatProvider] - conversationId is null: ${conversationId == null}');
+        if (messageJson == null) {
+          debugPrint('❌ [RealtimeChatProvider] No message in message_data');
+          return;
         }
-      } else if (messageData['type'] == 'typing_indicator') {
-        debugPrint('⌨️ [RealtimeChatProvider] Processing TYPING_INDICATOR type from message_data');
         
-        final conversationId = data['conversation_id'] as String?;
+        // Ensure conversation_id is set in message
+        messageJson['conversation_id'] = conversationId;
+        
+        // Add sender info if available
+        if (senderInfo != null) {
+          messageJson['sender_username'] = senderInfo['username'] ?? messageJson['sender_username'];
+          messageJson['sender_display_name'] = senderInfo['display_name'];
+        }
+        
+        debugPrint('🚀 [RealtimeChatProvider] Creating ChatMessage from WebSocket data...');
+        debugPrint('💬 [RealtimeChatProvider] Full WebSocket data structure: ${jsonEncode(data)}');
+        
+        final message = ChatMessage.fromWebSocketMessage(data, _currentUserId ?? '');
+        
+        debugPrint('✅ [RealtimeChatProvider] ChatMessage created successfully:');
+        debugPrint('💬 [RealtimeChatProvider] - Message ID: ${message.id}');
+        debugPrint('💬 [RealtimeChatProvider] - Content: ${message.content}');
+        debugPrint('💬 [RealtimeChatProvider] - Sender: ${message.senderUsername}');
+        debugPrint('💬 [RealtimeChatProvider] - Is from me: ${message.isFromMe}');
+        debugPrint('💬 [RealtimeChatProvider] - Created at: ${message.createdAt}');
+        
+        // Add message to cache for ANY conversation (active or not)
+        if (_messageCache.containsKey(conversationId)) {
+          final messages = _messageCache[conversationId] ?? [];
+          _messageCache[conversationId] = [...messages, message];
+          debugPrint('✅ [RealtimeChatProvider] Message added to EXISTING cache for conversation: $conversationId');
+          debugPrint('💬 [RealtimeChatProvider] Total messages in cache: ${_messageCache[conversationId]!.length}');
+        } else {
+          debugPrint('🆕 [RealtimeChatProvider] Conversation $conversationId not in cache - CREATING NEW CACHE');
+          // Initialize the conversation cache with this message
+          _messageCache[conversationId] = [message];
+          debugPrint('✅ [RealtimeChatProvider] Initialized NEW cache for conversation: $conversationId with 1 message');
+        }
+        
+        // Check if this is the currently selected conversation  
+        debugPrint('🔍 [RealtimeChatProvider] Current conversation ID: $_currentConversationId');
+        debugPrint('🔍 [RealtimeChatProvider] Message conversation ID: $conversationId');
+        debugPrint('🔍 [RealtimeChatProvider] Is current conversation: ${conversationId == _currentConversationId}');
+        
+        // ALWAYS reorder conversations - this is key for real-time updates for ALL participants
+        debugPrint('📈 [RealtimeChatProvider] Moving conversation to top...');
+        _moveConversationToTop(conversationId, message);
+        
+        debugPrint('🔔 [RealtimeChatProvider] Calling notifyListeners() to update UI...');
+        notifyListeners();
+        
+        debugPrint('✅ [RealtimeChatProvider] New message processed successfully: ${message.content.substring(0, message.content.length > 30 ? 30 : message.content.length)}...');
+        
+      } else if (eventType == 'typing_indicator') {
+        debugPrint('⌨️ [RealtimeChatProvider] Processing TYPING_INDICATOR event');
+        
         final userId = messageData['user_id'] as String?;
         final username = messageData['username'] as String?;
         final isTyping = messageData['is_typing'] as bool? ?? false;
@@ -330,7 +406,7 @@ class RealtimeChatProvider extends ChangeNotifier {
         debugPrint('⌨️ [RealtimeChatProvider] - Is typing: $isTyping');
         debugPrint('⌨️ [RealtimeChatProvider] - Current user ID: $_currentUserId');
         
-        if (conversationId != null && userId != null && userId != _currentUserId) {
+        if (userId != null && userId != _currentUserId) {
           final typingUsers = _typingUsers[conversationId] ?? <String>{};
           
           if (isTyping) {
@@ -350,7 +426,7 @@ class RealtimeChatProvider extends ChangeNotifier {
           debugPrint('⚠️ [RealtimeChatProvider] Ignoring typing indicator - missing data or from current user');
         }
       } else {
-        debugPrint('⚠️ [RealtimeChatProvider] Unknown message_data type: ${messageData['type']}');
+        debugPrint('⚠️ [RealtimeChatProvider] Unknown message_data type: $eventType');
       }
       
       debugPrint('💬 [RealtimeChatProvider] ==== CHAT MESSAGE EVENT END ====');

@@ -289,7 +289,9 @@ class Auth extends _$Auth {
 
     final result = await _authService.getCurrentUser();
     result.when(
-      success: (user) {
+      success: (user) async {
+        // Ensure user ID is saved to secure storage
+        await SecureStorageService.saveUserId(user.id);
         state = state.copyWith(user: user);
       },
       failure: (error) {
@@ -309,8 +311,11 @@ class Auth extends _$Auth {
     try {
       final result = await _authService.getCurrentUser();
       result.when(
-        success: (user) {
+        success: (user) async {
           print('🔐 [Auth] Background validation successful: ${user.email}');
+          // Ensure user ID is saved to secure storage
+          await SecureStorageService.saveUserId(user.id);
+          print('🔐 [Auth] User ID saved to secure storage: ${user.id}');
           // Update state with fresh user data
           state = state.copyWith(user: user);
         },

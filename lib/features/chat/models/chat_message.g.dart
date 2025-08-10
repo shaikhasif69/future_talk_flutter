@@ -144,6 +144,9 @@ _$ChatMessageImpl _$$ChatMessageImplFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
+      editedAt: json['editedAt'] == null
+          ? null
+          : DateTime.parse(json['editedAt'] as String),
       isEdited: json['isEdited'] as bool? ?? false,
       isDestroyed: json['isDestroyed'] as bool? ?? false,
       replyToMessageId: json['replyToMessageId'] as String?,
@@ -162,6 +165,12 @@ _$ChatMessageImpl _$$ChatMessageImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      selfDestructAt: json['selfDestructAt'] == null
+          ? null
+          : DateTime.parse(json['selfDestructAt'] as String),
+      encrypted: json['encrypted'] as bool? ?? true,
+      encryptionType: json['encryptionType'] as String?,
+      securityLevel: json['securityLevel'] as String?,
       status:
           $enumDecodeNullable(_$MessageStatusEnumMap, json['status']) ??
           MessageStatus.sent,
@@ -178,12 +187,17 @@ Map<String, dynamic> _$$ChatMessageImplToJson(_$ChatMessageImpl instance) =>
       'messageType': _$MessageTypeEnumMap[instance.messageType]!,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
+      'editedAt': instance.editedAt?.toIso8601String(),
       'isEdited': instance.isEdited,
       'isDestroyed': instance.isDestroyed,
       'replyToMessageId': instance.replyToMessageId,
       'attachments': instance.attachments,
       'reactions': instance.reactions,
       'readBy': instance.readBy,
+      'selfDestructAt': instance.selfDestructAt?.toIso8601String(),
+      'encrypted': instance.encrypted,
+      'encryptionType': instance.encryptionType,
+      'securityLevel': instance.securityLevel,
       'status': _$MessageStatusEnumMap[instance.status]!,
       'isFromMe': instance.isFromMe,
     };

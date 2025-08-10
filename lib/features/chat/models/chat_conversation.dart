@@ -459,7 +459,7 @@ class ChatConversation {
         )
       ).toList() ?? [],
       lastMessage: json['lastMessage'] != null ? 
-        ChatMessage.fromJson(json['lastMessage'] as Map<String, dynamic>) : null,
+        ChatMessage.fromApiMessage(json['lastMessage'] as Map<String, dynamic>, '') : null,
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       unreadCount: json['unreadCount'] as int? ?? 0,
       isPinned: json['isPinned'] as bool? ?? false,

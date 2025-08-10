@@ -33,6 +33,7 @@ enum WebSocketEventType {
   
   // Typing events
   typingIndicator,
+  typingIndicatorSent, // Added missing event type
   typingStart,
   typingStop,
   
@@ -117,6 +118,8 @@ class WebSocketMessage {
         return 'message_read_receipt';
       case WebSocketEventType.typingIndicator:
         return 'typing_indicator';
+      case WebSocketEventType.typingIndicatorSent:
+        return 'typing_indicator_sent';
       case WebSocketEventType.typingStart:
         return 'typing_start';
       case WebSocketEventType.typingStop:
@@ -144,6 +147,8 @@ class WebSocketMessage {
         return WebSocketEventType.messageReadReceipt;
       case 'typing_indicator':
         return WebSocketEventType.typingIndicator;
+      case 'typing_indicator_sent':
+        return WebSocketEventType.typingIndicatorSent;
       case 'typing_start':
         return WebSocketEventType.typingStart;
       case 'typing_stop':
@@ -234,12 +239,17 @@ class ChatWebSocketService extends ChangeNotifier {
 
       // Get auth token
       _accessToken = await SecureStorageService.getAccessToken();
+      debugPrint('🔑 [WebSocket] Access token exists: ${_accessToken != null}');
+      debugPrint('🔑 [WebSocket] Token length: ${_accessToken?.length ?? 0}');
+      
       if (_accessToken == null || _accessToken!.isEmpty) {
+        debugPrint('❌ [WebSocket] No access token available');
         throw Exception('No access token available');
       }
 
       final wsUrl = '$_baseUrl?token=$_accessToken';
       debugPrint('🔌 [WebSocket] Connecting to: ${wsUrl.replaceAll(RegExp(r'token=[^&]+'), 'token=***')}');
+      debugPrint('🔌 [WebSocket] Full URL for debugging: $wsUrl');
 
       // Create WebSocket connection
       _channel = IOWebSocketChannel.connect(
@@ -333,11 +343,25 @@ class ChatWebSocketService extends ChangeNotifier {
 
   /// Join a conversation for real-time updates
   Future<bool> joinConversation(String conversationId) async {
+    debugPrint('🚪 [WebSocket] Attempting to join conversation: $conversationId');
+    debugPrint('🚪 [WebSocket] Connection state: $_state');
+    debugPrint('🚪 [WebSocket] Is connected: $isConnected');
+    
+    if (!isConnected) {
+      debugPrint('❌ [WebSocket] Cannot join conversation - not connected');
+      return false;
+    }
+    
     final message = WebSocketMessage.outgoing(
       WebSocketEventType.joinConversation,
       {'conversation_id': conversationId},
     );
-    return await sendMessage(message);
+    
+    debugPrint('🚪 [WebSocket] Sending join conversation message: ${jsonEncode(message.toJson())}');
+    final result = await sendMessage(message);
+    debugPrint('🚪 [WebSocket] Join conversation result: $result');
+    
+    return result;
   }
 
   /// Send typing start indicator
@@ -389,11 +413,11 @@ class ChatWebSocketService extends ChangeNotifier {
           break;
           
         case WebSocketEventType.heartbeatAck:
-          // Heartbeat acknowledged - connection is healthy
+          debugPrint('💓 [WebSocket] Heartbeat acknowledged - connection healthy');
           break;
           
         case WebSocketEventType.chatMessage:
-          debugPrint('💬 [WebSocket] CHAT MESSAGE EVENT PROCESSING:');
+          debugPrint('🎉 [WebSocket] *** CHAT MESSAGE EVENT RECEIVED ***');
           debugPrint('💬 [WebSocket] - Conversation ID: ${message.conversationId}');
           debugPrint('💬 [WebSocket] - Message data keys: ${messageData.keys.toList()}');
           debugPrint('💬 [WebSocket] - Full message data: ${jsonEncode(messageData)}');
@@ -407,13 +431,21 @@ class ChatWebSocketService extends ChangeNotifier {
           debugPrint('⌨️ [WebSocket] Typing indicator: ${message.username} in ${message.conversationId}');
           break;
           
+        case WebSocketEventType.typingIndicatorSent:
+          debugPrint('✅ [WebSocket] Typing indicator sent successfully');
+          // This is just an acknowledgment - no UI update needed
+          break;
+          
         case WebSocketEventType.messageReadReceipt:
           _readReceiptController.add(messageData);
           debugPrint('✓ [WebSocket] Read receipt for message: ${message.messageId}');
           break;
           
         case WebSocketEventType.conversationJoined:
-          debugPrint('🚪 [WebSocket] Joined conversation: ${message.conversationId}');
+          debugPrint('🎉 [WebSocket] *** CONVERSATION JOINED SUCCESSFULLY ***');
+          debugPrint('🚪 [WebSocket] - Conversation ID: ${message.conversationId}');
+          debugPrint('🚪 [WebSocket] - Full data: ${jsonEncode(messageData)}');
+          debugPrint('🚪 [WebSocket] - Now listening for messages in this conversation');
           break;
           
         case WebSocketEventType.error:

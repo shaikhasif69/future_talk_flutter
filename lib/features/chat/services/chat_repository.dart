@@ -41,11 +41,12 @@ class SendMessageRequest {
     this.clientMessageId,
   });
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson({String? conversationId}) => {
     'content': content,
     'message_type': messageType,
+    if (conversationId != null) 'conversation_id': conversationId, // REQUIRED BY BACKEND
     if (replyToMessageId != null) 'reply_to_message_id': replyToMessageId,
-    'attachments': attachments,
+    'attachments': attachments, // Always include as List<String>, never null
     if (selfDestructTimer != null) 'self_destruct_timer': selfDestructTimer,
     if (clientMessageId != null) 'client_message_id': clientMessageId,
   };
@@ -75,6 +76,13 @@ class ChatRepository {
   /// Get authorization headers with JWT token
   Future<Map<String, String>> _getHeaders() async {
     final accessToken = await SecureStorageService.getAccessToken();
+    debugPrint('🔑 [ChatRepository] Access token exists: ${accessToken != null}');
+    debugPrint('🔑 [ChatRepository] Token length: ${accessToken?.length ?? 0}');
+    
+    if (accessToken == null || accessToken.isEmpty) {
+      debugPrint('❌ [ChatRepository] CRITICAL: No access token available for API request');
+    }
+    
     return {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${accessToken ?? ''}',
@@ -264,13 +272,14 @@ class ChatRepository {
       clientMessageId: clientMessageId,
     );
 
-    debugPrint('🔗 [ChatRepository] Sending message to conversation: $conversationId');
+    final payload = request.toJson(conversationId: conversationId);
+    debugPrint('🔗 [ChatRepository] Sending message payload: ${jsonEncode(payload)}');
 
     try {
       final response = await http.post(
         Uri.parse('$_baseUrl/conversations/$conversationId/messages'),
         headers: await _getHeaders(),
-        body: jsonEncode(request.toJson()),
+        body: jsonEncode(payload),
       );
       
       if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -290,7 +299,10 @@ class ChatRepository {
         }
       } else {
         final errorData = jsonDecode(response.body) as Map<String, dynamic>;
-        final errorMessage = errorData['detail'] as String? ?? 
+        debugPrint('❌ [ChatRepository] Send Message HTTP ${response.statusCode} Error: ${response.body}');
+        
+        final errorMessage = errorData['message'] as String? ?? 
+                           errorData['detail'] as String? ?? 
                            'Request failed with status: ${response.statusCode}';
         return ApiResult.failure(ApiError(
           message: errorMessage,
@@ -689,15 +701,18 @@ class ChatRepository {
     try {
       // Try to get user ID from secure storage
       final userId = await SecureStorageService.getUserId();
-      if (userId != null && userId.isNotEmpty) {
+      debugPrint('🔍 [ChatRepository] Raw user ID from storage: $userId');
+      
+      if (userId != null && userId.isNotEmpty && userId != 'unknown-user') {
+        debugPrint('✅ [ChatRepository] Valid user ID found: $userId');
         return userId;
       }
       
-      debugPrint('⚠️ [ChatRepository] No user ID found in storage, using fallback');
-      return 'unknown-user';
+      debugPrint('⚠️ [ChatRepository] No user ID found in storage, returning empty string');
+      return '';
     } catch (e) {
       debugPrint('❌ [ChatRepository] Failed to get current user ID: $e');
-      return 'unknown-user';
+      return '';
     }
   }
 
