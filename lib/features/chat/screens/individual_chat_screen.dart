@@ -11,6 +11,7 @@ import '../widgets/message_bubble.dart';
 import '../widgets/quick_reactions.dart' as reactions;
 import '../widgets/typing_indicator.dart' as typing;
 import '../widgets/connection_status_indicator.dart';
+import '../widgets/whatsapp_bubble.dart';
 import '../services/websocket_service.dart';
 
 /// Premium individual chat screen with sanctuary-like communication experience
@@ -49,6 +50,9 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   void _initializeControllers() {
     _scrollController = ScrollController();
     _messageController = TextEditingController();
+    
+    // Add scroll listener for infinite scrolling
+    _scrollController.addListener(_onScroll);
     
     _fadeInController = AnimationController(
       duration: const Duration(milliseconds: 600),
@@ -116,27 +120,27 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   void _loadCurrentMessages() {
     final conversationMessages = _chatProvider.getMessages(widget.conversation.id);
     
-    debugPrint('📝 [IndividualChatScreen] Loading ${conversationMessages.length} messages for conversation ${widget.conversation.id}');
-    debugPrint('📝 [IndividualChatScreen] Current user ID: ${_chatProvider.currentUserId}');
+    // debugPrint('📝 [IndividualChatScreen] Loading ${conversationMessages.length} messages for conversation ${widget.conversation.id}');
+    // debugPrint('📝 [IndividualChatScreen] Current user ID: ${_chatProvider.currentUserId}');
     
     // Only update if messages have actually changed to avoid unnecessary rebuilds
     if (conversationMessages.length != _currentMessages.length ||
         (conversationMessages.isNotEmpty && _currentMessages.isNotEmpty &&
          conversationMessages.last.id != _currentMessages.last.id)) {
       
-      debugPrint('🔄 [IndividualChatScreen] Messages changed, updating UI messages');
+      // debugPrint('🔄 [IndividualChatScreen] Messages changed, updating UI messages');
       
       // Convert ChatMessage from API to UI ChatMessage if needed
       final newMessages = conversationMessages.map((apiMessage) {
         // CRITICAL FIX: Use the isFromMe property that's already calculated in the API message
         final isFromMe = apiMessage.isFromMe;
         
-        debugPrint('🔄 [IndividualChatScreen] Converting message:');
-        debugPrint('   - Content: ${apiMessage.content.length > 30 ? '${apiMessage.content.substring(0, 30)}...' : apiMessage.content}');
-        debugPrint('   - Sender ID: ${apiMessage.senderId}');
-        debugPrint('   - Current User ID: ${_chatProvider.currentUserId}');
-        debugPrint('   - Is From Me: $isFromMe');
-        debugPrint('   - Alignment: ${isFromMe ? "RIGHT (sent)" : "LEFT (received)"}');
+        // debugPrint('🔄 [IndividualChatScreen] Converting message:');
+        // debugPrint('   - Content: ${apiMessage.content.length > 30 ? '${apiMessage.content.substring(0, 30)}...' : apiMessage.content}');
+        // debugPrint('   - Sender ID: ${apiMessage.senderId}');
+        // debugPrint('   - Current User ID: ${_chatProvider.currentUserId}');
+        // debugPrint('   - Is From Me: $isFromMe');
+        // debugPrint('   - Alignment: ${isFromMe ? "RIGHT (sent)" : "LEFT (received)"}');
         
         return msg.ChatMessage(
           id: apiMessage.id,
@@ -158,13 +162,8 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       }).toList();
       
       _currentMessages = newMessages;
-      debugPrint('✅ [IndividualChatScreen] Updated _currentMessages with ${_currentMessages.length} messages');
-      
-      // Debug: Show alignment for all messages
-      for (int i = 0; i < _currentMessages.length; i++) {
-        final msg = _currentMessages[i];
-        debugPrint('   Message $i: "${msg.content.substring(0, msg.content.length > 20 ? 20 : msg.content.length)}..." - isFromMe: ${msg.isFromMe} - align: ${msg.isFromMe ? "RIGHT" : "LEFT"}');
-      }
+      // debugPrint('✅ [IndividualChatScreen] Updated _currentMessages with ${_currentMessages.length} messages');
+
       
       // Schedule a setState to trigger rebuild and auto-scroll to bottom
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -252,12 +251,61 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
         return AppColors.dustyRose;
     }
   }
+
+  /// Handle scroll events for infinite scrolling
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    
+    const double threshold = 200.0; // Threshold from top to trigger load more
+    final conversationId = widget.conversation.id;
+    
+    // Check if we're scrolling near the top and need to load more messages
+    if (_scrollController.position.pixels <= threshold &&
+        !_chatProvider.isLoadingMessages(conversationId) &&
+        _chatProvider.hasMoreMessages(conversationId)) {
+      
+      debugPrint('🔄 [InfiniteScroll] Loading more messages for conversation: $conversationId');
+      _loadOlderMessages();
+    }
+  }
+
+  /// Load older messages for infinite scrolling
+  Future<void> _loadOlderMessages() async {
+    final conversationId = widget.conversation.id;
+    
+    // Store current scroll position to maintain position after loading
+    final currentScrollPosition = _scrollController.position.pixels;
+    final currentMaxScroll = _scrollController.position.maxScrollExtent;
+    
+    debugPrint('📜 [InfiniteScroll] Current scroll position: $currentScrollPosition');
+    debugPrint('📜 [InfiniteScroll] Current max scroll: $currentMaxScroll');
+    
+    // Load more messages
+    await _chatProvider.loadMessages(conversationId, loadMore: true);
+    
+    // Wait for the widget tree to rebuild with new messages
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        // Calculate new scroll position to maintain user's view
+        final newMaxScroll = _scrollController.position.maxScrollExtent;
+        final scrollOffset = newMaxScroll - currentMaxScroll;
+        final targetPosition = currentScrollPosition + scrollOffset;
+        
+        debugPrint('📜 [InfiniteScroll] New max scroll: $newMaxScroll');
+        debugPrint('📜 [InfiniteScroll] Scroll offset: $scrollOffset');
+        debugPrint('📜 [InfiniteScroll] Target position: $targetPosition');
+        
+        // Jump to maintain current view position
+        _scrollController.jumpTo(targetPosition.clamp(0.0, newMaxScroll));
+      }
+    });
+  }
   
   /// Get chat title - show other user's name for individual chats
   String _getChatTitle() {
     final currentUserId = _chatProvider.currentUserId;
-    debugPrint('🏷️ [IndividualChatScreen] Getting chat title, current user: $currentUserId');
-    debugPrint('🏷️ [IndividualChatScreen] Conversation name: ${widget.conversation.name}');
+    // debugPrint('🏷️ [IndividualChatScreen] Getting chat title, current user: $currentUserId');
+    // debugPrint('🏷️ [IndividualChatScreen] Conversation name: ${widget.conversation.name}');
     
     // For individual chats, find the other participant's name
     if (widget.conversation.type == msg.ConversationType.direct) {
@@ -640,12 +688,30 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     debugPrint('🔍 [IndividualChatScreen] Building SIMPLE messages list with ${_currentMessages.length} messages');
     debugPrint('🔍 [IndividualChatScreen] Current user ID: ${_chatProvider.currentUserId}');
     
+    final conversationId = widget.conversation.id;
+    final isLoadingMore = _chatProvider.isLoadingMessages(conversationId);
+    final hasMoreMessages = _chatProvider.hasMoreMessages(conversationId);
+    
+    // Calculate total item count: loading indicator + messages
+    final totalItems = _currentMessages.length + (isLoadingMore && hasMoreMessages ? 1 : 0);
+    
     return ListView.builder(
       controller: _scrollController,
       physics: const AlwaysScrollableScrollPhysics(),
-      itemCount: _currentMessages.length,
+      itemCount: totalItems,
       itemBuilder: (context, index) {
-        final message = _currentMessages[index];
+        // Show loading indicator at the top when loading more messages
+        if (index == 0 && isLoadingMore && hasMoreMessages) {
+          return _buildLoadingIndicator();
+        }
+        
+        // Adjust index for messages (account for loading indicator)
+        final messageIndex = isLoadingMore && hasMoreMessages ? index - 1 : index;
+        if (messageIndex < 0 || messageIndex >= _currentMessages.length) {
+          return const SizedBox.shrink();
+        }
+        
+        final message = _currentMessages[messageIndex];
         
         return Align(
           alignment: message.isFromMe ? Alignment.centerRight : Alignment.centerLeft,
@@ -657,76 +723,81 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
               bottom: AppDimensions.spacingXS,
             ),
             constraints: const BoxConstraints(maxWidth: 280.0),
-            decoration: BoxDecoration(
-              color: message.isFromMe ? AppColors.sageGreen : AppColors.pearlWhite,
-              borderRadius: BorderRadius.circular(AppDimensions.radiusL).copyWith(
-                bottomRight: message.isFromMe 
-                    ? const Radius.circular(AppDimensions.spacingS)
-                    : null,
-                bottomLeft: !message.isFromMe 
-                    ? const Radius.circular(AppDimensions.spacingS)
-                    : null,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.cardShadow,
-                  blurRadius: 8.0,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-              border: message.isFromMe
-                  ? null
-                  : Border.all(
-                      color: AppColors.sageGreenWithOpacity(0.1),
-                      width: 1.0,
+            child: WhatsAppBubble(
+              isFromMe: message.isFromMe,
+              color: message.isFromMe ? null : AppColors.pearlWhite,
+              gradient: message.isFromMe 
+                ? const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [AppColors.sageGreen, AppColors.sageGreenHover],
+                  )
+                : null,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Remove sender username from individual chats
+                  Text(
+                    message.content,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: message.isFromMe ? AppColors.pearlWhite : AppColors.softCharcoal,
                     ),
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppDimensions.paddingM,
-              vertical: AppDimensions.spacingM,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Remove sender username from individual chats
-                Text(
-                  message.content,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: message.isFromMe ? AppColors.pearlWhite : AppColors.softCharcoal,
                   ),
-                ),
-                const SizedBox(height: AppDimensions.spacingS),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      message.formattedTime,
-                      style: AppTextStyles.labelSmall.copyWith(
-                        color: message.isFromMe 
-                            ? AppColors.pearlWhite.withAlpha(180) 
-                            : AppColors.softCharcoalLight,
-                        fontSize: 11.0,
-                      ),
-                    ),
-                    if (message.isFromMe) ...[
-                      const SizedBox(width: AppDimensions.spacingXS),
+                  const SizedBox(height: AppDimensions.spacingS),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                       Text(
-                        message.statusIcon,
-                        style: TextStyle(
-                          fontSize: 10.0,
-                          color: message.status == msg.MessageStatus.read
-                              ? AppColors.warmPeach
-                              : AppColors.pearlWhite.withAlpha(153),
+                        message.formattedTime,
+                        style: AppTextStyles.labelSmall.copyWith(
+                          color: message.isFromMe 
+                              ? AppColors.pearlWhite.withAlpha(180) 
+                              : AppColors.softCharcoalLight,
+                          fontSize: 11.0,
                         ),
                       ),
+                      if (message.isFromMe) ...[
+                        const SizedBox(width: AppDimensions.spacingXS),
+                        _buildWhatsAppStatusIcon(message),
+                      ],
                     ],
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         );
       },
+    );
+  }
+
+  /// Build loading indicator for infinite scrolling
+  Widget _buildLoadingIndicator() {
+    return Container(
+      padding: const EdgeInsets.all(AppDimensions.paddingL),
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 16.0,
+              height: 16.0,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.0,
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.sageGreen),
+              ),
+            ),
+            const SizedBox(width: AppDimensions.spacingM),
+            Text(
+              'Loading older messages...',
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.softCharcoalLight,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -1214,6 +1285,114 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       _chatProvider.startTyping(conversationId);
     } else {
       _chatProvider.stopTyping(conversationId);
+    }
+  }
+
+  /// Build WhatsApp-style status icon based on message status and readBy array
+  Widget _buildWhatsAppStatusIcon(msg.ChatMessage message) {
+    // Get current user ID from provider
+    final currentUserId = _chatProvider.currentUserId ?? '';
+    
+    // Determine smart status based on readBy array (import the static method)
+    final smartStatus = _determineMessageStatus(message, currentUserId);
+    
+    // Use WhatsApp-style icons (we need to import the MessageStatusIcons class)
+    return _getStatusIcon(smartStatus);
+  }
+
+  /// Determine smart message status based on readBy array and current user (copy from ChatMessage model)
+  msg.MessageStatus _determineMessageStatus(msg.ChatMessage message, String currentUserId) {
+    // Only show status for my own messages
+    if (message.senderId != currentUserId) {
+      return msg.MessageStatus.read; // Not relevant for received messages
+    }
+    
+    // FOCUSED DEBUG LOGGING
+    final shortContent = message.content.length > 15 ? '${message.content.substring(0, 15)}...' : message.content;
+    debugPrint('🔍 [STATUS DEBUG] Message: "$shortContent"');
+    debugPrint('🔍 [STATUS DEBUG] - Message ID: ${message.id}');
+    debugPrint('🔍 [STATUS DEBUG] - Sender: ${message.senderId}');
+    debugPrint('🔍 [STATUS DEBUG] - Current User: $currentUserId');
+    debugPrint('🔍 [STATUS DEBUG] - ReadBy Array: ${message.readBy}');
+    
+    // Check if message was read by others (exclude current user from readBy)
+    final readByOthers = message.readBy.where((id) => id != currentUserId).toList();
+    debugPrint('🔍 [STATUS DEBUG] - ReadBy Others: $readByOthers');
+    
+    if (readByOthers.isNotEmpty) {
+      debugPrint('🔍 [STATUS DEBUG] → RESULT: BLUE DOUBLE TICK (read by others)');
+      return msg.MessageStatus.read;      // 🔵🔵 Blue double tick - message was read
+    }
+    
+    // For now, we'll use a time-based heuristic for delivery status
+    final now = DateTime.now();
+    final messageAge = now.difference(message.createdAt).inSeconds;
+    debugPrint('🔍 [STATUS DEBUG] - Message age: ${messageAge}s');
+    debugPrint('🔍 [STATUS DEBUG] - Has ID: ${message.id.isNotEmpty}');
+    
+    // Simulate delivery progression: sent -> delivered (after 1 second)
+    if (message.id.isNotEmpty && messageAge >= 1) {
+      debugPrint('🔍 [STATUS DEBUG] → RESULT: GRAY DOUBLE TICK (delivered)');
+      return msg.MessageStatus.delivered; // ✅✅ Gray double tick - message delivered to device
+    }
+    
+    // Message sent to server but not yet delivered (or very recent)
+    if (message.id.isNotEmpty) {
+      debugPrint('🔍 [STATUS DEBUG] → RESULT: SINGLE TICK (sent)');
+      return msg.MessageStatus.sent;      // ✅ Gray single tick - message sent to server
+    }
+    
+    // Message is still being sent
+    debugPrint('🔍 [STATUS DEBUG] → RESULT: CLOCK (sending)');
+    return msg.MessageStatus.sending;     // ⏳ Clock icon - message being sent
+  }
+
+  /// Get WhatsApp-style status icon widget (copy from MessageStatusIcons)
+  Widget _getStatusIcon(msg.MessageStatus status) {
+    // Exact WhatsApp colors
+    const Color grayTick = Color(0xFF8E8E93);    // iOS gray
+    const Color blueTick = Color(0xFF007AFF);    // WhatsApp blue  
+    const Color redError = Color(0xFFFF3B30);    // Error red
+    const Color sendingGray = Color(0xFFBEBEBE); // Sending state
+
+    switch (status) {
+      case msg.MessageStatus.sending:
+        return const Icon(
+          Icons.schedule,
+          size: 14,
+          color: sendingGray,
+        );
+        
+      case msg.MessageStatus.sent:
+        return const Icon(
+          Icons.done,           // ✓ Single tick
+          size: 14,
+          color: grayTick,
+        );
+        
+      case msg.MessageStatus.delivered:
+        return const Icon(
+          Icons.done_all,       // ✓✓ Double tick  
+          size: 14,
+          color: grayTick,
+        );
+        
+      case msg.MessageStatus.read:
+        return const Icon(
+          Icons.done_all,       // ✓✓ Blue double tick
+          size: 14,
+          color: blueTick,      // 🔵 BLUE!
+        );
+        
+      case msg.MessageStatus.failed:
+        return const Icon(
+          Icons.error,
+          size: 14,
+          color: redError,
+        );
+        
+      case msg.MessageStatus.received:
+        return const SizedBox.shrink(); // No icon for received messages
     }
   }
 

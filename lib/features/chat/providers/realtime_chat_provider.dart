@@ -31,6 +31,9 @@ class RealtimeChatProvider extends ChangeNotifier {
   StreamSubscription? _typingIndicatorSubscription;
   StreamSubscription? _readReceiptSubscription;
   StreamSubscription? _connectionSubscription;
+  
+  // Status update timer for time-based status changes
+  Timer? _statusUpdateTimer;
 
   // Getters
   List<Conversation> get conversations => List.unmodifiable(_conversations);
@@ -66,68 +69,45 @@ class RealtimeChatProvider extends ChangeNotifier {
   Future<void> initialize() async {
     if (_isInitialized) return;
     
-    debugPrint('🚀 [RealtimeChatProvider] Initializing...');
-    
     // Get current user ID from secure storage immediately with retry
     try {
       _currentUserId = await _chatRepository.getCurrentUserId();
-      debugPrint('🔑 [RealtimeChatProvider] Current user ID from repository: $_currentUserId');
       
       // If still null or empty, try alternative method
       if (_currentUserId == null || _currentUserId!.isEmpty || _currentUserId == 'unknown-user') {
-        debugPrint('⚠️ [RealtimeChatProvider] User ID is null/empty, trying SecureStorageService directly...');
         _currentUserId = await SecureStorageService.getUserId();
-        debugPrint('🔑 [RealtimeChatProvider] Direct storage user ID: $_currentUserId');
         
         // If still null or empty, check for any stored data
-        if (_currentUserId == null || _currentUserId!.isEmpty) {
-          debugPrint('❌ [RealtimeChatProvider] CRITICAL: Cannot get user ID from storage');
-          
+        if (_currentUserId == null || _currentUserId!.isEmpty) {          
           // Try to get user ID from API as last resort
           try {
             final accessToken = await SecureStorageService.getAccessToken();
-            debugPrint('🔑 [RealtimeChatProvider] Access token exists: ${accessToken != null}');
             
             if (accessToken != null) {
-              debugPrint('🔄 [RealtimeChatProvider] Token exists but no user ID - fetching from API...');
+              // Call the API to get current user
+              final authService = AuthService();
+              final userResult = await authService.getCurrentUser();
               
-              // Import auth service if not already imported
-              try {
-                // Call the API to get current user
-                final authService = AuthService();
-                final userResult = await authService.getCurrentUser();
-                
-                userResult.when(
-                  success: (user) async {
-                    _currentUserId = user.id;
-                    await SecureStorageService.saveUserId(user.id);
-                    debugPrint('✅ [RealtimeChatProvider] Retrieved user ID from API: $_currentUserId');
-                  },
-                  failure: (error) {
-                    debugPrint('❌ [RealtimeChatProvider] Failed to get user from API: ${error.message}');
-                    _currentUserId = null;
-                  },
-                );
-              } catch (apiError) {
-                debugPrint('❌ [RealtimeChatProvider] API call error: $apiError');
-                _currentUserId = null;
-              }
+              userResult.when(
+                success: (user) async {
+                  _currentUserId = user.id;
+                  await SecureStorageService.saveUserId(user.id);
+                },
+                failure: (error) {
+                  _currentUserId = null;
+                },
+              );
             } else {
-              debugPrint('❌ [RealtimeChatProvider] No access token available');
               _currentUserId = null;
             }
           } catch (e) {
-            debugPrint('❌ [RealtimeChatProvider] Error in user ID recovery: $e');
             _currentUserId = null;
           }
         }
       }
     } catch (e) {
-      debugPrint('❌ [RealtimeChatProvider] Error getting user ID: $e');
       _currentUserId = null;
     }
-    
-    debugPrint('✅ [RealtimeChatProvider] Final user ID: $_currentUserId');
     
     // Set up WebSocket listeners
     _setupWebSocketListeners();
@@ -141,37 +121,23 @@ class RealtimeChatProvider extends ChangeNotifier {
     _isInitialized = true;
     notifyListeners();
     
-    debugPrint('✅ [RealtimeChatProvider] Initialized successfully with user ID: $_currentUserId');
+    // Start periodic status update timer for sent -> delivered transitions
+    _startStatusUpdateTimer();
   }
 
   /// Load conversations from API
   Future<void> loadConversations() async {
-    debugPrint('📥 [RealtimeChatProvider] Loading conversations...');
-    debugPrint('📥 [RealtimeChatProvider] Current user ID: $_currentUserId');
-    
     final result = await _chatRepository.getConversations(limit: 50);
     
     result.when(
       success: (conversations) {
-        debugPrint('📥 [RealtimeChatProvider] API returned ${conversations.length} conversations');
-        
         _conversations = conversations;
         // Sort by last_message_at DESC (most recent first) - exactly like HTML reference
         _conversations.sort((a, b) => b.lastMessageAt.compareTo(a.lastMessageAt));
-        
-        debugPrint('✅ [RealtimeChatProvider] Conversations loaded and sorted:');
-        for (int i = 0; i < _conversations.length; i++) {
-          final conv = _conversations[i];
-          final lastMsg = conv.lastMessage?.content ?? 'No message';
-          debugPrint('✅ [RealtimeChatProvider] [$i] ${conv.displayName}: ${lastMsg.substring(0, lastMsg.length > 30 ? 30 : lastMsg.length)}...');
-          debugPrint('✅ [RealtimeChatProvider]     - Participants: ${conv.participants.map((p) => p.username).join(', ')}');
-          debugPrint('✅ [RealtimeChatProvider]     - Last message time: ${conv.lastMessage?.createdAt}');
-        }
-        
         notifyListeners();
       },
       failure: (error) {
-        debugPrint('❌ [RealtimeChatProvider] Failed to load conversations: ${error.message}');
+        // Silent failure - handled by UI
       },
     );
   }
@@ -179,8 +145,6 @@ class RealtimeChatProvider extends ChangeNotifier {
   /// Select and join a conversation
   Future<void> selectConversation(String conversationId) async {
     if (_currentConversationId == conversationId) return;
-    
-    debugPrint('🚪 [RealtimeChatProvider] Selecting conversation: $conversationId');
     
     _currentConversationId = conversationId;
     notifyListeners();
@@ -190,6 +154,9 @@ class RealtimeChatProvider extends ChangeNotifier {
     
     // Load messages for this conversation
     await loadMessages(conversationId, isInitialLoad: true);
+    
+    // Auto-mark conversation as read when viewed
+    await _autoMarkConversationAsRead(conversationId);
   }
 
   /// Load messages for a conversation with proper pagination
@@ -206,8 +173,6 @@ class RealtimeChatProvider extends ChangeNotifier {
     }
     
     final String? beforeMessageId = loadMore ? _oldestMessageIds[conversationId] : null;
-    
-    debugPrint('📥 [RealtimeChatProvider] Loading messages for $conversationId, loadMore: $loadMore, beforeMessageId: $beforeMessageId');
     
     final result = await _chatRepository.getMessages(
       conversationId: conversationId,
@@ -233,13 +198,7 @@ class RealtimeChatProvider extends ChangeNotifier {
             _messageCache[conversationId] = newMessages;
           }
           
-          debugPrint('✅ [RealtimeChatProvider] Loaded ${newMessages.length} messages for $conversationId (total: ${_messageCache[conversationId]!.length})');
-          
-          // Debug: Show alignment for loaded messages
-          for (int i = 0; i < newMessages.length; i++) {
-            final msg = newMessages[i];
-            debugPrint('📥 [RealtimeChatProvider] Loaded message $i: "${msg.content.substring(0, msg.content.length > 20 ? 20 : msg.content.length)}..." - isFromMe: ${msg.isFromMe} - senderId: ${msg.senderId} - currentUserId: $_currentUserId');
-          }
+          // Messages loaded successfully
         }
         
         _isLoadingMessages[conversationId] = false;
@@ -257,8 +216,6 @@ class RealtimeChatProvider extends ChangeNotifier {
   Future<void> sendMessage(String conversationId, String content) async {
     if (content.trim().isEmpty) return;
     
-    print('📤 SENDING: "$content" to conversation $conversationId');
-    
     final result = await _chatRepository.sendMessage(
       conversationId: conversationId,
       content: content.trim(),
@@ -274,11 +231,10 @@ class RealtimeChatProvider extends ChangeNotifier {
         // Update conversation order (move to top)
         _moveConversationToTop(conversationId, message);
         
-        print('✅ SENT: "${message.content}" (ID: ${message.id})');
         notifyListeners();
       },
       failure: (error) {
-        print('❌ SEND FAILED: ${error.message}');
+        // Send failed silently
       },
     );
   }
@@ -293,9 +249,117 @@ class RealtimeChatProvider extends ChangeNotifier {
     await _webSocketService.stopTyping(conversationId);
   }
 
+  /// Auto-mark conversation as read when user views it
+  Future<void> _autoMarkConversationAsRead(String conversationId) async {
+    try {
+      final result = await _chatRepository.markConversationAsRead(conversationId);
+      
+      result.when(
+        success: (_) {
+          // Update local message cache to mark all UNREAD messages as read by current user
+          final messages = _messageCache[conversationId];
+          if (messages != null && _currentUserId != null) {
+            bool hasUpdates = false;
+            
+            final updatedMessages = messages.map((message) {
+              // Only mark messages that we didn't send and that we haven't read yet
+              if (message.senderId != _currentUserId && !message.readBy.contains(_currentUserId!)) {
+                hasUpdates = true;
+                final updatedReadBy = [...message.readBy, _currentUserId!];
+                
+                // Send read receipt via WebSocket to notify sender
+                _sendReadReceiptForMessage(message.id, conversationId);
+                
+                return message.copyWith(readBy: updatedReadBy);
+              }
+              return message;
+            }).toList();
+            
+            if (hasUpdates) {
+              _messageCache[conversationId] = updatedMessages;
+              notifyListeners();
+            }
+          }
+        },
+        failure: (error) {
+          // Failed silently
+        },
+      );
+    } catch (e) {
+      // Error silently
+    }
+  }
+
+  /// Send read receipt for a message via WebSocket
+  Future<void> _sendReadReceiptForMessage(String messageId, String conversationId) async {
+    try {
+      await _webSocketService.sendReadReceipt(messageId, conversationId);
+    } catch (e) {
+      // Error sending read receipt - silent failure
+    }
+  }
+
+  /// Update message readBy array when read receipt is received
+  void _updateMessageReadByArray(String messageId, String readerUserId) {
+    try {
+      // Search through all conversations' message caches
+      for (final conversationId in _messageCache.keys) {
+        final messages = _messageCache[conversationId];
+        if (messages != null) {
+          for (int i = 0; i < messages.length; i++) {
+            final message = messages[i];
+            if (message.id == messageId) {
+              // Check if reader is not already in readBy array
+              if (!message.readBy.contains(readerUserId)) {
+                final updatedReadBy = [...message.readBy, readerUserId];
+                messages[i] = message.copyWith(readBy: updatedReadBy);
+                
+                debugPrint('✅ [TICK STATUS - READ RECEIPT] Updated readBy: $updatedReadBy → Should show BLUE tick!');
+                
+                // Trigger UI update
+                notifyListeners();
+              }
+              return; // Found the message, exit
+            }
+          }
+        }
+      }
+      
+      debugPrint('❌ [READ RECEIPT] Message not found in cache: ${messageId.substring(0, 8)}...');
+    } catch (e) {
+      debugPrint('❌ [READ RECEIPT] Error updating readBy: $e');
+    }
+  }
+
+  /// Start periodic status update timer for sent -> delivered transitions
+  void _startStatusUpdateTimer() {
+    _statusUpdateTimer?.cancel();
+    _statusUpdateTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      // Check if any recent messages need status updates
+      bool hasRecentMessages = false;
+      
+      for (final messages in _messageCache.values) {
+        for (final message in messages) {
+          if (message.senderId == _currentUserId && message.id.isNotEmpty) {
+            final messageAge = DateTime.now().difference(message.createdAt).inSeconds;
+            // Check messages that are less than 5 seconds old (for status transitions)
+            if (messageAge <= 5) {
+              hasRecentMessages = true;
+              break;
+            }
+          }
+        }
+        if (hasRecentMessages) break;
+      }
+      
+      if (hasRecentMessages) {
+        notifyListeners(); // Trigger UI update for status changes
+      }
+    });
+  }
+
   /// Setup WebSocket listeners for real-time updates
   void _setupWebSocketListeners() {
-    debugPrint('🎧 [RealtimeChatProvider] Setting up WebSocket listeners...');
     
     // Listen for new chat messages
     _chatMessageSubscription = _webSocketService.onChatMessage.listen(_handleChatMessage);
@@ -335,7 +399,6 @@ class RealtimeChatProvider extends ChangeNotifier {
       }
       
       if (conversationId == null) {
-        print('❌ ERROR: No conversation_id in WebSocket message');
         return;
       }
       
@@ -369,11 +432,9 @@ class RealtimeChatProvider extends ChangeNotifier {
         if (_messageCache.containsKey(conversationId)) {
           final messages = _messageCache[conversationId] ?? [];
           _messageCache[conversationId] = [...messages, message];
-          print('🔄 Added message to EXISTING cache. Total messages: ${_messageCache[conversationId]!.length}');
         } else {
           // Initialize the conversation cache with this message
           _messageCache[conversationId] = [message];
-          print('🆕 Created NEW cache with 1 message');
         }
         
         // ALWAYS reorder conversations - this is key for real-time updates for ALL participants
@@ -381,41 +442,39 @@ class RealtimeChatProvider extends ChangeNotifier {
         
         notifyListeners();
         
-        print('📥 RECEIVED: "${message.content}" from ${message.senderUsername} (ID: ${message.id})');
-        
       } else if (eventType == 'typing_indicator') {
-        debugPrint('⌨️ [RealtimeChatProvider] Processing TYPING_INDICATOR event');
-        
         final userId = messageData['user_id'] as String?;
-        final username = messageData['username'] as String?;
         final isTyping = messageData['is_typing'] as bool? ?? false;
-        
-        debugPrint('⌨️ [RealtimeChatProvider] Typing indicator details:');
-        debugPrint('⌨️ [RealtimeChatProvider] - Conversation ID: $conversationId');
-        debugPrint('⌨️ [RealtimeChatProvider] - User ID: $userId');
-        debugPrint('⌨️ [RealtimeChatProvider] - Username: $username');
-        debugPrint('⌨️ [RealtimeChatProvider] - Is typing: $isTyping');
-        debugPrint('⌨️ [RealtimeChatProvider] - Current user ID: $_currentUserId');
         
         if (userId != null && userId != _currentUserId) {
           final typingUsers = _typingUsers[conversationId] ?? <String>{};
           
           if (isTyping) {
             typingUsers.add(userId);
-            debugPrint('⌨️ [RealtimeChatProvider] Added $userId to typing users for $conversationId');
           } else {
             typingUsers.remove(userId);
-            debugPrint('⌨️ [RealtimeChatProvider] Removed $userId from typing users for $conversationId');
           }
           
           _typingUsers[conversationId] = typingUsers;
-          debugPrint('⌨️ [RealtimeChatProvider] Current typing users for $conversationId: ${typingUsers.toList()}');
-          
-          debugPrint('🔔 [RealtimeChatProvider] Notifying listeners for typing indicator change');
           notifyListeners();
-        } else {
-          debugPrint('⚠️ [RealtimeChatProvider] Ignoring typing indicator - missing data or from current user');
         }
+      } else if (eventType == 'message_read_receipt') {
+        final messageId = messageData['message_id'] as String?;
+        final readerUserId = messageData['reader_user_id'] as String?;
+        
+        debugPrint('🔵 [TICK STATUS - READ RECEIPT] Message: ${messageId?.substring(0, 8)}... read by: ${readerUserId?.substring(0, 8)}...');
+        
+        if (messageId != null && readerUserId != null) {
+          _updateMessageReadByArray(messageId, readerUserId);
+        } else {
+          debugPrint('❌ [READ RECEIPT] Missing data: messageId=$messageId, readerUserId=$readerUserId');
+        }
+      } else if (eventType == 'message_delivery_status_update') {
+        _handleDeliveryStatusUpdate(messageData);
+      } else if (eventType == 'message_overall_status_update') {
+        _handleOverallStatusUpdate(messageData);
+      } else if (eventType == 'user_delivery_confirmation') {
+        _handleUserDeliveryConfirmation(messageData);
       } else {
         debugPrint('⚠️ [RealtimeChatProvider] Unknown message_data type: $eventType');
       }
@@ -489,6 +548,7 @@ class RealtimeChatProvider extends ChangeNotifier {
               messages[messageIndex] = message.copyWith(readBy: updatedReadBy);
               
               debugPrint('✓ [RealtimeChatProvider] Message $messageId marked as read by $readerUserId');
+              debugPrint('🔵 [RealtimeChatProvider] Message should now show BLUE double tick for sender');
               notifyListeners();
               break;
             }
@@ -566,6 +626,150 @@ class RealtimeChatProvider extends ChangeNotifier {
     debugPrint('📊 [RealtimeChatProvider] ==== MOVE CONVERSATION TO TOP END ====');
   }
 
+  /// Handle individual delivery status updates - NEW HANDLER 1
+  void _handleDeliveryStatusUpdate(Map<String, dynamic> messageData) {
+    try {
+      final messageId = messageData['message_id'] as String?;
+      final userId = messageData['user_id'] as String?;
+      final newStatus = messageData['new_status'] as String?;
+      
+      if (messageId == null || userId == null || newStatus == null) {
+        debugPrint('❌ [DELIVERY STATUS] Missing required data');
+        return;
+      }
+      
+      debugPrint('📊 [DELIVERY STATUS] User ${userId.substring(0, 8)}... → $newStatus for message ${messageId.substring(0, 8)}...');
+      
+      // Search through all conversations' message caches
+      for (final conversationId in _messageCache.keys) {
+        final messages = _messageCache[conversationId];
+        if (messages != null) {
+          for (int i = 0; i < messages.length; i++) {
+            final message = messages[i];
+            if (message.id == messageId) {
+              final updatedDeliveredTo = List<String>.from(message.deliveredTo);
+              final updatedReadBy = List<String>.from(message.readBy);
+              
+              if (newStatus == 'delivered' && !updatedDeliveredTo.contains(userId)) {
+                updatedDeliveredTo.add(userId);
+                debugPrint('✅ [DELIVERY STATUS] Added $userId to deliveredTo');
+              } else if (newStatus == 'read') {
+                if (!updatedDeliveredTo.contains(userId)) {
+                  updatedDeliveredTo.add(userId);
+                }
+                if (!updatedReadBy.contains(userId)) {
+                  updatedReadBy.add(userId);
+                  debugPrint('✅ [DELIVERY STATUS] Added $userId to readBy → Should show BLUE tick!');
+                }
+              }
+              
+              messages[i] = message.copyWith(
+                deliveredTo: updatedDeliveredTo,
+                readBy: updatedReadBy,
+              );
+              
+              notifyListeners();
+              return; // Found and updated, exit
+            }
+          }
+        }
+      }
+      
+      debugPrint('❌ [DELIVERY STATUS] Message not found: ${messageId.substring(0, 8)}...');
+    } catch (e) {
+      debugPrint('❌ [DELIVERY STATUS] Error: $e');
+    }
+  }
+
+  /// Handle overall status updates - NEW HANDLER 2
+  void _handleOverallStatusUpdate(Map<String, dynamic> messageData) {
+    try {
+      final messageId = messageData['message_id'] as String?;
+      final newOverallStatus = messageData['new_overall_status'] as String?;
+      final readBy = (messageData['read_by'] as List<dynamic>?)?.cast<String>() ?? [];
+      final deliveredTo = (messageData['delivered_to'] as List<dynamic>?)?.cast<String>() ?? [];
+      
+      if (messageId == null || newOverallStatus == null) {
+        debugPrint('❌ [OVERALL STATUS] Missing required data');
+        return;
+      }
+      
+      debugPrint('🎯 [OVERALL STATUS] Overall status → $newOverallStatus for message ${messageId.substring(0, 8)}...');
+      
+      // Search through all conversations' message caches
+      for (final conversationId in _messageCache.keys) {
+        final messages = _messageCache[conversationId];
+        if (messages != null) {
+          for (int i = 0; i < messages.length; i++) {
+            final message = messages[i];
+            if (message.id == messageId) {
+              messages[i] = message.copyWith(
+                readBy: readBy,
+                deliveredTo: deliveredTo,
+                // Note: We might need to add 'status' field to copyWith if backend provides it
+              );
+              
+              debugPrint('✅ [OVERALL STATUS] Updated message with readBy: $readBy, deliveredTo: $deliveredTo');
+              notifyListeners();
+              return;
+            }
+          }
+        }
+      }
+      
+      debugPrint('❌ [OVERALL STATUS] Message not found: ${messageId.substring(0, 8)}...');
+    } catch (e) {
+      debugPrint('❌ [OVERALL STATUS] Error: $e');
+    }
+  }
+
+  /// Handle bulk delivery confirmation - NEW HANDLER 3
+  void _handleUserDeliveryConfirmation(Map<String, dynamic> messageData) {
+    try {
+      final userId = messageData['user_id'] as String?;
+      final deliveredMessageIds = (messageData['delivered_message_ids'] as List<dynamic>?)?.cast<String>() ?? [];
+      
+      if (userId == null || deliveredMessageIds.isEmpty) {
+        debugPrint('❌ [BULK DELIVERY] Missing required data');
+        return;
+      }
+      
+      debugPrint('📬 [BULK DELIVERY] User ${userId.substring(0, 8)}... came online - ${deliveredMessageIds.length} messages delivered');
+      
+      int updatedCount = 0;
+      
+      // Search through all conversations' message caches
+      for (final conversationId in _messageCache.keys) {
+        final messages = _messageCache[conversationId];
+        if (messages != null) {
+          for (int i = 0; i < messages.length; i++) {
+            final message = messages[i];
+            if (deliveredMessageIds.contains(message.id)) {
+              final updatedDeliveredTo = List<String>.from(message.deliveredTo);
+              
+              if (!updatedDeliveredTo.contains(userId)) {
+                updatedDeliveredTo.add(userId);
+                
+                messages[i] = message.copyWith(
+                  deliveredTo: updatedDeliveredTo,
+                );
+                
+                updatedCount++;
+              }
+            }
+          }
+        }
+      }
+      
+      if (updatedCount > 0) {
+        debugPrint('✅ [BULK DELIVERY] Updated $updatedCount messages');
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('❌ [BULK DELIVERY] Error: $e');
+    }
+  }
+
   /// Disconnect and cleanup
   Future<void> disconnect() async {
     debugPrint('🔌 [RealtimeChatProvider] Disconnecting...');
@@ -578,6 +782,7 @@ class RealtimeChatProvider extends ChangeNotifier {
 
   /// Cleanup resources
   void _cleanup() {
+    _statusUpdateTimer?.cancel();
     _chatMessageSubscription?.cancel();
     _typingIndicatorSubscription?.cancel();
     _readReceiptSubscription?.cancel();

@@ -14,13 +14,14 @@ enum MessageType { text, voice, video, image }
 /// Participant roles matching API documentation
 enum ParticipantRole { admin, member }
 
-/// Message delivery status
+/// Message delivery status - Enhanced for WhatsApp-style ticks
 enum MessageStatus {
-  sending,
-  sent,
-  delivered,
-  read,
-  failed,
+  sending,    // ⏳ Clock icon
+  sent,       // ✓ Single gray tick
+  delivered,  // ✓✓ Double gray tick
+  read,       // 🔵🔵 Blue double tick
+  failed,     // ❌ Red error icon
+  received,   // No icon (for messages received from others)
 }
 
 /// Attachment model matching API documentation
@@ -170,7 +171,8 @@ class ChatMessage with _$ChatMessage {
     String? replyToMessageId, // UUID or null
     @Default([]) List<Attachment> attachments,
     @Default([]) List<Reaction> reactions,
-    @Default([]) List<String> readBy, // List of user IDs
+    @Default([]) List<String> readBy, // List of user IDs who read the message
+    @Default([]) List<String> deliveredTo, // List of user IDs who received the message
     DateTime? selfDestructAt, // Added missing field
     @Default(true) bool encrypted, // Added missing field
     String? encryptionType, // Added missing field
@@ -208,7 +210,7 @@ class ChatMessage with _$ChatMessage {
     }
   }
 
-  /// Get status icon for display
+  /// Get status icon for display (deprecated - use MessageStatusIcons.getStatusIcon)
   String get statusIcon {
     switch (status) {
       case MessageStatus.sending:
@@ -221,7 +223,45 @@ class ChatMessage with _$ChatMessage {
         return '✓✓';
       case MessageStatus.failed:
         return '❌';
+      case MessageStatus.received:
+        return ''; // No icon for received messages
     }
+  }
+
+  /// Determine smart message status based on readBy and deliveredTo arrays
+  /// This is kept for backward compatibility - use MessageStatusHelper for new code
+  @Deprecated('Use MessageStatusHelper.getIndividualChatStatus or getGroupChatStatus instead')
+  static MessageStatus determineMessageStatus(ChatMessage message, String currentUserId) {
+    // Import the helper for backward compatibility
+    return _legacyStatusDetermination(message, currentUserId);
+  }
+  
+  /// Legacy status determination for backward compatibility
+  static MessageStatus _legacyStatusDetermination(ChatMessage message, String currentUserId) {
+    // Only show status for my own messages
+    if (message.senderId != currentUserId) {
+      return MessageStatus.received; // Changed from read to received
+    }
+    
+    // Check if message was read by others (exclude current user from readBy)
+    final readByOthers = message.readBy.where((id) => id != currentUserId).toList();
+    if (readByOthers.isNotEmpty) {
+      return MessageStatus.read;      // 🔵🔵 Blue double tick - message was read
+    }
+    
+    // Check if message was delivered to others (exclude current user from deliveredTo)
+    final deliveredToOthers = message.deliveredTo.where((id) => id != currentUserId).toList();
+    if (deliveredToOthers.isNotEmpty) {
+      return MessageStatus.delivered; // ✅✅ Gray double tick - message delivered
+    }
+    
+    // Message sent to server but not yet delivered
+    if (message.id.isNotEmpty) {
+      return MessageStatus.sent;      // ✅ Gray single tick - message sent to server
+    }
+    
+    // Message is still being sent
+    return MessageStatus.sending;     // ⏳ Clock icon - message being sent
   }
 
   /// Get status text for display
@@ -237,6 +277,8 @@ class ChatMessage with _$ChatMessage {
         return 'Read $formattedTime';
       case MessageStatus.failed:
         return 'Failed to send';
+      case MessageStatus.received:
+        return 'Received'; // For received messages
     }
   }
 
@@ -345,6 +387,7 @@ class ChatMessage with _$ChatMessage {
     List<Attachment> attachments = [];
     List<Reaction> reactions = [];
     List<String> readBy = [];
+    List<String> deliveredTo = [];
     
     try {
       // Attachments handling - backend always returns [] (empty array)
@@ -371,15 +414,33 @@ class ChatMessage with _$ChatMessage {
         debugPrint('⚠️ [ChatMessage] Reactions is not a list: ${reactionData.runtimeType}');
       }
       
-      // ReadBy handling - backend always returns [] (empty array)
+      // ReadBy handling - backend might return null, empty array [], or populated array
       final readByData = json['read_by'];
       if (readByData is List) {
         debugPrint('🔍 [ChatMessage] ReadBy data: $readByData');
         readBy = readByData
             .whereType<String>()
             .toList();
+      } else if (readByData == null) {
+        // Handle null case - this is the main issue causing gray double tick default
+        debugPrint('🔧 [TICK STATUS FIX] ReadBy is null - defaulting to empty array');
+        readBy = []; // Empty array instead of null
       } else {
         debugPrint('⚠️ [ChatMessage] ReadBy is not a list: ${readByData.runtimeType}');
+      }
+      
+      // DeliveredTo handling - new field from enhanced backend
+      final deliveredToData = json['delivered_to'];
+      if (deliveredToData is List) {
+        debugPrint('🔍 [ChatMessage] DeliveredTo data: $deliveredToData');
+        deliveredTo = deliveredToData
+            .whereType<String>()
+            .toList();
+      } else if (deliveredToData == null) {
+        debugPrint('🔧 [TICK STATUS FIX] DeliveredTo is null - defaulting to empty array');
+        deliveredTo = []; // Empty array instead of null
+      } else {
+        debugPrint('⚠️ [ChatMessage] DeliveredTo is not a list: ${deliveredToData.runtimeType}');
       }
     } catch (e, stackTrace) {
       // If parsing fails, use empty lists - don't crash the app
@@ -422,6 +483,7 @@ class ChatMessage with _$ChatMessage {
       attachments: attachments,
       reactions: reactions,
       readBy: readBy,
+      deliveredTo: deliveredTo,
       selfDestructAt: selfDestructAt,
       encrypted: json['encrypted'] as bool? ?? true,
       encryptionType: json['encryption_type'] as String?,
@@ -479,6 +541,7 @@ class ChatMessage with _$ChatMessage {
       List<Attachment> attachments = [];
       List<Reaction> reactions = [];
       List<String> readBy = [];
+      List<String> deliveredTo = [];
       
       try {
         // Attachments - always empty array [] in WebSocket messages
@@ -503,6 +566,14 @@ class ChatMessage with _$ChatMessage {
         final readByData = messageInfo['read_by'];
         if (readByData is List) {
           readBy = readByData
+              .whereType<String>()
+              .toList();
+        }
+        
+        // DeliveredTo - new field from enhanced backend
+        final deliveredToData = messageInfo['delivered_to'];
+        if (deliveredToData is List) {
+          deliveredTo = deliveredToData
               .whereType<String>()
               .toList();
         }
@@ -540,6 +611,7 @@ class ChatMessage with _$ChatMessage {
         attachments: attachments,
         reactions: reactions,
         readBy: readBy,
+        deliveredTo: deliveredTo,
         selfDestructAt: selfDestructAt,
         encrypted: messageInfo['encrypted'] as bool? ?? true,
         encryptionType: messageInfo['encryption_type'] as String?,

@@ -61,11 +61,11 @@ class _ChatListScreenState extends State<ChatListScreen> {
         child: Column(
           children: [
             // Connection status banner (matching HTML WebSocket indicator)
-            ConnectionStatusBanner(
-              connectionState: _chatProvider.connectionState,
-              lastError: _chatProvider.lastError,
-              onRetry: () => _chatProvider.initialize(),
-            ),
+            // ConnectionStatusBanner(
+            //   connectionState: _chatProvider.connectionState,
+            //   lastError: _chatProvider.lastError,
+            //   onRetry: () => _chatProvider.initialize(),
+            // ),
             
             // Header with search and filters (matching HTML app-header)
             _buildChatListHeader(),

@@ -1785,7 +1785,9 @@ mixin _$ChatMessage {
   List<Attachment> get attachments => throw _privateConstructorUsedError;
   List<Reaction> get reactions => throw _privateConstructorUsedError;
   List<String> get readBy =>
-      throw _privateConstructorUsedError; // List of user IDs
+      throw _privateConstructorUsedError; // List of user IDs who read the message
+  List<String> get deliveredTo =>
+      throw _privateConstructorUsedError; // List of user IDs who received the message
   DateTime? get selfDestructAt =>
       throw _privateConstructorUsedError; // Added missing field
   bool get encrypted =>
@@ -1831,6 +1833,7 @@ abstract class $ChatMessageCopyWith<$Res> {
     List<Attachment> attachments,
     List<Reaction> reactions,
     List<String> readBy,
+    List<String> deliveredTo,
     DateTime? selfDestructAt,
     bool encrypted,
     String? encryptionType,
@@ -1870,6 +1873,7 @@ class _$ChatMessageCopyWithImpl<$Res, $Val extends ChatMessage>
     Object? attachments = null,
     Object? reactions = null,
     Object? readBy = null,
+    Object? deliveredTo = null,
     Object? selfDestructAt = freezed,
     Object? encrypted = null,
     Object? encryptionType = freezed,
@@ -1939,6 +1943,10 @@ class _$ChatMessageCopyWithImpl<$Res, $Val extends ChatMessage>
                 ? _value.readBy
                 : readBy // ignore: cast_nullable_to_non_nullable
                       as List<String>,
+            deliveredTo: null == deliveredTo
+                ? _value.deliveredTo
+                : deliveredTo // ignore: cast_nullable_to_non_nullable
+                      as List<String>,
             selfDestructAt: freezed == selfDestructAt
                 ? _value.selfDestructAt
                 : selfDestructAt // ignore: cast_nullable_to_non_nullable
@@ -1994,6 +2002,7 @@ abstract class _$$ChatMessageImplCopyWith<$Res>
     List<Attachment> attachments,
     List<Reaction> reactions,
     List<String> readBy,
+    List<String> deliveredTo,
     DateTime? selfDestructAt,
     bool encrypted,
     String? encryptionType,
@@ -2032,6 +2041,7 @@ class __$$ChatMessageImplCopyWithImpl<$Res>
     Object? attachments = null,
     Object? reactions = null,
     Object? readBy = null,
+    Object? deliveredTo = null,
     Object? selfDestructAt = freezed,
     Object? encrypted = null,
     Object? encryptionType = freezed,
@@ -2101,6 +2111,10 @@ class __$$ChatMessageImplCopyWithImpl<$Res>
             ? _value._readBy
             : readBy // ignore: cast_nullable_to_non_nullable
                   as List<String>,
+        deliveredTo: null == deliveredTo
+            ? _value._deliveredTo
+            : deliveredTo // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
         selfDestructAt: freezed == selfDestructAt
             ? _value.selfDestructAt
             : selfDestructAt // ignore: cast_nullable_to_non_nullable
@@ -2149,6 +2163,7 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
     final List<Attachment> attachments = const [],
     final List<Reaction> reactions = const [],
     final List<String> readBy = const [],
+    final List<String> deliveredTo = const [],
     this.selfDestructAt,
     this.encrypted = true,
     this.encryptionType,
@@ -2158,6 +2173,7 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
   }) : _attachments = attachments,
        _reactions = reactions,
        _readBy = readBy,
+       _deliveredTo = deliveredTo,
        super._();
 
   factory _$ChatMessageImpl.fromJson(Map<String, dynamic> json) =>
@@ -2222,7 +2238,18 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
     return EqualUnmodifiableListView(_readBy);
   }
 
-  // List of user IDs
+  // List of user IDs who read the message
+  final List<String> _deliveredTo;
+  // List of user IDs who read the message
+  @override
+  @JsonKey()
+  List<String> get deliveredTo {
+    if (_deliveredTo is EqualUnmodifiableListView) return _deliveredTo;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_deliveredTo);
+  }
+
+  // List of user IDs who received the message
   @override
   final DateTime? selfDestructAt;
   // Added missing field
@@ -2246,7 +2273,7 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ChatMessage(id: $id, conversationId: $conversationId, senderId: $senderId, senderUsername: $senderUsername, content: $content, messageType: $messageType, createdAt: $createdAt, updatedAt: $updatedAt, editedAt: $editedAt, isEdited: $isEdited, isDestroyed: $isDestroyed, replyToMessageId: $replyToMessageId, attachments: $attachments, reactions: $reactions, readBy: $readBy, selfDestructAt: $selfDestructAt, encrypted: $encrypted, encryptionType: $encryptionType, securityLevel: $securityLevel, status: $status, isFromMe: $isFromMe)';
+    return 'ChatMessage(id: $id, conversationId: $conversationId, senderId: $senderId, senderUsername: $senderUsername, content: $content, messageType: $messageType, createdAt: $createdAt, updatedAt: $updatedAt, editedAt: $editedAt, isEdited: $isEdited, isDestroyed: $isDestroyed, replyToMessageId: $replyToMessageId, attachments: $attachments, reactions: $reactions, readBy: $readBy, deliveredTo: $deliveredTo, selfDestructAt: $selfDestructAt, encrypted: $encrypted, encryptionType: $encryptionType, securityLevel: $securityLevel, status: $status, isFromMe: $isFromMe)';
   }
 
   @override
@@ -2269,6 +2296,7 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('attachments', attachments))
       ..add(DiagnosticsProperty('reactions', reactions))
       ..add(DiagnosticsProperty('readBy', readBy))
+      ..add(DiagnosticsProperty('deliveredTo', deliveredTo))
       ..add(DiagnosticsProperty('selfDestructAt', selfDestructAt))
       ..add(DiagnosticsProperty('encrypted', encrypted))
       ..add(DiagnosticsProperty('encryptionType', encryptionType))
@@ -2313,6 +2341,10 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
               _reactions,
             ) &&
             const DeepCollectionEquality().equals(other._readBy, _readBy) &&
+            const DeepCollectionEquality().equals(
+              other._deliveredTo,
+              _deliveredTo,
+            ) &&
             (identical(other.selfDestructAt, selfDestructAt) ||
                 other.selfDestructAt == selfDestructAt) &&
             (identical(other.encrypted, encrypted) ||
@@ -2345,6 +2377,7 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
     const DeepCollectionEquality().hash(_attachments),
     const DeepCollectionEquality().hash(_reactions),
     const DeepCollectionEquality().hash(_readBy),
+    const DeepCollectionEquality().hash(_deliveredTo),
     selfDestructAt,
     encrypted,
     encryptionType,
@@ -2384,6 +2417,7 @@ abstract class _ChatMessage extends ChatMessage {
     final List<Attachment> attachments,
     final List<Reaction> reactions,
     final List<String> readBy,
+    final List<String> deliveredTo,
     final DateTime? selfDestructAt,
     final bool encrypted,
     final String? encryptionType,
@@ -2425,7 +2459,9 @@ abstract class _ChatMessage extends ChatMessage {
   @override
   List<Reaction> get reactions;
   @override
-  List<String> get readBy; // List of user IDs
+  List<String> get readBy; // List of user IDs who read the message
+  @override
+  List<String> get deliveredTo; // List of user IDs who received the message
   @override
   DateTime? get selfDestructAt; // Added missing field
   @override

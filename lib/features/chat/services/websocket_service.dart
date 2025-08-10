@@ -415,6 +415,18 @@ class ChatWebSocketService extends ChangeNotifier {
     return await sendMessage(message);
   }
 
+  /// Send read receipt for a message
+  Future<bool> sendReadReceipt(String messageId, String conversationId) async {
+    final message = WebSocketMessage.outgoing(
+      WebSocketEventType.messageReadReceipt,
+      {
+        'message_id': messageId,
+        'conversation_id': conversationId,
+      },
+    );
+    return await sendMessage(message);
+  }
+
   /// Handle incoming WebSocket messages
   void _handleMessage(dynamic rawMessage) {
     try {

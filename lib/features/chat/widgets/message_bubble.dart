@@ -5,6 +5,10 @@ import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/widgets/animations/ft_fade_in.dart';
 import '../models/chat_message.dart';
+import 'message_status_icons.dart';
+import '../providers/realtime_chat_provider.dart';
+import '../utils/message_status_helper.dart';
+import 'whatsapp_bubble.dart';
 // import 'voice_message_player.dart'; // Unused for now
 
 /// Premium message bubble with sophisticated styling and animations
@@ -168,15 +172,22 @@ class _MessageBubbleState extends State<MessageBubble>
       ),
       child: Stack(
         children: [
-          // Main bubble
+          // Main bubble with WhatsApp-style design
           Container(
             constraints: const BoxConstraints(maxWidth: 280.0),
-            padding: _getBubblePadding(message.messageType),
-            decoration: _getBubbleDecoration(isFromMe, isSelfDestruct),
-            child: _buildMessageTypeContent(message),
+            child: WhatsAppBubble(
+              isFromMe: isFromMe,
+              color: isFromMe ? null : AppColors.pearlWhite,
+              gradient: isFromMe 
+                ? const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [AppColors.sageGreen, AppColors.sageGreenHover],
+                  )
+                : null,
+              child: _buildMessageTypeContent(message),
+            ),
           ),
-
-
         ],
       ),
     );
@@ -213,14 +224,22 @@ class _MessageBubbleState extends State<MessageBubble>
         gradientColors = [AppColors.sageGreen, AppColors.sageGreenHover];
         bubbleColor = AppColors.sageGreen;
       }
-      borderRadius = BorderRadius.circular(AppDimensions.radiusL).copyWith(
-        bottomRight: const Radius.circular(AppDimensions.spacingS),
+      // WhatsApp-style border radius with pointed bottom-right corner
+      borderRadius = const BorderRadius.only(
+        topLeft: Radius.circular(18.0),
+        topRight: Radius.circular(18.0),
+        bottomLeft: Radius.circular(18.0),
+        bottomRight: Radius.circular(4.0), // Sharp corner for the tail
       );
     } else {
       bubbleColor = AppColors.pearlWhite;
       gradientColors = [AppColors.pearlWhite, AppColors.warmCream];
-      borderRadius = BorderRadius.circular(AppDimensions.radiusL).copyWith(
-        bottomLeft: const Radius.circular(AppDimensions.spacingS),
+      // WhatsApp-style border radius with pointed bottom-left corner
+      borderRadius = const BorderRadius.only(
+        topLeft: Radius.circular(18.0),
+        topRight: Radius.circular(18.0),
+        bottomLeft: Radius.circular(4.0), // Sharp corner for the tail
+        bottomRight: Radius.circular(18.0),
       );
     }
 
@@ -317,31 +336,42 @@ class _MessageBubbleState extends State<MessageBubble>
             
             if (isFromMe) ...[
               const SizedBox(width: AppDimensions.spacingXS),
-              Text(
-                message.statusIcon,
-                style: TextStyle(
-                  fontSize: 10.0,
-                  color: message.status == MessageStatus.read
-                      ? AppColors.warmPeach
-                      : AppColors.pearlWhite.withAlpha(153),
-                ),
-              ),
-              
-              if (message.status == MessageStatus.read) ...[
-                const SizedBox(width: AppDimensions.spacingXS),
-                Text(
-                  'Read',
-                  style: AppTextStyles.labelSmall.copyWith(
-                    color: AppColors.warmPeach,
-                    fontSize: 10.0,
-                  ),
-                ),
-              ],
+              _buildWhatsAppStatusIcon(),
             ],
           ],
         ),
       ],
     );
+  }
+
+  /// Build WhatsApp-style status icon based on enhanced backend data
+  Widget _buildWhatsAppStatusIcon() {
+    // Get current user ID from provider
+    final currentUserId = realtimeChatProvider.currentUserId ?? '';
+    
+    // Use new enhanced status helper for individual chats
+    final smartStatus = MessageStatusHelper.getIndividualChatStatus(widget.message, currentUserId);
+    
+    // Add focused debug logs for status determination with enhanced data
+    final debugInfo = MessageStatusHelper.getStatusDebugInfo(
+      widget.message,
+      currentUserId,
+      [currentUserId, 'other-user'], // Simple 2-person chat assumption
+    );
+    
+    debugPrint('🔍 [ENHANCED TICK STATUS] ${debugInfo['content']}');
+    debugPrint('🔍 [ENHANCED TICK STATUS] - Message ID: ${debugInfo['messageId']}...');
+    debugPrint('🔍 [ENHANCED TICK STATUS] - Sender: ${debugInfo['senderId']}...');
+    debugPrint('🔍 [ENHANCED TICK STATUS] - Current User: ${debugInfo['currentUserId']}...');
+    debugPrint('🔍 [ENHANCED TICK STATUS] - Is from me: ${debugInfo['isFromMe']}');
+    debugPrint('🔍 [ENHANCED TICK STATUS] - ReadBy: ${debugInfo['readBy']}');
+    debugPrint('🔍 [ENHANCED TICK STATUS] - DeliveredTo: ${debugInfo['deliveredTo']}');
+    debugPrint('🔍 [ENHANCED TICK STATUS] - ReadBy Others: ${debugInfo['readByOthers']}');
+    debugPrint('🔍 [ENHANCED TICK STATUS] - DeliveredTo Others: ${debugInfo['deliveredToOthers']}');
+    debugPrint('🔍 [ENHANCED TICK STATUS] - Final Status: ${debugInfo['calculatedStatus']} ${debugInfo['statusIcon']}');
+    
+    // Use WhatsApp-style icons
+    return MessageStatusIcons.getStatusIcon(smartStatus);
   }
 
   Widget _buildVoiceContent(ChatMessage message) {

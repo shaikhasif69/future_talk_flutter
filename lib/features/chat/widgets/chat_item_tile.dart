@@ -503,6 +503,8 @@ class _ChatItemTileState extends State<ChatItemTile>
         return Icons.done_all;
       case MessageStatus.failed:
         return Icons.error;
+      case MessageStatus.received:
+        return Icons.done; // Placeholder, not usually shown
     }
   }
 
@@ -518,6 +520,8 @@ class _ChatItemTileState extends State<ChatItemTile>
         return AppColors.sageGreen;
       case MessageStatus.failed:
         return AppColors.error;
+      case MessageStatus.received:
+        return AppColors.softCharcoalLight; // Placeholder, not usually shown
     }
   }
 }

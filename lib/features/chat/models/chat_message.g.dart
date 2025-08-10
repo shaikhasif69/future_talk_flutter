@@ -165,6 +165,11 @@ _$ChatMessageImpl _$$ChatMessageImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      deliveredTo:
+          (json['deliveredTo'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
       selfDestructAt: json['selfDestructAt'] == null
           ? null
           : DateTime.parse(json['selfDestructAt'] as String),
@@ -194,6 +199,7 @@ Map<String, dynamic> _$$ChatMessageImplToJson(_$ChatMessageImpl instance) =>
       'attachments': instance.attachments,
       'reactions': instance.reactions,
       'readBy': instance.readBy,
+      'deliveredTo': instance.deliveredTo,
       'selfDestructAt': instance.selfDestructAt?.toIso8601String(),
       'encrypted': instance.encrypted,
       'encryptionType': instance.encryptionType,
@@ -215,6 +221,7 @@ const _$MessageStatusEnumMap = {
   MessageStatus.delivered: 'delivered',
   MessageStatus.read: 'read',
   MessageStatus.failed: 'failed',
+  MessageStatus.received: 'received',
 };
 
 _$MessageDraftImpl _$$MessageDraftImplFromJson(Map<String, dynamic> json) =>
