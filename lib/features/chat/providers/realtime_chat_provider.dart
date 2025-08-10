@@ -118,6 +118,9 @@ class RealtimeChatProvider extends ChangeNotifier {
     // Load initial conversations
     await loadConversations();
     
+    // STEP 1: App Opens/User Comes Online - Mark messages as delivered (Gray Double Tick)
+    await _markAllConversationsAsDelivered();
+    
     _isInitialized = true;
     notifyListeners();
     
@@ -249,13 +252,42 @@ class RealtimeChatProvider extends ChangeNotifier {
     await _webSocketService.stopTyping(conversationId);
   }
 
-  /// Auto-mark conversation as read when user views it
+  /// STEP 1: Mark all conversations as delivered when app opens/user comes online
+  Future<void> _markAllConversationsAsDelivered() async {
+    debugPrint('🚀 [WhatsApp Strategy] STEP 1: Marking all conversations as delivered (Gray Double Tick)');
+    
+    try {
+      for (final conversation in _conversations) {
+        final result = await _chatRepository.markConversationAsDelivered(conversation.id);
+        
+        result.when(
+          success: (response) {
+            final markedCount = response['marked_count'] as int? ?? 0;
+            if (markedCount > 0) {
+              debugPrint('✅ [WhatsApp Strategy] Marked $markedCount messages as delivered in conversation: ${conversation.displayName}');
+            }
+          },
+          failure: (error) {
+            debugPrint('❌ [WhatsApp Strategy] Failed to mark conversation ${conversation.id} as delivered: ${error.message}');
+          },
+        );
+      }
+    } catch (e) {
+      debugPrint('❌ [WhatsApp Strategy] Error marking conversations as delivered: $e');
+    }
+  }
+
+  /// STEP 2: Auto-mark conversation as read when user opens it (Blue Tick)
   Future<void> _autoMarkConversationAsRead(String conversationId) async {
+    debugPrint('🔵 [WhatsApp Strategy] STEP 2: User opened conversation - marking all messages as read (Blue Tick)');
+    
     try {
       final result = await _chatRepository.markConversationAsRead(conversationId);
       
       result.when(
         success: (_) {
+          debugPrint('✅ [WhatsApp Strategy] Successfully marked conversation $conversationId as read - should trigger blue ticks');
+          
           // Update local message cache to mark all UNREAD messages as read by current user
           final messages = _messageCache[conversationId];
           if (messages != null && _currentUserId != null) {
@@ -270,6 +302,8 @@ class RealtimeChatProvider extends ChangeNotifier {
                 // Send read receipt via WebSocket to notify sender
                 _sendReadReceiptForMessage(message.id, conversationId);
                 
+                debugPrint('🔵 [WhatsApp Strategy] Marked message ${message.id.substring(0, 8)}... as read locally');
+                
                 return message.copyWith(readBy: updatedReadBy);
               }
               return message;
@@ -282,11 +316,54 @@ class RealtimeChatProvider extends ChangeNotifier {
           }
         },
         failure: (error) {
-          // Failed silently
+          debugPrint('❌ [WhatsApp Strategy] Failed to mark conversation as read: ${error.message}');
         },
       );
     } catch (e) {
-      // Error silently
+      debugPrint('❌ [WhatsApp Strategy] Error marking conversation as read: $e');
+    }
+  }
+
+  /// STEP 3: Mark individual message as read when user scrolls to it (Optional - for precise tracking)
+  Future<void> markMessageAsRead(String messageId) async {
+    debugPrint('👁️ [WhatsApp Strategy] STEP 3: User viewed specific message - marking as read');
+    
+    try {
+      final result = await _chatRepository.markMessageAsRead(messageId);
+      
+      result.when(
+        success: (_) {
+          debugPrint('✅ [WhatsApp Strategy] Successfully marked message $messageId as read');
+        },
+        failure: (error) {
+          debugPrint('❌ [WhatsApp Strategy] Failed to mark message as read: ${error.message}');
+        },
+      );
+    } catch (e) {
+      debugPrint('❌ [WhatsApp Strategy] Error marking message as read: $e');
+    }
+  }
+
+  /// Get message status for debugging (STEP 4 from strategy)
+  Future<Map<String, dynamic>?> getMessageStatusDetails(String messageId) async {
+    try {
+      final result = await _chatRepository.getMessageStatus(messageId);
+      
+      return result.when(
+        success: (statusData) {
+          debugPrint('📊 [WhatsApp Strategy] Message $messageId status: ${statusData['overall_status']}');
+          debugPrint('📊 [WhatsApp Strategy] Read by: ${statusData['read_by']}');
+          debugPrint('📊 [WhatsApp Strategy] Delivered to: ${statusData['delivered_to']}');
+          return statusData;
+        },
+        failure: (error) {
+          debugPrint('❌ [WhatsApp Strategy] Failed to get message status: ${error.message}');
+          return null;
+        },
+      );
+    } catch (e) {
+      debugPrint('❌ [WhatsApp Strategy] Error getting message status: $e');
+      return null;
     }
   }
 

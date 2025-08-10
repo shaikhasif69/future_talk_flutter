@@ -399,7 +399,7 @@ class ChatRepository {
     );
   }
 
-  /// Mark all messages in a conversation as read
+  /// Mark all messages in a conversation as read (Blue Tick for all messages)
   Future<ApiResult<void>> markConversationAsRead(String conversationId) async {
     debugPrint('🔗 [ChatRepository] Marking conversation as read: $conversationId');
 
@@ -409,6 +409,48 @@ class ChatRepository {
         headers: await _getHeaders(),
       ),
       (_) {},
+    );
+  }
+
+  /// Mark messages in conversation as delivered (Gray Double Tick)
+  Future<ApiResult<Map<String, dynamic>>> markConversationAsDelivered(String conversationId) async {
+    debugPrint('🔗 [ChatRepository] Marking conversation as delivered: $conversationId');
+
+    return await _handleResponse<Map<String, dynamic>>(
+      http.post(
+        Uri.parse('$_baseUrl/conversations/$conversationId/mark-delivered'),
+        headers: await _getHeaders(),
+      ),
+      (json) => json,
+    );
+  }
+
+  /// Update individual message delivery status
+  Future<ApiResult<Map<String, dynamic>>> updateMessageDeliveryStatus({
+    required String messageId,
+    required String newStatus, // "sent", "delivered", "read"
+  }) async {
+    debugPrint('🔗 [ChatRepository] Updating message $messageId status to: $newStatus');
+
+    final uri = Uri.parse('$_baseUrl/messages/$messageId/delivery-status')
+        .replace(queryParameters: {'new_status': newStatus});
+
+    return await _handleResponse<Map<String, dynamic>>(
+      http.post(uri, headers: await _getHeaders()),
+      (json) => json,
+    );
+  }
+
+  /// Get message status details
+  Future<ApiResult<Map<String, dynamic>>> getMessageStatus(String messageId) async {
+    debugPrint('🔗 [ChatRepository] Getting status for message: $messageId');
+
+    return await _handleResponse<Map<String, dynamic>>(
+      http.get(
+        Uri.parse('$_baseUrl/messages/$messageId/status'),
+        headers: await _getHeaders(),
+      ),
+      (json) => json,
     );
   }
 

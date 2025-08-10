@@ -30,6 +30,9 @@ enum WebSocketEventType {
   // Message events
   chatMessage,
   messageReadReceipt,
+  messageDeliveryStatusUpdate,
+  messageOverallStatusUpdate,
+  userDeliveryConfirmation,
   
   // Typing events
   typingIndicator,
@@ -140,6 +143,12 @@ class WebSocketMessage {
         return 'chat_message';
       case WebSocketEventType.messageReadReceipt:
         return 'message_read_receipt';
+      case WebSocketEventType.messageDeliveryStatusUpdate:
+        return 'message_delivery_status_update';
+      case WebSocketEventType.messageOverallStatusUpdate:
+        return 'message_overall_status_update';
+      case WebSocketEventType.userDeliveryConfirmation:
+        return 'user_delivery_confirmation';
       case WebSocketEventType.typingIndicator:
         return 'typing_indicator';
       case WebSocketEventType.typingIndicatorSent:
@@ -169,6 +178,12 @@ class WebSocketMessage {
         return WebSocketEventType.chatMessage;
       case 'message_read_receipt':
         return WebSocketEventType.messageReadReceipt;
+      case 'message_delivery_status_update':
+        return WebSocketEventType.messageDeliveryStatusUpdate;
+      case 'message_overall_status_update':
+        return WebSocketEventType.messageOverallStatusUpdate;
+      case 'user_delivery_confirmation':
+        return WebSocketEventType.userDeliveryConfirmation;
       case 'typing_indicator':
         return WebSocketEventType.typingIndicator;
       case 'typing_indicator_sent':
@@ -180,7 +195,10 @@ class WebSocketMessage {
       case 'error':
         return WebSocketEventType.error;
       default:
-        debugPrint('⚠️ [WebSocket] Unknown event type: $type');
+        debugPrint('⚠️ [WebSocket] =============== UNKNOWN MESSAGE TYPE ===============');
+        debugPrint('⚠️ [WebSocket] Unknown event type: "$type"');
+        debugPrint('⚠️ [WebSocket] Please add support for this message type!');
+        debugPrint('⚠️ [WebSocket] =================================================');
         return WebSocketEventType.error;
     }
   }
@@ -272,16 +290,27 @@ class ChatWebSocketService extends ChangeNotifier {
       }
 
       final wsUrl = '$_baseUrl?token=$_accessToken';
-      debugPrint('🔌 [WebSocket] Connecting to: ${wsUrl.replaceAll(RegExp(r'token=[^&]+'), 'token=***')}');
-      debugPrint('🔌 [WebSocket] Full URL for debugging: $wsUrl');
+      debugPrint('🔌 [WebSocket] =============== CONNECTION ATTEMPT ===============');
+      debugPrint('🔌 [WebSocket] Base URL: $_baseUrl');
+      debugPrint('🔌 [WebSocket] Token exists: ${_accessToken!.isNotEmpty}');
+      debugPrint('🔌 [WebSocket] Token length: ${_accessToken!.length}');
+      debugPrint('🔌 [WebSocket] Full URL: ${wsUrl.replaceAll(RegExp(r'token=[^&]+'), 'token=***')}');
+      debugPrint('🔌 [WebSocket] Authentication header will be: Bearer ***');
+      debugPrint('🔌 [WebSocket] ===============================================');
 
       // Create WebSocket connection
-      _channel = IOWebSocketChannel.connect(
-        Uri.parse(wsUrl),
-        headers: {
-          'Authorization': 'Bearer $_accessToken',
-        },
-      );
+      try {
+        _channel = IOWebSocketChannel.connect(
+          Uri.parse(wsUrl),
+          headers: {
+            'Authorization': 'Bearer $_accessToken',
+          },
+        );
+        debugPrint('✅ [WebSocket] Channel created successfully');
+      } catch (e) {
+        debugPrint('❌ [WebSocket] Failed to create WebSocket channel: $e');
+        throw Exception('WebSocket channel creation failed: $e');
+      }
 
       // Set connection timeout
       _connectionTimeoutTimer = Timer(_connectionTimeout, () {
@@ -292,12 +321,14 @@ class ChatWebSocketService extends ChangeNotifier {
       });
 
       // Listen to messages
+      debugPrint('🔌 [WebSocket] Setting up message listeners...');
       _messageSubscription = _channel!.stream.listen(
         _handleMessage,
         onError: _handleError,
         onDone: _handleDisconnection,
         cancelOnError: false,
       );
+      debugPrint('✅ [WebSocket] Message listeners configured');
 
       // Wait for connection establishment
       final connectionEstablished = await _waitForConnectionEstablished();
@@ -430,12 +461,17 @@ class ChatWebSocketService extends ChangeNotifier {
   /// Handle incoming WebSocket messages
   void _handleMessage(dynamic rawMessage) {
     try {
-      debugPrint('📥 [WebSocket] RAW MESSAGE RECEIVED: $rawMessage');
+      debugPrint('📥 [WebSocket] =============== MESSAGE RECEIVED ===============');
+      debugPrint('📥 [WebSocket] RAW MESSAGE: $rawMessage');
+      
       final messageData = jsonDecode(rawMessage as String) as Map<String, dynamic>;
       final message = WebSocketMessage.fromJson(messageData);
       
-      debugPrint('📥 [WebSocket] PARSED MESSAGE: ${message.type}');
-      debugPrint('📥 [WebSocket] MESSAGE DATA: ${jsonEncode(messageData)}');
+      debugPrint('📥 [WebSocket] MESSAGE TYPE: ${message.type}');
+      debugPrint('📥 [WebSocket] MESSAGE KEYS: ${messageData.keys.toList()}');
+      debugPrint('📥 [WebSocket] EVENT TYPE ENUM: ${message.eventType}');
+      debugPrint('📥 [WebSocket] FULL MESSAGE DATA: ${jsonEncode(messageData)}');
+      debugPrint('📥 [WebSocket] ===============================================');
       
       // Route message to appropriate stream
       switch (message.eventType) {
@@ -485,6 +521,21 @@ class ChatWebSocketService extends ChangeNotifier {
           debugPrint('✓ [WebSocket] Read receipt for message: ${message.messageId}');
           break;
           
+        case WebSocketEventType.messageDeliveryStatusUpdate:
+          _chatMessageController.add(messageData);
+          debugPrint('📬 [WebSocket] Delivery status update for message: ${message.messageId}');
+          break;
+          
+        case WebSocketEventType.messageOverallStatusUpdate:
+          _chatMessageController.add(messageData);
+          debugPrint('🎯 [WebSocket] Overall status update for message: ${message.messageId}');
+          break;
+          
+        case WebSocketEventType.userDeliveryConfirmation:
+          _chatMessageController.add(messageData);
+          debugPrint('✅ [WebSocket] User delivery confirmation from: ${message.userId}');
+          break;
+          
         case WebSocketEventType.conversationJoined:
           debugPrint('🎉 [WebSocket] *** CONVERSATION JOINED SUCCESSFULLY ***');
           debugPrint('🚪 [WebSocket] - Conversation ID: ${message.conversationId}');
@@ -498,7 +549,12 @@ class ChatWebSocketService extends ChangeNotifier {
           break;
           
         default:
+          debugPrint('📨 [WebSocket] =============== UNHANDLED MESSAGE ===============');
           debugPrint('📨 [WebSocket] Unhandled message type: ${message.type}');
+          debugPrint('📨 [WebSocket] Event type enum: ${message.eventType}');
+          debugPrint('📨 [WebSocket] Message data: ${jsonEncode(messageData)}');
+          debugPrint('📨 [WebSocket] This message will be ignored!');
+          debugPrint('📨 [WebSocket] =============================================');
       }
       
       // Emit to general message stream

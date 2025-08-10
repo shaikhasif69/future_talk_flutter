@@ -393,7 +393,7 @@ class ChatMessage with _$ChatMessage {
       // Attachments handling - backend always returns [] (empty array)
       final attachmentData = json['attachments'];
       if (attachmentData is List) {
-        debugPrint('🔍 [ChatMessage] Attachments data: $attachmentData');
+        // debugPrint('🔍 [ChatMessage] Attachments data: $attachmentData');
         attachments = attachmentData
             .whereType<Map<String, dynamic>>()
             .map((a) => Attachment.fromJson(a))
@@ -405,7 +405,7 @@ class ChatMessage with _$ChatMessage {
       // Reactions handling - backend always returns [] (empty array)
       final reactionData = json['reactions'];
       if (reactionData is List) {
-        debugPrint('🔍 [ChatMessage] Reactions data: $reactionData');
+        // debugPrint('🔍 [ChatMessage] Reactions data: $reactionData');
         reactions = reactionData
             .whereType<Map<String, dynamic>>()
             .map((r) => Reaction.fromJson(r))
@@ -417,22 +417,22 @@ class ChatMessage with _$ChatMessage {
       // ReadBy handling - backend might return null, empty array [], or populated array
       final readByData = json['read_by'];
       if (readByData is List) {
-        debugPrint('🔍 [ChatMessage] ReadBy data: $readByData');
+        // debugPrint('🔍 [ChatMessage] ReadBy data: $readByData');
         readBy = readByData
             .whereType<String>()
             .toList();
       } else if (readByData == null) {
         // Handle null case - this is the main issue causing gray double tick default
-        debugPrint('🔧 [TICK STATUS FIX] ReadBy is null - defaulting to empty array');
+        // debugPrint('🔧 [TICK STATUS FIX] ReadBy is null - defaulting to empty array');
         readBy = []; // Empty array instead of null
       } else {
-        debugPrint('⚠️ [ChatMessage] ReadBy is not a list: ${readByData.runtimeType}');
+        // debugPrint('⚠️ [ChatMessage] ReadBy is not a list: ${readByData.runtimeType}');
       }
       
       // DeliveredTo handling - new field from enhanced backend
       final deliveredToData = json['delivered_to'];
       if (deliveredToData is List) {
-        debugPrint('🔍 [ChatMessage] DeliveredTo data: $deliveredToData');
+        // debugPrint('🔍 [ChatMessage] DeliveredTo data: $deliveredToData');
         deliveredTo = deliveredToData
             .whereType<String>()
             .toList();
