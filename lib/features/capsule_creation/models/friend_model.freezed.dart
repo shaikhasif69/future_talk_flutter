@@ -12,8 +12,7 @@ part of 'friend_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Friend _$FriendFromJson(Map<String, dynamic> json) {
   return _Friend.fromJson(json);
@@ -63,17 +62,16 @@ abstract class $FriendCopyWith<$Res> {
   factory $FriendCopyWith(Friend value, $Res Function(Friend) then) =
       _$FriendCopyWithImpl<$Res, Friend>;
   @useResult
-  $Res call({
-    String id,
-    String name,
-    String avatar,
-    SocialBatteryLevel socialBattery,
-    DateTime lastActive,
-    String? username,
-    bool isOnline,
-    FriendCommunicationPreference communicationPreference,
-    bool allowsCapsuleNotifications,
-  });
+  $Res call(
+      {String id,
+      String name,
+      String avatar,
+      SocialBatteryLevel socialBattery,
+      DateTime lastActive,
+      String? username,
+      bool isOnline,
+      FriendCommunicationPreference communicationPreference,
+      bool allowsCapsuleNotifications});
 }
 
 /// @nodoc
@@ -101,69 +99,64 @@ class _$FriendCopyWithImpl<$Res, $Val extends Friend>
     Object? communicationPreference = null,
     Object? allowsCapsuleNotifications = null,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            name: null == name
-                ? _value.name
-                : name // ignore: cast_nullable_to_non_nullable
-                      as String,
-            avatar: null == avatar
-                ? _value.avatar
-                : avatar // ignore: cast_nullable_to_non_nullable
-                      as String,
-            socialBattery: null == socialBattery
-                ? _value.socialBattery
-                : socialBattery // ignore: cast_nullable_to_non_nullable
-                      as SocialBatteryLevel,
-            lastActive: null == lastActive
-                ? _value.lastActive
-                : lastActive // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            username: freezed == username
-                ? _value.username
-                : username // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            isOnline: null == isOnline
-                ? _value.isOnline
-                : isOnline // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            communicationPreference: null == communicationPreference
-                ? _value.communicationPreference
-                : communicationPreference // ignore: cast_nullable_to_non_nullable
-                      as FriendCommunicationPreference,
-            allowsCapsuleNotifications: null == allowsCapsuleNotifications
-                ? _value.allowsCapsuleNotifications
-                : allowsCapsuleNotifications // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      avatar: null == avatar
+          ? _value.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as String,
+      socialBattery: null == socialBattery
+          ? _value.socialBattery
+          : socialBattery // ignore: cast_nullable_to_non_nullable
+              as SocialBatteryLevel,
+      lastActive: null == lastActive
+          ? _value.lastActive
+          : lastActive // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
+      communicationPreference: null == communicationPreference
+          ? _value.communicationPreference
+          : communicationPreference // ignore: cast_nullable_to_non_nullable
+              as FriendCommunicationPreference,
+      allowsCapsuleNotifications: null == allowsCapsuleNotifications
+          ? _value.allowsCapsuleNotifications
+          : allowsCapsuleNotifications // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$FriendImplCopyWith<$Res> implements $FriendCopyWith<$Res> {
   factory _$$FriendImplCopyWith(
-    _$FriendImpl value,
-    $Res Function(_$FriendImpl) then,
-  ) = __$$FriendImplCopyWithImpl<$Res>;
+          _$FriendImpl value, $Res Function(_$FriendImpl) then) =
+      __$$FriendImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String name,
-    String avatar,
-    SocialBatteryLevel socialBattery,
-    DateTime lastActive,
-    String? username,
-    bool isOnline,
-    FriendCommunicationPreference communicationPreference,
-    bool allowsCapsuleNotifications,
-  });
+  $Res call(
+      {String id,
+      String name,
+      String avatar,
+      SocialBatteryLevel socialBattery,
+      DateTime lastActive,
+      String? username,
+      bool isOnline,
+      FriendCommunicationPreference communicationPreference,
+      bool allowsCapsuleNotifications});
 }
 
 /// @nodoc
@@ -171,9 +164,8 @@ class __$$FriendImplCopyWithImpl<$Res>
     extends _$FriendCopyWithImpl<$Res, _$FriendImpl>
     implements _$$FriendImplCopyWith<$Res> {
   __$$FriendImplCopyWithImpl(
-    _$FriendImpl _value,
-    $Res Function(_$FriendImpl) _then,
-  ) : super(_value, _then);
+      _$FriendImpl _value, $Res Function(_$FriendImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of Friend
   /// with the given fields replaced by the non-null parameter values.
@@ -190,63 +182,60 @@ class __$$FriendImplCopyWithImpl<$Res>
     Object? communicationPreference = null,
     Object? allowsCapsuleNotifications = null,
   }) {
-    return _then(
-      _$FriendImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        name: null == name
-            ? _value.name
-            : name // ignore: cast_nullable_to_non_nullable
-                  as String,
-        avatar: null == avatar
-            ? _value.avatar
-            : avatar // ignore: cast_nullable_to_non_nullable
-                  as String,
-        socialBattery: null == socialBattery
-            ? _value.socialBattery
-            : socialBattery // ignore: cast_nullable_to_non_nullable
-                  as SocialBatteryLevel,
-        lastActive: null == lastActive
-            ? _value.lastActive
-            : lastActive // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        username: freezed == username
-            ? _value.username
-            : username // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        isOnline: null == isOnline
-            ? _value.isOnline
-            : isOnline // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        communicationPreference: null == communicationPreference
-            ? _value.communicationPreference
-            : communicationPreference // ignore: cast_nullable_to_non_nullable
-                  as FriendCommunicationPreference,
-        allowsCapsuleNotifications: null == allowsCapsuleNotifications
-            ? _value.allowsCapsuleNotifications
-            : allowsCapsuleNotifications // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$FriendImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      avatar: null == avatar
+          ? _value.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as String,
+      socialBattery: null == socialBattery
+          ? _value.socialBattery
+          : socialBattery // ignore: cast_nullable_to_non_nullable
+              as SocialBatteryLevel,
+      lastActive: null == lastActive
+          ? _value.lastActive
+          : lastActive // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
+      communicationPreference: null == communicationPreference
+          ? _value.communicationPreference
+          : communicationPreference // ignore: cast_nullable_to_non_nullable
+              as FriendCommunicationPreference,
+      allowsCapsuleNotifications: null == allowsCapsuleNotifications
+          ? _value.allowsCapsuleNotifications
+          : allowsCapsuleNotifications // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$FriendImpl implements _Friend {
-  const _$FriendImpl({
-    required this.id,
-    required this.name,
-    required this.avatar,
-    required this.socialBattery,
-    required this.lastActive,
-    this.username,
-    this.isOnline = false,
-    this.communicationPreference = FriendCommunicationPreference.app,
-    this.allowsCapsuleNotifications = true,
-  });
+  const _$FriendImpl(
+      {required this.id,
+      required this.name,
+      required this.avatar,
+      required this.socialBattery,
+      required this.lastActive,
+      this.username,
+      this.isOnline = false,
+      this.communicationPreference = FriendCommunicationPreference.app,
+      this.allowsCapsuleNotifications = true});
 
   factory _$FriendImpl.fromJson(Map<String, dynamic> json) =>
       _$$FriendImplFromJson(json);
@@ -312,14 +301,10 @@ class _$FriendImpl implements _Friend {
             (identical(other.isOnline, isOnline) ||
                 other.isOnline == isOnline) &&
             (identical(
-                  other.communicationPreference,
-                  communicationPreference,
-                ) ||
+                    other.communicationPreference, communicationPreference) ||
                 other.communicationPreference == communicationPreference) &&
-            (identical(
-                  other.allowsCapsuleNotifications,
-                  allowsCapsuleNotifications,
-                ) ||
+            (identical(other.allowsCapsuleNotifications,
+                    allowsCapsuleNotifications) ||
                 other.allowsCapsuleNotifications ==
                     allowsCapsuleNotifications));
   }
@@ -327,17 +312,16 @@ class _$FriendImpl implements _Friend {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    name,
-    avatar,
-    socialBattery,
-    lastActive,
-    username,
-    isOnline,
-    communicationPreference,
-    allowsCapsuleNotifications,
-  );
+      runtimeType,
+      id,
+      name,
+      avatar,
+      socialBattery,
+      lastActive,
+      username,
+      isOnline,
+      communicationPreference,
+      allowsCapsuleNotifications);
 
   /// Create a copy of Friend
   /// with the given fields replaced by the non-null parameter values.
@@ -349,22 +333,23 @@ class _$FriendImpl implements _Friend {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$FriendImplToJson(this);
+    return _$$FriendImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _Friend implements Friend {
-  const factory _Friend({
-    required final String id,
-    required final String name,
-    required final String avatar,
-    required final SocialBatteryLevel socialBattery,
-    required final DateTime lastActive,
-    final String? username,
-    final bool isOnline,
-    final FriendCommunicationPreference communicationPreference,
-    final bool allowsCapsuleNotifications,
-  }) = _$FriendImpl;
+  const factory _Friend(
+      {required final String id,
+      required final String name,
+      required final String avatar,
+      required final SocialBatteryLevel socialBattery,
+      required final DateTime lastActive,
+      final String? username,
+      final bool isOnline,
+      final FriendCommunicationPreference communicationPreference,
+      final bool allowsCapsuleNotifications}) = _$FriendImpl;
 
   factory _Friend.fromJson(Map<String, dynamic> json) = _$FriendImpl.fromJson;
 

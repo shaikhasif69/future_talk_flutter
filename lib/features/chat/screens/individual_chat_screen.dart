@@ -87,10 +87,14 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       if (mounted) {
         _fadeInController.forward();
         _slideInController.forward();
-        _scrollToBottom(animated: false);
         
         setState(() {
           _isInitialized = true;
+        });
+        
+        // Smart initial scroll - prioritize unread messages, fallback to bottom
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _scrollToBottom(animated: false);
         });
         
         // Start periodic refresh as fallback for WebSocket issues
@@ -186,17 +190,27 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
       final previousMessageCount = _currentMessages.length;
       _currentMessages = newMessages;
       
-      debugPrint('✅ [IndividualChatScreen] Updated _currentMessages: ${previousMessageCount} → ${_currentMessages.length} messages');
+      debugPrint('✅ [IndividualChatScreen] Updated _currentMessages: $previousMessageCount → ${_currentMessages.length} messages');
       
       // Trigger immediate setState for real-time updates
       if (mounted) {
         setState(() {});
         
-        // Auto-scroll to bottom if new messages were added
+        // Smart auto-scroll for new messages
         if (_currentMessages.length > previousMessageCount) {
-          debugPrint('📜 [IndividualChatScreen] New messages detected, scrolling to bottom');
+          debugPrint('📜 [IndividualChatScreen] New messages detected, applying smart scroll');
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            _scrollToBottom();
+            // Check if user was already near the bottom (within 100px)
+            final wasNearBottom = _scrollController.hasClients && 
+                (_scrollController.position.maxScrollExtent - _scrollController.position.pixels) < 100;
+            
+            if (wasNearBottom) {
+              // User was following the conversation - scroll to bottom
+              _scrollToBottom(forceToBottom: true);
+            } else {
+              // User was reading older messages - use smart scroll to unread
+              _scrollToBottom();
+            }
           });
         }
       }
@@ -364,18 +378,45 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     super.dispose();
   }
 
-  void _scrollToBottom({bool animated = true}) {
+  /// Enhanced scroll-to-bottom with smart unread message handling
+  void _scrollToBottom({bool animated = true, bool forceToBottom = false}) {
     if (!_scrollController.hasClients) return;
     
-    if (animated) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOutCubic,
-      );
-    } else {
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_scrollController.hasClients) return;
+      
+      final double targetPosition;
+      
+      if (forceToBottom) {
+        // Always scroll to absolute bottom
+        targetPosition = _scrollController.position.maxScrollExtent;
+      } else {
+        // Smart scrolling: check for unread messages
+        final firstUnreadIndex = _getFirstUnreadMessageIndex();
+        
+        if (firstUnreadIndex != -1 && firstUnreadIndex < _currentMessages.length - 5) {
+          // If there are unread messages and they're not near the bottom,
+          // scroll to show them with some context
+          final itemHeight = 80.0; // Approximate message bubble height
+          final contextOffset = 2 * itemHeight; // Show 2 messages above for context
+          targetPosition = (firstUnreadIndex * itemHeight - contextOffset)
+              .clamp(0.0, _scrollController.position.maxScrollExtent);
+        } else {
+          // Default: scroll to bottom to show latest messages
+          targetPosition = _scrollController.position.maxScrollExtent;
+        }
+      }
+      
+      if (animated) {
+        _scrollController.animateTo(
+          targetPosition,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeOutCubic,
+        );
+      } else {
+        _scrollController.jumpTo(targetPosition);
+      }
+    });
   }
 
   void _onQuickReactionTap(String emoji) {
@@ -562,9 +603,9 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     );
   }
 
-  /// Simple ListView.builder for debugging message display issues
+  /// Enhanced ListView with WhatsApp-like message bubble styling
   Widget _buildSimpleMessagesList() {
-    debugPrint('🔍 [IndividualChatScreen] Building SIMPLE messages list with ${_currentMessages.length} messages');
+    debugPrint('🔍 [IndividualChatScreen] Building ENHANCED messages list with ${_currentMessages.length} messages');
     debugPrint('🔍 [IndividualChatScreen] Current user ID: ${_chatProvider.currentUserId}');
     
     final conversationId = widget.conversation.id;
@@ -592,8 +633,23 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
         
         final message = _currentMessages[messageIndex];
         
+        // Get previous and next messages for WhatsApp-style bubble grouping
+        final previousMessage = messageIndex > 0 ? _currentMessages[messageIndex - 1] : null;
+        final nextMessage = messageIndex < _currentMessages.length - 1 ? _currentMessages[messageIndex + 1] : null;
+        
+        // Check if this is the last message in a sequence from the same sender
+        final isLastInSequence = _isLastMessageInSequence(message, nextMessage);
+        final isFirstInSequence = _isFirstMessageInSequence(message, previousMessage);
+        final isMiddleInSequence = !isFirstInSequence && !isLastInSequence;
+        
+        final messagePreview = message.content.length > 15 ? '${message.content.substring(0, 15)}...' : message.content;
+        debugPrint('🔸 [Sequence] Message: $messagePreview - First: $isFirstInSequence, Last: $isLastInSequence, Middle: $isMiddleInSequence');
+        
+        // Calculate dynamic margin based on message grouping
+        final double verticalMargin = isFirstInSequence ? 8.0 : (isLastInSequence ? 8.0 : 2.0);
+        
         return Container(
-          margin: const EdgeInsets.symmetric(vertical: 3),
+          margin: EdgeInsets.symmetric(vertical: verticalMargin),
           child: Align(
             alignment: message.isFromMe ? Alignment.centerRight : Alignment.centerLeft,
             child: Container(
@@ -625,11 +681,11 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
                               )
                             : null,
                           color: message.isFromMe ? null : AppColors.pearlWhite,
-                          borderRadius: BorderRadius.only(
-                            topLeft: const Radius.circular(20),
-                            topRight: const Radius.circular(20),
-                            bottomLeft: Radius.circular(message.isFromMe ? 20 : 8),
-                            bottomRight: Radius.circular(message.isFromMe ? 8 : 20),
+                          borderRadius: _getBubbleBorderRadius(
+                            message: message,
+                            isFirstInSequence: isFirstInSequence,
+                            isLastInSequence: isLastInSequence,
+                            isMiddleInSequence: isMiddleInSequence,
                           ),
                           border: message.isFromMe ? null : Border.all(
                             color: AppColors.sageGreenWithOpacity(0.1),
@@ -1428,6 +1484,139 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     }
   }
 
+  /// Check if a message is the first in a sequence from the same sender
+  bool _isFirstMessageInSequence(msg.ChatMessage message, msg.ChatMessage? previousMessage) {
+    if (previousMessage == null) return true;
+    
+    // Different sender = start of new sequence
+    if (message.senderId != previousMessage.senderId) {
+      debugPrint('🔹 [Sequence] First: Different sender - ${message.senderId} vs ${previousMessage.senderId}');
+      return true;
+    }
+    
+    // Same sender but time gap > 2 minutes = start of new sequence  
+    final timeDiff = message.createdAt.difference(previousMessage.createdAt).inMinutes;
+    debugPrint('🔹 [Sequence] Same sender, time diff: $timeDiff minutes');
+    return timeDiff > 2;
+  }
+  
+  /// Check if a message is the last in a sequence from the same sender
+  bool _isLastMessageInSequence(msg.ChatMessage message, msg.ChatMessage? nextMessage) {
+    if (nextMessage == null) {
+      debugPrint('🔹 [Sequence] Last: No next message');
+      return true;
+    }
+    
+    // Different sender = end of current sequence
+    if (message.senderId != nextMessage.senderId) {
+      debugPrint('🔹 [Sequence] Last: Different next sender - ${message.senderId} vs ${nextMessage.senderId}');
+      return true;
+    }
+    
+    // Same sender but time gap > 2 minutes = end of current sequence
+    final timeDiff = nextMessage.createdAt.difference(message.createdAt).inMinutes;
+    debugPrint('🔹 [Sequence] Same next sender, time diff: $timeDiff minutes');
+    return timeDiff > 2;
+  }
+  
+  /// Get WhatsApp-style border radius based on message position in sequence
+  BorderRadius _getBubbleBorderRadius({
+    required msg.ChatMessage message,
+    required bool isFirstInSequence,
+    required bool isLastInSequence, 
+    required bool isMiddleInSequence,
+  }) {
+    const double normalRadius = 18.0;
+    const double tightRadius = 3.0;
+    
+    final borderRadiusPreview = message.content.length > 20 ? '${message.content.substring(0, 20)}...' : message.content;
+    debugPrint('🔶 [BorderRadius] Message: $borderRadiusPreview');
+    debugPrint('🔶 [BorderRadius] - isFromMe: ${message.isFromMe}');
+    debugPrint('🔶 [BorderRadius] - isFirst: $isFirstInSequence');
+    debugPrint('🔶 [BorderRadius] - isLast: $isLastInSequence');
+    
+    if (message.isFromMe) {
+      // Sent messages (right side) - tail on bottom-right when last in sequence OR single message
+      if (isFirstInSequence && isLastInSequence) {
+        // Single message - SHOULD have pointy tail
+        debugPrint('🔶 [BorderRadius] → Single sent message - adding pointy tail');
+        return const BorderRadius.only(
+          topLeft: Radius.circular(normalRadius),
+          topRight: Radius.circular(normalRadius),
+          bottomLeft: Radius.circular(normalRadius),
+          bottomRight: Radius.circular(tightRadius), // Pointy tail for single message
+        );
+      } else if (isFirstInSequence) {
+        // First in sequence - no tail
+        debugPrint('🔶 [BorderRadius] → First in sent sequence - no tail');
+        return BorderRadius.circular(normalRadius);
+      } else if (isLastInSequence) {
+        // Last in sequence - show pointy tail
+        debugPrint('🔶 [BorderRadius] → Last in sent sequence - adding pointy tail');
+        return const BorderRadius.only(
+          topLeft: Radius.circular(normalRadius),
+          topRight: Radius.circular(normalRadius),
+          bottomLeft: Radius.circular(normalRadius),
+          bottomRight: Radius.circular(tightRadius), // Pointy tail
+        );
+      } else {
+        // Middle in sequence - no tail
+        debugPrint('🔶 [BorderRadius] → Middle in sent sequence - no tail');
+        return BorderRadius.circular(normalRadius);
+      }
+    } else {
+      // Received messages (left side) - tail on bottom-left when last in sequence OR single message
+      if (isFirstInSequence && isLastInSequence) {
+        // Single message - SHOULD have pointy tail
+        debugPrint('🔶 [BorderRadius] → Single received message - adding pointy tail');
+        return const BorderRadius.only(
+          topLeft: Radius.circular(normalRadius),
+          topRight: Radius.circular(normalRadius),
+          bottomLeft: Radius.circular(tightRadius), // Pointy tail for single message
+          bottomRight: Radius.circular(normalRadius),
+        );
+      } else if (isFirstInSequence) {
+        // First in sequence - no tail
+        debugPrint('🔶 [BorderRadius] → First in received sequence - no tail');
+        return BorderRadius.circular(normalRadius);
+      } else if (isLastInSequence) {
+        // Last in sequence - show pointy tail
+        debugPrint('🔶 [BorderRadius] → Last in received sequence - adding pointy tail');
+        return const BorderRadius.only(
+          topLeft: Radius.circular(normalRadius),
+          topRight: Radius.circular(normalRadius),
+          bottomLeft: Radius.circular(tightRadius), // Pointy tail
+          bottomRight: Radius.circular(normalRadius),
+        );
+      } else {
+        // Middle in sequence - no tail
+        debugPrint('🔶 [BorderRadius] → Middle in received sequence - no tail');
+        return BorderRadius.circular(normalRadius);
+      }
+    }
+  }
+  
+  /// Get the index of the first unread message
+  int _getFirstUnreadMessageIndex() {
+    final currentUserId = _chatProvider.currentUserId ?? '';
+    
+    for (int i = 0; i < _currentMessages.length; i++) {
+      final message = _currentMessages[i];
+      
+      // Only check received messages (not sent by current user)
+      if (message.isFromMe) continue;
+      
+      // Check if message is unread (current user not in readBy array)
+      if (!message.readBy.contains(currentUserId)) {
+        debugPrint('📖 [AutoScroll] Found first unread message at index $i: ${message.content.substring(0, 30)}...');
+        return i;
+      }
+    }
+    
+    debugPrint('📖 [AutoScroll] No unread messages found');
+    return -1; // No unread messages
+  }
+
   /// Send message
   Future<void> _sendMessage() async {
     final content = _messageController.text.trim();
@@ -1453,7 +1642,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     
     // Scroll to bottom after a brief delay to ensure message is rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollToBottom();
+      _scrollToBottom(forceToBottom: true); // Force scroll to bottom for new sent messages
     });
   }
 }

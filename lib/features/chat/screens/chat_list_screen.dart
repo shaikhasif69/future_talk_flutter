@@ -16,6 +16,8 @@ import '../widgets/chat_floating_action_button.dart';
 import '../widgets/connection_status_indicator.dart';
 import '../screens/individual_chat_screen.dart';
 import '../services/pinned_conversations_service.dart';
+import '../../dashboard/widgets/find_friends_modal_helper.dart';
+import '../../dashboard/types/friend_action.dart';
 
 /// Premium chat list screen with introvert-friendly design
 /// Features staggered animations, social battery awareness, and gentle interactions
@@ -745,6 +747,26 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   
                   const SizedBox(width: 12.0),
                   
+                  // Find Friends button
+                  GestureDetector(
+                    onTap: _showFindFriendsModal,
+                    child: Container(
+                      width: 36.0,
+                      height: 36.0,
+                      decoration: BoxDecoration(
+                        color: AppColors.sageGreen.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: const Icon(
+                        Icons.person_add_outlined,
+                        size: 16.0,
+                        color: AppColors.sageGreen,
+                      ),
+                    ),
+                  ),
+                  
+                  const SizedBox(width: 12.0),
+                  
                   // New group button
                   Container(
                     width: 36.0,
@@ -899,5 +921,38 @@ class _ChatListScreenState extends State<ChatListScreen> {
   void _showNewChatDialog() {
     // TODO: Implement new chat dialog
     debugPrint('Show new chat dialog');
+  }
+
+  /// Show Find Friends modal
+  void _showFindFriendsModal() {
+    debugPrint('🔍 [ChatListScreen] Opening Find Friends modal');
+    
+    FindFriendsModalHelper.show(
+      context,
+      onUserAction: (user, action) {
+        debugPrint('👥 [ChatListScreen] Friend action: $action for user: ${user.displayName}');
+        
+        switch (action) {
+          case FriendAction.sendMessage:
+            // Navigate to individual chat
+            context.push('/chat/direct/${user.id}');
+            break;
+          case FriendAction.sendTimeCapsule:
+            // Navigate to time capsule creation
+            context.push('/time-capsules/create?recipient=${user.username}');
+            break;
+          case FriendAction.addFriend:
+            // Friend request is handled internally by the modal
+            // Show confirmation if needed
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Friend request sent to ${user.displayName}!'),
+                backgroundColor: AppColors.sageGreen,
+              ),
+            );
+            break;
+        }
+      },
+    );
   }
 }

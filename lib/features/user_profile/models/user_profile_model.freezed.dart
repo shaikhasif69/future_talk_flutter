@@ -12,8 +12,7 @@ part of 'user_profile_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) {
   return _UserProfileModel.fromJson(json);
@@ -54,28 +53,26 @@ mixin _$UserProfileModel {
 /// @nodoc
 abstract class $UserProfileModelCopyWith<$Res> {
   factory $UserProfileModelCopyWith(
-    UserProfileModel value,
-    $Res Function(UserProfileModel) then,
-  ) = _$UserProfileModelCopyWithImpl<$Res, UserProfileModel>;
+          UserProfileModel value, $Res Function(UserProfileModel) then) =
+      _$UserProfileModelCopyWithImpl<$Res, UserProfileModel>;
   @useResult
-  $Res call({
-    String id,
-    String name,
-    String username,
-    String bio,
-    String avatarUrl,
-    DateTime friendsSince,
-    SocialBatteryStatus currentMoodStatus,
-    ConnectionStats connectionStats,
-    List<SharedExperience> sharedExperiences,
-    List<TimeCapsuleItem> timeCapsules,
-    List<ReadingSession> readingSessions,
-    List<ComfortStone> comfortStones,
-    FriendshipStats friendshipStats,
-    bool isOnline,
-    bool isTyping,
-    DateTime? lastSeen,
-  });
+  $Res call(
+      {String id,
+      String name,
+      String username,
+      String bio,
+      String avatarUrl,
+      DateTime friendsSince,
+      SocialBatteryStatus currentMoodStatus,
+      ConnectionStats connectionStats,
+      List<SharedExperience> sharedExperiences,
+      List<TimeCapsuleItem> timeCapsules,
+      List<ReadingSession> readingSessions,
+      List<ComfortStone> comfortStones,
+      FriendshipStats friendshipStats,
+      bool isOnline,
+      bool isTyping,
+      DateTime? lastSeen});
 
   $SocialBatteryStatusCopyWith<$Res> get currentMoodStatus;
   $ConnectionStatsCopyWith<$Res> get connectionStats;
@@ -114,75 +111,72 @@ class _$UserProfileModelCopyWithImpl<$Res, $Val extends UserProfileModel>
     Object? isTyping = null,
     Object? lastSeen = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            name: null == name
-                ? _value.name
-                : name // ignore: cast_nullable_to_non_nullable
-                      as String,
-            username: null == username
-                ? _value.username
-                : username // ignore: cast_nullable_to_non_nullable
-                      as String,
-            bio: null == bio
-                ? _value.bio
-                : bio // ignore: cast_nullable_to_non_nullable
-                      as String,
-            avatarUrl: null == avatarUrl
-                ? _value.avatarUrl
-                : avatarUrl // ignore: cast_nullable_to_non_nullable
-                      as String,
-            friendsSince: null == friendsSince
-                ? _value.friendsSince
-                : friendsSince // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            currentMoodStatus: null == currentMoodStatus
-                ? _value.currentMoodStatus
-                : currentMoodStatus // ignore: cast_nullable_to_non_nullable
-                      as SocialBatteryStatus,
-            connectionStats: null == connectionStats
-                ? _value.connectionStats
-                : connectionStats // ignore: cast_nullable_to_non_nullable
-                      as ConnectionStats,
-            sharedExperiences: null == sharedExperiences
-                ? _value.sharedExperiences
-                : sharedExperiences // ignore: cast_nullable_to_non_nullable
-                      as List<SharedExperience>,
-            timeCapsules: null == timeCapsules
-                ? _value.timeCapsules
-                : timeCapsules // ignore: cast_nullable_to_non_nullable
-                      as List<TimeCapsuleItem>,
-            readingSessions: null == readingSessions
-                ? _value.readingSessions
-                : readingSessions // ignore: cast_nullable_to_non_nullable
-                      as List<ReadingSession>,
-            comfortStones: null == comfortStones
-                ? _value.comfortStones
-                : comfortStones // ignore: cast_nullable_to_non_nullable
-                      as List<ComfortStone>,
-            friendshipStats: null == friendshipStats
-                ? _value.friendshipStats
-                : friendshipStats // ignore: cast_nullable_to_non_nullable
-                      as FriendshipStats,
-            isOnline: null == isOnline
-                ? _value.isOnline
-                : isOnline // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isTyping: null == isTyping
-                ? _value.isTyping
-                : isTyping // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            lastSeen: freezed == lastSeen
-                ? _value.lastSeen
-                : lastSeen // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      bio: null == bio
+          ? _value.bio
+          : bio // ignore: cast_nullable_to_non_nullable
+              as String,
+      avatarUrl: null == avatarUrl
+          ? _value.avatarUrl
+          : avatarUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      friendsSince: null == friendsSince
+          ? _value.friendsSince
+          : friendsSince // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      currentMoodStatus: null == currentMoodStatus
+          ? _value.currentMoodStatus
+          : currentMoodStatus // ignore: cast_nullable_to_non_nullable
+              as SocialBatteryStatus,
+      connectionStats: null == connectionStats
+          ? _value.connectionStats
+          : connectionStats // ignore: cast_nullable_to_non_nullable
+              as ConnectionStats,
+      sharedExperiences: null == sharedExperiences
+          ? _value.sharedExperiences
+          : sharedExperiences // ignore: cast_nullable_to_non_nullable
+              as List<SharedExperience>,
+      timeCapsules: null == timeCapsules
+          ? _value.timeCapsules
+          : timeCapsules // ignore: cast_nullable_to_non_nullable
+              as List<TimeCapsuleItem>,
+      readingSessions: null == readingSessions
+          ? _value.readingSessions
+          : readingSessions // ignore: cast_nullable_to_non_nullable
+              as List<ReadingSession>,
+      comfortStones: null == comfortStones
+          ? _value.comfortStones
+          : comfortStones // ignore: cast_nullable_to_non_nullable
+              as List<ComfortStone>,
+      friendshipStats: null == friendshipStats
+          ? _value.friendshipStats
+          : friendshipStats // ignore: cast_nullable_to_non_nullable
+              as FriendshipStats,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isTyping: null == isTyping
+          ? _value.isTyping
+          : isTyping // ignore: cast_nullable_to_non_nullable
+              as bool,
+      lastSeen: freezed == lastSeen
+          ? _value.lastSeen
+          : lastSeen // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
   }
 
   /// Create a copy of UserProfileModel
@@ -190,9 +184,8 @@ class _$UserProfileModelCopyWithImpl<$Res, $Val extends UserProfileModel>
   @override
   @pragma('vm:prefer-inline')
   $SocialBatteryStatusCopyWith<$Res> get currentMoodStatus {
-    return $SocialBatteryStatusCopyWith<$Res>(_value.currentMoodStatus, (
-      value,
-    ) {
+    return $SocialBatteryStatusCopyWith<$Res>(_value.currentMoodStatus,
+        (value) {
       return _then(_value.copyWith(currentMoodStatus: value) as $Val);
     });
   }
@@ -221,30 +214,28 @@ class _$UserProfileModelCopyWithImpl<$Res, $Val extends UserProfileModel>
 /// @nodoc
 abstract class _$$UserProfileModelImplCopyWith<$Res>
     implements $UserProfileModelCopyWith<$Res> {
-  factory _$$UserProfileModelImplCopyWith(
-    _$UserProfileModelImpl value,
-    $Res Function(_$UserProfileModelImpl) then,
-  ) = __$$UserProfileModelImplCopyWithImpl<$Res>;
+  factory _$$UserProfileModelImplCopyWith(_$UserProfileModelImpl value,
+          $Res Function(_$UserProfileModelImpl) then) =
+      __$$UserProfileModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String name,
-    String username,
-    String bio,
-    String avatarUrl,
-    DateTime friendsSince,
-    SocialBatteryStatus currentMoodStatus,
-    ConnectionStats connectionStats,
-    List<SharedExperience> sharedExperiences,
-    List<TimeCapsuleItem> timeCapsules,
-    List<ReadingSession> readingSessions,
-    List<ComfortStone> comfortStones,
-    FriendshipStats friendshipStats,
-    bool isOnline,
-    bool isTyping,
-    DateTime? lastSeen,
-  });
+  $Res call(
+      {String id,
+      String name,
+      String username,
+      String bio,
+      String avatarUrl,
+      DateTime friendsSince,
+      SocialBatteryStatus currentMoodStatus,
+      ConnectionStats connectionStats,
+      List<SharedExperience> sharedExperiences,
+      List<TimeCapsuleItem> timeCapsules,
+      List<ReadingSession> readingSessions,
+      List<ComfortStone> comfortStones,
+      FriendshipStats friendshipStats,
+      bool isOnline,
+      bool isTyping,
+      DateTime? lastSeen});
 
   @override
   $SocialBatteryStatusCopyWith<$Res> get currentMoodStatus;
@@ -258,10 +249,9 @@ abstract class _$$UserProfileModelImplCopyWith<$Res>
 class __$$UserProfileModelImplCopyWithImpl<$Res>
     extends _$UserProfileModelCopyWithImpl<$Res, _$UserProfileModelImpl>
     implements _$$UserProfileModelImplCopyWith<$Res> {
-  __$$UserProfileModelImplCopyWithImpl(
-    _$UserProfileModelImpl _value,
-    $Res Function(_$UserProfileModelImpl) _then,
-  ) : super(_value, _then);
+  __$$UserProfileModelImplCopyWithImpl(_$UserProfileModelImpl _value,
+      $Res Function(_$UserProfileModelImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of UserProfileModel
   /// with the given fields replaced by the non-null parameter values.
@@ -285,101 +275,99 @@ class __$$UserProfileModelImplCopyWithImpl<$Res>
     Object? isTyping = null,
     Object? lastSeen = freezed,
   }) {
-    return _then(
-      _$UserProfileModelImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        name: null == name
-            ? _value.name
-            : name // ignore: cast_nullable_to_non_nullable
-                  as String,
-        username: null == username
-            ? _value.username
-            : username // ignore: cast_nullable_to_non_nullable
-                  as String,
-        bio: null == bio
-            ? _value.bio
-            : bio // ignore: cast_nullable_to_non_nullable
-                  as String,
-        avatarUrl: null == avatarUrl
-            ? _value.avatarUrl
-            : avatarUrl // ignore: cast_nullable_to_non_nullable
-                  as String,
-        friendsSince: null == friendsSince
-            ? _value.friendsSince
-            : friendsSince // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        currentMoodStatus: null == currentMoodStatus
-            ? _value.currentMoodStatus
-            : currentMoodStatus // ignore: cast_nullable_to_non_nullable
-                  as SocialBatteryStatus,
-        connectionStats: null == connectionStats
-            ? _value.connectionStats
-            : connectionStats // ignore: cast_nullable_to_non_nullable
-                  as ConnectionStats,
-        sharedExperiences: null == sharedExperiences
-            ? _value._sharedExperiences
-            : sharedExperiences // ignore: cast_nullable_to_non_nullable
-                  as List<SharedExperience>,
-        timeCapsules: null == timeCapsules
-            ? _value._timeCapsules
-            : timeCapsules // ignore: cast_nullable_to_non_nullable
-                  as List<TimeCapsuleItem>,
-        readingSessions: null == readingSessions
-            ? _value._readingSessions
-            : readingSessions // ignore: cast_nullable_to_non_nullable
-                  as List<ReadingSession>,
-        comfortStones: null == comfortStones
-            ? _value._comfortStones
-            : comfortStones // ignore: cast_nullable_to_non_nullable
-                  as List<ComfortStone>,
-        friendshipStats: null == friendshipStats
-            ? _value.friendshipStats
-            : friendshipStats // ignore: cast_nullable_to_non_nullable
-                  as FriendshipStats,
-        isOnline: null == isOnline
-            ? _value.isOnline
-            : isOnline // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isTyping: null == isTyping
-            ? _value.isTyping
-            : isTyping // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        lastSeen: freezed == lastSeen
-            ? _value.lastSeen
-            : lastSeen // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-      ),
-    );
+    return _then(_$UserProfileModelImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      bio: null == bio
+          ? _value.bio
+          : bio // ignore: cast_nullable_to_non_nullable
+              as String,
+      avatarUrl: null == avatarUrl
+          ? _value.avatarUrl
+          : avatarUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      friendsSince: null == friendsSince
+          ? _value.friendsSince
+          : friendsSince // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      currentMoodStatus: null == currentMoodStatus
+          ? _value.currentMoodStatus
+          : currentMoodStatus // ignore: cast_nullable_to_non_nullable
+              as SocialBatteryStatus,
+      connectionStats: null == connectionStats
+          ? _value.connectionStats
+          : connectionStats // ignore: cast_nullable_to_non_nullable
+              as ConnectionStats,
+      sharedExperiences: null == sharedExperiences
+          ? _value._sharedExperiences
+          : sharedExperiences // ignore: cast_nullable_to_non_nullable
+              as List<SharedExperience>,
+      timeCapsules: null == timeCapsules
+          ? _value._timeCapsules
+          : timeCapsules // ignore: cast_nullable_to_non_nullable
+              as List<TimeCapsuleItem>,
+      readingSessions: null == readingSessions
+          ? _value._readingSessions
+          : readingSessions // ignore: cast_nullable_to_non_nullable
+              as List<ReadingSession>,
+      comfortStones: null == comfortStones
+          ? _value._comfortStones
+          : comfortStones // ignore: cast_nullable_to_non_nullable
+              as List<ComfortStone>,
+      friendshipStats: null == friendshipStats
+          ? _value.friendshipStats
+          : friendshipStats // ignore: cast_nullable_to_non_nullable
+              as FriendshipStats,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isTyping: null == isTyping
+          ? _value.isTyping
+          : isTyping // ignore: cast_nullable_to_non_nullable
+              as bool,
+      lastSeen: freezed == lastSeen
+          ? _value.lastSeen
+          : lastSeen // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$UserProfileModelImpl implements _UserProfileModel {
-  const _$UserProfileModelImpl({
-    required this.id,
-    required this.name,
-    required this.username,
-    required this.bio,
-    required this.avatarUrl,
-    required this.friendsSince,
-    required this.currentMoodStatus,
-    required this.connectionStats,
-    required final List<SharedExperience> sharedExperiences,
-    required final List<TimeCapsuleItem> timeCapsules,
-    required final List<ReadingSession> readingSessions,
-    required final List<ComfortStone> comfortStones,
-    required this.friendshipStats,
-    this.isOnline = true,
-    this.isTyping = false,
-    this.lastSeen,
-  }) : _sharedExperiences = sharedExperiences,
-       _timeCapsules = timeCapsules,
-       _readingSessions = readingSessions,
-       _comfortStones = comfortStones;
+  const _$UserProfileModelImpl(
+      {required this.id,
+      required this.name,
+      required this.username,
+      required this.bio,
+      required this.avatarUrl,
+      required this.friendsSince,
+      required this.currentMoodStatus,
+      required this.connectionStats,
+      required final List<SharedExperience> sharedExperiences,
+      required final List<TimeCapsuleItem> timeCapsules,
+      required final List<ReadingSession> readingSessions,
+      required final List<ComfortStone> comfortStones,
+      required this.friendshipStats,
+      this.isOnline = true,
+      this.isTyping = false,
+      this.lastSeen})
+      : _sharedExperiences = sharedExperiences,
+        _timeCapsules = timeCapsules,
+        _readingSessions = readingSessions,
+        _comfortStones = comfortStones;
 
   factory _$UserProfileModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserProfileModelImplFromJson(json);
@@ -467,22 +455,14 @@ class _$UserProfileModelImpl implements _UserProfileModel {
                 other.currentMoodStatus == currentMoodStatus) &&
             (identical(other.connectionStats, connectionStats) ||
                 other.connectionStats == connectionStats) &&
-            const DeepCollectionEquality().equals(
-              other._sharedExperiences,
-              _sharedExperiences,
-            ) &&
-            const DeepCollectionEquality().equals(
-              other._timeCapsules,
-              _timeCapsules,
-            ) &&
-            const DeepCollectionEquality().equals(
-              other._readingSessions,
-              _readingSessions,
-            ) &&
-            const DeepCollectionEquality().equals(
-              other._comfortStones,
-              _comfortStones,
-            ) &&
+            const DeepCollectionEquality()
+                .equals(other._sharedExperiences, _sharedExperiences) &&
+            const DeepCollectionEquality()
+                .equals(other._timeCapsules, _timeCapsules) &&
+            const DeepCollectionEquality()
+                .equals(other._readingSessions, _readingSessions) &&
+            const DeepCollectionEquality()
+                .equals(other._comfortStones, _comfortStones) &&
             (identical(other.friendshipStats, friendshipStats) ||
                 other.friendshipStats == friendshipStats) &&
             (identical(other.isOnline, isOnline) ||
@@ -496,24 +476,23 @@ class _$UserProfileModelImpl implements _UserProfileModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    name,
-    username,
-    bio,
-    avatarUrl,
-    friendsSince,
-    currentMoodStatus,
-    connectionStats,
-    const DeepCollectionEquality().hash(_sharedExperiences),
-    const DeepCollectionEquality().hash(_timeCapsules),
-    const DeepCollectionEquality().hash(_readingSessions),
-    const DeepCollectionEquality().hash(_comfortStones),
-    friendshipStats,
-    isOnline,
-    isTyping,
-    lastSeen,
-  );
+      runtimeType,
+      id,
+      name,
+      username,
+      bio,
+      avatarUrl,
+      friendsSince,
+      currentMoodStatus,
+      connectionStats,
+      const DeepCollectionEquality().hash(_sharedExperiences),
+      const DeepCollectionEquality().hash(_timeCapsules),
+      const DeepCollectionEquality().hash(_readingSessions),
+      const DeepCollectionEquality().hash(_comfortStones),
+      friendshipStats,
+      isOnline,
+      isTyping,
+      lastSeen);
 
   /// Create a copy of UserProfileModel
   /// with the given fields replaced by the non-null parameter values.
@@ -522,35 +501,34 @@ class _$UserProfileModelImpl implements _UserProfileModel {
   @pragma('vm:prefer-inline')
   _$$UserProfileModelImplCopyWith<_$UserProfileModelImpl> get copyWith =>
       __$$UserProfileModelImplCopyWithImpl<_$UserProfileModelImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UserProfileModelImplToJson(this);
+    return _$$UserProfileModelImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _UserProfileModel implements UserProfileModel {
-  const factory _UserProfileModel({
-    required final String id,
-    required final String name,
-    required final String username,
-    required final String bio,
-    required final String avatarUrl,
-    required final DateTime friendsSince,
-    required final SocialBatteryStatus currentMoodStatus,
-    required final ConnectionStats connectionStats,
-    required final List<SharedExperience> sharedExperiences,
-    required final List<TimeCapsuleItem> timeCapsules,
-    required final List<ReadingSession> readingSessions,
-    required final List<ComfortStone> comfortStones,
-    required final FriendshipStats friendshipStats,
-    final bool isOnline,
-    final bool isTyping,
-    final DateTime? lastSeen,
-  }) = _$UserProfileModelImpl;
+  const factory _UserProfileModel(
+      {required final String id,
+      required final String name,
+      required final String username,
+      required final String bio,
+      required final String avatarUrl,
+      required final DateTime friendsSince,
+      required final SocialBatteryStatus currentMoodStatus,
+      required final ConnectionStats connectionStats,
+      required final List<SharedExperience> sharedExperiences,
+      required final List<TimeCapsuleItem> timeCapsules,
+      required final List<ReadingSession> readingSessions,
+      required final List<ComfortStone> comfortStones,
+      required final FriendshipStats friendshipStats,
+      final bool isOnline,
+      final bool isTyping,
+      final DateTime? lastSeen}) = _$UserProfileModelImpl;
 
   factory _UserProfileModel.fromJson(Map<String, dynamic> json) =
       _$UserProfileModelImpl.fromJson;
@@ -621,17 +599,15 @@ mixin _$SocialBatteryStatus {
 /// @nodoc
 abstract class $SocialBatteryStatusCopyWith<$Res> {
   factory $SocialBatteryStatusCopyWith(
-    SocialBatteryStatus value,
-    $Res Function(SocialBatteryStatus) then,
-  ) = _$SocialBatteryStatusCopyWithImpl<$Res, SocialBatteryStatus>;
+          SocialBatteryStatus value, $Res Function(SocialBatteryStatus) then) =
+      _$SocialBatteryStatusCopyWithImpl<$Res, SocialBatteryStatus>;
   @useResult
-  $Res call({
-    BatteryLevel level,
-    String description,
-    String colorName,
-    bool isAvailableForChat,
-    DateTime? lastUpdated,
-  });
+  $Res call(
+      {BatteryLevel level,
+      String description,
+      String colorName,
+      bool isAvailableForChat,
+      DateTime? lastUpdated});
 }
 
 /// @nodoc
@@ -655,60 +631,54 @@ class _$SocialBatteryStatusCopyWithImpl<$Res, $Val extends SocialBatteryStatus>
     Object? isAvailableForChat = null,
     Object? lastUpdated = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            level: null == level
-                ? _value.level
-                : level // ignore: cast_nullable_to_non_nullable
-                      as BatteryLevel,
-            description: null == description
-                ? _value.description
-                : description // ignore: cast_nullable_to_non_nullable
-                      as String,
-            colorName: null == colorName
-                ? _value.colorName
-                : colorName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            isAvailableForChat: null == isAvailableForChat
-                ? _value.isAvailableForChat
-                : isAvailableForChat // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            lastUpdated: freezed == lastUpdated
-                ? _value.lastUpdated
-                : lastUpdated // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      level: null == level
+          ? _value.level
+          : level // ignore: cast_nullable_to_non_nullable
+              as BatteryLevel,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      colorName: null == colorName
+          ? _value.colorName
+          : colorName // ignore: cast_nullable_to_non_nullable
+              as String,
+      isAvailableForChat: null == isAvailableForChat
+          ? _value.isAvailableForChat
+          : isAvailableForChat // ignore: cast_nullable_to_non_nullable
+              as bool,
+      lastUpdated: freezed == lastUpdated
+          ? _value.lastUpdated
+          : lastUpdated // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$SocialBatteryStatusImplCopyWith<$Res>
     implements $SocialBatteryStatusCopyWith<$Res> {
-  factory _$$SocialBatteryStatusImplCopyWith(
-    _$SocialBatteryStatusImpl value,
-    $Res Function(_$SocialBatteryStatusImpl) then,
-  ) = __$$SocialBatteryStatusImplCopyWithImpl<$Res>;
+  factory _$$SocialBatteryStatusImplCopyWith(_$SocialBatteryStatusImpl value,
+          $Res Function(_$SocialBatteryStatusImpl) then) =
+      __$$SocialBatteryStatusImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    BatteryLevel level,
-    String description,
-    String colorName,
-    bool isAvailableForChat,
-    DateTime? lastUpdated,
-  });
+  $Res call(
+      {BatteryLevel level,
+      String description,
+      String colorName,
+      bool isAvailableForChat,
+      DateTime? lastUpdated});
 }
 
 /// @nodoc
 class __$$SocialBatteryStatusImplCopyWithImpl<$Res>
     extends _$SocialBatteryStatusCopyWithImpl<$Res, _$SocialBatteryStatusImpl>
     implements _$$SocialBatteryStatusImplCopyWith<$Res> {
-  __$$SocialBatteryStatusImplCopyWithImpl(
-    _$SocialBatteryStatusImpl _value,
-    $Res Function(_$SocialBatteryStatusImpl) _then,
-  ) : super(_value, _then);
+  __$$SocialBatteryStatusImplCopyWithImpl(_$SocialBatteryStatusImpl _value,
+      $Res Function(_$SocialBatteryStatusImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of SocialBatteryStatus
   /// with the given fields replaced by the non-null parameter values.
@@ -721,43 +691,40 @@ class __$$SocialBatteryStatusImplCopyWithImpl<$Res>
     Object? isAvailableForChat = null,
     Object? lastUpdated = freezed,
   }) {
-    return _then(
-      _$SocialBatteryStatusImpl(
-        level: null == level
-            ? _value.level
-            : level // ignore: cast_nullable_to_non_nullable
-                  as BatteryLevel,
-        description: null == description
-            ? _value.description
-            : description // ignore: cast_nullable_to_non_nullable
-                  as String,
-        colorName: null == colorName
-            ? _value.colorName
-            : colorName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        isAvailableForChat: null == isAvailableForChat
-            ? _value.isAvailableForChat
-            : isAvailableForChat // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        lastUpdated: freezed == lastUpdated
-            ? _value.lastUpdated
-            : lastUpdated // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-      ),
-    );
+    return _then(_$SocialBatteryStatusImpl(
+      level: null == level
+          ? _value.level
+          : level // ignore: cast_nullable_to_non_nullable
+              as BatteryLevel,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      colorName: null == colorName
+          ? _value.colorName
+          : colorName // ignore: cast_nullable_to_non_nullable
+              as String,
+      isAvailableForChat: null == isAvailableForChat
+          ? _value.isAvailableForChat
+          : isAvailableForChat // ignore: cast_nullable_to_non_nullable
+              as bool,
+      lastUpdated: freezed == lastUpdated
+          ? _value.lastUpdated
+          : lastUpdated // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$SocialBatteryStatusImpl implements _SocialBatteryStatus {
-  const _$SocialBatteryStatusImpl({
-    required this.level,
-    required this.description,
-    required this.colorName,
-    this.isAvailableForChat = false,
-    this.lastUpdated,
-  });
+  const _$SocialBatteryStatusImpl(
+      {required this.level,
+      required this.description,
+      required this.colorName,
+      this.isAvailableForChat = false,
+      this.lastUpdated});
 
   factory _$SocialBatteryStatusImpl.fromJson(Map<String, dynamic> json) =>
       _$$SocialBatteryStatusImplFromJson(json);
@@ -797,14 +764,8 @@ class _$SocialBatteryStatusImpl implements _SocialBatteryStatus {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    level,
-    description,
-    colorName,
-    isAvailableForChat,
-    lastUpdated,
-  );
+  int get hashCode => Object.hash(runtimeType, level, description, colorName,
+      isAvailableForChat, lastUpdated);
 
   /// Create a copy of SocialBatteryStatus
   /// with the given fields replaced by the non-null parameter values.
@@ -813,24 +774,23 @@ class _$SocialBatteryStatusImpl implements _SocialBatteryStatus {
   @pragma('vm:prefer-inline')
   _$$SocialBatteryStatusImplCopyWith<_$SocialBatteryStatusImpl> get copyWith =>
       __$$SocialBatteryStatusImplCopyWithImpl<_$SocialBatteryStatusImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SocialBatteryStatusImplToJson(this);
+    return _$$SocialBatteryStatusImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _SocialBatteryStatus implements SocialBatteryStatus {
-  const factory _SocialBatteryStatus({
-    required final BatteryLevel level,
-    required final String description,
-    required final String colorName,
-    final bool isAvailableForChat,
-    final DateTime? lastUpdated,
-  }) = _$SocialBatteryStatusImpl;
+  const factory _SocialBatteryStatus(
+      {required final BatteryLevel level,
+      required final String description,
+      required final String colorName,
+      final bool isAvailableForChat,
+      final DateTime? lastUpdated}) = _$SocialBatteryStatusImpl;
 
   factory _SocialBatteryStatus.fromJson(Map<String, dynamic> json) =
       _$SocialBatteryStatusImpl.fromJson;
@@ -880,18 +840,16 @@ mixin _$ConnectionStats {
 /// @nodoc
 abstract class $ConnectionStatsCopyWith<$Res> {
   factory $ConnectionStatsCopyWith(
-    ConnectionStats value,
-    $Res Function(ConnectionStats) then,
-  ) = _$ConnectionStatsCopyWithImpl<$Res, ConnectionStats>;
+          ConnectionStats value, $Res Function(ConnectionStats) then) =
+      _$ConnectionStatsCopyWithImpl<$Res, ConnectionStats>;
   @useResult
-  $Res call({
-    int daysOfFriendship,
-    int conversationsCount,
-    int comfortTouchesShared,
-    int hoursReadingTogether,
-    int gamesPlayed,
-    int timeCapsulesSent,
-  });
+  $Res call(
+      {int daysOfFriendship,
+      int conversationsCount,
+      int comfortTouchesShared,
+      int hoursReadingTogether,
+      int gamesPlayed,
+      int timeCapsulesSent});
 }
 
 /// @nodoc
@@ -916,55 +874,50 @@ class _$ConnectionStatsCopyWithImpl<$Res, $Val extends ConnectionStats>
     Object? gamesPlayed = null,
     Object? timeCapsulesSent = null,
   }) {
-    return _then(
-      _value.copyWith(
-            daysOfFriendship: null == daysOfFriendship
-                ? _value.daysOfFriendship
-                : daysOfFriendship // ignore: cast_nullable_to_non_nullable
-                      as int,
-            conversationsCount: null == conversationsCount
-                ? _value.conversationsCount
-                : conversationsCount // ignore: cast_nullable_to_non_nullable
-                      as int,
-            comfortTouchesShared: null == comfortTouchesShared
-                ? _value.comfortTouchesShared
-                : comfortTouchesShared // ignore: cast_nullable_to_non_nullable
-                      as int,
-            hoursReadingTogether: null == hoursReadingTogether
-                ? _value.hoursReadingTogether
-                : hoursReadingTogether // ignore: cast_nullable_to_non_nullable
-                      as int,
-            gamesPlayed: null == gamesPlayed
-                ? _value.gamesPlayed
-                : gamesPlayed // ignore: cast_nullable_to_non_nullable
-                      as int,
-            timeCapsulesSent: null == timeCapsulesSent
-                ? _value.timeCapsulesSent
-                : timeCapsulesSent // ignore: cast_nullable_to_non_nullable
-                      as int,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      daysOfFriendship: null == daysOfFriendship
+          ? _value.daysOfFriendship
+          : daysOfFriendship // ignore: cast_nullable_to_non_nullable
+              as int,
+      conversationsCount: null == conversationsCount
+          ? _value.conversationsCount
+          : conversationsCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      comfortTouchesShared: null == comfortTouchesShared
+          ? _value.comfortTouchesShared
+          : comfortTouchesShared // ignore: cast_nullable_to_non_nullable
+              as int,
+      hoursReadingTogether: null == hoursReadingTogether
+          ? _value.hoursReadingTogether
+          : hoursReadingTogether // ignore: cast_nullable_to_non_nullable
+              as int,
+      gamesPlayed: null == gamesPlayed
+          ? _value.gamesPlayed
+          : gamesPlayed // ignore: cast_nullable_to_non_nullable
+              as int,
+      timeCapsulesSent: null == timeCapsulesSent
+          ? _value.timeCapsulesSent
+          : timeCapsulesSent // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$ConnectionStatsImplCopyWith<$Res>
     implements $ConnectionStatsCopyWith<$Res> {
-  factory _$$ConnectionStatsImplCopyWith(
-    _$ConnectionStatsImpl value,
-    $Res Function(_$ConnectionStatsImpl) then,
-  ) = __$$ConnectionStatsImplCopyWithImpl<$Res>;
+  factory _$$ConnectionStatsImplCopyWith(_$ConnectionStatsImpl value,
+          $Res Function(_$ConnectionStatsImpl) then) =
+      __$$ConnectionStatsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    int daysOfFriendship,
-    int conversationsCount,
-    int comfortTouchesShared,
-    int hoursReadingTogether,
-    int gamesPlayed,
-    int timeCapsulesSent,
-  });
+  $Res call(
+      {int daysOfFriendship,
+      int conversationsCount,
+      int comfortTouchesShared,
+      int hoursReadingTogether,
+      int gamesPlayed,
+      int timeCapsulesSent});
 }
 
 /// @nodoc
@@ -972,9 +925,8 @@ class __$$ConnectionStatsImplCopyWithImpl<$Res>
     extends _$ConnectionStatsCopyWithImpl<$Res, _$ConnectionStatsImpl>
     implements _$$ConnectionStatsImplCopyWith<$Res> {
   __$$ConnectionStatsImplCopyWithImpl(
-    _$ConnectionStatsImpl _value,
-    $Res Function(_$ConnectionStatsImpl) _then,
-  ) : super(_value, _then);
+      _$ConnectionStatsImpl _value, $Res Function(_$ConnectionStatsImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ConnectionStats
   /// with the given fields replaced by the non-null parameter values.
@@ -988,48 +940,45 @@ class __$$ConnectionStatsImplCopyWithImpl<$Res>
     Object? gamesPlayed = null,
     Object? timeCapsulesSent = null,
   }) {
-    return _then(
-      _$ConnectionStatsImpl(
-        daysOfFriendship: null == daysOfFriendship
-            ? _value.daysOfFriendship
-            : daysOfFriendship // ignore: cast_nullable_to_non_nullable
-                  as int,
-        conversationsCount: null == conversationsCount
-            ? _value.conversationsCount
-            : conversationsCount // ignore: cast_nullable_to_non_nullable
-                  as int,
-        comfortTouchesShared: null == comfortTouchesShared
-            ? _value.comfortTouchesShared
-            : comfortTouchesShared // ignore: cast_nullable_to_non_nullable
-                  as int,
-        hoursReadingTogether: null == hoursReadingTogether
-            ? _value.hoursReadingTogether
-            : hoursReadingTogether // ignore: cast_nullable_to_non_nullable
-                  as int,
-        gamesPlayed: null == gamesPlayed
-            ? _value.gamesPlayed
-            : gamesPlayed // ignore: cast_nullable_to_non_nullable
-                  as int,
-        timeCapsulesSent: null == timeCapsulesSent
-            ? _value.timeCapsulesSent
-            : timeCapsulesSent // ignore: cast_nullable_to_non_nullable
-                  as int,
-      ),
-    );
+    return _then(_$ConnectionStatsImpl(
+      daysOfFriendship: null == daysOfFriendship
+          ? _value.daysOfFriendship
+          : daysOfFriendship // ignore: cast_nullable_to_non_nullable
+              as int,
+      conversationsCount: null == conversationsCount
+          ? _value.conversationsCount
+          : conversationsCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      comfortTouchesShared: null == comfortTouchesShared
+          ? _value.comfortTouchesShared
+          : comfortTouchesShared // ignore: cast_nullable_to_non_nullable
+              as int,
+      hoursReadingTogether: null == hoursReadingTogether
+          ? _value.hoursReadingTogether
+          : hoursReadingTogether // ignore: cast_nullable_to_non_nullable
+              as int,
+      gamesPlayed: null == gamesPlayed
+          ? _value.gamesPlayed
+          : gamesPlayed // ignore: cast_nullable_to_non_nullable
+              as int,
+      timeCapsulesSent: null == timeCapsulesSent
+          ? _value.timeCapsulesSent
+          : timeCapsulesSent // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ConnectionStatsImpl implements _ConnectionStats {
-  const _$ConnectionStatsImpl({
-    required this.daysOfFriendship,
-    required this.conversationsCount,
-    required this.comfortTouchesShared,
-    required this.hoursReadingTogether,
-    required this.gamesPlayed,
-    required this.timeCapsulesSent,
-  });
+  const _$ConnectionStatsImpl(
+      {required this.daysOfFriendship,
+      required this.conversationsCount,
+      required this.comfortTouchesShared,
+      required this.hoursReadingTogether,
+      required this.gamesPlayed,
+      required this.timeCapsulesSent});
 
   factory _$ConnectionStatsImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConnectionStatsImplFromJson(json);
@@ -1074,14 +1023,13 @@ class _$ConnectionStatsImpl implements _ConnectionStats {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    daysOfFriendship,
-    conversationsCount,
-    comfortTouchesShared,
-    hoursReadingTogether,
-    gamesPlayed,
-    timeCapsulesSent,
-  );
+      runtimeType,
+      daysOfFriendship,
+      conversationsCount,
+      comfortTouchesShared,
+      hoursReadingTogether,
+      gamesPlayed,
+      timeCapsulesSent);
 
   /// Create a copy of ConnectionStats
   /// with the given fields replaced by the non-null parameter values.
@@ -1090,25 +1038,24 @@ class _$ConnectionStatsImpl implements _ConnectionStats {
   @pragma('vm:prefer-inline')
   _$$ConnectionStatsImplCopyWith<_$ConnectionStatsImpl> get copyWith =>
       __$$ConnectionStatsImplCopyWithImpl<_$ConnectionStatsImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ConnectionStatsImplToJson(this);
+    return _$$ConnectionStatsImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _ConnectionStats implements ConnectionStats {
-  const factory _ConnectionStats({
-    required final int daysOfFriendship,
-    required final int conversationsCount,
-    required final int comfortTouchesShared,
-    required final int hoursReadingTogether,
-    required final int gamesPlayed,
-    required final int timeCapsulesSent,
-  }) = _$ConnectionStatsImpl;
+  const factory _ConnectionStats(
+      {required final int daysOfFriendship,
+      required final int conversationsCount,
+      required final int comfortTouchesShared,
+      required final int hoursReadingTogether,
+      required final int gamesPlayed,
+      required final int timeCapsulesSent}) = _$ConnectionStatsImpl;
 
   factory _ConnectionStats.fromJson(Map<String, dynamic> json) =
       _$ConnectionStatsImpl.fromJson;
@@ -1161,19 +1108,17 @@ mixin _$SharedExperience {
 /// @nodoc
 abstract class $SharedExperienceCopyWith<$Res> {
   factory $SharedExperienceCopyWith(
-    SharedExperience value,
-    $Res Function(SharedExperience) then,
-  ) = _$SharedExperienceCopyWithImpl<$Res, SharedExperience>;
+          SharedExperience value, $Res Function(SharedExperience) then) =
+      _$SharedExperienceCopyWithImpl<$Res, SharedExperience>;
   @useResult
-  $Res call({
-    String id,
-    ExperienceType type,
-    String title,
-    String subtitle,
-    String icon,
-    int count,
-    DateTime? lastActivity,
-  });
+  $Res call(
+      {String id,
+      ExperienceType type,
+      String title,
+      String subtitle,
+      String icon,
+      int count,
+      DateTime? lastActivity});
 }
 
 /// @nodoc
@@ -1199,70 +1144,64 @@ class _$SharedExperienceCopyWithImpl<$Res, $Val extends SharedExperience>
     Object? count = null,
     Object? lastActivity = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            type: null == type
-                ? _value.type
-                : type // ignore: cast_nullable_to_non_nullable
-                      as ExperienceType,
-            title: null == title
-                ? _value.title
-                : title // ignore: cast_nullable_to_non_nullable
-                      as String,
-            subtitle: null == subtitle
-                ? _value.subtitle
-                : subtitle // ignore: cast_nullable_to_non_nullable
-                      as String,
-            icon: null == icon
-                ? _value.icon
-                : icon // ignore: cast_nullable_to_non_nullable
-                      as String,
-            count: null == count
-                ? _value.count
-                : count // ignore: cast_nullable_to_non_nullable
-                      as int,
-            lastActivity: freezed == lastActivity
-                ? _value.lastActivity
-                : lastActivity // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as ExperienceType,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      subtitle: null == subtitle
+          ? _value.subtitle
+          : subtitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      icon: null == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as String,
+      count: null == count
+          ? _value.count
+          : count // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastActivity: freezed == lastActivity
+          ? _value.lastActivity
+          : lastActivity // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$SharedExperienceImplCopyWith<$Res>
     implements $SharedExperienceCopyWith<$Res> {
-  factory _$$SharedExperienceImplCopyWith(
-    _$SharedExperienceImpl value,
-    $Res Function(_$SharedExperienceImpl) then,
-  ) = __$$SharedExperienceImplCopyWithImpl<$Res>;
+  factory _$$SharedExperienceImplCopyWith(_$SharedExperienceImpl value,
+          $Res Function(_$SharedExperienceImpl) then) =
+      __$$SharedExperienceImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    ExperienceType type,
-    String title,
-    String subtitle,
-    String icon,
-    int count,
-    DateTime? lastActivity,
-  });
+  $Res call(
+      {String id,
+      ExperienceType type,
+      String title,
+      String subtitle,
+      String icon,
+      int count,
+      DateTime? lastActivity});
 }
 
 /// @nodoc
 class __$$SharedExperienceImplCopyWithImpl<$Res>
     extends _$SharedExperienceCopyWithImpl<$Res, _$SharedExperienceImpl>
     implements _$$SharedExperienceImplCopyWith<$Res> {
-  __$$SharedExperienceImplCopyWithImpl(
-    _$SharedExperienceImpl _value,
-    $Res Function(_$SharedExperienceImpl) _then,
-  ) : super(_value, _then);
+  __$$SharedExperienceImplCopyWithImpl(_$SharedExperienceImpl _value,
+      $Res Function(_$SharedExperienceImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of SharedExperience
   /// with the given fields replaced by the non-null parameter values.
@@ -1277,53 +1216,50 @@ class __$$SharedExperienceImplCopyWithImpl<$Res>
     Object? count = null,
     Object? lastActivity = freezed,
   }) {
-    return _then(
-      _$SharedExperienceImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        type: null == type
-            ? _value.type
-            : type // ignore: cast_nullable_to_non_nullable
-                  as ExperienceType,
-        title: null == title
-            ? _value.title
-            : title // ignore: cast_nullable_to_non_nullable
-                  as String,
-        subtitle: null == subtitle
-            ? _value.subtitle
-            : subtitle // ignore: cast_nullable_to_non_nullable
-                  as String,
-        icon: null == icon
-            ? _value.icon
-            : icon // ignore: cast_nullable_to_non_nullable
-                  as String,
-        count: null == count
-            ? _value.count
-            : count // ignore: cast_nullable_to_non_nullable
-                  as int,
-        lastActivity: freezed == lastActivity
-            ? _value.lastActivity
-            : lastActivity // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-      ),
-    );
+    return _then(_$SharedExperienceImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as ExperienceType,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      subtitle: null == subtitle
+          ? _value.subtitle
+          : subtitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      icon: null == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as String,
+      count: null == count
+          ? _value.count
+          : count // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastActivity: freezed == lastActivity
+          ? _value.lastActivity
+          : lastActivity // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$SharedExperienceImpl implements _SharedExperience {
-  const _$SharedExperienceImpl({
-    required this.id,
-    required this.type,
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-    required this.count,
-    this.lastActivity,
-  });
+  const _$SharedExperienceImpl(
+      {required this.id,
+      required this.type,
+      required this.title,
+      required this.subtitle,
+      required this.icon,
+      required this.count,
+      this.lastActivity});
 
   factory _$SharedExperienceImpl.fromJson(Map<String, dynamic> json) =>
       _$$SharedExperienceImplFromJson(json);
@@ -1367,15 +1303,7 @@ class _$SharedExperienceImpl implements _SharedExperience {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    type,
-    title,
-    subtitle,
-    icon,
-    count,
-    lastActivity,
-  );
+      runtimeType, id, type, title, subtitle, icon, count, lastActivity);
 
   /// Create a copy of SharedExperience
   /// with the given fields replaced by the non-null parameter values.
@@ -1384,26 +1312,25 @@ class _$SharedExperienceImpl implements _SharedExperience {
   @pragma('vm:prefer-inline')
   _$$SharedExperienceImplCopyWith<_$SharedExperienceImpl> get copyWith =>
       __$$SharedExperienceImplCopyWithImpl<_$SharedExperienceImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SharedExperienceImplToJson(this);
+    return _$$SharedExperienceImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _SharedExperience implements SharedExperience {
-  const factory _SharedExperience({
-    required final String id,
-    required final ExperienceType type,
-    required final String title,
-    required final String subtitle,
-    required final String icon,
-    required final int count,
-    final DateTime? lastActivity,
-  }) = _$SharedExperienceImpl;
+  const factory _SharedExperience(
+      {required final String id,
+      required final ExperienceType type,
+      required final String title,
+      required final String subtitle,
+      required final String icon,
+      required final int count,
+      final DateTime? lastActivity}) = _$SharedExperienceImpl;
 
   factory _SharedExperience.fromJson(Map<String, dynamic> json) =
       _$SharedExperienceImpl.fromJson;
@@ -1459,20 +1386,18 @@ mixin _$TimeCapsuleItem {
 /// @nodoc
 abstract class $TimeCapsuleItemCopyWith<$Res> {
   factory $TimeCapsuleItemCopyWith(
-    TimeCapsuleItem value,
-    $Res Function(TimeCapsuleItem) then,
-  ) = _$TimeCapsuleItemCopyWithImpl<$Res, TimeCapsuleItem>;
+          TimeCapsuleItem value, $Res Function(TimeCapsuleItem) then) =
+      _$TimeCapsuleItemCopyWithImpl<$Res, TimeCapsuleItem>;
   @useResult
-  $Res call({
-    String id,
-    String senderId,
-    String recipientId,
-    String preview,
-    DateTime createdAt,
-    DateTime deliveryDate,
-    CapsuleStatus status,
-    bool isFromCurrentUser,
-  });
+  $Res call(
+      {String id,
+      String senderId,
+      String recipientId,
+      String preview,
+      DateTime createdAt,
+      DateTime deliveryDate,
+      CapsuleStatus status,
+      bool isFromCurrentUser});
 }
 
 /// @nodoc
@@ -1499,65 +1424,60 @@ class _$TimeCapsuleItemCopyWithImpl<$Res, $Val extends TimeCapsuleItem>
     Object? status = null,
     Object? isFromCurrentUser = null,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            senderId: null == senderId
-                ? _value.senderId
-                : senderId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            recipientId: null == recipientId
-                ? _value.recipientId
-                : recipientId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            preview: null == preview
-                ? _value.preview
-                : preview // ignore: cast_nullable_to_non_nullable
-                      as String,
-            createdAt: null == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            deliveryDate: null == deliveryDate
-                ? _value.deliveryDate
-                : deliveryDate // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            status: null == status
-                ? _value.status
-                : status // ignore: cast_nullable_to_non_nullable
-                      as CapsuleStatus,
-            isFromCurrentUser: null == isFromCurrentUser
-                ? _value.isFromCurrentUser
-                : isFromCurrentUser // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      senderId: null == senderId
+          ? _value.senderId
+          : senderId // ignore: cast_nullable_to_non_nullable
+              as String,
+      recipientId: null == recipientId
+          ? _value.recipientId
+          : recipientId // ignore: cast_nullable_to_non_nullable
+              as String,
+      preview: null == preview
+          ? _value.preview
+          : preview // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      deliveryDate: null == deliveryDate
+          ? _value.deliveryDate
+          : deliveryDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as CapsuleStatus,
+      isFromCurrentUser: null == isFromCurrentUser
+          ? _value.isFromCurrentUser
+          : isFromCurrentUser // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$TimeCapsuleItemImplCopyWith<$Res>
     implements $TimeCapsuleItemCopyWith<$Res> {
-  factory _$$TimeCapsuleItemImplCopyWith(
-    _$TimeCapsuleItemImpl value,
-    $Res Function(_$TimeCapsuleItemImpl) then,
-  ) = __$$TimeCapsuleItemImplCopyWithImpl<$Res>;
+  factory _$$TimeCapsuleItemImplCopyWith(_$TimeCapsuleItemImpl value,
+          $Res Function(_$TimeCapsuleItemImpl) then) =
+      __$$TimeCapsuleItemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String senderId,
-    String recipientId,
-    String preview,
-    DateTime createdAt,
-    DateTime deliveryDate,
-    CapsuleStatus status,
-    bool isFromCurrentUser,
-  });
+  $Res call(
+      {String id,
+      String senderId,
+      String recipientId,
+      String preview,
+      DateTime createdAt,
+      DateTime deliveryDate,
+      CapsuleStatus status,
+      bool isFromCurrentUser});
 }
 
 /// @nodoc
@@ -1565,9 +1485,8 @@ class __$$TimeCapsuleItemImplCopyWithImpl<$Res>
     extends _$TimeCapsuleItemCopyWithImpl<$Res, _$TimeCapsuleItemImpl>
     implements _$$TimeCapsuleItemImplCopyWith<$Res> {
   __$$TimeCapsuleItemImplCopyWithImpl(
-    _$TimeCapsuleItemImpl _value,
-    $Res Function(_$TimeCapsuleItemImpl) _then,
-  ) : super(_value, _then);
+      _$TimeCapsuleItemImpl _value, $Res Function(_$TimeCapsuleItemImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of TimeCapsuleItem
   /// with the given fields replaced by the non-null parameter values.
@@ -1583,58 +1502,55 @@ class __$$TimeCapsuleItemImplCopyWithImpl<$Res>
     Object? status = null,
     Object? isFromCurrentUser = null,
   }) {
-    return _then(
-      _$TimeCapsuleItemImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        senderId: null == senderId
-            ? _value.senderId
-            : senderId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        recipientId: null == recipientId
-            ? _value.recipientId
-            : recipientId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        preview: null == preview
-            ? _value.preview
-            : preview // ignore: cast_nullable_to_non_nullable
-                  as String,
-        createdAt: null == createdAt
-            ? _value.createdAt
-            : createdAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        deliveryDate: null == deliveryDate
-            ? _value.deliveryDate
-            : deliveryDate // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        status: null == status
-            ? _value.status
-            : status // ignore: cast_nullable_to_non_nullable
-                  as CapsuleStatus,
-        isFromCurrentUser: null == isFromCurrentUser
-            ? _value.isFromCurrentUser
-            : isFromCurrentUser // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$TimeCapsuleItemImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      senderId: null == senderId
+          ? _value.senderId
+          : senderId // ignore: cast_nullable_to_non_nullable
+              as String,
+      recipientId: null == recipientId
+          ? _value.recipientId
+          : recipientId // ignore: cast_nullable_to_non_nullable
+              as String,
+      preview: null == preview
+          ? _value.preview
+          : preview // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      deliveryDate: null == deliveryDate
+          ? _value.deliveryDate
+          : deliveryDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as CapsuleStatus,
+      isFromCurrentUser: null == isFromCurrentUser
+          ? _value.isFromCurrentUser
+          : isFromCurrentUser // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$TimeCapsuleItemImpl implements _TimeCapsuleItem {
-  const _$TimeCapsuleItemImpl({
-    required this.id,
-    required this.senderId,
-    required this.recipientId,
-    required this.preview,
-    required this.createdAt,
-    required this.deliveryDate,
-    required this.status,
-    this.isFromCurrentUser = false,
-  });
+  const _$TimeCapsuleItemImpl(
+      {required this.id,
+      required this.senderId,
+      required this.recipientId,
+      required this.preview,
+      required this.createdAt,
+      required this.deliveryDate,
+      required this.status,
+      this.isFromCurrentUser = false});
 
   factory _$TimeCapsuleItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$TimeCapsuleItemImplFromJson(json);
@@ -1684,17 +1600,8 @@ class _$TimeCapsuleItemImpl implements _TimeCapsuleItem {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    senderId,
-    recipientId,
-    preview,
-    createdAt,
-    deliveryDate,
-    status,
-    isFromCurrentUser,
-  );
+  int get hashCode => Object.hash(runtimeType, id, senderId, recipientId,
+      preview, createdAt, deliveryDate, status, isFromCurrentUser);
 
   /// Create a copy of TimeCapsuleItem
   /// with the given fields replaced by the non-null parameter values.
@@ -1703,27 +1610,26 @@ class _$TimeCapsuleItemImpl implements _TimeCapsuleItem {
   @pragma('vm:prefer-inline')
   _$$TimeCapsuleItemImplCopyWith<_$TimeCapsuleItemImpl> get copyWith =>
       __$$TimeCapsuleItemImplCopyWithImpl<_$TimeCapsuleItemImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$TimeCapsuleItemImplToJson(this);
+    return _$$TimeCapsuleItemImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _TimeCapsuleItem implements TimeCapsuleItem {
-  const factory _TimeCapsuleItem({
-    required final String id,
-    required final String senderId,
-    required final String recipientId,
-    required final String preview,
-    required final DateTime createdAt,
-    required final DateTime deliveryDate,
-    required final CapsuleStatus status,
-    final bool isFromCurrentUser,
-  }) = _$TimeCapsuleItemImpl;
+  const factory _TimeCapsuleItem(
+      {required final String id,
+      required final String senderId,
+      required final String recipientId,
+      required final String preview,
+      required final DateTime createdAt,
+      required final DateTime deliveryDate,
+      required final CapsuleStatus status,
+      final bool isFromCurrentUser}) = _$TimeCapsuleItemImpl;
 
   factory _TimeCapsuleItem.fromJson(Map<String, dynamic> json) =
       _$TimeCapsuleItemImpl.fromJson;
@@ -1783,22 +1689,20 @@ mixin _$ReadingSession {
 /// @nodoc
 abstract class $ReadingSessionCopyWith<$Res> {
   factory $ReadingSessionCopyWith(
-    ReadingSession value,
-    $Res Function(ReadingSession) then,
-  ) = _$ReadingSessionCopyWithImpl<$Res, ReadingSession>;
+          ReadingSession value, $Res Function(ReadingSession) then) =
+      _$ReadingSessionCopyWithImpl<$Res, ReadingSession>;
   @useResult
-  $Res call({
-    String id,
-    String bookTitle,
-    String author,
-    String bookCover,
-    int currentChapter,
-    int totalChapters,
-    double progressPercentage,
-    DateTime lastReadAt,
-    ReadingStatus status,
-    List<String>? participantIds,
-  });
+  $Res call(
+      {String id,
+      String bookTitle,
+      String author,
+      String bookCover,
+      int currentChapter,
+      int totalChapters,
+      double progressPercentage,
+      DateTime lastReadAt,
+      ReadingStatus status,
+      List<String>? participantIds});
 }
 
 /// @nodoc
@@ -1827,75 +1731,70 @@ class _$ReadingSessionCopyWithImpl<$Res, $Val extends ReadingSession>
     Object? status = null,
     Object? participantIds = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            bookTitle: null == bookTitle
-                ? _value.bookTitle
-                : bookTitle // ignore: cast_nullable_to_non_nullable
-                      as String,
-            author: null == author
-                ? _value.author
-                : author // ignore: cast_nullable_to_non_nullable
-                      as String,
-            bookCover: null == bookCover
-                ? _value.bookCover
-                : bookCover // ignore: cast_nullable_to_non_nullable
-                      as String,
-            currentChapter: null == currentChapter
-                ? _value.currentChapter
-                : currentChapter // ignore: cast_nullable_to_non_nullable
-                      as int,
-            totalChapters: null == totalChapters
-                ? _value.totalChapters
-                : totalChapters // ignore: cast_nullable_to_non_nullable
-                      as int,
-            progressPercentage: null == progressPercentage
-                ? _value.progressPercentage
-                : progressPercentage // ignore: cast_nullable_to_non_nullable
-                      as double,
-            lastReadAt: null == lastReadAt
-                ? _value.lastReadAt
-                : lastReadAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            status: null == status
-                ? _value.status
-                : status // ignore: cast_nullable_to_non_nullable
-                      as ReadingStatus,
-            participantIds: freezed == participantIds
-                ? _value.participantIds
-                : participantIds // ignore: cast_nullable_to_non_nullable
-                      as List<String>?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookTitle: null == bookTitle
+          ? _value.bookTitle
+          : bookTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      author: null == author
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookCover: null == bookCover
+          ? _value.bookCover
+          : bookCover // ignore: cast_nullable_to_non_nullable
+              as String,
+      currentChapter: null == currentChapter
+          ? _value.currentChapter
+          : currentChapter // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalChapters: null == totalChapters
+          ? _value.totalChapters
+          : totalChapters // ignore: cast_nullable_to_non_nullable
+              as int,
+      progressPercentage: null == progressPercentage
+          ? _value.progressPercentage
+          : progressPercentage // ignore: cast_nullable_to_non_nullable
+              as double,
+      lastReadAt: null == lastReadAt
+          ? _value.lastReadAt
+          : lastReadAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as ReadingStatus,
+      participantIds: freezed == participantIds
+          ? _value.participantIds
+          : participantIds // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$ReadingSessionImplCopyWith<$Res>
     implements $ReadingSessionCopyWith<$Res> {
-  factory _$$ReadingSessionImplCopyWith(
-    _$ReadingSessionImpl value,
-    $Res Function(_$ReadingSessionImpl) then,
-  ) = __$$ReadingSessionImplCopyWithImpl<$Res>;
+  factory _$$ReadingSessionImplCopyWith(_$ReadingSessionImpl value,
+          $Res Function(_$ReadingSessionImpl) then) =
+      __$$ReadingSessionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String bookTitle,
-    String author,
-    String bookCover,
-    int currentChapter,
-    int totalChapters,
-    double progressPercentage,
-    DateTime lastReadAt,
-    ReadingStatus status,
-    List<String>? participantIds,
-  });
+  $Res call(
+      {String id,
+      String bookTitle,
+      String author,
+      String bookCover,
+      int currentChapter,
+      int totalChapters,
+      double progressPercentage,
+      DateTime lastReadAt,
+      ReadingStatus status,
+      List<String>? participantIds});
 }
 
 /// @nodoc
@@ -1903,9 +1802,8 @@ class __$$ReadingSessionImplCopyWithImpl<$Res>
     extends _$ReadingSessionCopyWithImpl<$Res, _$ReadingSessionImpl>
     implements _$$ReadingSessionImplCopyWith<$Res> {
   __$$ReadingSessionImplCopyWithImpl(
-    _$ReadingSessionImpl _value,
-    $Res Function(_$ReadingSessionImpl) _then,
-  ) : super(_value, _then);
+      _$ReadingSessionImpl _value, $Res Function(_$ReadingSessionImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ReadingSession
   /// with the given fields replaced by the non-null parameter values.
@@ -1923,68 +1821,66 @@ class __$$ReadingSessionImplCopyWithImpl<$Res>
     Object? status = null,
     Object? participantIds = freezed,
   }) {
-    return _then(
-      _$ReadingSessionImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        bookTitle: null == bookTitle
-            ? _value.bookTitle
-            : bookTitle // ignore: cast_nullable_to_non_nullable
-                  as String,
-        author: null == author
-            ? _value.author
-            : author // ignore: cast_nullable_to_non_nullable
-                  as String,
-        bookCover: null == bookCover
-            ? _value.bookCover
-            : bookCover // ignore: cast_nullable_to_non_nullable
-                  as String,
-        currentChapter: null == currentChapter
-            ? _value.currentChapter
-            : currentChapter // ignore: cast_nullable_to_non_nullable
-                  as int,
-        totalChapters: null == totalChapters
-            ? _value.totalChapters
-            : totalChapters // ignore: cast_nullable_to_non_nullable
-                  as int,
-        progressPercentage: null == progressPercentage
-            ? _value.progressPercentage
-            : progressPercentage // ignore: cast_nullable_to_non_nullable
-                  as double,
-        lastReadAt: null == lastReadAt
-            ? _value.lastReadAt
-            : lastReadAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        status: null == status
-            ? _value.status
-            : status // ignore: cast_nullable_to_non_nullable
-                  as ReadingStatus,
-        participantIds: freezed == participantIds
-            ? _value._participantIds
-            : participantIds // ignore: cast_nullable_to_non_nullable
-                  as List<String>?,
-      ),
-    );
+    return _then(_$ReadingSessionImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookTitle: null == bookTitle
+          ? _value.bookTitle
+          : bookTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      author: null == author
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookCover: null == bookCover
+          ? _value.bookCover
+          : bookCover // ignore: cast_nullable_to_non_nullable
+              as String,
+      currentChapter: null == currentChapter
+          ? _value.currentChapter
+          : currentChapter // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalChapters: null == totalChapters
+          ? _value.totalChapters
+          : totalChapters // ignore: cast_nullable_to_non_nullable
+              as int,
+      progressPercentage: null == progressPercentage
+          ? _value.progressPercentage
+          : progressPercentage // ignore: cast_nullable_to_non_nullable
+              as double,
+      lastReadAt: null == lastReadAt
+          ? _value.lastReadAt
+          : lastReadAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as ReadingStatus,
+      participantIds: freezed == participantIds
+          ? _value._participantIds
+          : participantIds // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ReadingSessionImpl implements _ReadingSession {
-  const _$ReadingSessionImpl({
-    required this.id,
-    required this.bookTitle,
-    required this.author,
-    required this.bookCover,
-    required this.currentChapter,
-    required this.totalChapters,
-    required this.progressPercentage,
-    required this.lastReadAt,
-    required this.status,
-    final List<String>? participantIds,
-  }) : _participantIds = participantIds;
+  const _$ReadingSessionImpl(
+      {required this.id,
+      required this.bookTitle,
+      required this.author,
+      required this.bookCover,
+      required this.currentChapter,
+      required this.totalChapters,
+      required this.progressPercentage,
+      required this.lastReadAt,
+      required this.status,
+      final List<String>? participantIds})
+      : _participantIds = participantIds;
 
   factory _$ReadingSessionImpl.fromJson(Map<String, dynamic> json) =>
       _$$ReadingSessionImplFromJson(json);
@@ -2042,27 +1938,24 @@ class _$ReadingSessionImpl implements _ReadingSession {
             (identical(other.lastReadAt, lastReadAt) ||
                 other.lastReadAt == lastReadAt) &&
             (identical(other.status, status) || other.status == status) &&
-            const DeepCollectionEquality().equals(
-              other._participantIds,
-              _participantIds,
-            ));
+            const DeepCollectionEquality()
+                .equals(other._participantIds, _participantIds));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    bookTitle,
-    author,
-    bookCover,
-    currentChapter,
-    totalChapters,
-    progressPercentage,
-    lastReadAt,
-    status,
-    const DeepCollectionEquality().hash(_participantIds),
-  );
+      runtimeType,
+      id,
+      bookTitle,
+      author,
+      bookCover,
+      currentChapter,
+      totalChapters,
+      progressPercentage,
+      lastReadAt,
+      status,
+      const DeepCollectionEquality().hash(_participantIds));
 
   /// Create a copy of ReadingSession
   /// with the given fields replaced by the non-null parameter values.
@@ -2071,29 +1964,28 @@ class _$ReadingSessionImpl implements _ReadingSession {
   @pragma('vm:prefer-inline')
   _$$ReadingSessionImplCopyWith<_$ReadingSessionImpl> get copyWith =>
       __$$ReadingSessionImplCopyWithImpl<_$ReadingSessionImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ReadingSessionImplToJson(this);
+    return _$$ReadingSessionImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _ReadingSession implements ReadingSession {
-  const factory _ReadingSession({
-    required final String id,
-    required final String bookTitle,
-    required final String author,
-    required final String bookCover,
-    required final int currentChapter,
-    required final int totalChapters,
-    required final double progressPercentage,
-    required final DateTime lastReadAt,
-    required final ReadingStatus status,
-    final List<String>? participantIds,
-  }) = _$ReadingSessionImpl;
+  const factory _ReadingSession(
+      {required final String id,
+      required final String bookTitle,
+      required final String author,
+      required final String bookCover,
+      required final int currentChapter,
+      required final int totalChapters,
+      required final double progressPercentage,
+      required final DateTime lastReadAt,
+      required final ReadingStatus status,
+      final List<String>? participantIds}) = _$ReadingSessionImpl;
 
   factory _ReadingSession.fromJson(Map<String, dynamic> json) =
       _$ReadingSessionImpl.fromJson;
@@ -2156,21 +2048,19 @@ mixin _$ComfortStone {
 /// @nodoc
 abstract class $ComfortStoneCopyWith<$Res> {
   factory $ComfortStoneCopyWith(
-    ComfortStone value,
-    $Res Function(ComfortStone) then,
-  ) = _$ComfortStoneCopyWithImpl<$Res, ComfortStone>;
+          ComfortStone value, $Res Function(ComfortStone) then) =
+      _$ComfortStoneCopyWithImpl<$Res, ComfortStone>;
   @useResult
-  $Res call({
-    String id,
-    String name,
-    String icon,
-    String creatorId,
-    DateTime createdAt,
-    int totalTouches,
-    DateTime? lastTouchedAt,
-    bool isActive,
-    bool isSharedWithCurrentUser,
-  });
+  $Res call(
+      {String id,
+      String name,
+      String icon,
+      String creatorId,
+      DateTime createdAt,
+      int totalTouches,
+      DateTime? lastTouchedAt,
+      bool isActive,
+      bool isSharedWithCurrentUser});
 }
 
 /// @nodoc
@@ -2198,47 +2088,44 @@ class _$ComfortStoneCopyWithImpl<$Res, $Val extends ComfortStone>
     Object? isActive = null,
     Object? isSharedWithCurrentUser = null,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            name: null == name
-                ? _value.name
-                : name // ignore: cast_nullable_to_non_nullable
-                      as String,
-            icon: null == icon
-                ? _value.icon
-                : icon // ignore: cast_nullable_to_non_nullable
-                      as String,
-            creatorId: null == creatorId
-                ? _value.creatorId
-                : creatorId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            createdAt: null == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            totalTouches: null == totalTouches
-                ? _value.totalTouches
-                : totalTouches // ignore: cast_nullable_to_non_nullable
-                      as int,
-            lastTouchedAt: freezed == lastTouchedAt
-                ? _value.lastTouchedAt
-                : lastTouchedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            isActive: null == isActive
-                ? _value.isActive
-                : isActive // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isSharedWithCurrentUser: null == isSharedWithCurrentUser
-                ? _value.isSharedWithCurrentUser
-                : isSharedWithCurrentUser // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      icon: null == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as String,
+      creatorId: null == creatorId
+          ? _value.creatorId
+          : creatorId // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      totalTouches: null == totalTouches
+          ? _value.totalTouches
+          : totalTouches // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastTouchedAt: freezed == lastTouchedAt
+          ? _value.lastTouchedAt
+          : lastTouchedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSharedWithCurrentUser: null == isSharedWithCurrentUser
+          ? _value.isSharedWithCurrentUser
+          : isSharedWithCurrentUser // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 }
 
@@ -2246,22 +2133,20 @@ class _$ComfortStoneCopyWithImpl<$Res, $Val extends ComfortStone>
 abstract class _$$ComfortStoneImplCopyWith<$Res>
     implements $ComfortStoneCopyWith<$Res> {
   factory _$$ComfortStoneImplCopyWith(
-    _$ComfortStoneImpl value,
-    $Res Function(_$ComfortStoneImpl) then,
-  ) = __$$ComfortStoneImplCopyWithImpl<$Res>;
+          _$ComfortStoneImpl value, $Res Function(_$ComfortStoneImpl) then) =
+      __$$ComfortStoneImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String name,
-    String icon,
-    String creatorId,
-    DateTime createdAt,
-    int totalTouches,
-    DateTime? lastTouchedAt,
-    bool isActive,
-    bool isSharedWithCurrentUser,
-  });
+  $Res call(
+      {String id,
+      String name,
+      String icon,
+      String creatorId,
+      DateTime createdAt,
+      int totalTouches,
+      DateTime? lastTouchedAt,
+      bool isActive,
+      bool isSharedWithCurrentUser});
 }
 
 /// @nodoc
@@ -2269,9 +2154,8 @@ class __$$ComfortStoneImplCopyWithImpl<$Res>
     extends _$ComfortStoneCopyWithImpl<$Res, _$ComfortStoneImpl>
     implements _$$ComfortStoneImplCopyWith<$Res> {
   __$$ComfortStoneImplCopyWithImpl(
-    _$ComfortStoneImpl _value,
-    $Res Function(_$ComfortStoneImpl) _then,
-  ) : super(_value, _then);
+      _$ComfortStoneImpl _value, $Res Function(_$ComfortStoneImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ComfortStone
   /// with the given fields replaced by the non-null parameter values.
@@ -2288,63 +2172,60 @@ class __$$ComfortStoneImplCopyWithImpl<$Res>
     Object? isActive = null,
     Object? isSharedWithCurrentUser = null,
   }) {
-    return _then(
-      _$ComfortStoneImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        name: null == name
-            ? _value.name
-            : name // ignore: cast_nullable_to_non_nullable
-                  as String,
-        icon: null == icon
-            ? _value.icon
-            : icon // ignore: cast_nullable_to_non_nullable
-                  as String,
-        creatorId: null == creatorId
-            ? _value.creatorId
-            : creatorId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        createdAt: null == createdAt
-            ? _value.createdAt
-            : createdAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        totalTouches: null == totalTouches
-            ? _value.totalTouches
-            : totalTouches // ignore: cast_nullable_to_non_nullable
-                  as int,
-        lastTouchedAt: freezed == lastTouchedAt
-            ? _value.lastTouchedAt
-            : lastTouchedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        isActive: null == isActive
-            ? _value.isActive
-            : isActive // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isSharedWithCurrentUser: null == isSharedWithCurrentUser
-            ? _value.isSharedWithCurrentUser
-            : isSharedWithCurrentUser // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$ComfortStoneImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      icon: null == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as String,
+      creatorId: null == creatorId
+          ? _value.creatorId
+          : creatorId // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      totalTouches: null == totalTouches
+          ? _value.totalTouches
+          : totalTouches // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastTouchedAt: freezed == lastTouchedAt
+          ? _value.lastTouchedAt
+          : lastTouchedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSharedWithCurrentUser: null == isSharedWithCurrentUser
+          ? _value.isSharedWithCurrentUser
+          : isSharedWithCurrentUser // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ComfortStoneImpl implements _ComfortStone {
-  const _$ComfortStoneImpl({
-    required this.id,
-    required this.name,
-    required this.icon,
-    required this.creatorId,
-    required this.createdAt,
-    required this.totalTouches,
-    this.lastTouchedAt,
-    this.isActive = false,
-    this.isSharedWithCurrentUser = false,
-  });
+  const _$ComfortStoneImpl(
+      {required this.id,
+      required this.name,
+      required this.icon,
+      required this.creatorId,
+      required this.createdAt,
+      required this.totalTouches,
+      this.lastTouchedAt,
+      this.isActive = false,
+      this.isSharedWithCurrentUser = false});
 
   factory _$ComfortStoneImpl.fromJson(Map<String, dynamic> json) =>
       _$$ComfortStoneImplFromJson(json);
@@ -2394,26 +2275,23 @@ class _$ComfortStoneImpl implements _ComfortStone {
             (identical(other.isActive, isActive) ||
                 other.isActive == isActive) &&
             (identical(
-                  other.isSharedWithCurrentUser,
-                  isSharedWithCurrentUser,
-                ) ||
+                    other.isSharedWithCurrentUser, isSharedWithCurrentUser) ||
                 other.isSharedWithCurrentUser == isSharedWithCurrentUser));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    name,
-    icon,
-    creatorId,
-    createdAt,
-    totalTouches,
-    lastTouchedAt,
-    isActive,
-    isSharedWithCurrentUser,
-  );
+      runtimeType,
+      id,
+      name,
+      icon,
+      creatorId,
+      createdAt,
+      totalTouches,
+      lastTouchedAt,
+      isActive,
+      isSharedWithCurrentUser);
 
   /// Create a copy of ComfortStone
   /// with the given fields replaced by the non-null parameter values.
@@ -2425,22 +2303,23 @@ class _$ComfortStoneImpl implements _ComfortStone {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ComfortStoneImplToJson(this);
+    return _$$ComfortStoneImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _ComfortStone implements ComfortStone {
-  const factory _ComfortStone({
-    required final String id,
-    required final String name,
-    required final String icon,
-    required final String creatorId,
-    required final DateTime createdAt,
-    required final int totalTouches,
-    final DateTime? lastTouchedAt,
-    final bool isActive,
-    final bool isSharedWithCurrentUser,
-  }) = _$ComfortStoneImpl;
+  const factory _ComfortStone(
+      {required final String id,
+      required final String name,
+      required final String icon,
+      required final String creatorId,
+      required final DateTime createdAt,
+      required final int totalTouches,
+      final DateTime? lastTouchedAt,
+      final bool isActive,
+      final bool isSharedWithCurrentUser}) = _$ComfortStoneImpl;
 
   factory _ComfortStone.fromJson(Map<String, dynamic> json) =
       _$ComfortStoneImpl.fromJson;
@@ -2496,16 +2375,14 @@ mixin _$FriendshipStats {
 /// @nodoc
 abstract class $FriendshipStatsCopyWith<$Res> {
   factory $FriendshipStatsCopyWith(
-    FriendshipStats value,
-    $Res Function(FriendshipStats) then,
-  ) = _$FriendshipStatsCopyWithImpl<$Res, FriendshipStats>;
+          FriendshipStats value, $Res Function(FriendshipStats) then) =
+      _$FriendshipStatsCopyWithImpl<$Res, FriendshipStats>;
   @useResult
-  $Res call({
-    int totalDays,
-    int meaningfulConversations,
-    int hoursReadingTogether,
-    int comfortTouchesShared,
-  });
+  $Res call(
+      {int totalDays,
+      int meaningfulConversations,
+      int hoursReadingTogether,
+      int comfortTouchesShared});
 }
 
 /// @nodoc
@@ -2528,45 +2405,40 @@ class _$FriendshipStatsCopyWithImpl<$Res, $Val extends FriendshipStats>
     Object? hoursReadingTogether = null,
     Object? comfortTouchesShared = null,
   }) {
-    return _then(
-      _value.copyWith(
-            totalDays: null == totalDays
-                ? _value.totalDays
-                : totalDays // ignore: cast_nullable_to_non_nullable
-                      as int,
-            meaningfulConversations: null == meaningfulConversations
-                ? _value.meaningfulConversations
-                : meaningfulConversations // ignore: cast_nullable_to_non_nullable
-                      as int,
-            hoursReadingTogether: null == hoursReadingTogether
-                ? _value.hoursReadingTogether
-                : hoursReadingTogether // ignore: cast_nullable_to_non_nullable
-                      as int,
-            comfortTouchesShared: null == comfortTouchesShared
-                ? _value.comfortTouchesShared
-                : comfortTouchesShared // ignore: cast_nullable_to_non_nullable
-                      as int,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      totalDays: null == totalDays
+          ? _value.totalDays
+          : totalDays // ignore: cast_nullable_to_non_nullable
+              as int,
+      meaningfulConversations: null == meaningfulConversations
+          ? _value.meaningfulConversations
+          : meaningfulConversations // ignore: cast_nullable_to_non_nullable
+              as int,
+      hoursReadingTogether: null == hoursReadingTogether
+          ? _value.hoursReadingTogether
+          : hoursReadingTogether // ignore: cast_nullable_to_non_nullable
+              as int,
+      comfortTouchesShared: null == comfortTouchesShared
+          ? _value.comfortTouchesShared
+          : comfortTouchesShared // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$FriendshipStatsImplCopyWith<$Res>
     implements $FriendshipStatsCopyWith<$Res> {
-  factory _$$FriendshipStatsImplCopyWith(
-    _$FriendshipStatsImpl value,
-    $Res Function(_$FriendshipStatsImpl) then,
-  ) = __$$FriendshipStatsImplCopyWithImpl<$Res>;
+  factory _$$FriendshipStatsImplCopyWith(_$FriendshipStatsImpl value,
+          $Res Function(_$FriendshipStatsImpl) then) =
+      __$$FriendshipStatsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    int totalDays,
-    int meaningfulConversations,
-    int hoursReadingTogether,
-    int comfortTouchesShared,
-  });
+  $Res call(
+      {int totalDays,
+      int meaningfulConversations,
+      int hoursReadingTogether,
+      int comfortTouchesShared});
 }
 
 /// @nodoc
@@ -2574,9 +2446,8 @@ class __$$FriendshipStatsImplCopyWithImpl<$Res>
     extends _$FriendshipStatsCopyWithImpl<$Res, _$FriendshipStatsImpl>
     implements _$$FriendshipStatsImplCopyWith<$Res> {
   __$$FriendshipStatsImplCopyWithImpl(
-    _$FriendshipStatsImpl _value,
-    $Res Function(_$FriendshipStatsImpl) _then,
-  ) : super(_value, _then);
+      _$FriendshipStatsImpl _value, $Res Function(_$FriendshipStatsImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of FriendshipStats
   /// with the given fields replaced by the non-null parameter values.
@@ -2588,38 +2459,35 @@ class __$$FriendshipStatsImplCopyWithImpl<$Res>
     Object? hoursReadingTogether = null,
     Object? comfortTouchesShared = null,
   }) {
-    return _then(
-      _$FriendshipStatsImpl(
-        totalDays: null == totalDays
-            ? _value.totalDays
-            : totalDays // ignore: cast_nullable_to_non_nullable
-                  as int,
-        meaningfulConversations: null == meaningfulConversations
-            ? _value.meaningfulConversations
-            : meaningfulConversations // ignore: cast_nullable_to_non_nullable
-                  as int,
-        hoursReadingTogether: null == hoursReadingTogether
-            ? _value.hoursReadingTogether
-            : hoursReadingTogether // ignore: cast_nullable_to_non_nullable
-                  as int,
-        comfortTouchesShared: null == comfortTouchesShared
-            ? _value.comfortTouchesShared
-            : comfortTouchesShared // ignore: cast_nullable_to_non_nullable
-                  as int,
-      ),
-    );
+    return _then(_$FriendshipStatsImpl(
+      totalDays: null == totalDays
+          ? _value.totalDays
+          : totalDays // ignore: cast_nullable_to_non_nullable
+              as int,
+      meaningfulConversations: null == meaningfulConversations
+          ? _value.meaningfulConversations
+          : meaningfulConversations // ignore: cast_nullable_to_non_nullable
+              as int,
+      hoursReadingTogether: null == hoursReadingTogether
+          ? _value.hoursReadingTogether
+          : hoursReadingTogether // ignore: cast_nullable_to_non_nullable
+              as int,
+      comfortTouchesShared: null == comfortTouchesShared
+          ? _value.comfortTouchesShared
+          : comfortTouchesShared // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$FriendshipStatsImpl implements _FriendshipStats {
-  const _$FriendshipStatsImpl({
-    required this.totalDays,
-    required this.meaningfulConversations,
-    required this.hoursReadingTogether,
-    required this.comfortTouchesShared,
-  });
+  const _$FriendshipStatsImpl(
+      {required this.totalDays,
+      required this.meaningfulConversations,
+      required this.hoursReadingTogether,
+      required this.comfortTouchesShared});
 
   factory _$FriendshipStatsImpl.fromJson(Map<String, dynamic> json) =>
       _$$FriendshipStatsImplFromJson(json);
@@ -2646,9 +2514,7 @@ class _$FriendshipStatsImpl implements _FriendshipStats {
             (identical(other.totalDays, totalDays) ||
                 other.totalDays == totalDays) &&
             (identical(
-                  other.meaningfulConversations,
-                  meaningfulConversations,
-                ) ||
+                    other.meaningfulConversations, meaningfulConversations) ||
                 other.meaningfulConversations == meaningfulConversations) &&
             (identical(other.hoursReadingTogether, hoursReadingTogether) ||
                 other.hoursReadingTogether == hoursReadingTogether) &&
@@ -2658,13 +2524,8 @@ class _$FriendshipStatsImpl implements _FriendshipStats {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    totalDays,
-    meaningfulConversations,
-    hoursReadingTogether,
-    comfortTouchesShared,
-  );
+  int get hashCode => Object.hash(runtimeType, totalDays,
+      meaningfulConversations, hoursReadingTogether, comfortTouchesShared);
 
   /// Create a copy of FriendshipStats
   /// with the given fields replaced by the non-null parameter values.
@@ -2673,23 +2534,22 @@ class _$FriendshipStatsImpl implements _FriendshipStats {
   @pragma('vm:prefer-inline')
   _$$FriendshipStatsImplCopyWith<_$FriendshipStatsImpl> get copyWith =>
       __$$FriendshipStatsImplCopyWithImpl<_$FriendshipStatsImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$FriendshipStatsImplToJson(this);
+    return _$$FriendshipStatsImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _FriendshipStats implements FriendshipStats {
-  const factory _FriendshipStats({
-    required final int totalDays,
-    required final int meaningfulConversations,
-    required final int hoursReadingTogether,
-    required final int comfortTouchesShared,
-  }) = _$FriendshipStatsImpl;
+  const factory _FriendshipStats(
+      {required final int totalDays,
+      required final int meaningfulConversations,
+      required final int hoursReadingTogether,
+      required final int comfortTouchesShared}) = _$FriendshipStatsImpl;
 
   factory _FriendshipStats.fromJson(Map<String, dynamic> json) =
       _$FriendshipStatsImpl.fromJson;

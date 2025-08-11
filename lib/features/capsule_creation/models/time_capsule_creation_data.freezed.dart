@@ -12,12 +12,10 @@ part of 'time_capsule_creation_data.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 TimeCapsuleCreationData _$TimeCapsuleCreationDataFromJson(
-  Map<String, dynamic> json,
-) {
+    Map<String, dynamic> json) {
   return _TimeCapsuleCreationData.fromJson(json);
 }
 
@@ -103,35 +101,33 @@ mixin _$TimeCapsuleCreationData {
 
 /// @nodoc
 abstract class $TimeCapsuleCreationDataCopyWith<$Res> {
-  factory $TimeCapsuleCreationDataCopyWith(
-    TimeCapsuleCreationData value,
-    $Res Function(TimeCapsuleCreationData) then,
-  ) = _$TimeCapsuleCreationDataCopyWithImpl<$Res, TimeCapsuleCreationData>;
+  factory $TimeCapsuleCreationDataCopyWith(TimeCapsuleCreationData value,
+          $Res Function(TimeCapsuleCreationData) then) =
+      _$TimeCapsuleCreationDataCopyWithImpl<$Res, TimeCapsuleCreationData>;
   @useResult
-  $Res call({
-    TimeCapsulePurpose? selectedPurpose,
-    int currentStep,
-    bool showContinueButton,
-    QuickStartType? selectedQuickStart,
-    bool isLoading,
-    DateTime? creationStartedAt,
-    TimeOption? selectedTimeOption,
-    SpecialOccasion? selectedOccasion,
-    CustomDateTime? customDateTime,
-    String timeMetaphor,
-    String timeDisplay,
-    String timeDescription,
-    String growthStage,
-    Friend? selectedFriend,
-    MessageSettings? messageSettings,
-    String friendSearchQuery,
-    bool friendSelectionCompleted,
-    AnonymousUser? selectedAnonymousUser,
-    AnonymousMessageSettings? anonymousMessageSettings,
-    String anonymousSearchQuery,
-    bool anonymousSelectionCompleted,
-    bool isAnonymousSearchLoading,
-  });
+  $Res call(
+      {TimeCapsulePurpose? selectedPurpose,
+      int currentStep,
+      bool showContinueButton,
+      QuickStartType? selectedQuickStart,
+      bool isLoading,
+      DateTime? creationStartedAt,
+      TimeOption? selectedTimeOption,
+      SpecialOccasion? selectedOccasion,
+      CustomDateTime? customDateTime,
+      String timeMetaphor,
+      String timeDisplay,
+      String timeDescription,
+      String growthStage,
+      Friend? selectedFriend,
+      MessageSettings? messageSettings,
+      String friendSearchQuery,
+      bool friendSelectionCompleted,
+      AnonymousUser? selectedAnonymousUser,
+      AnonymousMessageSettings? anonymousMessageSettings,
+      String anonymousSearchQuery,
+      bool anonymousSelectionCompleted,
+      bool isAnonymousSearchLoading});
 
   $CustomDateTimeCopyWith<$Res>? get customDateTime;
   $FriendCopyWith<$Res>? get selectedFriend;
@@ -141,10 +137,8 @@ abstract class $TimeCapsuleCreationDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$TimeCapsuleCreationDataCopyWithImpl<
-  $Res,
-  $Val extends TimeCapsuleCreationData
->
+class _$TimeCapsuleCreationDataCopyWithImpl<$Res,
+        $Val extends TimeCapsuleCreationData>
     implements $TimeCapsuleCreationDataCopyWith<$Res> {
   _$TimeCapsuleCreationDataCopyWithImpl(this._value, this._then);
 
@@ -181,99 +175,96 @@ class _$TimeCapsuleCreationDataCopyWithImpl<
     Object? anonymousSelectionCompleted = null,
     Object? isAnonymousSearchLoading = null,
   }) {
-    return _then(
-      _value.copyWith(
-            selectedPurpose: freezed == selectedPurpose
-                ? _value.selectedPurpose
-                : selectedPurpose // ignore: cast_nullable_to_non_nullable
-                      as TimeCapsulePurpose?,
-            currentStep: null == currentStep
-                ? _value.currentStep
-                : currentStep // ignore: cast_nullable_to_non_nullable
-                      as int,
-            showContinueButton: null == showContinueButton
-                ? _value.showContinueButton
-                : showContinueButton // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            selectedQuickStart: freezed == selectedQuickStart
-                ? _value.selectedQuickStart
-                : selectedQuickStart // ignore: cast_nullable_to_non_nullable
-                      as QuickStartType?,
-            isLoading: null == isLoading
-                ? _value.isLoading
-                : isLoading // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            creationStartedAt: freezed == creationStartedAt
-                ? _value.creationStartedAt
-                : creationStartedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            selectedTimeOption: freezed == selectedTimeOption
-                ? _value.selectedTimeOption
-                : selectedTimeOption // ignore: cast_nullable_to_non_nullable
-                      as TimeOption?,
-            selectedOccasion: freezed == selectedOccasion
-                ? _value.selectedOccasion
-                : selectedOccasion // ignore: cast_nullable_to_non_nullable
-                      as SpecialOccasion?,
-            customDateTime: freezed == customDateTime
-                ? _value.customDateTime
-                : customDateTime // ignore: cast_nullable_to_non_nullable
-                      as CustomDateTime?,
-            timeMetaphor: null == timeMetaphor
-                ? _value.timeMetaphor
-                : timeMetaphor // ignore: cast_nullable_to_non_nullable
-                      as String,
-            timeDisplay: null == timeDisplay
-                ? _value.timeDisplay
-                : timeDisplay // ignore: cast_nullable_to_non_nullable
-                      as String,
-            timeDescription: null == timeDescription
-                ? _value.timeDescription
-                : timeDescription // ignore: cast_nullable_to_non_nullable
-                      as String,
-            growthStage: null == growthStage
-                ? _value.growthStage
-                : growthStage // ignore: cast_nullable_to_non_nullable
-                      as String,
-            selectedFriend: freezed == selectedFriend
-                ? _value.selectedFriend
-                : selectedFriend // ignore: cast_nullable_to_non_nullable
-                      as Friend?,
-            messageSettings: freezed == messageSettings
-                ? _value.messageSettings
-                : messageSettings // ignore: cast_nullable_to_non_nullable
-                      as MessageSettings?,
-            friendSearchQuery: null == friendSearchQuery
-                ? _value.friendSearchQuery
-                : friendSearchQuery // ignore: cast_nullable_to_non_nullable
-                      as String,
-            friendSelectionCompleted: null == friendSelectionCompleted
-                ? _value.friendSelectionCompleted
-                : friendSelectionCompleted // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            selectedAnonymousUser: freezed == selectedAnonymousUser
-                ? _value.selectedAnonymousUser
-                : selectedAnonymousUser // ignore: cast_nullable_to_non_nullable
-                      as AnonymousUser?,
-            anonymousMessageSettings: freezed == anonymousMessageSettings
-                ? _value.anonymousMessageSettings
-                : anonymousMessageSettings // ignore: cast_nullable_to_non_nullable
-                      as AnonymousMessageSettings?,
-            anonymousSearchQuery: null == anonymousSearchQuery
-                ? _value.anonymousSearchQuery
-                : anonymousSearchQuery // ignore: cast_nullable_to_non_nullable
-                      as String,
-            anonymousSelectionCompleted: null == anonymousSelectionCompleted
-                ? _value.anonymousSelectionCompleted
-                : anonymousSelectionCompleted // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isAnonymousSearchLoading: null == isAnonymousSearchLoading
-                ? _value.isAnonymousSearchLoading
-                : isAnonymousSearchLoading // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      selectedPurpose: freezed == selectedPurpose
+          ? _value.selectedPurpose
+          : selectedPurpose // ignore: cast_nullable_to_non_nullable
+              as TimeCapsulePurpose?,
+      currentStep: null == currentStep
+          ? _value.currentStep
+          : currentStep // ignore: cast_nullable_to_non_nullable
+              as int,
+      showContinueButton: null == showContinueButton
+          ? _value.showContinueButton
+          : showContinueButton // ignore: cast_nullable_to_non_nullable
+              as bool,
+      selectedQuickStart: freezed == selectedQuickStart
+          ? _value.selectedQuickStart
+          : selectedQuickStart // ignore: cast_nullable_to_non_nullable
+              as QuickStartType?,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      creationStartedAt: freezed == creationStartedAt
+          ? _value.creationStartedAt
+          : creationStartedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      selectedTimeOption: freezed == selectedTimeOption
+          ? _value.selectedTimeOption
+          : selectedTimeOption // ignore: cast_nullable_to_non_nullable
+              as TimeOption?,
+      selectedOccasion: freezed == selectedOccasion
+          ? _value.selectedOccasion
+          : selectedOccasion // ignore: cast_nullable_to_non_nullable
+              as SpecialOccasion?,
+      customDateTime: freezed == customDateTime
+          ? _value.customDateTime
+          : customDateTime // ignore: cast_nullable_to_non_nullable
+              as CustomDateTime?,
+      timeMetaphor: null == timeMetaphor
+          ? _value.timeMetaphor
+          : timeMetaphor // ignore: cast_nullable_to_non_nullable
+              as String,
+      timeDisplay: null == timeDisplay
+          ? _value.timeDisplay
+          : timeDisplay // ignore: cast_nullable_to_non_nullable
+              as String,
+      timeDescription: null == timeDescription
+          ? _value.timeDescription
+          : timeDescription // ignore: cast_nullable_to_non_nullable
+              as String,
+      growthStage: null == growthStage
+          ? _value.growthStage
+          : growthStage // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedFriend: freezed == selectedFriend
+          ? _value.selectedFriend
+          : selectedFriend // ignore: cast_nullable_to_non_nullable
+              as Friend?,
+      messageSettings: freezed == messageSettings
+          ? _value.messageSettings
+          : messageSettings // ignore: cast_nullable_to_non_nullable
+              as MessageSettings?,
+      friendSearchQuery: null == friendSearchQuery
+          ? _value.friendSearchQuery
+          : friendSearchQuery // ignore: cast_nullable_to_non_nullable
+              as String,
+      friendSelectionCompleted: null == friendSelectionCompleted
+          ? _value.friendSelectionCompleted
+          : friendSelectionCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      selectedAnonymousUser: freezed == selectedAnonymousUser
+          ? _value.selectedAnonymousUser
+          : selectedAnonymousUser // ignore: cast_nullable_to_non_nullable
+              as AnonymousUser?,
+      anonymousMessageSettings: freezed == anonymousMessageSettings
+          ? _value.anonymousMessageSettings
+          : anonymousMessageSettings // ignore: cast_nullable_to_non_nullable
+              as AnonymousMessageSettings?,
+      anonymousSearchQuery: null == anonymousSearchQuery
+          ? _value.anonymousSearchQuery
+          : anonymousSearchQuery // ignore: cast_nullable_to_non_nullable
+              as String,
+      anonymousSelectionCompleted: null == anonymousSelectionCompleted
+          ? _value.anonymousSelectionCompleted
+          : anonymousSelectionCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAnonymousSearchLoading: null == isAnonymousSearchLoading
+          ? _value.isAnonymousSearchLoading
+          : isAnonymousSearchLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 
   /// Create a copy of TimeCapsuleCreationData
@@ -342,11 +333,9 @@ class _$TimeCapsuleCreationDataCopyWithImpl<
     }
 
     return $AnonymousMessageSettingsCopyWith<$Res>(
-      _value.anonymousMessageSettings!,
-      (value) {
-        return _then(_value.copyWith(anonymousMessageSettings: value) as $Val);
-      },
-    );
+        _value.anonymousMessageSettings!, (value) {
+      return _then(_value.copyWith(anonymousMessageSettings: value) as $Val);
+    });
   }
 }
 
@@ -354,35 +343,34 @@ class _$TimeCapsuleCreationDataCopyWithImpl<
 abstract class _$$TimeCapsuleCreationDataImplCopyWith<$Res>
     implements $TimeCapsuleCreationDataCopyWith<$Res> {
   factory _$$TimeCapsuleCreationDataImplCopyWith(
-    _$TimeCapsuleCreationDataImpl value,
-    $Res Function(_$TimeCapsuleCreationDataImpl) then,
-  ) = __$$TimeCapsuleCreationDataImplCopyWithImpl<$Res>;
+          _$TimeCapsuleCreationDataImpl value,
+          $Res Function(_$TimeCapsuleCreationDataImpl) then) =
+      __$$TimeCapsuleCreationDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    TimeCapsulePurpose? selectedPurpose,
-    int currentStep,
-    bool showContinueButton,
-    QuickStartType? selectedQuickStart,
-    bool isLoading,
-    DateTime? creationStartedAt,
-    TimeOption? selectedTimeOption,
-    SpecialOccasion? selectedOccasion,
-    CustomDateTime? customDateTime,
-    String timeMetaphor,
-    String timeDisplay,
-    String timeDescription,
-    String growthStage,
-    Friend? selectedFriend,
-    MessageSettings? messageSettings,
-    String friendSearchQuery,
-    bool friendSelectionCompleted,
-    AnonymousUser? selectedAnonymousUser,
-    AnonymousMessageSettings? anonymousMessageSettings,
-    String anonymousSearchQuery,
-    bool anonymousSelectionCompleted,
-    bool isAnonymousSearchLoading,
-  });
+  $Res call(
+      {TimeCapsulePurpose? selectedPurpose,
+      int currentStep,
+      bool showContinueButton,
+      QuickStartType? selectedQuickStart,
+      bool isLoading,
+      DateTime? creationStartedAt,
+      TimeOption? selectedTimeOption,
+      SpecialOccasion? selectedOccasion,
+      CustomDateTime? customDateTime,
+      String timeMetaphor,
+      String timeDisplay,
+      String timeDescription,
+      String growthStage,
+      Friend? selectedFriend,
+      MessageSettings? messageSettings,
+      String friendSearchQuery,
+      bool friendSelectionCompleted,
+      AnonymousUser? selectedAnonymousUser,
+      AnonymousMessageSettings? anonymousMessageSettings,
+      String anonymousSearchQuery,
+      bool anonymousSelectionCompleted,
+      bool isAnonymousSearchLoading});
 
   @override
   $CustomDateTimeCopyWith<$Res>? get customDateTime;
@@ -398,16 +386,13 @@ abstract class _$$TimeCapsuleCreationDataImplCopyWith<$Res>
 
 /// @nodoc
 class __$$TimeCapsuleCreationDataImplCopyWithImpl<$Res>
-    extends
-        _$TimeCapsuleCreationDataCopyWithImpl<
-          $Res,
-          _$TimeCapsuleCreationDataImpl
-        >
+    extends _$TimeCapsuleCreationDataCopyWithImpl<$Res,
+        _$TimeCapsuleCreationDataImpl>
     implements _$$TimeCapsuleCreationDataImplCopyWith<$Res> {
   __$$TimeCapsuleCreationDataImplCopyWithImpl(
-    _$TimeCapsuleCreationDataImpl _value,
-    $Res Function(_$TimeCapsuleCreationDataImpl) _then,
-  ) : super(_value, _then);
+      _$TimeCapsuleCreationDataImpl _value,
+      $Res Function(_$TimeCapsuleCreationDataImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of TimeCapsuleCreationData
   /// with the given fields replaced by the non-null parameter values.
@@ -437,128 +422,125 @@ class __$$TimeCapsuleCreationDataImplCopyWithImpl<$Res>
     Object? anonymousSelectionCompleted = null,
     Object? isAnonymousSearchLoading = null,
   }) {
-    return _then(
-      _$TimeCapsuleCreationDataImpl(
-        selectedPurpose: freezed == selectedPurpose
-            ? _value.selectedPurpose
-            : selectedPurpose // ignore: cast_nullable_to_non_nullable
-                  as TimeCapsulePurpose?,
-        currentStep: null == currentStep
-            ? _value.currentStep
-            : currentStep // ignore: cast_nullable_to_non_nullable
-                  as int,
-        showContinueButton: null == showContinueButton
-            ? _value.showContinueButton
-            : showContinueButton // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        selectedQuickStart: freezed == selectedQuickStart
-            ? _value.selectedQuickStart
-            : selectedQuickStart // ignore: cast_nullable_to_non_nullable
-                  as QuickStartType?,
-        isLoading: null == isLoading
-            ? _value.isLoading
-            : isLoading // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        creationStartedAt: freezed == creationStartedAt
-            ? _value.creationStartedAt
-            : creationStartedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        selectedTimeOption: freezed == selectedTimeOption
-            ? _value.selectedTimeOption
-            : selectedTimeOption // ignore: cast_nullable_to_non_nullable
-                  as TimeOption?,
-        selectedOccasion: freezed == selectedOccasion
-            ? _value.selectedOccasion
-            : selectedOccasion // ignore: cast_nullable_to_non_nullable
-                  as SpecialOccasion?,
-        customDateTime: freezed == customDateTime
-            ? _value.customDateTime
-            : customDateTime // ignore: cast_nullable_to_non_nullable
-                  as CustomDateTime?,
-        timeMetaphor: null == timeMetaphor
-            ? _value.timeMetaphor
-            : timeMetaphor // ignore: cast_nullable_to_non_nullable
-                  as String,
-        timeDisplay: null == timeDisplay
-            ? _value.timeDisplay
-            : timeDisplay // ignore: cast_nullable_to_non_nullable
-                  as String,
-        timeDescription: null == timeDescription
-            ? _value.timeDescription
-            : timeDescription // ignore: cast_nullable_to_non_nullable
-                  as String,
-        growthStage: null == growthStage
-            ? _value.growthStage
-            : growthStage // ignore: cast_nullable_to_non_nullable
-                  as String,
-        selectedFriend: freezed == selectedFriend
-            ? _value.selectedFriend
-            : selectedFriend // ignore: cast_nullable_to_non_nullable
-                  as Friend?,
-        messageSettings: freezed == messageSettings
-            ? _value.messageSettings
-            : messageSettings // ignore: cast_nullable_to_non_nullable
-                  as MessageSettings?,
-        friendSearchQuery: null == friendSearchQuery
-            ? _value.friendSearchQuery
-            : friendSearchQuery // ignore: cast_nullable_to_non_nullable
-                  as String,
-        friendSelectionCompleted: null == friendSelectionCompleted
-            ? _value.friendSelectionCompleted
-            : friendSelectionCompleted // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        selectedAnonymousUser: freezed == selectedAnonymousUser
-            ? _value.selectedAnonymousUser
-            : selectedAnonymousUser // ignore: cast_nullable_to_non_nullable
-                  as AnonymousUser?,
-        anonymousMessageSettings: freezed == anonymousMessageSettings
-            ? _value.anonymousMessageSettings
-            : anonymousMessageSettings // ignore: cast_nullable_to_non_nullable
-                  as AnonymousMessageSettings?,
-        anonymousSearchQuery: null == anonymousSearchQuery
-            ? _value.anonymousSearchQuery
-            : anonymousSearchQuery // ignore: cast_nullable_to_non_nullable
-                  as String,
-        anonymousSelectionCompleted: null == anonymousSelectionCompleted
-            ? _value.anonymousSelectionCompleted
-            : anonymousSelectionCompleted // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isAnonymousSearchLoading: null == isAnonymousSearchLoading
-            ? _value.isAnonymousSearchLoading
-            : isAnonymousSearchLoading // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$TimeCapsuleCreationDataImpl(
+      selectedPurpose: freezed == selectedPurpose
+          ? _value.selectedPurpose
+          : selectedPurpose // ignore: cast_nullable_to_non_nullable
+              as TimeCapsulePurpose?,
+      currentStep: null == currentStep
+          ? _value.currentStep
+          : currentStep // ignore: cast_nullable_to_non_nullable
+              as int,
+      showContinueButton: null == showContinueButton
+          ? _value.showContinueButton
+          : showContinueButton // ignore: cast_nullable_to_non_nullable
+              as bool,
+      selectedQuickStart: freezed == selectedQuickStart
+          ? _value.selectedQuickStart
+          : selectedQuickStart // ignore: cast_nullable_to_non_nullable
+              as QuickStartType?,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      creationStartedAt: freezed == creationStartedAt
+          ? _value.creationStartedAt
+          : creationStartedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      selectedTimeOption: freezed == selectedTimeOption
+          ? _value.selectedTimeOption
+          : selectedTimeOption // ignore: cast_nullable_to_non_nullable
+              as TimeOption?,
+      selectedOccasion: freezed == selectedOccasion
+          ? _value.selectedOccasion
+          : selectedOccasion // ignore: cast_nullable_to_non_nullable
+              as SpecialOccasion?,
+      customDateTime: freezed == customDateTime
+          ? _value.customDateTime
+          : customDateTime // ignore: cast_nullable_to_non_nullable
+              as CustomDateTime?,
+      timeMetaphor: null == timeMetaphor
+          ? _value.timeMetaphor
+          : timeMetaphor // ignore: cast_nullable_to_non_nullable
+              as String,
+      timeDisplay: null == timeDisplay
+          ? _value.timeDisplay
+          : timeDisplay // ignore: cast_nullable_to_non_nullable
+              as String,
+      timeDescription: null == timeDescription
+          ? _value.timeDescription
+          : timeDescription // ignore: cast_nullable_to_non_nullable
+              as String,
+      growthStage: null == growthStage
+          ? _value.growthStage
+          : growthStage // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedFriend: freezed == selectedFriend
+          ? _value.selectedFriend
+          : selectedFriend // ignore: cast_nullable_to_non_nullable
+              as Friend?,
+      messageSettings: freezed == messageSettings
+          ? _value.messageSettings
+          : messageSettings // ignore: cast_nullable_to_non_nullable
+              as MessageSettings?,
+      friendSearchQuery: null == friendSearchQuery
+          ? _value.friendSearchQuery
+          : friendSearchQuery // ignore: cast_nullable_to_non_nullable
+              as String,
+      friendSelectionCompleted: null == friendSelectionCompleted
+          ? _value.friendSelectionCompleted
+          : friendSelectionCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      selectedAnonymousUser: freezed == selectedAnonymousUser
+          ? _value.selectedAnonymousUser
+          : selectedAnonymousUser // ignore: cast_nullable_to_non_nullable
+              as AnonymousUser?,
+      anonymousMessageSettings: freezed == anonymousMessageSettings
+          ? _value.anonymousMessageSettings
+          : anonymousMessageSettings // ignore: cast_nullable_to_non_nullable
+              as AnonymousMessageSettings?,
+      anonymousSearchQuery: null == anonymousSearchQuery
+          ? _value.anonymousSearchQuery
+          : anonymousSearchQuery // ignore: cast_nullable_to_non_nullable
+              as String,
+      anonymousSelectionCompleted: null == anonymousSelectionCompleted
+          ? _value.anonymousSelectionCompleted
+          : anonymousSelectionCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAnonymousSearchLoading: null == isAnonymousSearchLoading
+          ? _value.isAnonymousSearchLoading
+          : isAnonymousSearchLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
-  const _$TimeCapsuleCreationDataImpl({
-    this.selectedPurpose,
-    this.currentStep = 1,
-    this.showContinueButton = false,
-    this.selectedQuickStart,
-    this.isLoading = false,
-    this.creationStartedAt,
-    this.selectedTimeOption,
-    this.selectedOccasion,
-    this.customDateTime,
-    this.timeMetaphor = '🌰',
-    this.timeDisplay = 'Select Time',
-    this.timeDescription = 'Choose when you\'d like to receive this message',
-    this.growthStage = 'Ready to Plant',
-    this.selectedFriend,
-    this.messageSettings,
-    this.friendSearchQuery = '',
-    this.friendSelectionCompleted = false,
-    this.selectedAnonymousUser,
-    this.anonymousMessageSettings,
-    this.anonymousSearchQuery = '',
-    this.anonymousSelectionCompleted = false,
-    this.isAnonymousSearchLoading = false,
-  });
+  const _$TimeCapsuleCreationDataImpl(
+      {this.selectedPurpose,
+      this.currentStep = 1,
+      this.showContinueButton = false,
+      this.selectedQuickStart,
+      this.isLoading = false,
+      this.creationStartedAt,
+      this.selectedTimeOption,
+      this.selectedOccasion,
+      this.customDateTime,
+      this.timeMetaphor = '🌰',
+      this.timeDisplay = 'Select Time',
+      this.timeDescription = 'Choose when you\'d like to receive this message',
+      this.growthStage = 'Ready to Plant',
+      this.selectedFriend,
+      this.messageSettings,
+      this.friendSearchQuery = '',
+      this.friendSelectionCompleted = false,
+      this.selectedAnonymousUser,
+      this.anonymousMessageSettings,
+      this.anonymousSearchQuery = '',
+      this.anonymousSelectionCompleted = false,
+      this.isAnonymousSearchLoading = false});
 
   factory _$TimeCapsuleCreationDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$TimeCapsuleCreationDataImplFromJson(json);
@@ -589,7 +571,7 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
   /// Creation timestamp for analytics
   @override
   final DateTime? creationStartedAt;
-  // ==================== TIME SELECTION PROPERTIES ====================
+// ==================== TIME SELECTION PROPERTIES ====================
   /// Selected time option for delivery (1 hour, 1 day, etc.)
   @override
   final TimeOption? selectedTimeOption;
@@ -621,7 +603,7 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
   @override
   @JsonKey()
   final String growthStage;
-  // ==================== FRIEND SELECTION PROPERTIES ====================
+// ==================== FRIEND SELECTION PROPERTIES ====================
   /// Selected friend for "Someone Special" capsules
   @override
   final Friend? selectedFriend;
@@ -639,7 +621,7 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
   @override
   @JsonKey()
   final bool friendSelectionCompleted;
-  // ==================== ANONYMOUS USER SELECTION PROPERTIES ====================
+// ==================== ANONYMOUS USER SELECTION PROPERTIES ====================
   /// Selected anonymous user for "Anonymous Gift" capsules
   @override
   final AnonymousUser? selectedAnonymousUser;
@@ -706,59 +688,51 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
             (identical(other.friendSearchQuery, friendSearchQuery) ||
                 other.friendSearchQuery == friendSearchQuery) &&
             (identical(
-                  other.friendSelectionCompleted,
-                  friendSelectionCompleted,
-                ) ||
+                    other.friendSelectionCompleted, friendSelectionCompleted) ||
                 other.friendSelectionCompleted == friendSelectionCompleted) &&
             (identical(other.selectedAnonymousUser, selectedAnonymousUser) ||
                 other.selectedAnonymousUser == selectedAnonymousUser) &&
             (identical(
-                  other.anonymousMessageSettings,
-                  anonymousMessageSettings,
-                ) ||
+                    other.anonymousMessageSettings, anonymousMessageSettings) ||
                 other.anonymousMessageSettings == anonymousMessageSettings) &&
             (identical(other.anonymousSearchQuery, anonymousSearchQuery) ||
                 other.anonymousSearchQuery == anonymousSearchQuery) &&
-            (identical(
-                  other.anonymousSelectionCompleted,
-                  anonymousSelectionCompleted,
-                ) ||
+            (identical(other.anonymousSelectionCompleted,
+                    anonymousSelectionCompleted) ||
                 other.anonymousSelectionCompleted ==
                     anonymousSelectionCompleted) &&
             (identical(
-                  other.isAnonymousSearchLoading,
-                  isAnonymousSearchLoading,
-                ) ||
+                    other.isAnonymousSearchLoading, isAnonymousSearchLoading) ||
                 other.isAnonymousSearchLoading == isAnonymousSearchLoading));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hashAll([
-    runtimeType,
-    selectedPurpose,
-    currentStep,
-    showContinueButton,
-    selectedQuickStart,
-    isLoading,
-    creationStartedAt,
-    selectedTimeOption,
-    selectedOccasion,
-    customDateTime,
-    timeMetaphor,
-    timeDisplay,
-    timeDescription,
-    growthStage,
-    selectedFriend,
-    messageSettings,
-    friendSearchQuery,
-    friendSelectionCompleted,
-    selectedAnonymousUser,
-    anonymousMessageSettings,
-    anonymousSearchQuery,
-    anonymousSelectionCompleted,
-    isAnonymousSearchLoading,
-  ]);
+        runtimeType,
+        selectedPurpose,
+        currentStep,
+        showContinueButton,
+        selectedQuickStart,
+        isLoading,
+        creationStartedAt,
+        selectedTimeOption,
+        selectedOccasion,
+        customDateTime,
+        timeMetaphor,
+        timeDisplay,
+        timeDescription,
+        growthStage,
+        selectedFriend,
+        messageSettings,
+        friendSearchQuery,
+        friendSelectionCompleted,
+        selectedAnonymousUser,
+        anonymousMessageSettings,
+        anonymousSearchQuery,
+        anonymousSelectionCompleted,
+        isAnonymousSearchLoading
+      ]);
 
   /// Create a copy of TimeCapsuleCreationData
   /// with the given fields replaced by the non-null parameter values.
@@ -766,42 +740,41 @@ class _$TimeCapsuleCreationDataImpl implements _TimeCapsuleCreationData {
   @override
   @pragma('vm:prefer-inline')
   _$$TimeCapsuleCreationDataImplCopyWith<_$TimeCapsuleCreationDataImpl>
-  get copyWith =>
-      __$$TimeCapsuleCreationDataImplCopyWithImpl<
-        _$TimeCapsuleCreationDataImpl
-      >(this, _$identity);
+      get copyWith => __$$TimeCapsuleCreationDataImplCopyWithImpl<
+          _$TimeCapsuleCreationDataImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$TimeCapsuleCreationDataImplToJson(this);
+    return _$$TimeCapsuleCreationDataImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _TimeCapsuleCreationData implements TimeCapsuleCreationData {
-  const factory _TimeCapsuleCreationData({
-    final TimeCapsulePurpose? selectedPurpose,
-    final int currentStep,
-    final bool showContinueButton,
-    final QuickStartType? selectedQuickStart,
-    final bool isLoading,
-    final DateTime? creationStartedAt,
-    final TimeOption? selectedTimeOption,
-    final SpecialOccasion? selectedOccasion,
-    final CustomDateTime? customDateTime,
-    final String timeMetaphor,
-    final String timeDisplay,
-    final String timeDescription,
-    final String growthStage,
-    final Friend? selectedFriend,
-    final MessageSettings? messageSettings,
-    final String friendSearchQuery,
-    final bool friendSelectionCompleted,
-    final AnonymousUser? selectedAnonymousUser,
-    final AnonymousMessageSettings? anonymousMessageSettings,
-    final String anonymousSearchQuery,
-    final bool anonymousSelectionCompleted,
-    final bool isAnonymousSearchLoading,
-  }) = _$TimeCapsuleCreationDataImpl;
+  const factory _TimeCapsuleCreationData(
+      {final TimeCapsulePurpose? selectedPurpose,
+      final int currentStep,
+      final bool showContinueButton,
+      final QuickStartType? selectedQuickStart,
+      final bool isLoading,
+      final DateTime? creationStartedAt,
+      final TimeOption? selectedTimeOption,
+      final SpecialOccasion? selectedOccasion,
+      final CustomDateTime? customDateTime,
+      final String timeMetaphor,
+      final String timeDisplay,
+      final String timeDescription,
+      final String growthStage,
+      final Friend? selectedFriend,
+      final MessageSettings? messageSettings,
+      final String friendSearchQuery,
+      final bool friendSelectionCompleted,
+      final AnonymousUser? selectedAnonymousUser,
+      final AnonymousMessageSettings? anonymousMessageSettings,
+      final String anonymousSearchQuery,
+      final bool anonymousSelectionCompleted,
+      final bool isAnonymousSearchLoading}) = _$TimeCapsuleCreationDataImpl;
 
   factory _TimeCapsuleCreationData.fromJson(Map<String, dynamic> json) =
       _$TimeCapsuleCreationDataImpl.fromJson;
@@ -828,7 +801,8 @@ abstract class _TimeCapsuleCreationData implements TimeCapsuleCreationData {
 
   /// Creation timestamp for analytics
   @override
-  DateTime? get creationStartedAt; // ==================== TIME SELECTION PROPERTIES ====================
+  DateTime?
+      get creationStartedAt; // ==================== TIME SELECTION PROPERTIES ====================
   /// Selected time option for delivery (1 hour, 1 day, etc.)
   @override
   TimeOption? get selectedTimeOption;
@@ -855,7 +829,8 @@ abstract class _TimeCapsuleCreationData implements TimeCapsuleCreationData {
 
   /// Current growth stage text
   @override
-  String get growthStage; // ==================== FRIEND SELECTION PROPERTIES ====================
+  String
+      get growthStage; // ==================== FRIEND SELECTION PROPERTIES ====================
   /// Selected friend for "Someone Special" capsules
   @override
   Friend? get selectedFriend;
@@ -870,7 +845,8 @@ abstract class _TimeCapsuleCreationData implements TimeCapsuleCreationData {
 
   /// Whether friend selection step is completed
   @override
-  bool get friendSelectionCompleted; // ==================== ANONYMOUS USER SELECTION PROPERTIES ====================
+  bool
+      get friendSelectionCompleted; // ==================== ANONYMOUS USER SELECTION PROPERTIES ====================
   /// Selected anonymous user for "Anonymous Gift" capsules
   @override
   AnonymousUser? get selectedAnonymousUser;
@@ -896,7 +872,7 @@ abstract class _TimeCapsuleCreationData implements TimeCapsuleCreationData {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TimeCapsuleCreationDataImplCopyWith<_$TimeCapsuleCreationDataImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 CustomDateTime _$CustomDateTimeFromJson(Map<String, dynamic> json) {
@@ -921,9 +897,8 @@ mixin _$CustomDateTime {
 /// @nodoc
 abstract class $CustomDateTimeCopyWith<$Res> {
   factory $CustomDateTimeCopyWith(
-    CustomDateTime value,
-    $Res Function(CustomDateTime) then,
-  ) = _$CustomDateTimeCopyWithImpl<$Res, CustomDateTime>;
+          CustomDateTime value, $Res Function(CustomDateTime) then) =
+      _$CustomDateTimeCopyWithImpl<$Res, CustomDateTime>;
   @useResult
   $Res call({DateTime dateTime, String previewText});
 }
@@ -942,30 +917,29 @@ class _$CustomDateTimeCopyWithImpl<$Res, $Val extends CustomDateTime>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? dateTime = null, Object? previewText = null}) {
-    return _then(
-      _value.copyWith(
-            dateTime: null == dateTime
-                ? _value.dateTime
-                : dateTime // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            previewText: null == previewText
-                ? _value.previewText
-                : previewText // ignore: cast_nullable_to_non_nullable
-                      as String,
-          )
-          as $Val,
-    );
+  $Res call({
+    Object? dateTime = null,
+    Object? previewText = null,
+  }) {
+    return _then(_value.copyWith(
+      dateTime: null == dateTime
+          ? _value.dateTime
+          : dateTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      previewText: null == previewText
+          ? _value.previewText
+          : previewText // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$CustomDateTimeImplCopyWith<$Res>
     implements $CustomDateTimeCopyWith<$Res> {
-  factory _$$CustomDateTimeImplCopyWith(
-    _$CustomDateTimeImpl value,
-    $Res Function(_$CustomDateTimeImpl) then,
-  ) = __$$CustomDateTimeImplCopyWithImpl<$Res>;
+  factory _$$CustomDateTimeImplCopyWith(_$CustomDateTimeImpl value,
+          $Res Function(_$CustomDateTimeImpl) then) =
+      __$$CustomDateTimeImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({DateTime dateTime, String previewText});
@@ -976,37 +950,35 @@ class __$$CustomDateTimeImplCopyWithImpl<$Res>
     extends _$CustomDateTimeCopyWithImpl<$Res, _$CustomDateTimeImpl>
     implements _$$CustomDateTimeImplCopyWith<$Res> {
   __$$CustomDateTimeImplCopyWithImpl(
-    _$CustomDateTimeImpl _value,
-    $Res Function(_$CustomDateTimeImpl) _then,
-  ) : super(_value, _then);
+      _$CustomDateTimeImpl _value, $Res Function(_$CustomDateTimeImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of CustomDateTime
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? dateTime = null, Object? previewText = null}) {
-    return _then(
-      _$CustomDateTimeImpl(
-        dateTime: null == dateTime
-            ? _value.dateTime
-            : dateTime // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        previewText: null == previewText
-            ? _value.previewText
-            : previewText // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
+  $Res call({
+    Object? dateTime = null,
+    Object? previewText = null,
+  }) {
+    return _then(_$CustomDateTimeImpl(
+      dateTime: null == dateTime
+          ? _value.dateTime
+          : dateTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      previewText: null == previewText
+          ? _value.previewText
+          : previewText // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$CustomDateTimeImpl implements _CustomDateTime {
-  const _$CustomDateTimeImpl({
-    required this.dateTime,
-    required this.previewText,
-  });
+  const _$CustomDateTimeImpl(
+      {required this.dateTime, required this.previewText});
 
   factory _$CustomDateTimeImpl.fromJson(Map<String, dynamic> json) =>
       _$$CustomDateTimeImplFromJson(json);
@@ -1043,21 +1015,20 @@ class _$CustomDateTimeImpl implements _CustomDateTime {
   @pragma('vm:prefer-inline')
   _$$CustomDateTimeImplCopyWith<_$CustomDateTimeImpl> get copyWith =>
       __$$CustomDateTimeImplCopyWithImpl<_$CustomDateTimeImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CustomDateTimeImplToJson(this);
+    return _$$CustomDateTimeImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _CustomDateTime implements CustomDateTime {
-  const factory _CustomDateTime({
-    required final DateTime dateTime,
-    required final String previewText,
-  }) = _$CustomDateTimeImpl;
+  const factory _CustomDateTime(
+      {required final DateTime dateTime,
+      required final String previewText}) = _$CustomDateTimeImpl;
 
   factory _CustomDateTime.fromJson(Map<String, dynamic> json) =
       _$CustomDateTimeImpl.fromJson;

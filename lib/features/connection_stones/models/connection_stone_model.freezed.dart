@@ -12,8 +12,7 @@ part of 'connection_stone_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ConnectionStone _$ConnectionStoneFromJson(Map<String, dynamic> json) {
   return _ConnectionStone.fromJson(json);
@@ -79,27 +78,25 @@ mixin _$ConnectionStone {
 /// @nodoc
 abstract class $ConnectionStoneCopyWith<$Res> {
   factory $ConnectionStoneCopyWith(
-    ConnectionStone value,
-    $Res Function(ConnectionStone) then,
-  ) = _$ConnectionStoneCopyWithImpl<$Res, ConnectionStone>;
+          ConnectionStone value, $Res Function(ConnectionStone) then) =
+      _$ConnectionStoneCopyWithImpl<$Res, ConnectionStone>;
   @useResult
-  $Res call({
-    String id,
-    StoneType stoneType,
-    String name,
-    String friendName,
-    String friendId,
-    DateTime createdAt,
-    DateTime? lastTouchedByOwner,
-    DateTime? lastReceivedComfort,
-    int totalTouches,
-    int totalComfortReceived,
-    bool isReceivingComfort,
-    bool isSendingComfort,
-    String? intention,
-    bool isQuickAccess,
-    double connectionStrength,
-  });
+  $Res call(
+      {String id,
+      StoneType stoneType,
+      String name,
+      String friendName,
+      String friendId,
+      DateTime createdAt,
+      DateTime? lastTouchedByOwner,
+      DateTime? lastReceivedComfort,
+      int totalTouches,
+      int totalComfortReceived,
+      bool isReceivingComfort,
+      bool isSendingComfort,
+      String? intention,
+      bool isQuickAccess,
+      double connectionStrength});
 }
 
 /// @nodoc
@@ -133,100 +130,95 @@ class _$ConnectionStoneCopyWithImpl<$Res, $Val extends ConnectionStone>
     Object? isQuickAccess = null,
     Object? connectionStrength = null,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            stoneType: null == stoneType
-                ? _value.stoneType
-                : stoneType // ignore: cast_nullable_to_non_nullable
-                      as StoneType,
-            name: null == name
-                ? _value.name
-                : name // ignore: cast_nullable_to_non_nullable
-                      as String,
-            friendName: null == friendName
-                ? _value.friendName
-                : friendName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            friendId: null == friendId
-                ? _value.friendId
-                : friendId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            createdAt: null == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            lastTouchedByOwner: freezed == lastTouchedByOwner
-                ? _value.lastTouchedByOwner
-                : lastTouchedByOwner // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            lastReceivedComfort: freezed == lastReceivedComfort
-                ? _value.lastReceivedComfort
-                : lastReceivedComfort // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            totalTouches: null == totalTouches
-                ? _value.totalTouches
-                : totalTouches // ignore: cast_nullable_to_non_nullable
-                      as int,
-            totalComfortReceived: null == totalComfortReceived
-                ? _value.totalComfortReceived
-                : totalComfortReceived // ignore: cast_nullable_to_non_nullable
-                      as int,
-            isReceivingComfort: null == isReceivingComfort
-                ? _value.isReceivingComfort
-                : isReceivingComfort // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isSendingComfort: null == isSendingComfort
-                ? _value.isSendingComfort
-                : isSendingComfort // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            intention: freezed == intention
-                ? _value.intention
-                : intention // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            isQuickAccess: null == isQuickAccess
-                ? _value.isQuickAccess
-                : isQuickAccess // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            connectionStrength: null == connectionStrength
-                ? _value.connectionStrength
-                : connectionStrength // ignore: cast_nullable_to_non_nullable
-                      as double,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      stoneType: null == stoneType
+          ? _value.stoneType
+          : stoneType // ignore: cast_nullable_to_non_nullable
+              as StoneType,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      friendName: null == friendName
+          ? _value.friendName
+          : friendName // ignore: cast_nullable_to_non_nullable
+              as String,
+      friendId: null == friendId
+          ? _value.friendId
+          : friendId // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      lastTouchedByOwner: freezed == lastTouchedByOwner
+          ? _value.lastTouchedByOwner
+          : lastTouchedByOwner // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      lastReceivedComfort: freezed == lastReceivedComfort
+          ? _value.lastReceivedComfort
+          : lastReceivedComfort // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      totalTouches: null == totalTouches
+          ? _value.totalTouches
+          : totalTouches // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalComfortReceived: null == totalComfortReceived
+          ? _value.totalComfortReceived
+          : totalComfortReceived // ignore: cast_nullable_to_non_nullable
+              as int,
+      isReceivingComfort: null == isReceivingComfort
+          ? _value.isReceivingComfort
+          : isReceivingComfort // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSendingComfort: null == isSendingComfort
+          ? _value.isSendingComfort
+          : isSendingComfort // ignore: cast_nullable_to_non_nullable
+              as bool,
+      intention: freezed == intention
+          ? _value.intention
+          : intention // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isQuickAccess: null == isQuickAccess
+          ? _value.isQuickAccess
+          : isQuickAccess // ignore: cast_nullable_to_non_nullable
+              as bool,
+      connectionStrength: null == connectionStrength
+          ? _value.connectionStrength
+          : connectionStrength // ignore: cast_nullable_to_non_nullable
+              as double,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$ConnectionStoneImplCopyWith<$Res>
     implements $ConnectionStoneCopyWith<$Res> {
-  factory _$$ConnectionStoneImplCopyWith(
-    _$ConnectionStoneImpl value,
-    $Res Function(_$ConnectionStoneImpl) then,
-  ) = __$$ConnectionStoneImplCopyWithImpl<$Res>;
+  factory _$$ConnectionStoneImplCopyWith(_$ConnectionStoneImpl value,
+          $Res Function(_$ConnectionStoneImpl) then) =
+      __$$ConnectionStoneImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    StoneType stoneType,
-    String name,
-    String friendName,
-    String friendId,
-    DateTime createdAt,
-    DateTime? lastTouchedByOwner,
-    DateTime? lastReceivedComfort,
-    int totalTouches,
-    int totalComfortReceived,
-    bool isReceivingComfort,
-    bool isSendingComfort,
-    String? intention,
-    bool isQuickAccess,
-    double connectionStrength,
-  });
+  $Res call(
+      {String id,
+      StoneType stoneType,
+      String name,
+      String friendName,
+      String friendId,
+      DateTime createdAt,
+      DateTime? lastTouchedByOwner,
+      DateTime? lastReceivedComfort,
+      int totalTouches,
+      int totalComfortReceived,
+      bool isReceivingComfort,
+      bool isSendingComfort,
+      String? intention,
+      bool isQuickAccess,
+      double connectionStrength});
 }
 
 /// @nodoc
@@ -234,9 +226,8 @@ class __$$ConnectionStoneImplCopyWithImpl<$Res>
     extends _$ConnectionStoneCopyWithImpl<$Res, _$ConnectionStoneImpl>
     implements _$$ConnectionStoneImplCopyWith<$Res> {
   __$$ConnectionStoneImplCopyWithImpl(
-    _$ConnectionStoneImpl _value,
-    $Res Function(_$ConnectionStoneImpl) _then,
-  ) : super(_value, _then);
+      _$ConnectionStoneImpl _value, $Res Function(_$ConnectionStoneImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ConnectionStone
   /// with the given fields replaced by the non-null parameter values.
@@ -259,93 +250,90 @@ class __$$ConnectionStoneImplCopyWithImpl<$Res>
     Object? isQuickAccess = null,
     Object? connectionStrength = null,
   }) {
-    return _then(
-      _$ConnectionStoneImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        stoneType: null == stoneType
-            ? _value.stoneType
-            : stoneType // ignore: cast_nullable_to_non_nullable
-                  as StoneType,
-        name: null == name
-            ? _value.name
-            : name // ignore: cast_nullable_to_non_nullable
-                  as String,
-        friendName: null == friendName
-            ? _value.friendName
-            : friendName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        friendId: null == friendId
-            ? _value.friendId
-            : friendId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        createdAt: null == createdAt
-            ? _value.createdAt
-            : createdAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        lastTouchedByOwner: freezed == lastTouchedByOwner
-            ? _value.lastTouchedByOwner
-            : lastTouchedByOwner // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        lastReceivedComfort: freezed == lastReceivedComfort
-            ? _value.lastReceivedComfort
-            : lastReceivedComfort // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        totalTouches: null == totalTouches
-            ? _value.totalTouches
-            : totalTouches // ignore: cast_nullable_to_non_nullable
-                  as int,
-        totalComfortReceived: null == totalComfortReceived
-            ? _value.totalComfortReceived
-            : totalComfortReceived // ignore: cast_nullable_to_non_nullable
-                  as int,
-        isReceivingComfort: null == isReceivingComfort
-            ? _value.isReceivingComfort
-            : isReceivingComfort // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isSendingComfort: null == isSendingComfort
-            ? _value.isSendingComfort
-            : isSendingComfort // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        intention: freezed == intention
-            ? _value.intention
-            : intention // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        isQuickAccess: null == isQuickAccess
-            ? _value.isQuickAccess
-            : isQuickAccess // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        connectionStrength: null == connectionStrength
-            ? _value.connectionStrength
-            : connectionStrength // ignore: cast_nullable_to_non_nullable
-                  as double,
-      ),
-    );
+    return _then(_$ConnectionStoneImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      stoneType: null == stoneType
+          ? _value.stoneType
+          : stoneType // ignore: cast_nullable_to_non_nullable
+              as StoneType,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      friendName: null == friendName
+          ? _value.friendName
+          : friendName // ignore: cast_nullable_to_non_nullable
+              as String,
+      friendId: null == friendId
+          ? _value.friendId
+          : friendId // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      lastTouchedByOwner: freezed == lastTouchedByOwner
+          ? _value.lastTouchedByOwner
+          : lastTouchedByOwner // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      lastReceivedComfort: freezed == lastReceivedComfort
+          ? _value.lastReceivedComfort
+          : lastReceivedComfort // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      totalTouches: null == totalTouches
+          ? _value.totalTouches
+          : totalTouches // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalComfortReceived: null == totalComfortReceived
+          ? _value.totalComfortReceived
+          : totalComfortReceived // ignore: cast_nullable_to_non_nullable
+              as int,
+      isReceivingComfort: null == isReceivingComfort
+          ? _value.isReceivingComfort
+          : isReceivingComfort // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSendingComfort: null == isSendingComfort
+          ? _value.isSendingComfort
+          : isSendingComfort // ignore: cast_nullable_to_non_nullable
+              as bool,
+      intention: freezed == intention
+          ? _value.intention
+          : intention // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isQuickAccess: null == isQuickAccess
+          ? _value.isQuickAccess
+          : isQuickAccess // ignore: cast_nullable_to_non_nullable
+              as bool,
+      connectionStrength: null == connectionStrength
+          ? _value.connectionStrength
+          : connectionStrength // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ConnectionStoneImpl implements _ConnectionStone {
-  const _$ConnectionStoneImpl({
-    required this.id,
-    required this.stoneType,
-    required this.name,
-    required this.friendName,
-    required this.friendId,
-    required this.createdAt,
-    this.lastTouchedByOwner,
-    this.lastReceivedComfort,
-    this.totalTouches = 0,
-    this.totalComfortReceived = 0,
-    this.isReceivingComfort = false,
-    this.isSendingComfort = false,
-    this.intention,
-    this.isQuickAccess = false,
-    this.connectionStrength = 0.5,
-  });
+  const _$ConnectionStoneImpl(
+      {required this.id,
+      required this.stoneType,
+      required this.name,
+      required this.friendName,
+      required this.friendId,
+      required this.createdAt,
+      this.lastTouchedByOwner,
+      this.lastReceivedComfort,
+      this.totalTouches = 0,
+      this.totalComfortReceived = 0,
+      this.isReceivingComfort = false,
+      this.isSendingComfort = false,
+      this.intention,
+      this.isQuickAccess = false,
+      this.connectionStrength = 0.5});
 
   factory _$ConnectionStoneImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConnectionStoneImplFromJson(json);
@@ -459,23 +447,22 @@ class _$ConnectionStoneImpl implements _ConnectionStone {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    stoneType,
-    name,
-    friendName,
-    friendId,
-    createdAt,
-    lastTouchedByOwner,
-    lastReceivedComfort,
-    totalTouches,
-    totalComfortReceived,
-    isReceivingComfort,
-    isSendingComfort,
-    intention,
-    isQuickAccess,
-    connectionStrength,
-  );
+      runtimeType,
+      id,
+      stoneType,
+      name,
+      friendName,
+      friendId,
+      createdAt,
+      lastTouchedByOwner,
+      lastReceivedComfort,
+      totalTouches,
+      totalComfortReceived,
+      isReceivingComfort,
+      isSendingComfort,
+      intention,
+      isQuickAccess,
+      connectionStrength);
 
   /// Create a copy of ConnectionStone
   /// with the given fields replaced by the non-null parameter values.
@@ -484,34 +471,33 @@ class _$ConnectionStoneImpl implements _ConnectionStone {
   @pragma('vm:prefer-inline')
   _$$ConnectionStoneImplCopyWith<_$ConnectionStoneImpl> get copyWith =>
       __$$ConnectionStoneImplCopyWithImpl<_$ConnectionStoneImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ConnectionStoneImplToJson(this);
+    return _$$ConnectionStoneImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _ConnectionStone implements ConnectionStone {
-  const factory _ConnectionStone({
-    required final String id,
-    required final StoneType stoneType,
-    required final String name,
-    required final String friendName,
-    required final String friendId,
-    required final DateTime createdAt,
-    final DateTime? lastTouchedByOwner,
-    final DateTime? lastReceivedComfort,
-    final int totalTouches,
-    final int totalComfortReceived,
-    final bool isReceivingComfort,
-    final bool isSendingComfort,
-    final String? intention,
-    final bool isQuickAccess,
-    final double connectionStrength,
-  }) = _$ConnectionStoneImpl;
+  const factory _ConnectionStone(
+      {required final String id,
+      required final StoneType stoneType,
+      required final String name,
+      required final String friendName,
+      required final String friendId,
+      required final DateTime createdAt,
+      final DateTime? lastTouchedByOwner,
+      final DateTime? lastReceivedComfort,
+      final int totalTouches,
+      final int totalComfortReceived,
+      final bool isReceivingComfort,
+      final bool isSendingComfort,
+      final String? intention,
+      final bool isQuickAccess,
+      final double connectionStrength}) = _$ConnectionStoneImpl;
 
   factory _ConnectionStone.fromJson(Map<String, dynamic> json) =
       _$ConnectionStoneImpl.fromJson;

@@ -12,8 +12,7 @@ part of 'api_result.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ApiResult<T> {
@@ -21,42 +20,47 @@ mixin _$ApiResult<T> {
   TResult when<TResult extends Object?>({
     required TResult Function(T data) success,
     required TResult Function(ApiError error) failure,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(T data)? success,
     TResult? Function(ApiError error)? failure,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data)? success,
     TResult Function(ApiError error)? failure,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Success<T> value) success,
     required TResult Function(Failure<T> value) failure,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Success<T> value)? success,
     TResult? Function(Failure<T> value)? failure,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Success<T> value)? success,
     TResult Function(Failure<T> value)? failure,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $ApiResultCopyWith<T, $Res> {
   factory $ApiResultCopyWith(
-    ApiResult<T> value,
-    $Res Function(ApiResult<T>) then,
-  ) = _$ApiResultCopyWithImpl<T, $Res, ApiResult<T>>;
+          ApiResult<T> value, $Res Function(ApiResult<T>) then) =
+      _$ApiResultCopyWithImpl<T, $Res, ApiResult<T>>;
 }
 
 /// @nodoc
@@ -76,9 +80,8 @@ class _$ApiResultCopyWithImpl<T, $Res, $Val extends ApiResult<T>>
 /// @nodoc
 abstract class _$$SuccessImplCopyWith<T, $Res> {
   factory _$$SuccessImplCopyWith(
-    _$SuccessImpl<T> value,
-    $Res Function(_$SuccessImpl<T>) then,
-  ) = __$$SuccessImplCopyWithImpl<T, $Res>;
+          _$SuccessImpl<T> value, $Res Function(_$SuccessImpl<T>) then) =
+      __$$SuccessImplCopyWithImpl<T, $Res>;
   @useResult
   $Res call({T data});
 }
@@ -88,23 +91,22 @@ class __$$SuccessImplCopyWithImpl<T, $Res>
     extends _$ApiResultCopyWithImpl<T, $Res, _$SuccessImpl<T>>
     implements _$$SuccessImplCopyWith<T, $Res> {
   __$$SuccessImplCopyWithImpl(
-    _$SuccessImpl<T> _value,
-    $Res Function(_$SuccessImpl<T>) _then,
-  ) : super(_value, _then);
+      _$SuccessImpl<T> _value, $Res Function(_$SuccessImpl<T>) _then)
+      : super(_value, _then);
 
   /// Create a copy of ApiResult
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? data = freezed}) {
-    return _then(
-      _$SuccessImpl<T>(
-        freezed == data
-            ? _value.data
-            : data // ignore: cast_nullable_to_non_nullable
-                  as T,
-      ),
-    );
+  $Res call({
+    Object? data = freezed,
+  }) {
+    return _then(_$SuccessImpl<T>(
+      freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as T,
+    ));
   }
 }
 
@@ -219,9 +221,8 @@ abstract class Success<T> implements ApiResult<T> {
 /// @nodoc
 abstract class _$$FailureImplCopyWith<T, $Res> {
   factory _$$FailureImplCopyWith(
-    _$FailureImpl<T> value,
-    $Res Function(_$FailureImpl<T>) then,
-  ) = __$$FailureImplCopyWithImpl<T, $Res>;
+          _$FailureImpl<T> value, $Res Function(_$FailureImpl<T>) then) =
+      __$$FailureImplCopyWithImpl<T, $Res>;
   @useResult
   $Res call({ApiError error});
 
@@ -233,23 +234,22 @@ class __$$FailureImplCopyWithImpl<T, $Res>
     extends _$ApiResultCopyWithImpl<T, $Res, _$FailureImpl<T>>
     implements _$$FailureImplCopyWith<T, $Res> {
   __$$FailureImplCopyWithImpl(
-    _$FailureImpl<T> _value,
-    $Res Function(_$FailureImpl<T>) _then,
-  ) : super(_value, _then);
+      _$FailureImpl<T> _value, $Res Function(_$FailureImpl<T>) _then)
+      : super(_value, _then);
 
   /// Create a copy of ApiResult
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? error = null}) {
-    return _then(
-      _$FailureImpl<T>(
-        null == error
-            ? _value.error
-            : error // ignore: cast_nullable_to_non_nullable
-                  as ApiError,
-      ),
-    );
+  $Res call({
+    Object? error = null,
+  }) {
+    return _then(_$FailureImpl<T>(
+      null == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as ApiError,
+    ));
   }
 
   /// Create a copy of ApiResult
@@ -391,14 +391,13 @@ abstract class $ApiErrorCopyWith<$Res> {
   factory $ApiErrorCopyWith(ApiError value, $Res Function(ApiError) then) =
       _$ApiErrorCopyWithImpl<$Res, ApiError>;
   @useResult
-  $Res call({
-    String message,
-    int statusCode,
-    Map<String, List<String>>? details,
-    bool isNetwork,
-    bool isTimeout,
-    bool isUnauthorized,
-  });
+  $Res call(
+      {String message,
+      int statusCode,
+      Map<String, List<String>>? details,
+      bool isNetwork,
+      bool isTimeout,
+      bool isUnauthorized});
 }
 
 /// @nodoc
@@ -423,35 +422,32 @@ class _$ApiErrorCopyWithImpl<$Res, $Val extends ApiError>
     Object? isTimeout = null,
     Object? isUnauthorized = null,
   }) {
-    return _then(
-      _value.copyWith(
-            message: null == message
-                ? _value.message
-                : message // ignore: cast_nullable_to_non_nullable
-                      as String,
-            statusCode: null == statusCode
-                ? _value.statusCode
-                : statusCode // ignore: cast_nullable_to_non_nullable
-                      as int,
-            details: freezed == details
-                ? _value.details
-                : details // ignore: cast_nullable_to_non_nullable
-                      as Map<String, List<String>>?,
-            isNetwork: null == isNetwork
-                ? _value.isNetwork
-                : isNetwork // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isTimeout: null == isTimeout
-                ? _value.isTimeout
-                : isTimeout // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isUnauthorized: null == isUnauthorized
-                ? _value.isUnauthorized
-                : isUnauthorized // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      statusCode: null == statusCode
+          ? _value.statusCode
+          : statusCode // ignore: cast_nullable_to_non_nullable
+              as int,
+      details: freezed == details
+          ? _value.details
+          : details // ignore: cast_nullable_to_non_nullable
+              as Map<String, List<String>>?,
+      isNetwork: null == isNetwork
+          ? _value.isNetwork
+          : isNetwork // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isTimeout: null == isTimeout
+          ? _value.isTimeout
+          : isTimeout // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isUnauthorized: null == isUnauthorized
+          ? _value.isUnauthorized
+          : isUnauthorized // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 }
 
@@ -459,19 +455,17 @@ class _$ApiErrorCopyWithImpl<$Res, $Val extends ApiError>
 abstract class _$$ApiErrorImplCopyWith<$Res>
     implements $ApiErrorCopyWith<$Res> {
   factory _$$ApiErrorImplCopyWith(
-    _$ApiErrorImpl value,
-    $Res Function(_$ApiErrorImpl) then,
-  ) = __$$ApiErrorImplCopyWithImpl<$Res>;
+          _$ApiErrorImpl value, $Res Function(_$ApiErrorImpl) then) =
+      __$$ApiErrorImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String message,
-    int statusCode,
-    Map<String, List<String>>? details,
-    bool isNetwork,
-    bool isTimeout,
-    bool isUnauthorized,
-  });
+  $Res call(
+      {String message,
+      int statusCode,
+      Map<String, List<String>>? details,
+      bool isNetwork,
+      bool isTimeout,
+      bool isUnauthorized});
 }
 
 /// @nodoc
@@ -479,9 +473,8 @@ class __$$ApiErrorImplCopyWithImpl<$Res>
     extends _$ApiErrorCopyWithImpl<$Res, _$ApiErrorImpl>
     implements _$$ApiErrorImplCopyWith<$Res> {
   __$$ApiErrorImplCopyWithImpl(
-    _$ApiErrorImpl _value,
-    $Res Function(_$ApiErrorImpl) _then,
-  ) : super(_value, _then);
+      _$ApiErrorImpl _value, $Res Function(_$ApiErrorImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ApiError
   /// with the given fields replaced by the non-null parameter values.
@@ -495,48 +488,46 @@ class __$$ApiErrorImplCopyWithImpl<$Res>
     Object? isTimeout = null,
     Object? isUnauthorized = null,
   }) {
-    return _then(
-      _$ApiErrorImpl(
-        message: null == message
-            ? _value.message
-            : message // ignore: cast_nullable_to_non_nullable
-                  as String,
-        statusCode: null == statusCode
-            ? _value.statusCode
-            : statusCode // ignore: cast_nullable_to_non_nullable
-                  as int,
-        details: freezed == details
-            ? _value._details
-            : details // ignore: cast_nullable_to_non_nullable
-                  as Map<String, List<String>>?,
-        isNetwork: null == isNetwork
-            ? _value.isNetwork
-            : isNetwork // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isTimeout: null == isTimeout
-            ? _value.isTimeout
-            : isTimeout // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isUnauthorized: null == isUnauthorized
-            ? _value.isUnauthorized
-            : isUnauthorized // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$ApiErrorImpl(
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      statusCode: null == statusCode
+          ? _value.statusCode
+          : statusCode // ignore: cast_nullable_to_non_nullable
+              as int,
+      details: freezed == details
+          ? _value._details
+          : details // ignore: cast_nullable_to_non_nullable
+              as Map<String, List<String>>?,
+      isNetwork: null == isNetwork
+          ? _value.isNetwork
+          : isNetwork // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isTimeout: null == isTimeout
+          ? _value.isTimeout
+          : isTimeout // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isUnauthorized: null == isUnauthorized
+          ? _value.isUnauthorized
+          : isUnauthorized // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
 /// @nodoc
 
 class _$ApiErrorImpl implements _ApiError {
-  const _$ApiErrorImpl({
-    required this.message,
-    required this.statusCode,
-    final Map<String, List<String>>? details,
-    this.isNetwork = false,
-    this.isTimeout = false,
-    this.isUnauthorized = false,
-  }) : _details = details;
+  const _$ApiErrorImpl(
+      {required this.message,
+      required this.statusCode,
+      final Map<String, List<String>>? details,
+      this.isNetwork = false,
+      this.isTimeout = false,
+      this.isUnauthorized = false})
+      : _details = details;
 
   @override
   final String message;
@@ -586,14 +577,13 @@ class _$ApiErrorImpl implements _ApiError {
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    message,
-    statusCode,
-    const DeepCollectionEquality().hash(_details),
-    isNetwork,
-    isTimeout,
-    isUnauthorized,
-  );
+      runtimeType,
+      message,
+      statusCode,
+      const DeepCollectionEquality().hash(_details),
+      isNetwork,
+      isTimeout,
+      isUnauthorized);
 
   /// Create a copy of ApiError
   /// with the given fields replaced by the non-null parameter values.
@@ -605,14 +595,13 @@ class _$ApiErrorImpl implements _ApiError {
 }
 
 abstract class _ApiError implements ApiError {
-  const factory _ApiError({
-    required final String message,
-    required final int statusCode,
-    final Map<String, List<String>>? details,
-    final bool isNetwork,
-    final bool isTimeout,
-    final bool isUnauthorized,
-  }) = _$ApiErrorImpl;
+  const factory _ApiError(
+      {required final String message,
+      required final int statusCode,
+      final Map<String, List<String>>? details,
+      final bool isNetwork,
+      final bool isTimeout,
+      final bool isUnauthorized}) = _$ApiErrorImpl;
 
   @override
   String get message;

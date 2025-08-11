@@ -12,8 +12,7 @@ part of 'book_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Book _$BookFromJson(Map<String, dynamic> json) {
   return _Book.fromJson(json);
@@ -51,23 +50,22 @@ abstract class $BookCopyWith<$Res> {
   factory $BookCopyWith(Book value, $Res Function(Book) then) =
       _$BookCopyWithImpl<$Res, Book>;
   @useResult
-  $Res call({
-    String id,
-    String title,
-    String author,
-    String coverEmoji,
-    double rating,
-    int durationHours,
-    List<String> tags,
-    bool isPremium,
-    BookComfortLevel comfortLevel,
-    String description,
-    int totalPages,
-    int currentPage,
-    bool isAvailableForParallel,
-    String? partnerReadingWith,
-    List<String> genres,
-  });
+  $Res call(
+      {String id,
+      String title,
+      String author,
+      String coverEmoji,
+      double rating,
+      int durationHours,
+      List<String> tags,
+      bool isPremium,
+      BookComfortLevel comfortLevel,
+      String description,
+      int totalPages,
+      int currentPage,
+      bool isAvailableForParallel,
+      String? partnerReadingWith,
+      List<String> genres});
 }
 
 /// @nodoc
@@ -101,99 +99,94 @@ class _$BookCopyWithImpl<$Res, $Val extends Book>
     Object? partnerReadingWith = freezed,
     Object? genres = null,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            title: null == title
-                ? _value.title
-                : title // ignore: cast_nullable_to_non_nullable
-                      as String,
-            author: null == author
-                ? _value.author
-                : author // ignore: cast_nullable_to_non_nullable
-                      as String,
-            coverEmoji: null == coverEmoji
-                ? _value.coverEmoji
-                : coverEmoji // ignore: cast_nullable_to_non_nullable
-                      as String,
-            rating: null == rating
-                ? _value.rating
-                : rating // ignore: cast_nullable_to_non_nullable
-                      as double,
-            durationHours: null == durationHours
-                ? _value.durationHours
-                : durationHours // ignore: cast_nullable_to_non_nullable
-                      as int,
-            tags: null == tags
-                ? _value.tags
-                : tags // ignore: cast_nullable_to_non_nullable
-                      as List<String>,
-            isPremium: null == isPremium
-                ? _value.isPremium
-                : isPremium // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            comfortLevel: null == comfortLevel
-                ? _value.comfortLevel
-                : comfortLevel // ignore: cast_nullable_to_non_nullable
-                      as BookComfortLevel,
-            description: null == description
-                ? _value.description
-                : description // ignore: cast_nullable_to_non_nullable
-                      as String,
-            totalPages: null == totalPages
-                ? _value.totalPages
-                : totalPages // ignore: cast_nullable_to_non_nullable
-                      as int,
-            currentPage: null == currentPage
-                ? _value.currentPage
-                : currentPage // ignore: cast_nullable_to_non_nullable
-                      as int,
-            isAvailableForParallel: null == isAvailableForParallel
-                ? _value.isAvailableForParallel
-                : isAvailableForParallel // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            partnerReadingWith: freezed == partnerReadingWith
-                ? _value.partnerReadingWith
-                : partnerReadingWith // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            genres: null == genres
-                ? _value.genres
-                : genres // ignore: cast_nullable_to_non_nullable
-                      as List<String>,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      author: null == author
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as String,
+      coverEmoji: null == coverEmoji
+          ? _value.coverEmoji
+          : coverEmoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      rating: null == rating
+          ? _value.rating
+          : rating // ignore: cast_nullable_to_non_nullable
+              as double,
+      durationHours: null == durationHours
+          ? _value.durationHours
+          : durationHours // ignore: cast_nullable_to_non_nullable
+              as int,
+      tags: null == tags
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      isPremium: null == isPremium
+          ? _value.isPremium
+          : isPremium // ignore: cast_nullable_to_non_nullable
+              as bool,
+      comfortLevel: null == comfortLevel
+          ? _value.comfortLevel
+          : comfortLevel // ignore: cast_nullable_to_non_nullable
+              as BookComfortLevel,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      totalPages: null == totalPages
+          ? _value.totalPages
+          : totalPages // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      isAvailableForParallel: null == isAvailableForParallel
+          ? _value.isAvailableForParallel
+          : isAvailableForParallel // ignore: cast_nullable_to_non_nullable
+              as bool,
+      partnerReadingWith: freezed == partnerReadingWith
+          ? _value.partnerReadingWith
+          : partnerReadingWith // ignore: cast_nullable_to_non_nullable
+              as String?,
+      genres: null == genres
+          ? _value.genres
+          : genres // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$BookImplCopyWith<$Res> implements $BookCopyWith<$Res> {
   factory _$$BookImplCopyWith(
-    _$BookImpl value,
-    $Res Function(_$BookImpl) then,
-  ) = __$$BookImplCopyWithImpl<$Res>;
+          _$BookImpl value, $Res Function(_$BookImpl) then) =
+      __$$BookImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String title,
-    String author,
-    String coverEmoji,
-    double rating,
-    int durationHours,
-    List<String> tags,
-    bool isPremium,
-    BookComfortLevel comfortLevel,
-    String description,
-    int totalPages,
-    int currentPage,
-    bool isAvailableForParallel,
-    String? partnerReadingWith,
-    List<String> genres,
-  });
+  $Res call(
+      {String id,
+      String title,
+      String author,
+      String coverEmoji,
+      double rating,
+      int durationHours,
+      List<String> tags,
+      bool isPremium,
+      BookComfortLevel comfortLevel,
+      String description,
+      int totalPages,
+      int currentPage,
+      bool isAvailableForParallel,
+      String? partnerReadingWith,
+      List<String> genres});
 }
 
 /// @nodoc
@@ -201,7 +194,7 @@ class __$$BookImplCopyWithImpl<$Res>
     extends _$BookCopyWithImpl<$Res, _$BookImpl>
     implements _$$BookImplCopyWith<$Res> {
   __$$BookImplCopyWithImpl(_$BookImpl _value, $Res Function(_$BookImpl) _then)
-    : super(_value, _then);
+      : super(_value, _then);
 
   /// Create a copy of Book
   /// with the given fields replaced by the non-null parameter values.
@@ -224,94 +217,92 @@ class __$$BookImplCopyWithImpl<$Res>
     Object? partnerReadingWith = freezed,
     Object? genres = null,
   }) {
-    return _then(
-      _$BookImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        title: null == title
-            ? _value.title
-            : title // ignore: cast_nullable_to_non_nullable
-                  as String,
-        author: null == author
-            ? _value.author
-            : author // ignore: cast_nullable_to_non_nullable
-                  as String,
-        coverEmoji: null == coverEmoji
-            ? _value.coverEmoji
-            : coverEmoji // ignore: cast_nullable_to_non_nullable
-                  as String,
-        rating: null == rating
-            ? _value.rating
-            : rating // ignore: cast_nullable_to_non_nullable
-                  as double,
-        durationHours: null == durationHours
-            ? _value.durationHours
-            : durationHours // ignore: cast_nullable_to_non_nullable
-                  as int,
-        tags: null == tags
-            ? _value._tags
-            : tags // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
-        isPremium: null == isPremium
-            ? _value.isPremium
-            : isPremium // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        comfortLevel: null == comfortLevel
-            ? _value.comfortLevel
-            : comfortLevel // ignore: cast_nullable_to_non_nullable
-                  as BookComfortLevel,
-        description: null == description
-            ? _value.description
-            : description // ignore: cast_nullable_to_non_nullable
-                  as String,
-        totalPages: null == totalPages
-            ? _value.totalPages
-            : totalPages // ignore: cast_nullable_to_non_nullable
-                  as int,
-        currentPage: null == currentPage
-            ? _value.currentPage
-            : currentPage // ignore: cast_nullable_to_non_nullable
-                  as int,
-        isAvailableForParallel: null == isAvailableForParallel
-            ? _value.isAvailableForParallel
-            : isAvailableForParallel // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        partnerReadingWith: freezed == partnerReadingWith
-            ? _value.partnerReadingWith
-            : partnerReadingWith // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        genres: null == genres
-            ? _value._genres
-            : genres // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
-      ),
-    );
+    return _then(_$BookImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      author: null == author
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as String,
+      coverEmoji: null == coverEmoji
+          ? _value.coverEmoji
+          : coverEmoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      rating: null == rating
+          ? _value.rating
+          : rating // ignore: cast_nullable_to_non_nullable
+              as double,
+      durationHours: null == durationHours
+          ? _value.durationHours
+          : durationHours // ignore: cast_nullable_to_non_nullable
+              as int,
+      tags: null == tags
+          ? _value._tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      isPremium: null == isPremium
+          ? _value.isPremium
+          : isPremium // ignore: cast_nullable_to_non_nullable
+              as bool,
+      comfortLevel: null == comfortLevel
+          ? _value.comfortLevel
+          : comfortLevel // ignore: cast_nullable_to_non_nullable
+              as BookComfortLevel,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      totalPages: null == totalPages
+          ? _value.totalPages
+          : totalPages // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      isAvailableForParallel: null == isAvailableForParallel
+          ? _value.isAvailableForParallel
+          : isAvailableForParallel // ignore: cast_nullable_to_non_nullable
+              as bool,
+      partnerReadingWith: freezed == partnerReadingWith
+          ? _value.partnerReadingWith
+          : partnerReadingWith // ignore: cast_nullable_to_non_nullable
+              as String?,
+      genres: null == genres
+          ? _value._genres
+          : genres // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$BookImpl implements _Book {
-  const _$BookImpl({
-    required this.id,
-    required this.title,
-    required this.author,
-    required this.coverEmoji,
-    required this.rating,
-    required this.durationHours,
-    required final List<String> tags,
-    required this.isPremium,
-    required this.comfortLevel,
-    this.description = '',
-    this.totalPages = 0,
-    this.currentPage = 0,
-    this.isAvailableForParallel = false,
-    this.partnerReadingWith = null,
-    final List<String> genres = const [],
-  }) : _tags = tags,
-       _genres = genres;
+  const _$BookImpl(
+      {required this.id,
+      required this.title,
+      required this.author,
+      required this.coverEmoji,
+      required this.rating,
+      required this.durationHours,
+      required final List<String> tags,
+      required this.isPremium,
+      required this.comfortLevel,
+      this.description = '',
+      this.totalPages = 0,
+      this.currentPage = 0,
+      this.isAvailableForParallel = false,
+      this.partnerReadingWith = null,
+      final List<String> genres = const []})
+      : _tags = tags,
+        _genres = genres;
 
   factory _$BookImpl.fromJson(Map<String, dynamic> json) =>
       _$$BookImplFromJson(json);
@@ -403,23 +394,22 @@ class _$BookImpl implements _Book {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    title,
-    author,
-    coverEmoji,
-    rating,
-    durationHours,
-    const DeepCollectionEquality().hash(_tags),
-    isPremium,
-    comfortLevel,
-    description,
-    totalPages,
-    currentPage,
-    isAvailableForParallel,
-    partnerReadingWith,
-    const DeepCollectionEquality().hash(_genres),
-  );
+      runtimeType,
+      id,
+      title,
+      author,
+      coverEmoji,
+      rating,
+      durationHours,
+      const DeepCollectionEquality().hash(_tags),
+      isPremium,
+      comfortLevel,
+      description,
+      totalPages,
+      currentPage,
+      isAvailableForParallel,
+      partnerReadingWith,
+      const DeepCollectionEquality().hash(_genres));
 
   /// Create a copy of Book
   /// with the given fields replaced by the non-null parameter values.
@@ -431,28 +421,29 @@ class _$BookImpl implements _Book {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$BookImplToJson(this);
+    return _$$BookImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _Book implements Book {
-  const factory _Book({
-    required final String id,
-    required final String title,
-    required final String author,
-    required final String coverEmoji,
-    required final double rating,
-    required final int durationHours,
-    required final List<String> tags,
-    required final bool isPremium,
-    required final BookComfortLevel comfortLevel,
-    final String description,
-    final int totalPages,
-    final int currentPage,
-    final bool isAvailableForParallel,
-    final String? partnerReadingWith,
-    final List<String> genres,
-  }) = _$BookImpl;
+  const factory _Book(
+      {required final String id,
+      required final String title,
+      required final String author,
+      required final String coverEmoji,
+      required final double rating,
+      required final int durationHours,
+      required final List<String> tags,
+      required final bool isPremium,
+      required final BookComfortLevel comfortLevel,
+      final String description,
+      final int totalPages,
+      final int currentPage,
+      final bool isAvailableForParallel,
+      final String? partnerReadingWith,
+      final List<String> genres}) = _$BookImpl;
 
   factory _Book.fromJson(Map<String, dynamic> json) = _$BookImpl.fromJson;
 
@@ -529,26 +520,24 @@ mixin _$ReadingProgress {
 /// @nodoc
 abstract class $ReadingProgressCopyWith<$Res> {
   factory $ReadingProgressCopyWith(
-    ReadingProgress value,
-    $Res Function(ReadingProgress) then,
-  ) = _$ReadingProgressCopyWithImpl<$Res, ReadingProgress>;
+          ReadingProgress value, $Res Function(ReadingProgress) then) =
+      _$ReadingProgressCopyWithImpl<$Res, ReadingProgress>;
   @useResult
-  $Res call({
-    String bookId,
-    String bookTitle,
-    String bookAuthor,
-    String coverEmoji,
-    int currentPage,
-    int totalPages,
-    int currentChapter,
-    int totalChapters,
-    ReadingMood mood,
-    int minutesLeft,
-    int readingStreak,
-    ReadingPartner? partner,
-    bool isSynced,
-    String lastReadAt,
-  });
+  $Res call(
+      {String bookId,
+      String bookTitle,
+      String bookAuthor,
+      String coverEmoji,
+      int currentPage,
+      int totalPages,
+      int currentChapter,
+      int totalChapters,
+      ReadingMood mood,
+      int minutesLeft,
+      int readingStreak,
+      ReadingPartner? partner,
+      bool isSynced,
+      String lastReadAt});
 
   $ReadingPartnerCopyWith<$Res>? get partner;
 }
@@ -583,67 +572,64 @@ class _$ReadingProgressCopyWithImpl<$Res, $Val extends ReadingProgress>
     Object? isSynced = null,
     Object? lastReadAt = null,
   }) {
-    return _then(
-      _value.copyWith(
-            bookId: null == bookId
-                ? _value.bookId
-                : bookId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            bookTitle: null == bookTitle
-                ? _value.bookTitle
-                : bookTitle // ignore: cast_nullable_to_non_nullable
-                      as String,
-            bookAuthor: null == bookAuthor
-                ? _value.bookAuthor
-                : bookAuthor // ignore: cast_nullable_to_non_nullable
-                      as String,
-            coverEmoji: null == coverEmoji
-                ? _value.coverEmoji
-                : coverEmoji // ignore: cast_nullable_to_non_nullable
-                      as String,
-            currentPage: null == currentPage
-                ? _value.currentPage
-                : currentPage // ignore: cast_nullable_to_non_nullable
-                      as int,
-            totalPages: null == totalPages
-                ? _value.totalPages
-                : totalPages // ignore: cast_nullable_to_non_nullable
-                      as int,
-            currentChapter: null == currentChapter
-                ? _value.currentChapter
-                : currentChapter // ignore: cast_nullable_to_non_nullable
-                      as int,
-            totalChapters: null == totalChapters
-                ? _value.totalChapters
-                : totalChapters // ignore: cast_nullable_to_non_nullable
-                      as int,
-            mood: null == mood
-                ? _value.mood
-                : mood // ignore: cast_nullable_to_non_nullable
-                      as ReadingMood,
-            minutesLeft: null == minutesLeft
-                ? _value.minutesLeft
-                : minutesLeft // ignore: cast_nullable_to_non_nullable
-                      as int,
-            readingStreak: null == readingStreak
-                ? _value.readingStreak
-                : readingStreak // ignore: cast_nullable_to_non_nullable
-                      as int,
-            partner: freezed == partner
-                ? _value.partner
-                : partner // ignore: cast_nullable_to_non_nullable
-                      as ReadingPartner?,
-            isSynced: null == isSynced
-                ? _value.isSynced
-                : isSynced // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            lastReadAt: null == lastReadAt
-                ? _value.lastReadAt
-                : lastReadAt // ignore: cast_nullable_to_non_nullable
-                      as String,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      bookId: null == bookId
+          ? _value.bookId
+          : bookId // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookTitle: null == bookTitle
+          ? _value.bookTitle
+          : bookTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookAuthor: null == bookAuthor
+          ? _value.bookAuthor
+          : bookAuthor // ignore: cast_nullable_to_non_nullable
+              as String,
+      coverEmoji: null == coverEmoji
+          ? _value.coverEmoji
+          : coverEmoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalPages: null == totalPages
+          ? _value.totalPages
+          : totalPages // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentChapter: null == currentChapter
+          ? _value.currentChapter
+          : currentChapter // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalChapters: null == totalChapters
+          ? _value.totalChapters
+          : totalChapters // ignore: cast_nullable_to_non_nullable
+              as int,
+      mood: null == mood
+          ? _value.mood
+          : mood // ignore: cast_nullable_to_non_nullable
+              as ReadingMood,
+      minutesLeft: null == minutesLeft
+          ? _value.minutesLeft
+          : minutesLeft // ignore: cast_nullable_to_non_nullable
+              as int,
+      readingStreak: null == readingStreak
+          ? _value.readingStreak
+          : readingStreak // ignore: cast_nullable_to_non_nullable
+              as int,
+      partner: freezed == partner
+          ? _value.partner
+          : partner // ignore: cast_nullable_to_non_nullable
+              as ReadingPartner?,
+      isSynced: null == isSynced
+          ? _value.isSynced
+          : isSynced // ignore: cast_nullable_to_non_nullable
+              as bool,
+      lastReadAt: null == lastReadAt
+          ? _value.lastReadAt
+          : lastReadAt // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
   }
 
   /// Create a copy of ReadingProgress
@@ -664,28 +650,26 @@ class _$ReadingProgressCopyWithImpl<$Res, $Val extends ReadingProgress>
 /// @nodoc
 abstract class _$$ReadingProgressImplCopyWith<$Res>
     implements $ReadingProgressCopyWith<$Res> {
-  factory _$$ReadingProgressImplCopyWith(
-    _$ReadingProgressImpl value,
-    $Res Function(_$ReadingProgressImpl) then,
-  ) = __$$ReadingProgressImplCopyWithImpl<$Res>;
+  factory _$$ReadingProgressImplCopyWith(_$ReadingProgressImpl value,
+          $Res Function(_$ReadingProgressImpl) then) =
+      __$$ReadingProgressImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String bookId,
-    String bookTitle,
-    String bookAuthor,
-    String coverEmoji,
-    int currentPage,
-    int totalPages,
-    int currentChapter,
-    int totalChapters,
-    ReadingMood mood,
-    int minutesLeft,
-    int readingStreak,
-    ReadingPartner? partner,
-    bool isSynced,
-    String lastReadAt,
-  });
+  $Res call(
+      {String bookId,
+      String bookTitle,
+      String bookAuthor,
+      String coverEmoji,
+      int currentPage,
+      int totalPages,
+      int currentChapter,
+      int totalChapters,
+      ReadingMood mood,
+      int minutesLeft,
+      int readingStreak,
+      ReadingPartner? partner,
+      bool isSynced,
+      String lastReadAt});
 
   @override
   $ReadingPartnerCopyWith<$Res>? get partner;
@@ -696,9 +680,8 @@ class __$$ReadingProgressImplCopyWithImpl<$Res>
     extends _$ReadingProgressCopyWithImpl<$Res, _$ReadingProgressImpl>
     implements _$$ReadingProgressImplCopyWith<$Res> {
   __$$ReadingProgressImplCopyWithImpl(
-    _$ReadingProgressImpl _value,
-    $Res Function(_$ReadingProgressImpl) _then,
-  ) : super(_value, _then);
+      _$ReadingProgressImpl _value, $Res Function(_$ReadingProgressImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ReadingProgress
   /// with the given fields replaced by the non-null parameter values.
@@ -720,88 +703,85 @@ class __$$ReadingProgressImplCopyWithImpl<$Res>
     Object? isSynced = null,
     Object? lastReadAt = null,
   }) {
-    return _then(
-      _$ReadingProgressImpl(
-        bookId: null == bookId
-            ? _value.bookId
-            : bookId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        bookTitle: null == bookTitle
-            ? _value.bookTitle
-            : bookTitle // ignore: cast_nullable_to_non_nullable
-                  as String,
-        bookAuthor: null == bookAuthor
-            ? _value.bookAuthor
-            : bookAuthor // ignore: cast_nullable_to_non_nullable
-                  as String,
-        coverEmoji: null == coverEmoji
-            ? _value.coverEmoji
-            : coverEmoji // ignore: cast_nullable_to_non_nullable
-                  as String,
-        currentPage: null == currentPage
-            ? _value.currentPage
-            : currentPage // ignore: cast_nullable_to_non_nullable
-                  as int,
-        totalPages: null == totalPages
-            ? _value.totalPages
-            : totalPages // ignore: cast_nullable_to_non_nullable
-                  as int,
-        currentChapter: null == currentChapter
-            ? _value.currentChapter
-            : currentChapter // ignore: cast_nullable_to_non_nullable
-                  as int,
-        totalChapters: null == totalChapters
-            ? _value.totalChapters
-            : totalChapters // ignore: cast_nullable_to_non_nullable
-                  as int,
-        mood: null == mood
-            ? _value.mood
-            : mood // ignore: cast_nullable_to_non_nullable
-                  as ReadingMood,
-        minutesLeft: null == minutesLeft
-            ? _value.minutesLeft
-            : minutesLeft // ignore: cast_nullable_to_non_nullable
-                  as int,
-        readingStreak: null == readingStreak
-            ? _value.readingStreak
-            : readingStreak // ignore: cast_nullable_to_non_nullable
-                  as int,
-        partner: freezed == partner
-            ? _value.partner
-            : partner // ignore: cast_nullable_to_non_nullable
-                  as ReadingPartner?,
-        isSynced: null == isSynced
-            ? _value.isSynced
-            : isSynced // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        lastReadAt: null == lastReadAt
-            ? _value.lastReadAt
-            : lastReadAt // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
+    return _then(_$ReadingProgressImpl(
+      bookId: null == bookId
+          ? _value.bookId
+          : bookId // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookTitle: null == bookTitle
+          ? _value.bookTitle
+          : bookTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookAuthor: null == bookAuthor
+          ? _value.bookAuthor
+          : bookAuthor // ignore: cast_nullable_to_non_nullable
+              as String,
+      coverEmoji: null == coverEmoji
+          ? _value.coverEmoji
+          : coverEmoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalPages: null == totalPages
+          ? _value.totalPages
+          : totalPages // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentChapter: null == currentChapter
+          ? _value.currentChapter
+          : currentChapter // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalChapters: null == totalChapters
+          ? _value.totalChapters
+          : totalChapters // ignore: cast_nullable_to_non_nullable
+              as int,
+      mood: null == mood
+          ? _value.mood
+          : mood // ignore: cast_nullable_to_non_nullable
+              as ReadingMood,
+      minutesLeft: null == minutesLeft
+          ? _value.minutesLeft
+          : minutesLeft // ignore: cast_nullable_to_non_nullable
+              as int,
+      readingStreak: null == readingStreak
+          ? _value.readingStreak
+          : readingStreak // ignore: cast_nullable_to_non_nullable
+              as int,
+      partner: freezed == partner
+          ? _value.partner
+          : partner // ignore: cast_nullable_to_non_nullable
+              as ReadingPartner?,
+      isSynced: null == isSynced
+          ? _value.isSynced
+          : isSynced // ignore: cast_nullable_to_non_nullable
+              as bool,
+      lastReadAt: null == lastReadAt
+          ? _value.lastReadAt
+          : lastReadAt // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ReadingProgressImpl implements _ReadingProgress {
-  const _$ReadingProgressImpl({
-    required this.bookId,
-    required this.bookTitle,
-    required this.bookAuthor,
-    required this.coverEmoji,
-    required this.currentPage,
-    required this.totalPages,
-    required this.currentChapter,
-    required this.totalChapters,
-    required this.mood,
-    required this.minutesLeft,
-    required this.readingStreak,
-    this.partner = null,
-    this.isSynced = true,
-    this.lastReadAt = '',
-  });
+  const _$ReadingProgressImpl(
+      {required this.bookId,
+      required this.bookTitle,
+      required this.bookAuthor,
+      required this.coverEmoji,
+      required this.currentPage,
+      required this.totalPages,
+      required this.currentChapter,
+      required this.totalChapters,
+      required this.mood,
+      required this.minutesLeft,
+      required this.readingStreak,
+      this.partner = null,
+      this.isSynced = true,
+      this.lastReadAt = ''});
 
   factory _$ReadingProgressImpl.fromJson(Map<String, dynamic> json) =>
       _$$ReadingProgressImplFromJson(json);
@@ -878,22 +858,21 @@ class _$ReadingProgressImpl implements _ReadingProgress {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    bookId,
-    bookTitle,
-    bookAuthor,
-    coverEmoji,
-    currentPage,
-    totalPages,
-    currentChapter,
-    totalChapters,
-    mood,
-    minutesLeft,
-    readingStreak,
-    partner,
-    isSynced,
-    lastReadAt,
-  );
+      runtimeType,
+      bookId,
+      bookTitle,
+      bookAuthor,
+      coverEmoji,
+      currentPage,
+      totalPages,
+      currentChapter,
+      totalChapters,
+      mood,
+      minutesLeft,
+      readingStreak,
+      partner,
+      isSynced,
+      lastReadAt);
 
   /// Create a copy of ReadingProgress
   /// with the given fields replaced by the non-null parameter values.
@@ -902,33 +881,32 @@ class _$ReadingProgressImpl implements _ReadingProgress {
   @pragma('vm:prefer-inline')
   _$$ReadingProgressImplCopyWith<_$ReadingProgressImpl> get copyWith =>
       __$$ReadingProgressImplCopyWithImpl<_$ReadingProgressImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ReadingProgressImplToJson(this);
+    return _$$ReadingProgressImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _ReadingProgress implements ReadingProgress {
-  const factory _ReadingProgress({
-    required final String bookId,
-    required final String bookTitle,
-    required final String bookAuthor,
-    required final String coverEmoji,
-    required final int currentPage,
-    required final int totalPages,
-    required final int currentChapter,
-    required final int totalChapters,
-    required final ReadingMood mood,
-    required final int minutesLeft,
-    required final int readingStreak,
-    final ReadingPartner? partner,
-    final bool isSynced,
-    final String lastReadAt,
-  }) = _$ReadingProgressImpl;
+  const factory _ReadingProgress(
+      {required final String bookId,
+      required final String bookTitle,
+      required final String bookAuthor,
+      required final String coverEmoji,
+      required final int currentPage,
+      required final int totalPages,
+      required final int currentChapter,
+      required final int totalChapters,
+      required final ReadingMood mood,
+      required final int minutesLeft,
+      required final int readingStreak,
+      final ReadingPartner? partner,
+      final bool isSynced,
+      final String lastReadAt}) = _$ReadingProgressImpl;
 
   factory _ReadingProgress.fromJson(Map<String, dynamic> json) =
       _$ReadingProgressImpl.fromJson;
@@ -996,18 +974,16 @@ mixin _$ReadingPartner {
 /// @nodoc
 abstract class $ReadingPartnerCopyWith<$Res> {
   factory $ReadingPartnerCopyWith(
-    ReadingPartner value,
-    $Res Function(ReadingPartner) then,
-  ) = _$ReadingPartnerCopyWithImpl<$Res, ReadingPartner>;
+          ReadingPartner value, $Res Function(ReadingPartner) then) =
+      _$ReadingPartnerCopyWithImpl<$Res, ReadingPartner>;
   @useResult
-  $Res call({
-    String id,
-    String name,
-    String avatarInitial,
-    int currentPage,
-    bool isOnline,
-    String lastActiveAt,
-  });
+  $Res call(
+      {String id,
+      String name,
+      String avatarInitial,
+      int currentPage,
+      bool isOnline,
+      String lastActiveAt});
 }
 
 /// @nodoc
@@ -1032,55 +1008,50 @@ class _$ReadingPartnerCopyWithImpl<$Res, $Val extends ReadingPartner>
     Object? isOnline = null,
     Object? lastActiveAt = null,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            name: null == name
-                ? _value.name
-                : name // ignore: cast_nullable_to_non_nullable
-                      as String,
-            avatarInitial: null == avatarInitial
-                ? _value.avatarInitial
-                : avatarInitial // ignore: cast_nullable_to_non_nullable
-                      as String,
-            currentPage: null == currentPage
-                ? _value.currentPage
-                : currentPage // ignore: cast_nullable_to_non_nullable
-                      as int,
-            isOnline: null == isOnline
-                ? _value.isOnline
-                : isOnline // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            lastActiveAt: null == lastActiveAt
-                ? _value.lastActiveAt
-                : lastActiveAt // ignore: cast_nullable_to_non_nullable
-                      as String,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      avatarInitial: null == avatarInitial
+          ? _value.avatarInitial
+          : avatarInitial // ignore: cast_nullable_to_non_nullable
+              as String,
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
+      lastActiveAt: null == lastActiveAt
+          ? _value.lastActiveAt
+          : lastActiveAt // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$ReadingPartnerImplCopyWith<$Res>
     implements $ReadingPartnerCopyWith<$Res> {
-  factory _$$ReadingPartnerImplCopyWith(
-    _$ReadingPartnerImpl value,
-    $Res Function(_$ReadingPartnerImpl) then,
-  ) = __$$ReadingPartnerImplCopyWithImpl<$Res>;
+  factory _$$ReadingPartnerImplCopyWith(_$ReadingPartnerImpl value,
+          $Res Function(_$ReadingPartnerImpl) then) =
+      __$$ReadingPartnerImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String name,
-    String avatarInitial,
-    int currentPage,
-    bool isOnline,
-    String lastActiveAt,
-  });
+  $Res call(
+      {String id,
+      String name,
+      String avatarInitial,
+      int currentPage,
+      bool isOnline,
+      String lastActiveAt});
 }
 
 /// @nodoc
@@ -1088,9 +1059,8 @@ class __$$ReadingPartnerImplCopyWithImpl<$Res>
     extends _$ReadingPartnerCopyWithImpl<$Res, _$ReadingPartnerImpl>
     implements _$$ReadingPartnerImplCopyWith<$Res> {
   __$$ReadingPartnerImplCopyWithImpl(
-    _$ReadingPartnerImpl _value,
-    $Res Function(_$ReadingPartnerImpl) _then,
-  ) : super(_value, _then);
+      _$ReadingPartnerImpl _value, $Res Function(_$ReadingPartnerImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ReadingPartner
   /// with the given fields replaced by the non-null parameter values.
@@ -1104,48 +1074,45 @@ class __$$ReadingPartnerImplCopyWithImpl<$Res>
     Object? isOnline = null,
     Object? lastActiveAt = null,
   }) {
-    return _then(
-      _$ReadingPartnerImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        name: null == name
-            ? _value.name
-            : name // ignore: cast_nullable_to_non_nullable
-                  as String,
-        avatarInitial: null == avatarInitial
-            ? _value.avatarInitial
-            : avatarInitial // ignore: cast_nullable_to_non_nullable
-                  as String,
-        currentPage: null == currentPage
-            ? _value.currentPage
-            : currentPage // ignore: cast_nullable_to_non_nullable
-                  as int,
-        isOnline: null == isOnline
-            ? _value.isOnline
-            : isOnline // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        lastActiveAt: null == lastActiveAt
-            ? _value.lastActiveAt
-            : lastActiveAt // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
+    return _then(_$ReadingPartnerImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      avatarInitial: null == avatarInitial
+          ? _value.avatarInitial
+          : avatarInitial // ignore: cast_nullable_to_non_nullable
+              as String,
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
+      lastActiveAt: null == lastActiveAt
+          ? _value.lastActiveAt
+          : lastActiveAt // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ReadingPartnerImpl implements _ReadingPartner {
-  const _$ReadingPartnerImpl({
-    required this.id,
-    required this.name,
-    required this.avatarInitial,
-    required this.currentPage,
-    required this.isOnline,
-    this.lastActiveAt = '',
-  });
+  const _$ReadingPartnerImpl(
+      {required this.id,
+      required this.name,
+      required this.avatarInitial,
+      required this.currentPage,
+      required this.isOnline,
+      this.lastActiveAt = ''});
 
   factory _$ReadingPartnerImpl.fromJson(Map<String, dynamic> json) =>
       _$$ReadingPartnerImplFromJson(json);
@@ -1188,15 +1155,8 @@ class _$ReadingPartnerImpl implements _ReadingPartner {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    name,
-    avatarInitial,
-    currentPage,
-    isOnline,
-    lastActiveAt,
-  );
+  int get hashCode => Object.hash(runtimeType, id, name, avatarInitial,
+      currentPage, isOnline, lastActiveAt);
 
   /// Create a copy of ReadingPartner
   /// with the given fields replaced by the non-null parameter values.
@@ -1205,25 +1165,24 @@ class _$ReadingPartnerImpl implements _ReadingPartner {
   @pragma('vm:prefer-inline')
   _$$ReadingPartnerImplCopyWith<_$ReadingPartnerImpl> get copyWith =>
       __$$ReadingPartnerImplCopyWithImpl<_$ReadingPartnerImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ReadingPartnerImplToJson(this);
+    return _$$ReadingPartnerImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _ReadingPartner implements ReadingPartner {
-  const factory _ReadingPartner({
-    required final String id,
-    required final String name,
-    required final String avatarInitial,
-    required final int currentPage,
-    required final bool isOnline,
-    final String lastActiveAt,
-  }) = _$ReadingPartnerImpl;
+  const factory _ReadingPartner(
+      {required final String id,
+      required final String name,
+      required final String avatarInitial,
+      required final int currentPage,
+      required final bool isOnline,
+      final String lastActiveAt}) = _$ReadingPartnerImpl;
 
   factory _ReadingPartner.fromJson(Map<String, dynamic> json) =
       _$ReadingPartnerImpl.fromJson;
@@ -1279,22 +1238,20 @@ mixin _$FriendReading {
 /// @nodoc
 abstract class $FriendReadingCopyWith<$Res> {
   factory $FriendReadingCopyWith(
-    FriendReading value,
-    $Res Function(FriendReading) then,
-  ) = _$FriendReadingCopyWithImpl<$Res, FriendReading>;
+          FriendReading value, $Res Function(FriendReading) then) =
+      _$FriendReadingCopyWithImpl<$Res, FriendReading>;
   @useResult
-  $Res call({
-    String friendId,
-    String friendName,
-    String avatarInitial,
-    String bookTitle,
-    String bookAuthor,
-    String currentChapter,
-    FriendActivityStatus status,
-    String timeAgo,
-    bool isOpenForPartners,
-    bool canJoin,
-  });
+  $Res call(
+      {String friendId,
+      String friendName,
+      String avatarInitial,
+      String bookTitle,
+      String bookAuthor,
+      String currentChapter,
+      FriendActivityStatus status,
+      String timeAgo,
+      bool isOpenForPartners,
+      bool canJoin});
 }
 
 /// @nodoc
@@ -1323,51 +1280,48 @@ class _$FriendReadingCopyWithImpl<$Res, $Val extends FriendReading>
     Object? isOpenForPartners = null,
     Object? canJoin = null,
   }) {
-    return _then(
-      _value.copyWith(
-            friendId: null == friendId
-                ? _value.friendId
-                : friendId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            friendName: null == friendName
-                ? _value.friendName
-                : friendName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            avatarInitial: null == avatarInitial
-                ? _value.avatarInitial
-                : avatarInitial // ignore: cast_nullable_to_non_nullable
-                      as String,
-            bookTitle: null == bookTitle
-                ? _value.bookTitle
-                : bookTitle // ignore: cast_nullable_to_non_nullable
-                      as String,
-            bookAuthor: null == bookAuthor
-                ? _value.bookAuthor
-                : bookAuthor // ignore: cast_nullable_to_non_nullable
-                      as String,
-            currentChapter: null == currentChapter
-                ? _value.currentChapter
-                : currentChapter // ignore: cast_nullable_to_non_nullable
-                      as String,
-            status: null == status
-                ? _value.status
-                : status // ignore: cast_nullable_to_non_nullable
-                      as FriendActivityStatus,
-            timeAgo: null == timeAgo
-                ? _value.timeAgo
-                : timeAgo // ignore: cast_nullable_to_non_nullable
-                      as String,
-            isOpenForPartners: null == isOpenForPartners
-                ? _value.isOpenForPartners
-                : isOpenForPartners // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            canJoin: null == canJoin
-                ? _value.canJoin
-                : canJoin // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      friendId: null == friendId
+          ? _value.friendId
+          : friendId // ignore: cast_nullable_to_non_nullable
+              as String,
+      friendName: null == friendName
+          ? _value.friendName
+          : friendName // ignore: cast_nullable_to_non_nullable
+              as String,
+      avatarInitial: null == avatarInitial
+          ? _value.avatarInitial
+          : avatarInitial // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookTitle: null == bookTitle
+          ? _value.bookTitle
+          : bookTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookAuthor: null == bookAuthor
+          ? _value.bookAuthor
+          : bookAuthor // ignore: cast_nullable_to_non_nullable
+              as String,
+      currentChapter: null == currentChapter
+          ? _value.currentChapter
+          : currentChapter // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as FriendActivityStatus,
+      timeAgo: null == timeAgo
+          ? _value.timeAgo
+          : timeAgo // ignore: cast_nullable_to_non_nullable
+              as String,
+      isOpenForPartners: null == isOpenForPartners
+          ? _value.isOpenForPartners
+          : isOpenForPartners // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canJoin: null == canJoin
+          ? _value.canJoin
+          : canJoin // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 }
 
@@ -1375,23 +1329,21 @@ class _$FriendReadingCopyWithImpl<$Res, $Val extends FriendReading>
 abstract class _$$FriendReadingImplCopyWith<$Res>
     implements $FriendReadingCopyWith<$Res> {
   factory _$$FriendReadingImplCopyWith(
-    _$FriendReadingImpl value,
-    $Res Function(_$FriendReadingImpl) then,
-  ) = __$$FriendReadingImplCopyWithImpl<$Res>;
+          _$FriendReadingImpl value, $Res Function(_$FriendReadingImpl) then) =
+      __$$FriendReadingImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String friendId,
-    String friendName,
-    String avatarInitial,
-    String bookTitle,
-    String bookAuthor,
-    String currentChapter,
-    FriendActivityStatus status,
-    String timeAgo,
-    bool isOpenForPartners,
-    bool canJoin,
-  });
+  $Res call(
+      {String friendId,
+      String friendName,
+      String avatarInitial,
+      String bookTitle,
+      String bookAuthor,
+      String currentChapter,
+      FriendActivityStatus status,
+      String timeAgo,
+      bool isOpenForPartners,
+      bool canJoin});
 }
 
 /// @nodoc
@@ -1399,9 +1351,8 @@ class __$$FriendReadingImplCopyWithImpl<$Res>
     extends _$FriendReadingCopyWithImpl<$Res, _$FriendReadingImpl>
     implements _$$FriendReadingImplCopyWith<$Res> {
   __$$FriendReadingImplCopyWithImpl(
-    _$FriendReadingImpl _value,
-    $Res Function(_$FriendReadingImpl) _then,
-  ) : super(_value, _then);
+      _$FriendReadingImpl _value, $Res Function(_$FriendReadingImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of FriendReading
   /// with the given fields replaced by the non-null parameter values.
@@ -1419,68 +1370,65 @@ class __$$FriendReadingImplCopyWithImpl<$Res>
     Object? isOpenForPartners = null,
     Object? canJoin = null,
   }) {
-    return _then(
-      _$FriendReadingImpl(
-        friendId: null == friendId
-            ? _value.friendId
-            : friendId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        friendName: null == friendName
-            ? _value.friendName
-            : friendName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        avatarInitial: null == avatarInitial
-            ? _value.avatarInitial
-            : avatarInitial // ignore: cast_nullable_to_non_nullable
-                  as String,
-        bookTitle: null == bookTitle
-            ? _value.bookTitle
-            : bookTitle // ignore: cast_nullable_to_non_nullable
-                  as String,
-        bookAuthor: null == bookAuthor
-            ? _value.bookAuthor
-            : bookAuthor // ignore: cast_nullable_to_non_nullable
-                  as String,
-        currentChapter: null == currentChapter
-            ? _value.currentChapter
-            : currentChapter // ignore: cast_nullable_to_non_nullable
-                  as String,
-        status: null == status
-            ? _value.status
-            : status // ignore: cast_nullable_to_non_nullable
-                  as FriendActivityStatus,
-        timeAgo: null == timeAgo
-            ? _value.timeAgo
-            : timeAgo // ignore: cast_nullable_to_non_nullable
-                  as String,
-        isOpenForPartners: null == isOpenForPartners
-            ? _value.isOpenForPartners
-            : isOpenForPartners // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        canJoin: null == canJoin
-            ? _value.canJoin
-            : canJoin // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$FriendReadingImpl(
+      friendId: null == friendId
+          ? _value.friendId
+          : friendId // ignore: cast_nullable_to_non_nullable
+              as String,
+      friendName: null == friendName
+          ? _value.friendName
+          : friendName // ignore: cast_nullable_to_non_nullable
+              as String,
+      avatarInitial: null == avatarInitial
+          ? _value.avatarInitial
+          : avatarInitial // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookTitle: null == bookTitle
+          ? _value.bookTitle
+          : bookTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      bookAuthor: null == bookAuthor
+          ? _value.bookAuthor
+          : bookAuthor // ignore: cast_nullable_to_non_nullable
+              as String,
+      currentChapter: null == currentChapter
+          ? _value.currentChapter
+          : currentChapter // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as FriendActivityStatus,
+      timeAgo: null == timeAgo
+          ? _value.timeAgo
+          : timeAgo // ignore: cast_nullable_to_non_nullable
+              as String,
+      isOpenForPartners: null == isOpenForPartners
+          ? _value.isOpenForPartners
+          : isOpenForPartners // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canJoin: null == canJoin
+          ? _value.canJoin
+          : canJoin // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$FriendReadingImpl implements _FriendReading {
-  const _$FriendReadingImpl({
-    required this.friendId,
-    required this.friendName,
-    required this.avatarInitial,
-    required this.bookTitle,
-    required this.bookAuthor,
-    required this.currentChapter,
-    required this.status,
-    required this.timeAgo,
-    required this.isOpenForPartners,
-    this.canJoin = false,
-  });
+  const _$FriendReadingImpl(
+      {required this.friendId,
+      required this.friendName,
+      required this.avatarInitial,
+      required this.bookTitle,
+      required this.bookAuthor,
+      required this.currentChapter,
+      required this.status,
+      required this.timeAgo,
+      required this.isOpenForPartners,
+      this.canJoin = false});
 
   factory _$FriendReadingImpl.fromJson(Map<String, dynamic> json) =>
       _$$FriendReadingImplFromJson(json);
@@ -1539,18 +1487,17 @@ class _$FriendReadingImpl implements _FriendReading {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    friendId,
-    friendName,
-    avatarInitial,
-    bookTitle,
-    bookAuthor,
-    currentChapter,
-    status,
-    timeAgo,
-    isOpenForPartners,
-    canJoin,
-  );
+      runtimeType,
+      friendId,
+      friendName,
+      avatarInitial,
+      bookTitle,
+      bookAuthor,
+      currentChapter,
+      status,
+      timeAgo,
+      isOpenForPartners,
+      canJoin);
 
   /// Create a copy of FriendReading
   /// with the given fields replaced by the non-null parameter values.
@@ -1562,23 +1509,24 @@ class _$FriendReadingImpl implements _FriendReading {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$FriendReadingImplToJson(this);
+    return _$$FriendReadingImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _FriendReading implements FriendReading {
-  const factory _FriendReading({
-    required final String friendId,
-    required final String friendName,
-    required final String avatarInitial,
-    required final String bookTitle,
-    required final String bookAuthor,
-    required final String currentChapter,
-    required final FriendActivityStatus status,
-    required final String timeAgo,
-    required final bool isOpenForPartners,
-    final bool canJoin,
-  }) = _$FriendReadingImpl;
+  const factory _FriendReading(
+      {required final String friendId,
+      required final String friendName,
+      required final String avatarInitial,
+      required final String bookTitle,
+      required final String bookAuthor,
+      required final String currentChapter,
+      required final FriendActivityStatus status,
+      required final String timeAgo,
+      required final bool isOpenForPartners,
+      final bool canJoin}) = _$FriendReadingImpl;
 
   factory _FriendReading.fromJson(Map<String, dynamic> json) =
       _$FriendReadingImpl.fromJson;
@@ -1639,19 +1587,17 @@ mixin _$BookRecommendation {
 /// @nodoc
 abstract class $BookRecommendationCopyWith<$Res> {
   factory $BookRecommendationCopyWith(
-    BookRecommendation value,
-    $Res Function(BookRecommendation) then,
-  ) = _$BookRecommendationCopyWithImpl<$Res, BookRecommendation>;
+          BookRecommendation value, $Res Function(BookRecommendation) then) =
+      _$BookRecommendationCopyWithImpl<$Res, BookRecommendation>;
   @useResult
-  $Res call({
-    String bookId,
-    String title,
-    String author,
-    String reason,
-    double confidenceScore,
-    String basedOn,
-    String coverEmoji,
-  });
+  $Res call(
+      {String bookId,
+      String title,
+      String author,
+      String reason,
+      double confidenceScore,
+      String basedOn,
+      String coverEmoji});
 }
 
 /// @nodoc
@@ -1677,70 +1623,64 @@ class _$BookRecommendationCopyWithImpl<$Res, $Val extends BookRecommendation>
     Object? basedOn = null,
     Object? coverEmoji = null,
   }) {
-    return _then(
-      _value.copyWith(
-            bookId: null == bookId
-                ? _value.bookId
-                : bookId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            title: null == title
-                ? _value.title
-                : title // ignore: cast_nullable_to_non_nullable
-                      as String,
-            author: null == author
-                ? _value.author
-                : author // ignore: cast_nullable_to_non_nullable
-                      as String,
-            reason: null == reason
-                ? _value.reason
-                : reason // ignore: cast_nullable_to_non_nullable
-                      as String,
-            confidenceScore: null == confidenceScore
-                ? _value.confidenceScore
-                : confidenceScore // ignore: cast_nullable_to_non_nullable
-                      as double,
-            basedOn: null == basedOn
-                ? _value.basedOn
-                : basedOn // ignore: cast_nullable_to_non_nullable
-                      as String,
-            coverEmoji: null == coverEmoji
-                ? _value.coverEmoji
-                : coverEmoji // ignore: cast_nullable_to_non_nullable
-                      as String,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      bookId: null == bookId
+          ? _value.bookId
+          : bookId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      author: null == author
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as String,
+      reason: null == reason
+          ? _value.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String,
+      confidenceScore: null == confidenceScore
+          ? _value.confidenceScore
+          : confidenceScore // ignore: cast_nullable_to_non_nullable
+              as double,
+      basedOn: null == basedOn
+          ? _value.basedOn
+          : basedOn // ignore: cast_nullable_to_non_nullable
+              as String,
+      coverEmoji: null == coverEmoji
+          ? _value.coverEmoji
+          : coverEmoji // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$BookRecommendationImplCopyWith<$Res>
     implements $BookRecommendationCopyWith<$Res> {
-  factory _$$BookRecommendationImplCopyWith(
-    _$BookRecommendationImpl value,
-    $Res Function(_$BookRecommendationImpl) then,
-  ) = __$$BookRecommendationImplCopyWithImpl<$Res>;
+  factory _$$BookRecommendationImplCopyWith(_$BookRecommendationImpl value,
+          $Res Function(_$BookRecommendationImpl) then) =
+      __$$BookRecommendationImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String bookId,
-    String title,
-    String author,
-    String reason,
-    double confidenceScore,
-    String basedOn,
-    String coverEmoji,
-  });
+  $Res call(
+      {String bookId,
+      String title,
+      String author,
+      String reason,
+      double confidenceScore,
+      String basedOn,
+      String coverEmoji});
 }
 
 /// @nodoc
 class __$$BookRecommendationImplCopyWithImpl<$Res>
     extends _$BookRecommendationCopyWithImpl<$Res, _$BookRecommendationImpl>
     implements _$$BookRecommendationImplCopyWith<$Res> {
-  __$$BookRecommendationImplCopyWithImpl(
-    _$BookRecommendationImpl _value,
-    $Res Function(_$BookRecommendationImpl) _then,
-  ) : super(_value, _then);
+  __$$BookRecommendationImplCopyWithImpl(_$BookRecommendationImpl _value,
+      $Res Function(_$BookRecommendationImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of BookRecommendation
   /// with the given fields replaced by the non-null parameter values.
@@ -1755,53 +1695,50 @@ class __$$BookRecommendationImplCopyWithImpl<$Res>
     Object? basedOn = null,
     Object? coverEmoji = null,
   }) {
-    return _then(
-      _$BookRecommendationImpl(
-        bookId: null == bookId
-            ? _value.bookId
-            : bookId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        title: null == title
-            ? _value.title
-            : title // ignore: cast_nullable_to_non_nullable
-                  as String,
-        author: null == author
-            ? _value.author
-            : author // ignore: cast_nullable_to_non_nullable
-                  as String,
-        reason: null == reason
-            ? _value.reason
-            : reason // ignore: cast_nullable_to_non_nullable
-                  as String,
-        confidenceScore: null == confidenceScore
-            ? _value.confidenceScore
-            : confidenceScore // ignore: cast_nullable_to_non_nullable
-                  as double,
-        basedOn: null == basedOn
-            ? _value.basedOn
-            : basedOn // ignore: cast_nullable_to_non_nullable
-                  as String,
-        coverEmoji: null == coverEmoji
-            ? _value.coverEmoji
-            : coverEmoji // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
+    return _then(_$BookRecommendationImpl(
+      bookId: null == bookId
+          ? _value.bookId
+          : bookId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      author: null == author
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as String,
+      reason: null == reason
+          ? _value.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String,
+      confidenceScore: null == confidenceScore
+          ? _value.confidenceScore
+          : confidenceScore // ignore: cast_nullable_to_non_nullable
+              as double,
+      basedOn: null == basedOn
+          ? _value.basedOn
+          : basedOn // ignore: cast_nullable_to_non_nullable
+              as String,
+      coverEmoji: null == coverEmoji
+          ? _value.coverEmoji
+          : coverEmoji // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$BookRecommendationImpl implements _BookRecommendation {
-  const _$BookRecommendationImpl({
-    required this.bookId,
-    required this.title,
-    required this.author,
-    required this.reason,
-    required this.confidenceScore,
-    required this.basedOn,
-    this.coverEmoji = '',
-  });
+  const _$BookRecommendationImpl(
+      {required this.bookId,
+      required this.title,
+      required this.author,
+      required this.reason,
+      required this.confidenceScore,
+      required this.basedOn,
+      this.coverEmoji = ''});
 
   factory _$BookRecommendationImpl.fromJson(Map<String, dynamic> json) =>
       _$$BookRecommendationImplFromJson(json);
@@ -1845,16 +1782,8 @@ class _$BookRecommendationImpl implements _BookRecommendation {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    bookId,
-    title,
-    author,
-    reason,
-    confidenceScore,
-    basedOn,
-    coverEmoji,
-  );
+  int get hashCode => Object.hash(runtimeType, bookId, title, author, reason,
+      confidenceScore, basedOn, coverEmoji);
 
   /// Create a copy of BookRecommendation
   /// with the given fields replaced by the non-null parameter values.
@@ -1863,26 +1792,25 @@ class _$BookRecommendationImpl implements _BookRecommendation {
   @pragma('vm:prefer-inline')
   _$$BookRecommendationImplCopyWith<_$BookRecommendationImpl> get copyWith =>
       __$$BookRecommendationImplCopyWithImpl<_$BookRecommendationImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$BookRecommendationImplToJson(this);
+    return _$$BookRecommendationImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _BookRecommendation implements BookRecommendation {
-  const factory _BookRecommendation({
-    required final String bookId,
-    required final String title,
-    required final String author,
-    required final String reason,
-    required final double confidenceScore,
-    required final String basedOn,
-    final String coverEmoji,
-  }) = _$BookRecommendationImpl;
+  const factory _BookRecommendation(
+      {required final String bookId,
+      required final String title,
+      required final String author,
+      required final String reason,
+      required final double confidenceScore,
+      required final String basedOn,
+      final String coverEmoji}) = _$BookRecommendationImpl;
 
   factory _BookRecommendation.fromJson(Map<String, dynamic> json) =
       _$BookRecommendationImpl.fromJson;
@@ -1937,19 +1865,17 @@ mixin _$ReadingStats {
 /// @nodoc
 abstract class $ReadingStatsCopyWith<$Res> {
   factory $ReadingStatsCopyWith(
-    ReadingStats value,
-    $Res Function(ReadingStats) then,
-  ) = _$ReadingStatsCopyWithImpl<$Res, ReadingStats>;
+          ReadingStats value, $Res Function(ReadingStats) then) =
+      _$ReadingStatsCopyWithImpl<$Res, ReadingStats>;
   @useResult
-  $Res call({
-    int booksRead,
-    int currentStreak,
-    int friendsReading,
-    int hoursThisMonth,
-    int totalHours,
-    int longestStreak,
-    int favoriteGenreCount,
-  });
+  $Res call(
+      {int booksRead,
+      int currentStreak,
+      int friendsReading,
+      int hoursThisMonth,
+      int totalHours,
+      int longestStreak,
+      int favoriteGenreCount});
 }
 
 /// @nodoc
@@ -1975,39 +1901,36 @@ class _$ReadingStatsCopyWithImpl<$Res, $Val extends ReadingStats>
     Object? longestStreak = null,
     Object? favoriteGenreCount = null,
   }) {
-    return _then(
-      _value.copyWith(
-            booksRead: null == booksRead
-                ? _value.booksRead
-                : booksRead // ignore: cast_nullable_to_non_nullable
-                      as int,
-            currentStreak: null == currentStreak
-                ? _value.currentStreak
-                : currentStreak // ignore: cast_nullable_to_non_nullable
-                      as int,
-            friendsReading: null == friendsReading
-                ? _value.friendsReading
-                : friendsReading // ignore: cast_nullable_to_non_nullable
-                      as int,
-            hoursThisMonth: null == hoursThisMonth
-                ? _value.hoursThisMonth
-                : hoursThisMonth // ignore: cast_nullable_to_non_nullable
-                      as int,
-            totalHours: null == totalHours
-                ? _value.totalHours
-                : totalHours // ignore: cast_nullable_to_non_nullable
-                      as int,
-            longestStreak: null == longestStreak
-                ? _value.longestStreak
-                : longestStreak // ignore: cast_nullable_to_non_nullable
-                      as int,
-            favoriteGenreCount: null == favoriteGenreCount
-                ? _value.favoriteGenreCount
-                : favoriteGenreCount // ignore: cast_nullable_to_non_nullable
-                      as int,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      booksRead: null == booksRead
+          ? _value.booksRead
+          : booksRead // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentStreak: null == currentStreak
+          ? _value.currentStreak
+          : currentStreak // ignore: cast_nullable_to_non_nullable
+              as int,
+      friendsReading: null == friendsReading
+          ? _value.friendsReading
+          : friendsReading // ignore: cast_nullable_to_non_nullable
+              as int,
+      hoursThisMonth: null == hoursThisMonth
+          ? _value.hoursThisMonth
+          : hoursThisMonth // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalHours: null == totalHours
+          ? _value.totalHours
+          : totalHours // ignore: cast_nullable_to_non_nullable
+              as int,
+      longestStreak: null == longestStreak
+          ? _value.longestStreak
+          : longestStreak // ignore: cast_nullable_to_non_nullable
+              as int,
+      favoriteGenreCount: null == favoriteGenreCount
+          ? _value.favoriteGenreCount
+          : favoriteGenreCount // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
   }
 }
 
@@ -2015,20 +1938,18 @@ class _$ReadingStatsCopyWithImpl<$Res, $Val extends ReadingStats>
 abstract class _$$ReadingStatsImplCopyWith<$Res>
     implements $ReadingStatsCopyWith<$Res> {
   factory _$$ReadingStatsImplCopyWith(
-    _$ReadingStatsImpl value,
-    $Res Function(_$ReadingStatsImpl) then,
-  ) = __$$ReadingStatsImplCopyWithImpl<$Res>;
+          _$ReadingStatsImpl value, $Res Function(_$ReadingStatsImpl) then) =
+      __$$ReadingStatsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    int booksRead,
-    int currentStreak,
-    int friendsReading,
-    int hoursThisMonth,
-    int totalHours,
-    int longestStreak,
-    int favoriteGenreCount,
-  });
+  $Res call(
+      {int booksRead,
+      int currentStreak,
+      int friendsReading,
+      int hoursThisMonth,
+      int totalHours,
+      int longestStreak,
+      int favoriteGenreCount});
 }
 
 /// @nodoc
@@ -2036,9 +1957,8 @@ class __$$ReadingStatsImplCopyWithImpl<$Res>
     extends _$ReadingStatsCopyWithImpl<$Res, _$ReadingStatsImpl>
     implements _$$ReadingStatsImplCopyWith<$Res> {
   __$$ReadingStatsImplCopyWithImpl(
-    _$ReadingStatsImpl _value,
-    $Res Function(_$ReadingStatsImpl) _then,
-  ) : super(_value, _then);
+      _$ReadingStatsImpl _value, $Res Function(_$ReadingStatsImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ReadingStats
   /// with the given fields replaced by the non-null parameter values.
@@ -2053,53 +1973,50 @@ class __$$ReadingStatsImplCopyWithImpl<$Res>
     Object? longestStreak = null,
     Object? favoriteGenreCount = null,
   }) {
-    return _then(
-      _$ReadingStatsImpl(
-        booksRead: null == booksRead
-            ? _value.booksRead
-            : booksRead // ignore: cast_nullable_to_non_nullable
-                  as int,
-        currentStreak: null == currentStreak
-            ? _value.currentStreak
-            : currentStreak // ignore: cast_nullable_to_non_nullable
-                  as int,
-        friendsReading: null == friendsReading
-            ? _value.friendsReading
-            : friendsReading // ignore: cast_nullable_to_non_nullable
-                  as int,
-        hoursThisMonth: null == hoursThisMonth
-            ? _value.hoursThisMonth
-            : hoursThisMonth // ignore: cast_nullable_to_non_nullable
-                  as int,
-        totalHours: null == totalHours
-            ? _value.totalHours
-            : totalHours // ignore: cast_nullable_to_non_nullable
-                  as int,
-        longestStreak: null == longestStreak
-            ? _value.longestStreak
-            : longestStreak // ignore: cast_nullable_to_non_nullable
-                  as int,
-        favoriteGenreCount: null == favoriteGenreCount
-            ? _value.favoriteGenreCount
-            : favoriteGenreCount // ignore: cast_nullable_to_non_nullable
-                  as int,
-      ),
-    );
+    return _then(_$ReadingStatsImpl(
+      booksRead: null == booksRead
+          ? _value.booksRead
+          : booksRead // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentStreak: null == currentStreak
+          ? _value.currentStreak
+          : currentStreak // ignore: cast_nullable_to_non_nullable
+              as int,
+      friendsReading: null == friendsReading
+          ? _value.friendsReading
+          : friendsReading // ignore: cast_nullable_to_non_nullable
+              as int,
+      hoursThisMonth: null == hoursThisMonth
+          ? _value.hoursThisMonth
+          : hoursThisMonth // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalHours: null == totalHours
+          ? _value.totalHours
+          : totalHours // ignore: cast_nullable_to_non_nullable
+              as int,
+      longestStreak: null == longestStreak
+          ? _value.longestStreak
+          : longestStreak // ignore: cast_nullable_to_non_nullable
+              as int,
+      favoriteGenreCount: null == favoriteGenreCount
+          ? _value.favoriteGenreCount
+          : favoriteGenreCount // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ReadingStatsImpl implements _ReadingStats {
-  const _$ReadingStatsImpl({
-    required this.booksRead,
-    required this.currentStreak,
-    required this.friendsReading,
-    required this.hoursThisMonth,
-    this.totalHours = 0,
-    this.longestStreak = 0,
-    this.favoriteGenreCount = 0,
-  });
+  const _$ReadingStatsImpl(
+      {required this.booksRead,
+      required this.currentStreak,
+      required this.friendsReading,
+      required this.hoursThisMonth,
+      this.totalHours = 0,
+      this.longestStreak = 0,
+      this.favoriteGenreCount = 0});
 
   factory _$ReadingStatsImpl.fromJson(Map<String, dynamic> json) =>
       _$$ReadingStatsImplFromJson(json);
@@ -2151,15 +2068,14 @@ class _$ReadingStatsImpl implements _ReadingStats {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    booksRead,
-    currentStreak,
-    friendsReading,
-    hoursThisMonth,
-    totalHours,
-    longestStreak,
-    favoriteGenreCount,
-  );
+      runtimeType,
+      booksRead,
+      currentStreak,
+      friendsReading,
+      hoursThisMonth,
+      totalHours,
+      longestStreak,
+      favoriteGenreCount);
 
   /// Create a copy of ReadingStats
   /// with the given fields replaced by the non-null parameter values.
@@ -2171,20 +2087,21 @@ class _$ReadingStatsImpl implements _ReadingStats {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ReadingStatsImplToJson(this);
+    return _$$ReadingStatsImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _ReadingStats implements ReadingStats {
-  const factory _ReadingStats({
-    required final int booksRead,
-    required final int currentStreak,
-    required final int friendsReading,
-    required final int hoursThisMonth,
-    final int totalHours,
-    final int longestStreak,
-    final int favoriteGenreCount,
-  }) = _$ReadingStatsImpl;
+  const factory _ReadingStats(
+      {required final int booksRead,
+      required final int currentStreak,
+      required final int friendsReading,
+      required final int hoursThisMonth,
+      final int totalHours,
+      final int longestStreak,
+      final int favoriteGenreCount}) = _$ReadingStatsImpl;
 
   factory _ReadingStats.fromJson(Map<String, dynamic> json) =
       _$ReadingStatsImpl.fromJson;

@@ -12,8 +12,7 @@ part of 'chat_conversation.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Participant _$ParticipantFromJson(Map<String, dynamic> json) {
   return _Participant.fromJson(json);
@@ -39,16 +38,14 @@ mixin _$Participant {
 /// @nodoc
 abstract class $ParticipantCopyWith<$Res> {
   factory $ParticipantCopyWith(
-    Participant value,
-    $Res Function(Participant) then,
-  ) = _$ParticipantCopyWithImpl<$Res, Participant>;
+          Participant value, $Res Function(Participant) then) =
+      _$ParticipantCopyWithImpl<$Res, Participant>;
   @useResult
-  $Res call({
-    String userId,
-    String username,
-    ParticipantRole role,
-    DateTime joinedAt,
-  });
+  $Res call(
+      {String userId,
+      String username,
+      ParticipantRole role,
+      DateTime joinedAt});
 }
 
 /// @nodoc
@@ -71,27 +68,24 @@ class _$ParticipantCopyWithImpl<$Res, $Val extends Participant>
     Object? role = null,
     Object? joinedAt = null,
   }) {
-    return _then(
-      _value.copyWith(
-            userId: null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            username: null == username
-                ? _value.username
-                : username // ignore: cast_nullable_to_non_nullable
-                      as String,
-            role: null == role
-                ? _value.role
-                : role // ignore: cast_nullable_to_non_nullable
-                      as ParticipantRole,
-            joinedAt: null == joinedAt
-                ? _value.joinedAt
-                : joinedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as ParticipantRole,
+      joinedAt: null == joinedAt
+          ? _value.joinedAt
+          : joinedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ) as $Val);
   }
 }
 
@@ -99,17 +93,15 @@ class _$ParticipantCopyWithImpl<$Res, $Val extends Participant>
 abstract class _$$ParticipantImplCopyWith<$Res>
     implements $ParticipantCopyWith<$Res> {
   factory _$$ParticipantImplCopyWith(
-    _$ParticipantImpl value,
-    $Res Function(_$ParticipantImpl) then,
-  ) = __$$ParticipantImplCopyWithImpl<$Res>;
+          _$ParticipantImpl value, $Res Function(_$ParticipantImpl) then) =
+      __$$ParticipantImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String userId,
-    String username,
-    ParticipantRole role,
-    DateTime joinedAt,
-  });
+  $Res call(
+      {String userId,
+      String username,
+      ParticipantRole role,
+      DateTime joinedAt});
 }
 
 /// @nodoc
@@ -117,9 +109,8 @@ class __$$ParticipantImplCopyWithImpl<$Res>
     extends _$ParticipantCopyWithImpl<$Res, _$ParticipantImpl>
     implements _$$ParticipantImplCopyWith<$Res> {
   __$$ParticipantImplCopyWithImpl(
-    _$ParticipantImpl _value,
-    $Res Function(_$ParticipantImpl) _then,
-  ) : super(_value, _then);
+      _$ParticipantImpl _value, $Res Function(_$ParticipantImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of Participant
   /// with the given fields replaced by the non-null parameter values.
@@ -131,45 +122,42 @@ class __$$ParticipantImplCopyWithImpl<$Res>
     Object? role = null,
     Object? joinedAt = null,
   }) {
-    return _then(
-      _$ParticipantImpl(
-        userId: null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        username: null == username
-            ? _value.username
-            : username // ignore: cast_nullable_to_non_nullable
-                  as String,
-        role: null == role
-            ? _value.role
-            : role // ignore: cast_nullable_to_non_nullable
-                  as ParticipantRole,
-        joinedAt: null == joinedAt
-            ? _value.joinedAt
-            : joinedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-      ),
-    );
+    return _then(_$ParticipantImpl(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as ParticipantRole,
+      joinedAt: null == joinedAt
+          ? _value.joinedAt
+          : joinedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ParticipantImpl implements _Participant {
-  const _$ParticipantImpl({
-    required this.userId,
-    required this.username,
-    required this.role,
-    required this.joinedAt,
-  });
+  const _$ParticipantImpl(
+      {required this.userId,
+      required this.username,
+      required this.role,
+      required this.joinedAt});
 
   factory _$ParticipantImpl.fromJson(Map<String, dynamic> json) =>
       _$$ParticipantImplFromJson(json);
 
   @override
   final String userId;
-  // UUID
+// UUID
   @override
   final String username;
   @override
@@ -210,17 +198,18 @@ class _$ParticipantImpl implements _Participant {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ParticipantImplToJson(this);
+    return _$$ParticipantImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _Participant implements Participant {
-  const factory _Participant({
-    required final String userId,
-    required final String username,
-    required final ParticipantRole role,
-    required final DateTime joinedAt,
-  }) = _$ParticipantImpl;
+  const factory _Participant(
+      {required final String userId,
+      required final String username,
+      required final ParticipantRole role,
+      required final DateTime joinedAt}) = _$ParticipantImpl;
 
   factory _Participant.fromJson(Map<String, dynamic> json) =
       _$ParticipantImpl.fromJson;
@@ -277,25 +266,23 @@ mixin _$Conversation {
 /// @nodoc
 abstract class $ConversationCopyWith<$Res> {
   factory $ConversationCopyWith(
-    Conversation value,
-    $Res Function(Conversation) then,
-  ) = _$ConversationCopyWithImpl<$Res, Conversation>;
+          Conversation value, $Res Function(Conversation) then) =
+      _$ConversationCopyWithImpl<$Res, Conversation>;
   @useResult
-  $Res call({
-    String id,
-    ConversationType conversationType,
-    DateTime createdAt,
-    DateTime lastMessageAt,
-    bool isArchived,
-    List<Participant> participants,
-    ChatMessage? lastMessage,
-    int unreadCount,
-    bool isPinned,
-    bool isMuted,
-    String? avatarEmoji,
-    @JsonKey(includeFromJson: false, includeToJson: false) Color? avatarColor,
-    bool isQuietHours,
-  });
+  $Res call(
+      {String id,
+      ConversationType conversationType,
+      DateTime createdAt,
+      DateTime lastMessageAt,
+      bool isArchived,
+      List<Participant> participants,
+      ChatMessage? lastMessage,
+      int unreadCount,
+      bool isPinned,
+      bool isMuted,
+      String? avatarEmoji,
+      @JsonKey(includeFromJson: false, includeToJson: false) Color? avatarColor,
+      bool isQuietHours});
 
   $ChatMessageCopyWith<$Res>? get lastMessage;
 }
@@ -329,63 +316,60 @@ class _$ConversationCopyWithImpl<$Res, $Val extends Conversation>
     Object? avatarColor = freezed,
     Object? isQuietHours = null,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            conversationType: null == conversationType
-                ? _value.conversationType
-                : conversationType // ignore: cast_nullable_to_non_nullable
-                      as ConversationType,
-            createdAt: null == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            lastMessageAt: null == lastMessageAt
-                ? _value.lastMessageAt
-                : lastMessageAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            isArchived: null == isArchived
-                ? _value.isArchived
-                : isArchived // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            participants: null == participants
-                ? _value.participants
-                : participants // ignore: cast_nullable_to_non_nullable
-                      as List<Participant>,
-            lastMessage: freezed == lastMessage
-                ? _value.lastMessage
-                : lastMessage // ignore: cast_nullable_to_non_nullable
-                      as ChatMessage?,
-            unreadCount: null == unreadCount
-                ? _value.unreadCount
-                : unreadCount // ignore: cast_nullable_to_non_nullable
-                      as int,
-            isPinned: null == isPinned
-                ? _value.isPinned
-                : isPinned // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isMuted: null == isMuted
-                ? _value.isMuted
-                : isMuted // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            avatarEmoji: freezed == avatarEmoji
-                ? _value.avatarEmoji
-                : avatarEmoji // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            avatarColor: freezed == avatarColor
-                ? _value.avatarColor
-                : avatarColor // ignore: cast_nullable_to_non_nullable
-                      as Color?,
-            isQuietHours: null == isQuietHours
-                ? _value.isQuietHours
-                : isQuietHours // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      conversationType: null == conversationType
+          ? _value.conversationType
+          : conversationType // ignore: cast_nullable_to_non_nullable
+              as ConversationType,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      lastMessageAt: null == lastMessageAt
+          ? _value.lastMessageAt
+          : lastMessageAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isArchived: null == isArchived
+          ? _value.isArchived
+          : isArchived // ignore: cast_nullable_to_non_nullable
+              as bool,
+      participants: null == participants
+          ? _value.participants
+          : participants // ignore: cast_nullable_to_non_nullable
+              as List<Participant>,
+      lastMessage: freezed == lastMessage
+          ? _value.lastMessage
+          : lastMessage // ignore: cast_nullable_to_non_nullable
+              as ChatMessage?,
+      unreadCount: null == unreadCount
+          ? _value.unreadCount
+          : unreadCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      isPinned: null == isPinned
+          ? _value.isPinned
+          : isPinned // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isMuted: null == isMuted
+          ? _value.isMuted
+          : isMuted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      avatarEmoji: freezed == avatarEmoji
+          ? _value.avatarEmoji
+          : avatarEmoji // ignore: cast_nullable_to_non_nullable
+              as String?,
+      avatarColor: freezed == avatarColor
+          ? _value.avatarColor
+          : avatarColor // ignore: cast_nullable_to_non_nullable
+              as Color?,
+      isQuietHours: null == isQuietHours
+          ? _value.isQuietHours
+          : isQuietHours // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 
   /// Create a copy of Conversation
@@ -407,26 +391,24 @@ class _$ConversationCopyWithImpl<$Res, $Val extends Conversation>
 abstract class _$$ConversationImplCopyWith<$Res>
     implements $ConversationCopyWith<$Res> {
   factory _$$ConversationImplCopyWith(
-    _$ConversationImpl value,
-    $Res Function(_$ConversationImpl) then,
-  ) = __$$ConversationImplCopyWithImpl<$Res>;
+          _$ConversationImpl value, $Res Function(_$ConversationImpl) then) =
+      __$$ConversationImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    ConversationType conversationType,
-    DateTime createdAt,
-    DateTime lastMessageAt,
-    bool isArchived,
-    List<Participant> participants,
-    ChatMessage? lastMessage,
-    int unreadCount,
-    bool isPinned,
-    bool isMuted,
-    String? avatarEmoji,
-    @JsonKey(includeFromJson: false, includeToJson: false) Color? avatarColor,
-    bool isQuietHours,
-  });
+  $Res call(
+      {String id,
+      ConversationType conversationType,
+      DateTime createdAt,
+      DateTime lastMessageAt,
+      bool isArchived,
+      List<Participant> participants,
+      ChatMessage? lastMessage,
+      int unreadCount,
+      bool isPinned,
+      bool isMuted,
+      String? avatarEmoji,
+      @JsonKey(includeFromJson: false, includeToJson: false) Color? avatarColor,
+      bool isQuietHours});
 
   @override
   $ChatMessageCopyWith<$Res>? get lastMessage;
@@ -437,9 +419,8 @@ class __$$ConversationImplCopyWithImpl<$Res>
     extends _$ConversationCopyWithImpl<$Res, _$ConversationImpl>
     implements _$$ConversationImplCopyWith<$Res> {
   __$$ConversationImplCopyWithImpl(
-    _$ConversationImpl _value,
-    $Res Function(_$ConversationImpl) _then,
-  ) : super(_value, _then);
+      _$ConversationImpl _value, $Res Function(_$ConversationImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of Conversation
   /// with the given fields replaced by the non-null parameter values.
@@ -460,91 +441,89 @@ class __$$ConversationImplCopyWithImpl<$Res>
     Object? avatarColor = freezed,
     Object? isQuietHours = null,
   }) {
-    return _then(
-      _$ConversationImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        conversationType: null == conversationType
-            ? _value.conversationType
-            : conversationType // ignore: cast_nullable_to_non_nullable
-                  as ConversationType,
-        createdAt: null == createdAt
-            ? _value.createdAt
-            : createdAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        lastMessageAt: null == lastMessageAt
-            ? _value.lastMessageAt
-            : lastMessageAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        isArchived: null == isArchived
-            ? _value.isArchived
-            : isArchived // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        participants: null == participants
-            ? _value._participants
-            : participants // ignore: cast_nullable_to_non_nullable
-                  as List<Participant>,
-        lastMessage: freezed == lastMessage
-            ? _value.lastMessage
-            : lastMessage // ignore: cast_nullable_to_non_nullable
-                  as ChatMessage?,
-        unreadCount: null == unreadCount
-            ? _value.unreadCount
-            : unreadCount // ignore: cast_nullable_to_non_nullable
-                  as int,
-        isPinned: null == isPinned
-            ? _value.isPinned
-            : isPinned // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isMuted: null == isMuted
-            ? _value.isMuted
-            : isMuted // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        avatarEmoji: freezed == avatarEmoji
-            ? _value.avatarEmoji
-            : avatarEmoji // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        avatarColor: freezed == avatarColor
-            ? _value.avatarColor
-            : avatarColor // ignore: cast_nullable_to_non_nullable
-                  as Color?,
-        isQuietHours: null == isQuietHours
-            ? _value.isQuietHours
-            : isQuietHours // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$ConversationImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      conversationType: null == conversationType
+          ? _value.conversationType
+          : conversationType // ignore: cast_nullable_to_non_nullable
+              as ConversationType,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      lastMessageAt: null == lastMessageAt
+          ? _value.lastMessageAt
+          : lastMessageAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isArchived: null == isArchived
+          ? _value.isArchived
+          : isArchived // ignore: cast_nullable_to_non_nullable
+              as bool,
+      participants: null == participants
+          ? _value._participants
+          : participants // ignore: cast_nullable_to_non_nullable
+              as List<Participant>,
+      lastMessage: freezed == lastMessage
+          ? _value.lastMessage
+          : lastMessage // ignore: cast_nullable_to_non_nullable
+              as ChatMessage?,
+      unreadCount: null == unreadCount
+          ? _value.unreadCount
+          : unreadCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      isPinned: null == isPinned
+          ? _value.isPinned
+          : isPinned // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isMuted: null == isMuted
+          ? _value.isMuted
+          : isMuted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      avatarEmoji: freezed == avatarEmoji
+          ? _value.avatarEmoji
+          : avatarEmoji // ignore: cast_nullable_to_non_nullable
+              as String?,
+      avatarColor: freezed == avatarColor
+          ? _value.avatarColor
+          : avatarColor // ignore: cast_nullable_to_non_nullable
+              as Color?,
+      isQuietHours: null == isQuietHours
+          ? _value.isQuietHours
+          : isQuietHours // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ConversationImpl extends _Conversation {
-  const _$ConversationImpl({
-    required this.id,
-    required this.conversationType,
-    required this.createdAt,
-    required this.lastMessageAt,
-    this.isArchived = false,
-    required final List<Participant> participants,
-    this.lastMessage,
-    this.unreadCount = 0,
-    this.isPinned = false,
-    this.isMuted = false,
-    this.avatarEmoji,
-    @JsonKey(includeFromJson: false, includeToJson: false) this.avatarColor,
-    this.isQuietHours = false,
-  }) : _participants = participants,
-       super._();
+  const _$ConversationImpl(
+      {required this.id,
+      required this.conversationType,
+      required this.createdAt,
+      required this.lastMessageAt,
+      this.isArchived = false,
+      required final List<Participant> participants,
+      this.lastMessage,
+      this.unreadCount = 0,
+      this.isPinned = false,
+      this.isMuted = false,
+      this.avatarEmoji,
+      @JsonKey(includeFromJson: false, includeToJson: false) this.avatarColor,
+      this.isQuietHours = false})
+      : _participants = participants,
+        super._();
 
   factory _$ConversationImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConversationImplFromJson(json);
 
   @override
   final String id;
-  // UUID
+// UUID
   @override
   final ConversationType conversationType;
   @override
@@ -567,7 +546,7 @@ class _$ConversationImpl extends _Conversation {
   @override
   @JsonKey()
   final int unreadCount;
-  // Additional UI fields
+// Additional UI fields
   @override
   @JsonKey()
   final bool isPinned;
@@ -602,10 +581,8 @@ class _$ConversationImpl extends _Conversation {
                 other.lastMessageAt == lastMessageAt) &&
             (identical(other.isArchived, isArchived) ||
                 other.isArchived == isArchived) &&
-            const DeepCollectionEquality().equals(
-              other._participants,
-              _participants,
-            ) &&
+            const DeepCollectionEquality()
+                .equals(other._participants, _participants) &&
             (identical(other.lastMessage, lastMessage) ||
                 other.lastMessage == lastMessage) &&
             (identical(other.unreadCount, unreadCount) ||
@@ -624,21 +601,20 @@ class _$ConversationImpl extends _Conversation {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    conversationType,
-    createdAt,
-    lastMessageAt,
-    isArchived,
-    const DeepCollectionEquality().hash(_participants),
-    lastMessage,
-    unreadCount,
-    isPinned,
-    isMuted,
-    avatarEmoji,
-    avatarColor,
-    isQuietHours,
-  );
+      runtimeType,
+      id,
+      conversationType,
+      createdAt,
+      lastMessageAt,
+      isArchived,
+      const DeepCollectionEquality().hash(_participants),
+      lastMessage,
+      unreadCount,
+      isPinned,
+      isMuted,
+      avatarEmoji,
+      avatarColor,
+      isQuietHours);
 
   /// Create a copy of Conversation
   /// with the given fields replaced by the non-null parameter values.
@@ -650,27 +626,28 @@ class _$ConversationImpl extends _Conversation {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ConversationImplToJson(this);
+    return _$$ConversationImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _Conversation extends Conversation {
-  const factory _Conversation({
-    required final String id,
-    required final ConversationType conversationType,
-    required final DateTime createdAt,
-    required final DateTime lastMessageAt,
-    final bool isArchived,
-    required final List<Participant> participants,
-    final ChatMessage? lastMessage,
-    final int unreadCount,
-    final bool isPinned,
-    final bool isMuted,
-    final String? avatarEmoji,
-    @JsonKey(includeFromJson: false, includeToJson: false)
-    final Color? avatarColor,
-    final bool isQuietHours,
-  }) = _$ConversationImpl;
+  const factory _Conversation(
+      {required final String id,
+      required final ConversationType conversationType,
+      required final DateTime createdAt,
+      required final DateTime lastMessageAt,
+      final bool isArchived,
+      required final List<Participant> participants,
+      final ChatMessage? lastMessage,
+      final int unreadCount,
+      final bool isPinned,
+      final bool isMuted,
+      final String? avatarEmoji,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final Color? avatarColor,
+      final bool isQuietHours}) = _$ConversationImpl;
   const _Conversation._() : super._();
 
   factory _Conversation.fromJson(Map<String, dynamic> json) =

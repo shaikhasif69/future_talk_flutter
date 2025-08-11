@@ -12,8 +12,7 @@ part of 'user_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 User _$UserFromJson(Map<String, dynamic> json) {
   return _User.fromJson(json);
@@ -93,27 +92,26 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call({
-    String id,
-    String email,
-    String username,
-    String? firstName,
-    String? lastName,
-    String? profilePictureUrl,
-    int socialBattery,
-    bool hasCompletedOnboarding,
-    CommunicationStyle communicationStyle,
-    AvailabilityStatus availability,
-    DateTime createdAt,
-    DateTime updatedAt,
-    String? timezone,
-    String preferredLanguage,
-    bool pushNotificationsEnabled,
-    bool isDiscoverable,
-    String? bio,
-    String? currentMood,
-    List<String> interestTags,
-  });
+  $Res call(
+      {String id,
+      String email,
+      String username,
+      String? firstName,
+      String? lastName,
+      String? profilePictureUrl,
+      int socialBattery,
+      bool hasCompletedOnboarding,
+      CommunicationStyle communicationStyle,
+      AvailabilityStatus availability,
+      DateTime createdAt,
+      DateTime updatedAt,
+      String? timezone,
+      String preferredLanguage,
+      bool pushNotificationsEnabled,
+      bool isDiscoverable,
+      String? bio,
+      String? currentMood,
+      List<String> interestTags});
 }
 
 /// @nodoc
@@ -151,119 +149,114 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? currentMood = freezed,
     Object? interestTags = null,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            email: null == email
-                ? _value.email
-                : email // ignore: cast_nullable_to_non_nullable
-                      as String,
-            username: null == username
-                ? _value.username
-                : username // ignore: cast_nullable_to_non_nullable
-                      as String,
-            firstName: freezed == firstName
-                ? _value.firstName
-                : firstName // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            lastName: freezed == lastName
-                ? _value.lastName
-                : lastName // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            profilePictureUrl: freezed == profilePictureUrl
-                ? _value.profilePictureUrl
-                : profilePictureUrl // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            socialBattery: null == socialBattery
-                ? _value.socialBattery
-                : socialBattery // ignore: cast_nullable_to_non_nullable
-                      as int,
-            hasCompletedOnboarding: null == hasCompletedOnboarding
-                ? _value.hasCompletedOnboarding
-                : hasCompletedOnboarding // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            communicationStyle: null == communicationStyle
-                ? _value.communicationStyle
-                : communicationStyle // ignore: cast_nullable_to_non_nullable
-                      as CommunicationStyle,
-            availability: null == availability
-                ? _value.availability
-                : availability // ignore: cast_nullable_to_non_nullable
-                      as AvailabilityStatus,
-            createdAt: null == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            updatedAt: null == updatedAt
-                ? _value.updatedAt
-                : updatedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            timezone: freezed == timezone
-                ? _value.timezone
-                : timezone // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            preferredLanguage: null == preferredLanguage
-                ? _value.preferredLanguage
-                : preferredLanguage // ignore: cast_nullable_to_non_nullable
-                      as String,
-            pushNotificationsEnabled: null == pushNotificationsEnabled
-                ? _value.pushNotificationsEnabled
-                : pushNotificationsEnabled // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isDiscoverable: null == isDiscoverable
-                ? _value.isDiscoverable
-                : isDiscoverable // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            bio: freezed == bio
-                ? _value.bio
-                : bio // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            currentMood: freezed == currentMood
-                ? _value.currentMood
-                : currentMood // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            interestTags: null == interestTags
-                ? _value.interestTags
-                : interestTags // ignore: cast_nullable_to_non_nullable
-                      as List<String>,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      firstName: freezed == firstName
+          ? _value.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lastName: freezed == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      profilePictureUrl: freezed == profilePictureUrl
+          ? _value.profilePictureUrl
+          : profilePictureUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      socialBattery: null == socialBattery
+          ? _value.socialBattery
+          : socialBattery // ignore: cast_nullable_to_non_nullable
+              as int,
+      hasCompletedOnboarding: null == hasCompletedOnboarding
+          ? _value.hasCompletedOnboarding
+          : hasCompletedOnboarding // ignore: cast_nullable_to_non_nullable
+              as bool,
+      communicationStyle: null == communicationStyle
+          ? _value.communicationStyle
+          : communicationStyle // ignore: cast_nullable_to_non_nullable
+              as CommunicationStyle,
+      availability: null == availability
+          ? _value.availability
+          : availability // ignore: cast_nullable_to_non_nullable
+              as AvailabilityStatus,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      timezone: freezed == timezone
+          ? _value.timezone
+          : timezone // ignore: cast_nullable_to_non_nullable
+              as String?,
+      preferredLanguage: null == preferredLanguage
+          ? _value.preferredLanguage
+          : preferredLanguage // ignore: cast_nullable_to_non_nullable
+              as String,
+      pushNotificationsEnabled: null == pushNotificationsEnabled
+          ? _value.pushNotificationsEnabled
+          : pushNotificationsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDiscoverable: null == isDiscoverable
+          ? _value.isDiscoverable
+          : isDiscoverable // ignore: cast_nullable_to_non_nullable
+              as bool,
+      bio: freezed == bio
+          ? _value.bio
+          : bio // ignore: cast_nullable_to_non_nullable
+              as String?,
+      currentMood: freezed == currentMood
+          ? _value.currentMood
+          : currentMood // ignore: cast_nullable_to_non_nullable
+              as String?,
+      interestTags: null == interestTags
+          ? _value.interestTags
+          : interestTags // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$$UserImplCopyWith(
-    _$UserImpl value,
-    $Res Function(_$UserImpl) then,
-  ) = __$$UserImplCopyWithImpl<$Res>;
+          _$UserImpl value, $Res Function(_$UserImpl) then) =
+      __$$UserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String email,
-    String username,
-    String? firstName,
-    String? lastName,
-    String? profilePictureUrl,
-    int socialBattery,
-    bool hasCompletedOnboarding,
-    CommunicationStyle communicationStyle,
-    AvailabilityStatus availability,
-    DateTime createdAt,
-    DateTime updatedAt,
-    String? timezone,
-    String preferredLanguage,
-    bool pushNotificationsEnabled,
-    bool isDiscoverable,
-    String? bio,
-    String? currentMood,
-    List<String> interestTags,
-  });
+  $Res call(
+      {String id,
+      String email,
+      String username,
+      String? firstName,
+      String? lastName,
+      String? profilePictureUrl,
+      int socialBattery,
+      bool hasCompletedOnboarding,
+      CommunicationStyle communicationStyle,
+      AvailabilityStatus availability,
+      DateTime createdAt,
+      DateTime updatedAt,
+      String? timezone,
+      String preferredLanguage,
+      bool pushNotificationsEnabled,
+      bool isDiscoverable,
+      String? bio,
+      String? currentMood,
+      List<String> interestTags});
 }
 
 /// @nodoc
@@ -271,7 +264,7 @@ class __$$UserImplCopyWithImpl<$Res>
     extends _$UserCopyWithImpl<$Res, _$UserImpl>
     implements _$$UserImplCopyWith<$Res> {
   __$$UserImplCopyWithImpl(_$UserImpl _value, $Res Function(_$UserImpl) _then)
-    : super(_value, _then);
+      : super(_value, _then);
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
@@ -298,114 +291,112 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? currentMood = freezed,
     Object? interestTags = null,
   }) {
-    return _then(
-      _$UserImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        email: null == email
-            ? _value.email
-            : email // ignore: cast_nullable_to_non_nullable
-                  as String,
-        username: null == username
-            ? _value.username
-            : username // ignore: cast_nullable_to_non_nullable
-                  as String,
-        firstName: freezed == firstName
-            ? _value.firstName
-            : firstName // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        lastName: freezed == lastName
-            ? _value.lastName
-            : lastName // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        profilePictureUrl: freezed == profilePictureUrl
-            ? _value.profilePictureUrl
-            : profilePictureUrl // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        socialBattery: null == socialBattery
-            ? _value.socialBattery
-            : socialBattery // ignore: cast_nullable_to_non_nullable
-                  as int,
-        hasCompletedOnboarding: null == hasCompletedOnboarding
-            ? _value.hasCompletedOnboarding
-            : hasCompletedOnboarding // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        communicationStyle: null == communicationStyle
-            ? _value.communicationStyle
-            : communicationStyle // ignore: cast_nullable_to_non_nullable
-                  as CommunicationStyle,
-        availability: null == availability
-            ? _value.availability
-            : availability // ignore: cast_nullable_to_non_nullable
-                  as AvailabilityStatus,
-        createdAt: null == createdAt
-            ? _value.createdAt
-            : createdAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        updatedAt: null == updatedAt
-            ? _value.updatedAt
-            : updatedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        timezone: freezed == timezone
-            ? _value.timezone
-            : timezone // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        preferredLanguage: null == preferredLanguage
-            ? _value.preferredLanguage
-            : preferredLanguage // ignore: cast_nullable_to_non_nullable
-                  as String,
-        pushNotificationsEnabled: null == pushNotificationsEnabled
-            ? _value.pushNotificationsEnabled
-            : pushNotificationsEnabled // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isDiscoverable: null == isDiscoverable
-            ? _value.isDiscoverable
-            : isDiscoverable // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        bio: freezed == bio
-            ? _value.bio
-            : bio // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        currentMood: freezed == currentMood
-            ? _value.currentMood
-            : currentMood // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        interestTags: null == interestTags
-            ? _value._interestTags
-            : interestTags // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
-      ),
-    );
+    return _then(_$UserImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      firstName: freezed == firstName
+          ? _value.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lastName: freezed == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      profilePictureUrl: freezed == profilePictureUrl
+          ? _value.profilePictureUrl
+          : profilePictureUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      socialBattery: null == socialBattery
+          ? _value.socialBattery
+          : socialBattery // ignore: cast_nullable_to_non_nullable
+              as int,
+      hasCompletedOnboarding: null == hasCompletedOnboarding
+          ? _value.hasCompletedOnboarding
+          : hasCompletedOnboarding // ignore: cast_nullable_to_non_nullable
+              as bool,
+      communicationStyle: null == communicationStyle
+          ? _value.communicationStyle
+          : communicationStyle // ignore: cast_nullable_to_non_nullable
+              as CommunicationStyle,
+      availability: null == availability
+          ? _value.availability
+          : availability // ignore: cast_nullable_to_non_nullable
+              as AvailabilityStatus,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      timezone: freezed == timezone
+          ? _value.timezone
+          : timezone // ignore: cast_nullable_to_non_nullable
+              as String?,
+      preferredLanguage: null == preferredLanguage
+          ? _value.preferredLanguage
+          : preferredLanguage // ignore: cast_nullable_to_non_nullable
+              as String,
+      pushNotificationsEnabled: null == pushNotificationsEnabled
+          ? _value.pushNotificationsEnabled
+          : pushNotificationsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDiscoverable: null == isDiscoverable
+          ? _value.isDiscoverable
+          : isDiscoverable // ignore: cast_nullable_to_non_nullable
+              as bool,
+      bio: freezed == bio
+          ? _value.bio
+          : bio // ignore: cast_nullable_to_non_nullable
+              as String?,
+      currentMood: freezed == currentMood
+          ? _value.currentMood
+          : currentMood // ignore: cast_nullable_to_non_nullable
+              as String?,
+      interestTags: null == interestTags
+          ? _value._interestTags
+          : interestTags // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$UserImpl extends _User {
-  const _$UserImpl({
-    required this.id,
-    required this.email,
-    required this.username,
-    this.firstName,
-    this.lastName,
-    this.profilePictureUrl,
-    this.socialBattery = 75,
-    this.hasCompletedOnboarding = false,
-    this.communicationStyle = CommunicationStyle.balanced,
-    this.availability = AvailabilityStatus.available,
-    required this.createdAt,
-    required this.updatedAt,
-    this.timezone,
-    this.preferredLanguage = 'en',
-    this.pushNotificationsEnabled = true,
-    this.isDiscoverable = true,
-    this.bio,
-    this.currentMood,
-    final List<String> interestTags = const [],
-  }) : _interestTags = interestTags,
-       super._();
+  const _$UserImpl(
+      {required this.id,
+      required this.email,
+      required this.username,
+      this.firstName,
+      this.lastName,
+      this.profilePictureUrl,
+      this.socialBattery = 75,
+      this.hasCompletedOnboarding = false,
+      this.communicationStyle = CommunicationStyle.balanced,
+      this.availability = AvailabilityStatus.available,
+      required this.createdAt,
+      required this.updatedAt,
+      this.timezone,
+      this.preferredLanguage = 'en',
+      this.pushNotificationsEnabled = true,
+      this.isDiscoverable = true,
+      this.bio,
+      this.currentMood,
+      final List<String> interestTags = const []})
+      : _interestTags = interestTags,
+        super._();
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -538,45 +529,41 @@ class _$UserImpl extends _User {
             (identical(other.preferredLanguage, preferredLanguage) ||
                 other.preferredLanguage == preferredLanguage) &&
             (identical(
-                  other.pushNotificationsEnabled,
-                  pushNotificationsEnabled,
-                ) ||
+                    other.pushNotificationsEnabled, pushNotificationsEnabled) ||
                 other.pushNotificationsEnabled == pushNotificationsEnabled) &&
             (identical(other.isDiscoverable, isDiscoverable) ||
                 other.isDiscoverable == isDiscoverable) &&
             (identical(other.bio, bio) || other.bio == bio) &&
             (identical(other.currentMood, currentMood) ||
                 other.currentMood == currentMood) &&
-            const DeepCollectionEquality().equals(
-              other._interestTags,
-              _interestTags,
-            ));
+            const DeepCollectionEquality()
+                .equals(other._interestTags, _interestTags));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hashAll([
-    runtimeType,
-    id,
-    email,
-    username,
-    firstName,
-    lastName,
-    profilePictureUrl,
-    socialBattery,
-    hasCompletedOnboarding,
-    communicationStyle,
-    availability,
-    createdAt,
-    updatedAt,
-    timezone,
-    preferredLanguage,
-    pushNotificationsEnabled,
-    isDiscoverable,
-    bio,
-    currentMood,
-    const DeepCollectionEquality().hash(_interestTags),
-  ]);
+        runtimeType,
+        id,
+        email,
+        username,
+        firstName,
+        lastName,
+        profilePictureUrl,
+        socialBattery,
+        hasCompletedOnboarding,
+        communicationStyle,
+        availability,
+        createdAt,
+        updatedAt,
+        timezone,
+        preferredLanguage,
+        pushNotificationsEnabled,
+        isDiscoverable,
+        bio,
+        currentMood,
+        const DeepCollectionEquality().hash(_interestTags)
+      ]);
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
@@ -588,32 +575,33 @@ class _$UserImpl extends _User {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UserImplToJson(this);
+    return _$$UserImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _User extends User {
-  const factory _User({
-    required final String id,
-    required final String email,
-    required final String username,
-    final String? firstName,
-    final String? lastName,
-    final String? profilePictureUrl,
-    final int socialBattery,
-    final bool hasCompletedOnboarding,
-    final CommunicationStyle communicationStyle,
-    final AvailabilityStatus availability,
-    required final DateTime createdAt,
-    required final DateTime updatedAt,
-    final String? timezone,
-    final String preferredLanguage,
-    final bool pushNotificationsEnabled,
-    final bool isDiscoverable,
-    final String? bio,
-    final String? currentMood,
-    final List<String> interestTags,
-  }) = _$UserImpl;
+  const factory _User(
+      {required final String id,
+      required final String email,
+      required final String username,
+      final String? firstName,
+      final String? lastName,
+      final String? profilePictureUrl,
+      final int socialBattery,
+      final bool hasCompletedOnboarding,
+      final CommunicationStyle communicationStyle,
+      final AvailabilityStatus availability,
+      required final DateTime createdAt,
+      required final DateTime updatedAt,
+      final String? timezone,
+      final String preferredLanguage,
+      final bool pushNotificationsEnabled,
+      final bool isDiscoverable,
+      final String? bio,
+      final String? currentMood,
+      final List<String> interestTags}) = _$UserImpl;
   const _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
@@ -744,15 +732,14 @@ abstract class $AuthStateCopyWith<$Res> {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) then) =
       _$AuthStateCopyWithImpl<$Res, AuthState>;
   @useResult
-  $Res call({
-    User? user,
-    bool isLoading,
-    String? error,
-    bool isAuthenticated,
-    String? token,
-    String? refreshToken,
-    DateTime? tokenExpiresAt,
-  });
+  $Res call(
+      {User? user,
+      bool isLoading,
+      String? error,
+      bool isAuthenticated,
+      String? token,
+      String? refreshToken,
+      DateTime? tokenExpiresAt});
 
   $UserCopyWith<$Res>? get user;
 }
@@ -780,39 +767,36 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
     Object? refreshToken = freezed,
     Object? tokenExpiresAt = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            user: freezed == user
-                ? _value.user
-                : user // ignore: cast_nullable_to_non_nullable
-                      as User?,
-            isLoading: null == isLoading
-                ? _value.isLoading
-                : isLoading // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            error: freezed == error
-                ? _value.error
-                : error // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            isAuthenticated: null == isAuthenticated
-                ? _value.isAuthenticated
-                : isAuthenticated // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            token: freezed == token
-                ? _value.token
-                : token // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            refreshToken: freezed == refreshToken
-                ? _value.refreshToken
-                : refreshToken // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            tokenExpiresAt: freezed == tokenExpiresAt
-                ? _value.tokenExpiresAt
-                : tokenExpiresAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User?,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isAuthenticated: null == isAuthenticated
+          ? _value.isAuthenticated
+          : isAuthenticated // ignore: cast_nullable_to_non_nullable
+              as bool,
+      token: freezed == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as String?,
+      refreshToken: freezed == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tokenExpiresAt: freezed == tokenExpiresAt
+          ? _value.tokenExpiresAt
+          : tokenExpiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
   }
 
   /// Create a copy of AuthState
@@ -834,20 +818,18 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
 abstract class _$$AuthStateImplCopyWith<$Res>
     implements $AuthStateCopyWith<$Res> {
   factory _$$AuthStateImplCopyWith(
-    _$AuthStateImpl value,
-    $Res Function(_$AuthStateImpl) then,
-  ) = __$$AuthStateImplCopyWithImpl<$Res>;
+          _$AuthStateImpl value, $Res Function(_$AuthStateImpl) then) =
+      __$$AuthStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    User? user,
-    bool isLoading,
-    String? error,
-    bool isAuthenticated,
-    String? token,
-    String? refreshToken,
-    DateTime? tokenExpiresAt,
-  });
+  $Res call(
+      {User? user,
+      bool isLoading,
+      String? error,
+      bool isAuthenticated,
+      String? token,
+      String? refreshToken,
+      DateTime? tokenExpiresAt});
 
   @override
   $UserCopyWith<$Res>? get user;
@@ -858,9 +840,8 @@ class __$$AuthStateImplCopyWithImpl<$Res>
     extends _$AuthStateCopyWithImpl<$Res, _$AuthStateImpl>
     implements _$$AuthStateImplCopyWith<$Res> {
   __$$AuthStateImplCopyWithImpl(
-    _$AuthStateImpl _value,
-    $Res Function(_$AuthStateImpl) _then,
-  ) : super(_value, _then);
+      _$AuthStateImpl _value, $Res Function(_$AuthStateImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -875,53 +856,51 @@ class __$$AuthStateImplCopyWithImpl<$Res>
     Object? refreshToken = freezed,
     Object? tokenExpiresAt = freezed,
   }) {
-    return _then(
-      _$AuthStateImpl(
-        user: freezed == user
-            ? _value.user
-            : user // ignore: cast_nullable_to_non_nullable
-                  as User?,
-        isLoading: null == isLoading
-            ? _value.isLoading
-            : isLoading // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        error: freezed == error
-            ? _value.error
-            : error // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        isAuthenticated: null == isAuthenticated
-            ? _value.isAuthenticated
-            : isAuthenticated // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        token: freezed == token
-            ? _value.token
-            : token // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        refreshToken: freezed == refreshToken
-            ? _value.refreshToken
-            : refreshToken // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        tokenExpiresAt: freezed == tokenExpiresAt
-            ? _value.tokenExpiresAt
-            : tokenExpiresAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-      ),
-    );
+    return _then(_$AuthStateImpl(
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User?,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isAuthenticated: null == isAuthenticated
+          ? _value.isAuthenticated
+          : isAuthenticated // ignore: cast_nullable_to_non_nullable
+              as bool,
+      token: freezed == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as String?,
+      refreshToken: freezed == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tokenExpiresAt: freezed == tokenExpiresAt
+          ? _value.tokenExpiresAt
+          : tokenExpiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$AuthStateImpl extends _AuthState {
-  const _$AuthStateImpl({
-    this.user,
-    this.isLoading = false,
-    this.error,
-    this.isAuthenticated = false,
-    this.token,
-    this.refreshToken,
-    this.tokenExpiresAt,
-  }) : super._();
+  const _$AuthStateImpl(
+      {this.user,
+      this.isLoading = false,
+      this.error,
+      this.isAuthenticated = false,
+      this.token,
+      this.refreshToken,
+      this.tokenExpiresAt})
+      : super._();
 
   factory _$AuthStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthStateImplFromJson(json);
@@ -981,16 +960,8 @@ class _$AuthStateImpl extends _AuthState {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    user,
-    isLoading,
-    error,
-    isAuthenticated,
-    token,
-    refreshToken,
-    tokenExpiresAt,
-  );
+  int get hashCode => Object.hash(runtimeType, user, isLoading, error,
+      isAuthenticated, token, refreshToken, tokenExpiresAt);
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -1002,20 +973,21 @@ class _$AuthStateImpl extends _AuthState {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AuthStateImplToJson(this);
+    return _$$AuthStateImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _AuthState extends AuthState {
-  const factory _AuthState({
-    final User? user,
-    final bool isLoading,
-    final String? error,
-    final bool isAuthenticated,
-    final String? token,
-    final String? refreshToken,
-    final DateTime? tokenExpiresAt,
-  }) = _$AuthStateImpl;
+  const factory _AuthState(
+      {final User? user,
+      final bool isLoading,
+      final String? error,
+      final bool isAuthenticated,
+      final String? token,
+      final String? refreshToken,
+      final DateTime? tokenExpiresAt}) = _$AuthStateImpl;
   const _AuthState._() : super._();
 
   factory _AuthState.fromJson(Map<String, dynamic> json) =
@@ -1097,19 +1069,17 @@ mixin _$CreateUserData {
 /// @nodoc
 abstract class $CreateUserDataCopyWith<$Res> {
   factory $CreateUserDataCopyWith(
-    CreateUserData value,
-    $Res Function(CreateUserData) then,
-  ) = _$CreateUserDataCopyWithImpl<$Res, CreateUserData>;
+          CreateUserData value, $Res Function(CreateUserData) then) =
+      _$CreateUserDataCopyWithImpl<$Res, CreateUserData>;
   @useResult
-  $Res call({
-    String email,
-    String username,
-    String password,
-    String? firstName,
-    String? lastName,
-    bool agreedToTerms,
-    bool allowMarketingEmails,
-  });
+  $Res call(
+      {String email,
+      String username,
+      String password,
+      String? firstName,
+      String? lastName,
+      bool agreedToTerms,
+      bool allowMarketingEmails});
 }
 
 /// @nodoc
@@ -1135,60 +1105,55 @@ class _$CreateUserDataCopyWithImpl<$Res, $Val extends CreateUserData>
     Object? agreedToTerms = null,
     Object? allowMarketingEmails = null,
   }) {
-    return _then(
-      _value.copyWith(
-            email: null == email
-                ? _value.email
-                : email // ignore: cast_nullable_to_non_nullable
-                      as String,
-            username: null == username
-                ? _value.username
-                : username // ignore: cast_nullable_to_non_nullable
-                      as String,
-            password: null == password
-                ? _value.password
-                : password // ignore: cast_nullable_to_non_nullable
-                      as String,
-            firstName: freezed == firstName
-                ? _value.firstName
-                : firstName // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            lastName: freezed == lastName
-                ? _value.lastName
-                : lastName // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            agreedToTerms: null == agreedToTerms
-                ? _value.agreedToTerms
-                : agreedToTerms // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            allowMarketingEmails: null == allowMarketingEmails
-                ? _value.allowMarketingEmails
-                : allowMarketingEmails // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      firstName: freezed == firstName
+          ? _value.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lastName: freezed == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      agreedToTerms: null == agreedToTerms
+          ? _value.agreedToTerms
+          : agreedToTerms // ignore: cast_nullable_to_non_nullable
+              as bool,
+      allowMarketingEmails: null == allowMarketingEmails
+          ? _value.allowMarketingEmails
+          : allowMarketingEmails // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$CreateUserDataImplCopyWith<$Res>
     implements $CreateUserDataCopyWith<$Res> {
-  factory _$$CreateUserDataImplCopyWith(
-    _$CreateUserDataImpl value,
-    $Res Function(_$CreateUserDataImpl) then,
-  ) = __$$CreateUserDataImplCopyWithImpl<$Res>;
+  factory _$$CreateUserDataImplCopyWith(_$CreateUserDataImpl value,
+          $Res Function(_$CreateUserDataImpl) then) =
+      __$$CreateUserDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String email,
-    String username,
-    String password,
-    String? firstName,
-    String? lastName,
-    bool agreedToTerms,
-    bool allowMarketingEmails,
-  });
+  $Res call(
+      {String email,
+      String username,
+      String password,
+      String? firstName,
+      String? lastName,
+      bool agreedToTerms,
+      bool allowMarketingEmails});
 }
 
 /// @nodoc
@@ -1196,9 +1161,8 @@ class __$$CreateUserDataImplCopyWithImpl<$Res>
     extends _$CreateUserDataCopyWithImpl<$Res, _$CreateUserDataImpl>
     implements _$$CreateUserDataImplCopyWith<$Res> {
   __$$CreateUserDataImplCopyWithImpl(
-    _$CreateUserDataImpl _value,
-    $Res Function(_$CreateUserDataImpl) _then,
-  ) : super(_value, _then);
+      _$CreateUserDataImpl _value, $Res Function(_$CreateUserDataImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of CreateUserData
   /// with the given fields replaced by the non-null parameter values.
@@ -1213,53 +1177,50 @@ class __$$CreateUserDataImplCopyWithImpl<$Res>
     Object? agreedToTerms = null,
     Object? allowMarketingEmails = null,
   }) {
-    return _then(
-      _$CreateUserDataImpl(
-        email: null == email
-            ? _value.email
-            : email // ignore: cast_nullable_to_non_nullable
-                  as String,
-        username: null == username
-            ? _value.username
-            : username // ignore: cast_nullable_to_non_nullable
-                  as String,
-        password: null == password
-            ? _value.password
-            : password // ignore: cast_nullable_to_non_nullable
-                  as String,
-        firstName: freezed == firstName
-            ? _value.firstName
-            : firstName // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        lastName: freezed == lastName
-            ? _value.lastName
-            : lastName // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        agreedToTerms: null == agreedToTerms
-            ? _value.agreedToTerms
-            : agreedToTerms // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        allowMarketingEmails: null == allowMarketingEmails
-            ? _value.allowMarketingEmails
-            : allowMarketingEmails // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$CreateUserDataImpl(
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      firstName: freezed == firstName
+          ? _value.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lastName: freezed == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      agreedToTerms: null == agreedToTerms
+          ? _value.agreedToTerms
+          : agreedToTerms // ignore: cast_nullable_to_non_nullable
+              as bool,
+      allowMarketingEmails: null == allowMarketingEmails
+          ? _value.allowMarketingEmails
+          : allowMarketingEmails // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$CreateUserDataImpl implements _CreateUserData {
-  const _$CreateUserDataImpl({
-    required this.email,
-    required this.username,
-    required this.password,
-    this.firstName,
-    this.lastName,
-    this.agreedToTerms = false,
-    this.allowMarketingEmails = false,
-  });
+  const _$CreateUserDataImpl(
+      {required this.email,
+      required this.username,
+      required this.password,
+      this.firstName,
+      this.lastName,
+      this.agreedToTerms = false,
+      this.allowMarketingEmails = false});
 
   factory _$CreateUserDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$CreateUserDataImplFromJson(json);
@@ -1321,16 +1282,8 @@ class _$CreateUserDataImpl implements _CreateUserData {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    email,
-    username,
-    password,
-    firstName,
-    lastName,
-    agreedToTerms,
-    allowMarketingEmails,
-  );
+  int get hashCode => Object.hash(runtimeType, email, username, password,
+      firstName, lastName, agreedToTerms, allowMarketingEmails);
 
   /// Create a copy of CreateUserData
   /// with the given fields replaced by the non-null parameter values.
@@ -1339,26 +1292,25 @@ class _$CreateUserDataImpl implements _CreateUserData {
   @pragma('vm:prefer-inline')
   _$$CreateUserDataImplCopyWith<_$CreateUserDataImpl> get copyWith =>
       __$$CreateUserDataImplCopyWithImpl<_$CreateUserDataImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CreateUserDataImplToJson(this);
+    return _$$CreateUserDataImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _CreateUserData implements CreateUserData {
-  const factory _CreateUserData({
-    required final String email,
-    required final String username,
-    required final String password,
-    final String? firstName,
-    final String? lastName,
-    final bool agreedToTerms,
-    final bool allowMarketingEmails,
-  }) = _$CreateUserDataImpl;
+  const factory _CreateUserData(
+      {required final String email,
+      required final String username,
+      required final String password,
+      final String? firstName,
+      final String? lastName,
+      final bool agreedToTerms,
+      final bool allowMarketingEmails}) = _$CreateUserDataImpl;
 
   factory _CreateUserData.fromJson(Map<String, dynamic> json) =
       _$CreateUserDataImpl.fromJson;
@@ -1451,23 +1403,20 @@ class _$LoginDataCopyWithImpl<$Res, $Val extends LoginData>
     Object? password = null,
     Object? rememberMe = null,
   }) {
-    return _then(
-      _value.copyWith(
-            emailOrUsername: null == emailOrUsername
-                ? _value.emailOrUsername
-                : emailOrUsername // ignore: cast_nullable_to_non_nullable
-                      as String,
-            password: null == password
-                ? _value.password
-                : password // ignore: cast_nullable_to_non_nullable
-                      as String,
-            rememberMe: null == rememberMe
-                ? _value.rememberMe
-                : rememberMe // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      emailOrUsername: null == emailOrUsername
+          ? _value.emailOrUsername
+          : emailOrUsername // ignore: cast_nullable_to_non_nullable
+              as String,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      rememberMe: null == rememberMe
+          ? _value.rememberMe
+          : rememberMe // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 }
 
@@ -1475,9 +1424,8 @@ class _$LoginDataCopyWithImpl<$Res, $Val extends LoginData>
 abstract class _$$LoginDataImplCopyWith<$Res>
     implements $LoginDataCopyWith<$Res> {
   factory _$$LoginDataImplCopyWith(
-    _$LoginDataImpl value,
-    $Res Function(_$LoginDataImpl) then,
-  ) = __$$LoginDataImplCopyWithImpl<$Res>;
+          _$LoginDataImpl value, $Res Function(_$LoginDataImpl) then) =
+      __$$LoginDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String emailOrUsername, String password, bool rememberMe});
@@ -1488,9 +1436,8 @@ class __$$LoginDataImplCopyWithImpl<$Res>
     extends _$LoginDataCopyWithImpl<$Res, _$LoginDataImpl>
     implements _$$LoginDataImplCopyWith<$Res> {
   __$$LoginDataImplCopyWithImpl(
-    _$LoginDataImpl _value,
-    $Res Function(_$LoginDataImpl) _then,
-  ) : super(_value, _then);
+      _$LoginDataImpl _value, $Res Function(_$LoginDataImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of LoginData
   /// with the given fields replaced by the non-null parameter values.
@@ -1501,33 +1448,30 @@ class __$$LoginDataImplCopyWithImpl<$Res>
     Object? password = null,
     Object? rememberMe = null,
   }) {
-    return _then(
-      _$LoginDataImpl(
-        emailOrUsername: null == emailOrUsername
-            ? _value.emailOrUsername
-            : emailOrUsername // ignore: cast_nullable_to_non_nullable
-                  as String,
-        password: null == password
-            ? _value.password
-            : password // ignore: cast_nullable_to_non_nullable
-                  as String,
-        rememberMe: null == rememberMe
-            ? _value.rememberMe
-            : rememberMe // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$LoginDataImpl(
+      emailOrUsername: null == emailOrUsername
+          ? _value.emailOrUsername
+          : emailOrUsername // ignore: cast_nullable_to_non_nullable
+              as String,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      rememberMe: null == rememberMe
+          ? _value.rememberMe
+          : rememberMe // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$LoginDataImpl implements _LoginData {
-  const _$LoginDataImpl({
-    required this.emailOrUsername,
-    required this.password,
-    this.rememberMe = false,
-  });
+  const _$LoginDataImpl(
+      {required this.emailOrUsername,
+      required this.password,
+      this.rememberMe = false});
 
   factory _$LoginDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$LoginDataImplFromJson(json);
@@ -1578,16 +1522,17 @@ class _$LoginDataImpl implements _LoginData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$LoginDataImplToJson(this);
+    return _$$LoginDataImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _LoginData implements LoginData {
-  const factory _LoginData({
-    required final String emailOrUsername,
-    required final String password,
-    final bool rememberMe,
-  }) = _$LoginDataImpl;
+  const factory _LoginData(
+      {required final String emailOrUsername,
+      required final String password,
+      final bool rememberMe}) = _$LoginDataImpl;
 
   factory _LoginData.fromJson(Map<String, dynamic> json) =
       _$LoginDataImpl.fromJson;

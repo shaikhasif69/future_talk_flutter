@@ -12,8 +12,7 @@ part of 'touch_interaction_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 TouchInteraction _$TouchInteractionFromJson(Map<String, dynamic> json) {
   return _TouchInteraction.fromJson(json);
@@ -67,23 +66,21 @@ mixin _$TouchInteraction {
 /// @nodoc
 abstract class $TouchInteractionCopyWith<$Res> {
   factory $TouchInteractionCopyWith(
-    TouchInteraction value,
-    $Res Function(TouchInteraction) then,
-  ) = _$TouchInteractionCopyWithImpl<$Res, TouchInteraction>;
+          TouchInteraction value, $Res Function(TouchInteraction) then) =
+      _$TouchInteractionCopyWithImpl<$Res, TouchInteraction>;
   @useResult
-  $Res call({
-    String id,
-    String stoneId,
-    TouchType touchType,
-    DateTime timestamp,
-    Duration? duration,
-    TouchDirection direction,
-    String friendId,
-    String? message,
-    double intensity,
-    bool hadHapticFeedback,
-    TouchLocation? touchLocation,
-  });
+  $Res call(
+      {String id,
+      String stoneId,
+      TouchType touchType,
+      DateTime timestamp,
+      Duration? duration,
+      TouchDirection direction,
+      String friendId,
+      String? message,
+      double intensity,
+      bool hadHapticFeedback,
+      TouchLocation? touchLocation});
 
   $TouchLocationCopyWith<$Res>? get touchLocation;
 }
@@ -115,55 +112,52 @@ class _$TouchInteractionCopyWithImpl<$Res, $Val extends TouchInteraction>
     Object? hadHapticFeedback = null,
     Object? touchLocation = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            stoneId: null == stoneId
-                ? _value.stoneId
-                : stoneId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            touchType: null == touchType
-                ? _value.touchType
-                : touchType // ignore: cast_nullable_to_non_nullable
-                      as TouchType,
-            timestamp: null == timestamp
-                ? _value.timestamp
-                : timestamp // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            duration: freezed == duration
-                ? _value.duration
-                : duration // ignore: cast_nullable_to_non_nullable
-                      as Duration?,
-            direction: null == direction
-                ? _value.direction
-                : direction // ignore: cast_nullable_to_non_nullable
-                      as TouchDirection,
-            friendId: null == friendId
-                ? _value.friendId
-                : friendId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            message: freezed == message
-                ? _value.message
-                : message // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            intensity: null == intensity
-                ? _value.intensity
-                : intensity // ignore: cast_nullable_to_non_nullable
-                      as double,
-            hadHapticFeedback: null == hadHapticFeedback
-                ? _value.hadHapticFeedback
-                : hadHapticFeedback // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            touchLocation: freezed == touchLocation
-                ? _value.touchLocation
-                : touchLocation // ignore: cast_nullable_to_non_nullable
-                      as TouchLocation?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      stoneId: null == stoneId
+          ? _value.stoneId
+          : stoneId // ignore: cast_nullable_to_non_nullable
+              as String,
+      touchType: null == touchType
+          ? _value.touchType
+          : touchType // ignore: cast_nullable_to_non_nullable
+              as TouchType,
+      timestamp: null == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      duration: freezed == duration
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as Duration?,
+      direction: null == direction
+          ? _value.direction
+          : direction // ignore: cast_nullable_to_non_nullable
+              as TouchDirection,
+      friendId: null == friendId
+          ? _value.friendId
+          : friendId // ignore: cast_nullable_to_non_nullable
+              as String,
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+      intensity: null == intensity
+          ? _value.intensity
+          : intensity // ignore: cast_nullable_to_non_nullable
+              as double,
+      hadHapticFeedback: null == hadHapticFeedback
+          ? _value.hadHapticFeedback
+          : hadHapticFeedback // ignore: cast_nullable_to_non_nullable
+              as bool,
+      touchLocation: freezed == touchLocation
+          ? _value.touchLocation
+          : touchLocation // ignore: cast_nullable_to_non_nullable
+              as TouchLocation?,
+    ) as $Val);
   }
 
   /// Create a copy of TouchInteraction
@@ -184,25 +178,23 @@ class _$TouchInteractionCopyWithImpl<$Res, $Val extends TouchInteraction>
 /// @nodoc
 abstract class _$$TouchInteractionImplCopyWith<$Res>
     implements $TouchInteractionCopyWith<$Res> {
-  factory _$$TouchInteractionImplCopyWith(
-    _$TouchInteractionImpl value,
-    $Res Function(_$TouchInteractionImpl) then,
-  ) = __$$TouchInteractionImplCopyWithImpl<$Res>;
+  factory _$$TouchInteractionImplCopyWith(_$TouchInteractionImpl value,
+          $Res Function(_$TouchInteractionImpl) then) =
+      __$$TouchInteractionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String stoneId,
-    TouchType touchType,
-    DateTime timestamp,
-    Duration? duration,
-    TouchDirection direction,
-    String friendId,
-    String? message,
-    double intensity,
-    bool hadHapticFeedback,
-    TouchLocation? touchLocation,
-  });
+  $Res call(
+      {String id,
+      String stoneId,
+      TouchType touchType,
+      DateTime timestamp,
+      Duration? duration,
+      TouchDirection direction,
+      String friendId,
+      String? message,
+      double intensity,
+      bool hadHapticFeedback,
+      TouchLocation? touchLocation});
 
   @override
   $TouchLocationCopyWith<$Res>? get touchLocation;
@@ -212,10 +204,9 @@ abstract class _$$TouchInteractionImplCopyWith<$Res>
 class __$$TouchInteractionImplCopyWithImpl<$Res>
     extends _$TouchInteractionCopyWithImpl<$Res, _$TouchInteractionImpl>
     implements _$$TouchInteractionImplCopyWith<$Res> {
-  __$$TouchInteractionImplCopyWithImpl(
-    _$TouchInteractionImpl _value,
-    $Res Function(_$TouchInteractionImpl) _then,
-  ) : super(_value, _then);
+  __$$TouchInteractionImplCopyWithImpl(_$TouchInteractionImpl _value,
+      $Res Function(_$TouchInteractionImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of TouchInteraction
   /// with the given fields replaced by the non-null parameter values.
@@ -234,73 +225,70 @@ class __$$TouchInteractionImplCopyWithImpl<$Res>
     Object? hadHapticFeedback = null,
     Object? touchLocation = freezed,
   }) {
-    return _then(
-      _$TouchInteractionImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        stoneId: null == stoneId
-            ? _value.stoneId
-            : stoneId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        touchType: null == touchType
-            ? _value.touchType
-            : touchType // ignore: cast_nullable_to_non_nullable
-                  as TouchType,
-        timestamp: null == timestamp
-            ? _value.timestamp
-            : timestamp // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        duration: freezed == duration
-            ? _value.duration
-            : duration // ignore: cast_nullable_to_non_nullable
-                  as Duration?,
-        direction: null == direction
-            ? _value.direction
-            : direction // ignore: cast_nullable_to_non_nullable
-                  as TouchDirection,
-        friendId: null == friendId
-            ? _value.friendId
-            : friendId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        message: freezed == message
-            ? _value.message
-            : message // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        intensity: null == intensity
-            ? _value.intensity
-            : intensity // ignore: cast_nullable_to_non_nullable
-                  as double,
-        hadHapticFeedback: null == hadHapticFeedback
-            ? _value.hadHapticFeedback
-            : hadHapticFeedback // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        touchLocation: freezed == touchLocation
-            ? _value.touchLocation
-            : touchLocation // ignore: cast_nullable_to_non_nullable
-                  as TouchLocation?,
-      ),
-    );
+    return _then(_$TouchInteractionImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      stoneId: null == stoneId
+          ? _value.stoneId
+          : stoneId // ignore: cast_nullable_to_non_nullable
+              as String,
+      touchType: null == touchType
+          ? _value.touchType
+          : touchType // ignore: cast_nullable_to_non_nullable
+              as TouchType,
+      timestamp: null == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      duration: freezed == duration
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as Duration?,
+      direction: null == direction
+          ? _value.direction
+          : direction // ignore: cast_nullable_to_non_nullable
+              as TouchDirection,
+      friendId: null == friendId
+          ? _value.friendId
+          : friendId // ignore: cast_nullable_to_non_nullable
+              as String,
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+      intensity: null == intensity
+          ? _value.intensity
+          : intensity // ignore: cast_nullable_to_non_nullable
+              as double,
+      hadHapticFeedback: null == hadHapticFeedback
+          ? _value.hadHapticFeedback
+          : hadHapticFeedback // ignore: cast_nullable_to_non_nullable
+              as bool,
+      touchLocation: freezed == touchLocation
+          ? _value.touchLocation
+          : touchLocation // ignore: cast_nullable_to_non_nullable
+              as TouchLocation?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$TouchInteractionImpl implements _TouchInteraction {
-  const _$TouchInteractionImpl({
-    required this.id,
-    required this.stoneId,
-    required this.touchType,
-    required this.timestamp,
-    this.duration,
-    required this.direction,
-    required this.friendId,
-    this.message,
-    this.intensity = 1.0,
-    this.hadHapticFeedback = true,
-    this.touchLocation,
-  });
+  const _$TouchInteractionImpl(
+      {required this.id,
+      required this.stoneId,
+      required this.touchType,
+      required this.timestamp,
+      this.duration,
+      required this.direction,
+      required this.friendId,
+      this.message,
+      this.intensity = 1.0,
+      this.hadHapticFeedback = true,
+      this.touchLocation});
 
   factory _$TouchInteractionImpl.fromJson(Map<String, dynamic> json) =>
       _$$TouchInteractionImplFromJson(json);
@@ -385,19 +373,18 @@ class _$TouchInteractionImpl implements _TouchInteraction {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    stoneId,
-    touchType,
-    timestamp,
-    duration,
-    direction,
-    friendId,
-    message,
-    intensity,
-    hadHapticFeedback,
-    touchLocation,
-  );
+      runtimeType,
+      id,
+      stoneId,
+      touchType,
+      timestamp,
+      duration,
+      direction,
+      friendId,
+      message,
+      intensity,
+      hadHapticFeedback,
+      touchLocation);
 
   /// Create a copy of TouchInteraction
   /// with the given fields replaced by the non-null parameter values.
@@ -406,30 +393,29 @@ class _$TouchInteractionImpl implements _TouchInteraction {
   @pragma('vm:prefer-inline')
   _$$TouchInteractionImplCopyWith<_$TouchInteractionImpl> get copyWith =>
       __$$TouchInteractionImplCopyWithImpl<_$TouchInteractionImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$TouchInteractionImplToJson(this);
+    return _$$TouchInteractionImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _TouchInteraction implements TouchInteraction {
-  const factory _TouchInteraction({
-    required final String id,
-    required final String stoneId,
-    required final TouchType touchType,
-    required final DateTime timestamp,
-    final Duration? duration,
-    required final TouchDirection direction,
-    required final String friendId,
-    final String? message,
-    final double intensity,
-    final bool hadHapticFeedback,
-    final TouchLocation? touchLocation,
-  }) = _$TouchInteractionImpl;
+  const factory _TouchInteraction(
+      {required final String id,
+      required final String stoneId,
+      required final TouchType touchType,
+      required final DateTime timestamp,
+      final Duration? duration,
+      required final TouchDirection direction,
+      required final String friendId,
+      final String? message,
+      final double intensity,
+      final bool hadHapticFeedback,
+      final TouchLocation? touchLocation}) = _$TouchInteractionImpl;
 
   factory _TouchInteraction.fromJson(Map<String, dynamic> json) =
       _$TouchInteractionImpl.fromJson;
@@ -509,9 +495,8 @@ mixin _$TouchLocation {
 /// @nodoc
 abstract class $TouchLocationCopyWith<$Res> {
   factory $TouchLocationCopyWith(
-    TouchLocation value,
-    $Res Function(TouchLocation) then,
-  ) = _$TouchLocationCopyWithImpl<$Res, TouchLocation>;
+          TouchLocation value, $Res Function(TouchLocation) then) =
+      _$TouchLocationCopyWithImpl<$Res, TouchLocation>;
   @useResult
   $Res call({double x, double y, double size});
 }
@@ -530,24 +515,25 @@ class _$TouchLocationCopyWithImpl<$Res, $Val extends TouchLocation>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? x = null, Object? y = null, Object? size = null}) {
-    return _then(
-      _value.copyWith(
-            x: null == x
-                ? _value.x
-                : x // ignore: cast_nullable_to_non_nullable
-                      as double,
-            y: null == y
-                ? _value.y
-                : y // ignore: cast_nullable_to_non_nullable
-                      as double,
-            size: null == size
-                ? _value.size
-                : size // ignore: cast_nullable_to_non_nullable
-                      as double,
-          )
-          as $Val,
-    );
+  $Res call({
+    Object? x = null,
+    Object? y = null,
+    Object? size = null,
+  }) {
+    return _then(_value.copyWith(
+      x: null == x
+          ? _value.x
+          : x // ignore: cast_nullable_to_non_nullable
+              as double,
+      y: null == y
+          ? _value.y
+          : y // ignore: cast_nullable_to_non_nullable
+              as double,
+      size: null == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as double,
+    ) as $Val);
   }
 }
 
@@ -555,9 +541,8 @@ class _$TouchLocationCopyWithImpl<$Res, $Val extends TouchLocation>
 abstract class _$$TouchLocationImplCopyWith<$Res>
     implements $TouchLocationCopyWith<$Res> {
   factory _$$TouchLocationImplCopyWith(
-    _$TouchLocationImpl value,
-    $Res Function(_$TouchLocationImpl) then,
-  ) = __$$TouchLocationImplCopyWithImpl<$Res>;
+          _$TouchLocationImpl value, $Res Function(_$TouchLocationImpl) then) =
+      __$$TouchLocationImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({double x, double y, double size});
@@ -568,42 +553,40 @@ class __$$TouchLocationImplCopyWithImpl<$Res>
     extends _$TouchLocationCopyWithImpl<$Res, _$TouchLocationImpl>
     implements _$$TouchLocationImplCopyWith<$Res> {
   __$$TouchLocationImplCopyWithImpl(
-    _$TouchLocationImpl _value,
-    $Res Function(_$TouchLocationImpl) _then,
-  ) : super(_value, _then);
+      _$TouchLocationImpl _value, $Res Function(_$TouchLocationImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of TouchLocation
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? x = null, Object? y = null, Object? size = null}) {
-    return _then(
-      _$TouchLocationImpl(
-        x: null == x
-            ? _value.x
-            : x // ignore: cast_nullable_to_non_nullable
-                  as double,
-        y: null == y
-            ? _value.y
-            : y // ignore: cast_nullable_to_non_nullable
-                  as double,
-        size: null == size
-            ? _value.size
-            : size // ignore: cast_nullable_to_non_nullable
-                  as double,
-      ),
-    );
+  $Res call({
+    Object? x = null,
+    Object? y = null,
+    Object? size = null,
+  }) {
+    return _then(_$TouchLocationImpl(
+      x: null == x
+          ? _value.x
+          : x // ignore: cast_nullable_to_non_nullable
+              as double,
+      y: null == y
+          ? _value.y
+          : y // ignore: cast_nullable_to_non_nullable
+              as double,
+      size: null == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$TouchLocationImpl implements _TouchLocation {
-  const _$TouchLocationImpl({
-    required this.x,
-    required this.y,
-    this.size = 50.0,
-  });
+  const _$TouchLocationImpl(
+      {required this.x, required this.y, this.size = 50.0});
 
   factory _$TouchLocationImpl.fromJson(Map<String, dynamic> json) =>
       _$$TouchLocationImplFromJson(json);
@@ -645,16 +628,17 @@ class _$TouchLocationImpl implements _TouchLocation {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$TouchLocationImplToJson(this);
+    return _$$TouchLocationImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _TouchLocation implements TouchLocation {
-  const factory _TouchLocation({
-    required final double x,
-    required final double y,
-    final double size,
-  }) = _$TouchLocationImpl;
+  const factory _TouchLocation(
+      {required final double x,
+      required final double y,
+      final double size}) = _$TouchLocationImpl;
 
   factory _TouchLocation.fromJson(Map<String, dynamic> json) =
       _$TouchLocationImpl.fromJson;
@@ -726,23 +710,21 @@ mixin _$ComfortStats {
 /// @nodoc
 abstract class $ComfortStatsCopyWith<$Res> {
   factory $ComfortStatsCopyWith(
-    ComfortStats value,
-    $Res Function(ComfortStats) then,
-  ) = _$ComfortStatsCopyWithImpl<$Res, ComfortStats>;
+          ComfortStats value, $Res Function(ComfortStats) then) =
+      _$ComfortStatsCopyWithImpl<$Res, ComfortStats>;
   @useResult
-  $Res call({
-    int touchesGiven,
-    int comfortReceived,
-    int sacredStones,
-    int dailyStreak,
-    int totalStones,
-    String? favoriteStoneType,
-    String? mostConnectedFriend,
-    int weeklyTouchGoal,
-    int weeklyTouches,
-    int monthlyComfortGoal,
-    int monthlyComfortReceived,
-  });
+  $Res call(
+      {int touchesGiven,
+      int comfortReceived,
+      int sacredStones,
+      int dailyStreak,
+      int totalStones,
+      String? favoriteStoneType,
+      String? mostConnectedFriend,
+      int weeklyTouchGoal,
+      int weeklyTouches,
+      int monthlyComfortGoal,
+      int monthlyComfortReceived});
 }
 
 /// @nodoc
@@ -772,55 +754,52 @@ class _$ComfortStatsCopyWithImpl<$Res, $Val extends ComfortStats>
     Object? monthlyComfortGoal = null,
     Object? monthlyComfortReceived = null,
   }) {
-    return _then(
-      _value.copyWith(
-            touchesGiven: null == touchesGiven
-                ? _value.touchesGiven
-                : touchesGiven // ignore: cast_nullable_to_non_nullable
-                      as int,
-            comfortReceived: null == comfortReceived
-                ? _value.comfortReceived
-                : comfortReceived // ignore: cast_nullable_to_non_nullable
-                      as int,
-            sacredStones: null == sacredStones
-                ? _value.sacredStones
-                : sacredStones // ignore: cast_nullable_to_non_nullable
-                      as int,
-            dailyStreak: null == dailyStreak
-                ? _value.dailyStreak
-                : dailyStreak // ignore: cast_nullable_to_non_nullable
-                      as int,
-            totalStones: null == totalStones
-                ? _value.totalStones
-                : totalStones // ignore: cast_nullable_to_non_nullable
-                      as int,
-            favoriteStoneType: freezed == favoriteStoneType
-                ? _value.favoriteStoneType
-                : favoriteStoneType // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            mostConnectedFriend: freezed == mostConnectedFriend
-                ? _value.mostConnectedFriend
-                : mostConnectedFriend // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            weeklyTouchGoal: null == weeklyTouchGoal
-                ? _value.weeklyTouchGoal
-                : weeklyTouchGoal // ignore: cast_nullable_to_non_nullable
-                      as int,
-            weeklyTouches: null == weeklyTouches
-                ? _value.weeklyTouches
-                : weeklyTouches // ignore: cast_nullable_to_non_nullable
-                      as int,
-            monthlyComfortGoal: null == monthlyComfortGoal
-                ? _value.monthlyComfortGoal
-                : monthlyComfortGoal // ignore: cast_nullable_to_non_nullable
-                      as int,
-            monthlyComfortReceived: null == monthlyComfortReceived
-                ? _value.monthlyComfortReceived
-                : monthlyComfortReceived // ignore: cast_nullable_to_non_nullable
-                      as int,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      touchesGiven: null == touchesGiven
+          ? _value.touchesGiven
+          : touchesGiven // ignore: cast_nullable_to_non_nullable
+              as int,
+      comfortReceived: null == comfortReceived
+          ? _value.comfortReceived
+          : comfortReceived // ignore: cast_nullable_to_non_nullable
+              as int,
+      sacredStones: null == sacredStones
+          ? _value.sacredStones
+          : sacredStones // ignore: cast_nullable_to_non_nullable
+              as int,
+      dailyStreak: null == dailyStreak
+          ? _value.dailyStreak
+          : dailyStreak // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalStones: null == totalStones
+          ? _value.totalStones
+          : totalStones // ignore: cast_nullable_to_non_nullable
+              as int,
+      favoriteStoneType: freezed == favoriteStoneType
+          ? _value.favoriteStoneType
+          : favoriteStoneType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      mostConnectedFriend: freezed == mostConnectedFriend
+          ? _value.mostConnectedFriend
+          : mostConnectedFriend // ignore: cast_nullable_to_non_nullable
+              as String?,
+      weeklyTouchGoal: null == weeklyTouchGoal
+          ? _value.weeklyTouchGoal
+          : weeklyTouchGoal // ignore: cast_nullable_to_non_nullable
+              as int,
+      weeklyTouches: null == weeklyTouches
+          ? _value.weeklyTouches
+          : weeklyTouches // ignore: cast_nullable_to_non_nullable
+              as int,
+      monthlyComfortGoal: null == monthlyComfortGoal
+          ? _value.monthlyComfortGoal
+          : monthlyComfortGoal // ignore: cast_nullable_to_non_nullable
+              as int,
+      monthlyComfortReceived: null == monthlyComfortReceived
+          ? _value.monthlyComfortReceived
+          : monthlyComfortReceived // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
   }
 }
 
@@ -828,24 +807,22 @@ class _$ComfortStatsCopyWithImpl<$Res, $Val extends ComfortStats>
 abstract class _$$ComfortStatsImplCopyWith<$Res>
     implements $ComfortStatsCopyWith<$Res> {
   factory _$$ComfortStatsImplCopyWith(
-    _$ComfortStatsImpl value,
-    $Res Function(_$ComfortStatsImpl) then,
-  ) = __$$ComfortStatsImplCopyWithImpl<$Res>;
+          _$ComfortStatsImpl value, $Res Function(_$ComfortStatsImpl) then) =
+      __$$ComfortStatsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    int touchesGiven,
-    int comfortReceived,
-    int sacredStones,
-    int dailyStreak,
-    int totalStones,
-    String? favoriteStoneType,
-    String? mostConnectedFriend,
-    int weeklyTouchGoal,
-    int weeklyTouches,
-    int monthlyComfortGoal,
-    int monthlyComfortReceived,
-  });
+  $Res call(
+      {int touchesGiven,
+      int comfortReceived,
+      int sacredStones,
+      int dailyStreak,
+      int totalStones,
+      String? favoriteStoneType,
+      String? mostConnectedFriend,
+      int weeklyTouchGoal,
+      int weeklyTouches,
+      int monthlyComfortGoal,
+      int monthlyComfortReceived});
 }
 
 /// @nodoc
@@ -853,9 +830,8 @@ class __$$ComfortStatsImplCopyWithImpl<$Res>
     extends _$ComfortStatsCopyWithImpl<$Res, _$ComfortStatsImpl>
     implements _$$ComfortStatsImplCopyWith<$Res> {
   __$$ComfortStatsImplCopyWithImpl(
-    _$ComfortStatsImpl _value,
-    $Res Function(_$ComfortStatsImpl) _then,
-  ) : super(_value, _then);
+      _$ComfortStatsImpl _value, $Res Function(_$ComfortStatsImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ComfortStats
   /// with the given fields replaced by the non-null parameter values.
@@ -874,73 +850,70 @@ class __$$ComfortStatsImplCopyWithImpl<$Res>
     Object? monthlyComfortGoal = null,
     Object? monthlyComfortReceived = null,
   }) {
-    return _then(
-      _$ComfortStatsImpl(
-        touchesGiven: null == touchesGiven
-            ? _value.touchesGiven
-            : touchesGiven // ignore: cast_nullable_to_non_nullable
-                  as int,
-        comfortReceived: null == comfortReceived
-            ? _value.comfortReceived
-            : comfortReceived // ignore: cast_nullable_to_non_nullable
-                  as int,
-        sacredStones: null == sacredStones
-            ? _value.sacredStones
-            : sacredStones // ignore: cast_nullable_to_non_nullable
-                  as int,
-        dailyStreak: null == dailyStreak
-            ? _value.dailyStreak
-            : dailyStreak // ignore: cast_nullable_to_non_nullable
-                  as int,
-        totalStones: null == totalStones
-            ? _value.totalStones
-            : totalStones // ignore: cast_nullable_to_non_nullable
-                  as int,
-        favoriteStoneType: freezed == favoriteStoneType
-            ? _value.favoriteStoneType
-            : favoriteStoneType // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        mostConnectedFriend: freezed == mostConnectedFriend
-            ? _value.mostConnectedFriend
-            : mostConnectedFriend // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        weeklyTouchGoal: null == weeklyTouchGoal
-            ? _value.weeklyTouchGoal
-            : weeklyTouchGoal // ignore: cast_nullable_to_non_nullable
-                  as int,
-        weeklyTouches: null == weeklyTouches
-            ? _value.weeklyTouches
-            : weeklyTouches // ignore: cast_nullable_to_non_nullable
-                  as int,
-        monthlyComfortGoal: null == monthlyComfortGoal
-            ? _value.monthlyComfortGoal
-            : monthlyComfortGoal // ignore: cast_nullable_to_non_nullable
-                  as int,
-        monthlyComfortReceived: null == monthlyComfortReceived
-            ? _value.monthlyComfortReceived
-            : monthlyComfortReceived // ignore: cast_nullable_to_non_nullable
-                  as int,
-      ),
-    );
+    return _then(_$ComfortStatsImpl(
+      touchesGiven: null == touchesGiven
+          ? _value.touchesGiven
+          : touchesGiven // ignore: cast_nullable_to_non_nullable
+              as int,
+      comfortReceived: null == comfortReceived
+          ? _value.comfortReceived
+          : comfortReceived // ignore: cast_nullable_to_non_nullable
+              as int,
+      sacredStones: null == sacredStones
+          ? _value.sacredStones
+          : sacredStones // ignore: cast_nullable_to_non_nullable
+              as int,
+      dailyStreak: null == dailyStreak
+          ? _value.dailyStreak
+          : dailyStreak // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalStones: null == totalStones
+          ? _value.totalStones
+          : totalStones // ignore: cast_nullable_to_non_nullable
+              as int,
+      favoriteStoneType: freezed == favoriteStoneType
+          ? _value.favoriteStoneType
+          : favoriteStoneType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      mostConnectedFriend: freezed == mostConnectedFriend
+          ? _value.mostConnectedFriend
+          : mostConnectedFriend // ignore: cast_nullable_to_non_nullable
+              as String?,
+      weeklyTouchGoal: null == weeklyTouchGoal
+          ? _value.weeklyTouchGoal
+          : weeklyTouchGoal // ignore: cast_nullable_to_non_nullable
+              as int,
+      weeklyTouches: null == weeklyTouches
+          ? _value.weeklyTouches
+          : weeklyTouches // ignore: cast_nullable_to_non_nullable
+              as int,
+      monthlyComfortGoal: null == monthlyComfortGoal
+          ? _value.monthlyComfortGoal
+          : monthlyComfortGoal // ignore: cast_nullable_to_non_nullable
+              as int,
+      monthlyComfortReceived: null == monthlyComfortReceived
+          ? _value.monthlyComfortReceived
+          : monthlyComfortReceived // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ComfortStatsImpl implements _ComfortStats {
-  const _$ComfortStatsImpl({
-    this.touchesGiven = 0,
-    this.comfortReceived = 0,
-    this.sacredStones = 0,
-    this.dailyStreak = 0,
-    this.totalStones = 0,
-    this.favoriteStoneType,
-    this.mostConnectedFriend,
-    this.weeklyTouchGoal = 21,
-    this.weeklyTouches = 0,
-    this.monthlyComfortGoal = 30,
-    this.monthlyComfortReceived = 0,
-  });
+  const _$ComfortStatsImpl(
+      {this.touchesGiven = 0,
+      this.comfortReceived = 0,
+      this.sacredStones = 0,
+      this.dailyStreak = 0,
+      this.totalStones = 0,
+      this.favoriteStoneType,
+      this.mostConnectedFriend,
+      this.weeklyTouchGoal = 21,
+      this.weeklyTouches = 0,
+      this.monthlyComfortGoal = 30,
+      this.monthlyComfortReceived = 0});
 
   factory _$ComfortStatsImpl.fromJson(Map<String, dynamic> json) =>
       _$$ComfortStatsImplFromJson(json);
@@ -1035,19 +1008,18 @@ class _$ComfortStatsImpl implements _ComfortStats {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    touchesGiven,
-    comfortReceived,
-    sacredStones,
-    dailyStreak,
-    totalStones,
-    favoriteStoneType,
-    mostConnectedFriend,
-    weeklyTouchGoal,
-    weeklyTouches,
-    monthlyComfortGoal,
-    monthlyComfortReceived,
-  );
+      runtimeType,
+      touchesGiven,
+      comfortReceived,
+      sacredStones,
+      dailyStreak,
+      totalStones,
+      favoriteStoneType,
+      mostConnectedFriend,
+      weeklyTouchGoal,
+      weeklyTouches,
+      monthlyComfortGoal,
+      monthlyComfortReceived);
 
   /// Create a copy of ComfortStats
   /// with the given fields replaced by the non-null parameter values.
@@ -1059,24 +1031,25 @@ class _$ComfortStatsImpl implements _ComfortStats {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ComfortStatsImplToJson(this);
+    return _$$ComfortStatsImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _ComfortStats implements ComfortStats {
-  const factory _ComfortStats({
-    final int touchesGiven,
-    final int comfortReceived,
-    final int sacredStones,
-    final int dailyStreak,
-    final int totalStones,
-    final String? favoriteStoneType,
-    final String? mostConnectedFriend,
-    final int weeklyTouchGoal,
-    final int weeklyTouches,
-    final int monthlyComfortGoal,
-    final int monthlyComfortReceived,
-  }) = _$ComfortStatsImpl;
+  const factory _ComfortStats(
+      {final int touchesGiven,
+      final int comfortReceived,
+      final int sacredStones,
+      final int dailyStreak,
+      final int totalStones,
+      final String? favoriteStoneType,
+      final String? mostConnectedFriend,
+      final int weeklyTouchGoal,
+      final int weeklyTouches,
+      final int monthlyComfortGoal,
+      final int monthlyComfortReceived}) = _$ComfortStatsImpl;
 
   factory _ComfortStats.fromJson(Map<String, dynamic> json) =
       _$ComfortStatsImpl.fromJson;

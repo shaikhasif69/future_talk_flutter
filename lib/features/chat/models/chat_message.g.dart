@@ -75,62 +75,62 @@ Map<String, dynamic> _$$ImageMessageImplToJson(_$ImageMessageImpl instance) =>
     };
 
 _$ConnectionStoneMessageImpl _$$ConnectionStoneMessageImplFromJson(
-  Map<String, dynamic> json,
-) => _$ConnectionStoneMessageImpl(
-  stoneType: json['stoneType'] as String,
-  emotion: json['emotion'] as String,
-  message: json['message'] as String? ?? '',
-  timestamp: json['timestamp'] == null
-      ? null
-      : DateTime.parse(json['timestamp'] as String),
-);
+        Map<String, dynamic> json) =>
+    _$ConnectionStoneMessageImpl(
+      stoneType: json['stoneType'] as String,
+      emotion: json['emotion'] as String,
+      message: json['message'] as String? ?? '',
+      timestamp: json['timestamp'] == null
+          ? null
+          : DateTime.parse(json['timestamp'] as String),
+    );
 
 Map<String, dynamic> _$$ConnectionStoneMessageImplToJson(
-  _$ConnectionStoneMessageImpl instance,
-) => <String, dynamic>{
-  'stoneType': instance.stoneType,
-  'emotion': instance.emotion,
-  'message': instance.message,
-  'timestamp': instance.timestamp?.toIso8601String(),
-};
+        _$ConnectionStoneMessageImpl instance) =>
+    <String, dynamic>{
+      'stoneType': instance.stoneType,
+      'emotion': instance.emotion,
+      'message': instance.message,
+      'timestamp': instance.timestamp?.toIso8601String(),
+    };
 
 _$MessageReactionImpl _$$MessageReactionImplFromJson(
-  Map<String, dynamic> json,
-) => _$MessageReactionImpl(
-  id: json['id'] as String,
-  emoji: json['emoji'] as String,
-  userId: json['userId'] as String,
-  userName: json['userName'] as String,
-  timestamp: DateTime.parse(json['timestamp'] as String),
-  isFromMe: json['isFromMe'] as bool? ?? false,
-);
+        Map<String, dynamic> json) =>
+    _$MessageReactionImpl(
+      id: json['id'] as String,
+      emoji: json['emoji'] as String,
+      userId: json['userId'] as String,
+      userName: json['userName'] as String,
+      timestamp: DateTime.parse(json['timestamp'] as String),
+      isFromMe: json['isFromMe'] as bool? ?? false,
+    );
 
 Map<String, dynamic> _$$MessageReactionImplToJson(
-  _$MessageReactionImpl instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'emoji': instance.emoji,
-  'userId': instance.userId,
-  'userName': instance.userName,
-  'timestamp': instance.timestamp.toIso8601String(),
-  'isFromMe': instance.isFromMe,
-};
+        _$MessageReactionImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'emoji': instance.emoji,
+      'userId': instance.userId,
+      'userName': instance.userName,
+      'timestamp': instance.timestamp.toIso8601String(),
+      'isFromMe': instance.isFromMe,
+    };
 
 _$SelfDestructMessageImpl _$$SelfDestructMessageImplFromJson(
-  Map<String, dynamic> json,
-) => _$SelfDestructMessageImpl(
-  countdown: Duration(microseconds: (json['countdown'] as num).toInt()),
-  createdAt: DateTime.parse(json['createdAt'] as String),
-  isExpired: json['isExpired'] as bool? ?? false,
-);
+        Map<String, dynamic> json) =>
+    _$SelfDestructMessageImpl(
+      countdown: Duration(microseconds: (json['countdown'] as num).toInt()),
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      isExpired: json['isExpired'] as bool? ?? false,
+    );
 
 Map<String, dynamic> _$$SelfDestructMessageImplToJson(
-  _$SelfDestructMessageImpl instance,
-) => <String, dynamic>{
-  'countdown': instance.countdown.inMicroseconds,
-  'createdAt': instance.createdAt.toIso8601String(),
-  'isExpired': instance.isExpired,
-};
+        _$SelfDestructMessageImpl instance) =>
+    <String, dynamic>{
+      'countdown': instance.countdown.inMicroseconds,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'isExpired': instance.isExpired,
+    };
 
 _$ChatMessageImpl _$$ChatMessageImplFromJson(Map<String, dynamic> json) =>
     _$ChatMessageImpl(
@@ -150,23 +150,19 @@ _$ChatMessageImpl _$$ChatMessageImplFromJson(Map<String, dynamic> json) =>
       isEdited: json['isEdited'] as bool? ?? false,
       isDestroyed: json['isDestroyed'] as bool? ?? false,
       replyToMessageId: json['replyToMessageId'] as String?,
-      attachments:
-          (json['attachments'] as List<dynamic>?)
+      attachments: (json['attachments'] as List<dynamic>?)
               ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      reactions:
-          (json['reactions'] as List<dynamic>?)
+      reactions: (json['reactions'] as List<dynamic>?)
               ?.map((e) => Reaction.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      readBy:
-          (json['readBy'] as List<dynamic>?)
+      readBy: (json['readBy'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      deliveredTo:
-          (json['deliveredTo'] as List<dynamic>?)
+      deliveredTo: (json['deliveredTo'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
@@ -176,8 +172,7 @@ _$ChatMessageImpl _$$ChatMessageImplFromJson(Map<String, dynamic> json) =>
       encrypted: json['encrypted'] as bool? ?? true,
       encryptionType: json['encryptionType'] as String?,
       securityLevel: json['securityLevel'] as String?,
-      status:
-          $enumDecodeNullable(_$MessageStatusEnumMap, json['status']) ??
+      status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']) ??
           MessageStatus.sent,
       isFromMe: json['isFromMe'] as bool? ?? false,
     );
@@ -227,8 +222,7 @@ const _$MessageStatusEnumMap = {
 _$MessageDraftImpl _$$MessageDraftImplFromJson(Map<String, dynamic> json) =>
     _$MessageDraftImpl(
       content: json['content'] as String? ?? '',
-      type:
-          $enumDecodeNullable(_$MessageTypeEnumMap, json['type']) ??
+      type: $enumDecodeNullable(_$MessageTypeEnumMap, json['type']) ??
           MessageType.text,
       replyToMessageId: json['replyToMessageId'] as String?,
       voiceMessage: json['voiceMessage'] == null
@@ -241,8 +235,7 @@ _$MessageDraftImpl _$$MessageDraftImplFromJson(Map<String, dynamic> json) =>
       selfDestructDuration: json['selfDestructDuration'] == null
           ? null
           : Duration(
-              microseconds: (json['selfDestructDuration'] as num).toInt(),
-            ),
+              microseconds: (json['selfDestructDuration'] as num).toInt()),
     );
 
 Map<String, dynamic> _$$MessageDraftImplToJson(_$MessageDraftImpl instance) =>
@@ -257,22 +250,22 @@ Map<String, dynamic> _$$MessageDraftImplToJson(_$MessageDraftImpl instance) =>
     };
 
 _$TypingIndicatorImpl _$$TypingIndicatorImplFromJson(
-  Map<String, dynamic> json,
-) => _$TypingIndicatorImpl(
-  userId: json['userId'] as String,
-  userName: json['userName'] as String,
-  startedAt: DateTime.parse(json['startedAt'] as String),
-  isActive: json['isActive'] as bool? ?? false,
-);
+        Map<String, dynamic> json) =>
+    _$TypingIndicatorImpl(
+      userId: json['userId'] as String,
+      userName: json['userName'] as String,
+      startedAt: DateTime.parse(json['startedAt'] as String),
+      isActive: json['isActive'] as bool? ?? false,
+    );
 
 Map<String, dynamic> _$$TypingIndicatorImplToJson(
-  _$TypingIndicatorImpl instance,
-) => <String, dynamic>{
-  'userId': instance.userId,
-  'userName': instance.userName,
-  'startedAt': instance.startedAt.toIso8601String(),
-  'isActive': instance.isActive,
-};
+        _$TypingIndicatorImpl instance) =>
+    <String, dynamic>{
+      'userId': instance.userId,
+      'userName': instance.userName,
+      'startedAt': instance.startedAt.toIso8601String(),
+      'isActive': instance.isActive,
+    };
 
 _$ReadReceiptImpl _$$ReadReceiptImplFromJson(Map<String, dynamic> json) =>
     _$ReadReceiptImpl(

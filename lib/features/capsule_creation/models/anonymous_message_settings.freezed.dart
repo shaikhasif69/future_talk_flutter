@@ -12,12 +12,10 @@ part of 'anonymous_message_settings.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 AnonymousMessageSettings _$AnonymousMessageSettingsFromJson(
-  Map<String, dynamic> json,
-) {
+    Map<String, dynamic> json) {
   return _AnonymousMessageSettings.fromJson(json);
 }
 
@@ -55,26 +53,22 @@ mixin _$AnonymousMessageSettings {
 
 /// @nodoc
 abstract class $AnonymousMessageSettingsCopyWith<$Res> {
-  factory $AnonymousMessageSettingsCopyWith(
-    AnonymousMessageSettings value,
-    $Res Function(AnonymousMessageSettings) then,
-  ) = _$AnonymousMessageSettingsCopyWithImpl<$Res, AnonymousMessageSettings>;
+  factory $AnonymousMessageSettingsCopyWith(AnonymousMessageSettings value,
+          $Res Function(AnonymousMessageSettings) then) =
+      _$AnonymousMessageSettingsCopyWithImpl<$Res, AnonymousMessageSettings>;
   @useResult
-  $Res call({
-    bool notifyAboutCapsule,
-    IdentityRevealOption identityRevealOption,
-    bool oneTimeView,
-    bool includeDeliveryHint,
-    String? customDeliveryHint,
-    AnonymousDeliveryMethod deliveryMethod,
-  });
+  $Res call(
+      {bool notifyAboutCapsule,
+      IdentityRevealOption identityRevealOption,
+      bool oneTimeView,
+      bool includeDeliveryHint,
+      String? customDeliveryHint,
+      AnonymousDeliveryMethod deliveryMethod});
 }
 
 /// @nodoc
-class _$AnonymousMessageSettingsCopyWithImpl<
-  $Res,
-  $Val extends AnonymousMessageSettings
->
+class _$AnonymousMessageSettingsCopyWithImpl<$Res,
+        $Val extends AnonymousMessageSettings>
     implements $AnonymousMessageSettingsCopyWith<$Res> {
   _$AnonymousMessageSettingsCopyWithImpl(this._value, this._then);
 
@@ -95,35 +89,32 @@ class _$AnonymousMessageSettingsCopyWithImpl<
     Object? customDeliveryHint = freezed,
     Object? deliveryMethod = null,
   }) {
-    return _then(
-      _value.copyWith(
-            notifyAboutCapsule: null == notifyAboutCapsule
-                ? _value.notifyAboutCapsule
-                : notifyAboutCapsule // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            identityRevealOption: null == identityRevealOption
-                ? _value.identityRevealOption
-                : identityRevealOption // ignore: cast_nullable_to_non_nullable
-                      as IdentityRevealOption,
-            oneTimeView: null == oneTimeView
-                ? _value.oneTimeView
-                : oneTimeView // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            includeDeliveryHint: null == includeDeliveryHint
-                ? _value.includeDeliveryHint
-                : includeDeliveryHint // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            customDeliveryHint: freezed == customDeliveryHint
-                ? _value.customDeliveryHint
-                : customDeliveryHint // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            deliveryMethod: null == deliveryMethod
-                ? _value.deliveryMethod
-                : deliveryMethod // ignore: cast_nullable_to_non_nullable
-                      as AnonymousDeliveryMethod,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      notifyAboutCapsule: null == notifyAboutCapsule
+          ? _value.notifyAboutCapsule
+          : notifyAboutCapsule // ignore: cast_nullable_to_non_nullable
+              as bool,
+      identityRevealOption: null == identityRevealOption
+          ? _value.identityRevealOption
+          : identityRevealOption // ignore: cast_nullable_to_non_nullable
+              as IdentityRevealOption,
+      oneTimeView: null == oneTimeView
+          ? _value.oneTimeView
+          : oneTimeView // ignore: cast_nullable_to_non_nullable
+              as bool,
+      includeDeliveryHint: null == includeDeliveryHint
+          ? _value.includeDeliveryHint
+          : includeDeliveryHint // ignore: cast_nullable_to_non_nullable
+              as bool,
+      customDeliveryHint: freezed == customDeliveryHint
+          ? _value.customDeliveryHint
+          : customDeliveryHint // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deliveryMethod: null == deliveryMethod
+          ? _value.deliveryMethod
+          : deliveryMethod // ignore: cast_nullable_to_non_nullable
+              as AnonymousDeliveryMethod,
+    ) as $Val);
   }
 }
 
@@ -131,33 +122,29 @@ class _$AnonymousMessageSettingsCopyWithImpl<
 abstract class _$$AnonymousMessageSettingsImplCopyWith<$Res>
     implements $AnonymousMessageSettingsCopyWith<$Res> {
   factory _$$AnonymousMessageSettingsImplCopyWith(
-    _$AnonymousMessageSettingsImpl value,
-    $Res Function(_$AnonymousMessageSettingsImpl) then,
-  ) = __$$AnonymousMessageSettingsImplCopyWithImpl<$Res>;
+          _$AnonymousMessageSettingsImpl value,
+          $Res Function(_$AnonymousMessageSettingsImpl) then) =
+      __$$AnonymousMessageSettingsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    bool notifyAboutCapsule,
-    IdentityRevealOption identityRevealOption,
-    bool oneTimeView,
-    bool includeDeliveryHint,
-    String? customDeliveryHint,
-    AnonymousDeliveryMethod deliveryMethod,
-  });
+  $Res call(
+      {bool notifyAboutCapsule,
+      IdentityRevealOption identityRevealOption,
+      bool oneTimeView,
+      bool includeDeliveryHint,
+      String? customDeliveryHint,
+      AnonymousDeliveryMethod deliveryMethod});
 }
 
 /// @nodoc
 class __$$AnonymousMessageSettingsImplCopyWithImpl<$Res>
-    extends
-        _$AnonymousMessageSettingsCopyWithImpl<
-          $Res,
-          _$AnonymousMessageSettingsImpl
-        >
+    extends _$AnonymousMessageSettingsCopyWithImpl<$Res,
+        _$AnonymousMessageSettingsImpl>
     implements _$$AnonymousMessageSettingsImplCopyWith<$Res> {
   __$$AnonymousMessageSettingsImplCopyWithImpl(
-    _$AnonymousMessageSettingsImpl _value,
-    $Res Function(_$AnonymousMessageSettingsImpl) _then,
-  ) : super(_value, _then);
+      _$AnonymousMessageSettingsImpl _value,
+      $Res Function(_$AnonymousMessageSettingsImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of AnonymousMessageSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -171,48 +158,45 @@ class __$$AnonymousMessageSettingsImplCopyWithImpl<$Res>
     Object? customDeliveryHint = freezed,
     Object? deliveryMethod = null,
   }) {
-    return _then(
-      _$AnonymousMessageSettingsImpl(
-        notifyAboutCapsule: null == notifyAboutCapsule
-            ? _value.notifyAboutCapsule
-            : notifyAboutCapsule // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        identityRevealOption: null == identityRevealOption
-            ? _value.identityRevealOption
-            : identityRevealOption // ignore: cast_nullable_to_non_nullable
-                  as IdentityRevealOption,
-        oneTimeView: null == oneTimeView
-            ? _value.oneTimeView
-            : oneTimeView // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        includeDeliveryHint: null == includeDeliveryHint
-            ? _value.includeDeliveryHint
-            : includeDeliveryHint // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        customDeliveryHint: freezed == customDeliveryHint
-            ? _value.customDeliveryHint
-            : customDeliveryHint // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        deliveryMethod: null == deliveryMethod
-            ? _value.deliveryMethod
-            : deliveryMethod // ignore: cast_nullable_to_non_nullable
-                  as AnonymousDeliveryMethod,
-      ),
-    );
+    return _then(_$AnonymousMessageSettingsImpl(
+      notifyAboutCapsule: null == notifyAboutCapsule
+          ? _value.notifyAboutCapsule
+          : notifyAboutCapsule // ignore: cast_nullable_to_non_nullable
+              as bool,
+      identityRevealOption: null == identityRevealOption
+          ? _value.identityRevealOption
+          : identityRevealOption // ignore: cast_nullable_to_non_nullable
+              as IdentityRevealOption,
+      oneTimeView: null == oneTimeView
+          ? _value.oneTimeView
+          : oneTimeView // ignore: cast_nullable_to_non_nullable
+              as bool,
+      includeDeliveryHint: null == includeDeliveryHint
+          ? _value.includeDeliveryHint
+          : includeDeliveryHint // ignore: cast_nullable_to_non_nullable
+              as bool,
+      customDeliveryHint: freezed == customDeliveryHint
+          ? _value.customDeliveryHint
+          : customDeliveryHint // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deliveryMethod: null == deliveryMethod
+          ? _value.deliveryMethod
+          : deliveryMethod // ignore: cast_nullable_to_non_nullable
+              as AnonymousDeliveryMethod,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$AnonymousMessageSettingsImpl implements _AnonymousMessageSettings {
-  const _$AnonymousMessageSettingsImpl({
-    this.notifyAboutCapsule = true,
-    this.identityRevealOption = IdentityRevealOption.stayAnonymous,
-    this.oneTimeView = false,
-    this.includeDeliveryHint = false,
-    this.customDeliveryHint,
-    this.deliveryMethod = AnonymousDeliveryMethod.silent,
-  });
+  const _$AnonymousMessageSettingsImpl(
+      {this.notifyAboutCapsule = true,
+      this.identityRevealOption = IdentityRevealOption.stayAnonymous,
+      this.oneTimeView = false,
+      this.includeDeliveryHint = false,
+      this.customDeliveryHint,
+      this.deliveryMethod = AnonymousDeliveryMethod.silent});
 
   factory _$AnonymousMessageSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$AnonymousMessageSettingsImplFromJson(json);
@@ -273,14 +257,13 @@ class _$AnonymousMessageSettingsImpl implements _AnonymousMessageSettings {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    notifyAboutCapsule,
-    identityRevealOption,
-    oneTimeView,
-    includeDeliveryHint,
-    customDeliveryHint,
-    deliveryMethod,
-  );
+      runtimeType,
+      notifyAboutCapsule,
+      identityRevealOption,
+      oneTimeView,
+      includeDeliveryHint,
+      customDeliveryHint,
+      deliveryMethod);
 
   /// Create a copy of AnonymousMessageSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -288,26 +271,26 @@ class _$AnonymousMessageSettingsImpl implements _AnonymousMessageSettings {
   @override
   @pragma('vm:prefer-inline')
   _$$AnonymousMessageSettingsImplCopyWith<_$AnonymousMessageSettingsImpl>
-  get copyWith =>
-      __$$AnonymousMessageSettingsImplCopyWithImpl<
-        _$AnonymousMessageSettingsImpl
-      >(this, _$identity);
+      get copyWith => __$$AnonymousMessageSettingsImplCopyWithImpl<
+          _$AnonymousMessageSettingsImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AnonymousMessageSettingsImplToJson(this);
+    return _$$AnonymousMessageSettingsImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _AnonymousMessageSettings implements AnonymousMessageSettings {
-  const factory _AnonymousMessageSettings({
-    final bool notifyAboutCapsule,
-    final IdentityRevealOption identityRevealOption,
-    final bool oneTimeView,
-    final bool includeDeliveryHint,
-    final String? customDeliveryHint,
-    final AnonymousDeliveryMethod deliveryMethod,
-  }) = _$AnonymousMessageSettingsImpl;
+  const factory _AnonymousMessageSettings(
+          {final bool notifyAboutCapsule,
+          final IdentityRevealOption identityRevealOption,
+          final bool oneTimeView,
+          final bool includeDeliveryHint,
+          final String? customDeliveryHint,
+          final AnonymousDeliveryMethod deliveryMethod}) =
+      _$AnonymousMessageSettingsImpl;
 
   factory _AnonymousMessageSettings.fromJson(Map<String, dynamic> json) =
       _$AnonymousMessageSettingsImpl.fromJson;
@@ -341,5 +324,5 @@ abstract class _AnonymousMessageSettings implements AnonymousMessageSettings {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AnonymousMessageSettingsImplCopyWith<_$AnonymousMessageSettingsImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }

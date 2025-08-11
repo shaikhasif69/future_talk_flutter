@@ -14,14 +14,14 @@ String _$selectedPurposeHash() => r'2457abd61ebcd6e8201c91a374e19eabe259b4ea';
 @ProviderFor(selectedPurpose)
 final selectedPurposeProvider =
     AutoDisposeProvider<TimeCapsulePurpose?>.internal(
-      selectedPurpose,
-      name: r'selectedPurposeProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$selectedPurposeHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  selectedPurpose,
+  name: r'selectedPurposeProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$selectedPurposeHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
@@ -114,14 +114,14 @@ String _$selectedSpecialOccasionHash() =>
 @ProviderFor(selectedSpecialOccasion)
 final selectedSpecialOccasionProvider =
     AutoDisposeProvider<SpecialOccasion?>.internal(
-      selectedSpecialOccasion,
-      name: r'selectedSpecialOccasionProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$selectedSpecialOccasionHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  selectedSpecialOccasion,
+  name: r'selectedSpecialOccasionProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$selectedSpecialOccasionHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
@@ -154,9 +154,8 @@ String _$timeMetaphorHash() => r'76f253eca03910a094baea1859d7a13bd1206f76';
 final timeMetaphorProvider = AutoDisposeProvider<String>.internal(
   timeMetaphor,
   name: r'timeMetaphorProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$timeMetaphorHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$timeMetaphorHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -173,9 +172,8 @@ String _$timeDisplayHash() => r'e1b4651b47f6e6d910da3e43fb0a4651bc2301e2';
 final timeDisplayProvider = AutoDisposeProvider<String>.internal(
   timeDisplay,
   name: r'timeDisplayProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$timeDisplayHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$timeDisplayHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -211,9 +209,8 @@ String _$growthStageHash() => r'7cfedf0cb9a9da9c1c785bb22d55c89aca7fdf9a';
 final growthStageProvider = AutoDisposeProvider<String>.internal(
   growthStage,
   name: r'growthStageProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$growthStageHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$growthStageHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -385,14 +382,14 @@ String _$canProceedFromFriendSelectionHash() =>
 @ProviderFor(canProceedFromFriendSelection)
 final canProceedFromFriendSelectionProvider =
     AutoDisposeProvider<bool>.internal(
-      canProceedFromFriendSelection,
-      name: r'canProceedFromFriendSelectionProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$canProceedFromFriendSelectionHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  canProceedFromFriendSelection,
+  name: r'canProceedFromFriendSelectionProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$canProceedFromFriendSelectionHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
@@ -406,14 +403,14 @@ String _$selectedAnonymousUserHash() =>
 @ProviderFor(selectedAnonymousUser)
 final selectedAnonymousUserProvider =
     AutoDisposeProvider<AnonymousUser?>.internal(
-      selectedAnonymousUser,
-      name: r'selectedAnonymousUserProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$selectedAnonymousUserHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  selectedAnonymousUser,
+  name: r'selectedAnonymousUserProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$selectedAnonymousUserHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
@@ -427,19 +424,19 @@ String _$anonymousMessageSettingsHash() =>
 @ProviderFor(anonymousMessageSettings)
 final anonymousMessageSettingsProvider =
     AutoDisposeProvider<AnonymousMessageSettings?>.internal(
-      anonymousMessageSettings,
-      name: r'anonymousMessageSettingsProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$anonymousMessageSettingsHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  anonymousMessageSettings,
+  name: r'anonymousMessageSettingsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$anonymousMessageSettingsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef AnonymousMessageSettingsRef =
-    AutoDisposeProviderRef<AnonymousMessageSettings?>;
+typedef AnonymousMessageSettingsRef
+    = AutoDisposeProviderRef<AnonymousMessageSettings?>;
 String _$anonymousSearchQueryHash() =>
     r'540c5a7139ac43cbb125da6bbecc7f550366cb95';
 
@@ -509,14 +506,14 @@ String _$requiresAnonymousUserSelectionHash() =>
 @ProviderFor(requiresAnonymousUserSelection)
 final requiresAnonymousUserSelectionProvider =
     AutoDisposeProvider<bool>.internal(
-      requiresAnonymousUserSelection,
-      name: r'requiresAnonymousUserSelectionProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$requiresAnonymousUserSelectionHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  requiresAnonymousUserSelection,
+  name: r'requiresAnonymousUserSelectionProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$requiresAnonymousUserSelectionHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
@@ -530,14 +527,14 @@ String _$canProceedFromAnonymousSelectionHash() =>
 @ProviderFor(canProceedFromAnonymousSelection)
 final canProceedFromAnonymousSelectionProvider =
     AutoDisposeProvider<bool>.internal(
-      canProceedFromAnonymousSelection,
-      name: r'canProceedFromAnonymousSelectionProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$canProceedFromAnonymousSelectionHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  canProceedFromAnonymousSelection,
+  name: r'canProceedFromAnonymousSelectionProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$canProceedFromAnonymousSelectionHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
@@ -550,21 +547,18 @@ String _$timeCapsuleCreationNotifierHash() =>
 ///
 /// Copied from [TimeCapsuleCreationNotifier].
 @ProviderFor(TimeCapsuleCreationNotifier)
-final timeCapsuleCreationNotifierProvider =
-    AutoDisposeNotifierProvider<
-      TimeCapsuleCreationNotifier,
-      TimeCapsuleCreationData
-    >.internal(
-      TimeCapsuleCreationNotifier.new,
-      name: r'timeCapsuleCreationNotifierProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$timeCapsuleCreationNotifierHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+final timeCapsuleCreationNotifierProvider = AutoDisposeNotifierProvider<
+    TimeCapsuleCreationNotifier, TimeCapsuleCreationData>.internal(
+  TimeCapsuleCreationNotifier.new,
+  name: r'timeCapsuleCreationNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$timeCapsuleCreationNotifierHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-typedef _$TimeCapsuleCreationNotifier =
-    AutoDisposeNotifier<TimeCapsuleCreationData>;
+typedef _$TimeCapsuleCreationNotifier
+    = AutoDisposeNotifier<TimeCapsuleCreationData>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

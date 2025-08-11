@@ -12,8 +12,7 @@ part of 'message_settings.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 MessageSettings _$MessageSettingsFromJson(Map<String, dynamic> json) {
   return _MessageSettings.fromJson(json);
@@ -64,20 +63,18 @@ mixin _$MessageSettings {
 /// @nodoc
 abstract class $MessageSettingsCopyWith<$Res> {
   factory $MessageSettingsCopyWith(
-    MessageSettings value,
-    $Res Function(MessageSettings) then,
-  ) = _$MessageSettingsCopyWithImpl<$Res, MessageSettings>;
+          MessageSettings value, $Res Function(MessageSettings) then) =
+      _$MessageSettingsCopyWithImpl<$Res, MessageSettings>;
   @useResult
-  $Res call({
-    bool notifyAboutCapsule,
-    bool anonymousSending,
-    bool oneTimeView,
-    DeliveryMethod deliveryMethod,
-    bool allowSharing,
-    bool sendDeliveryConfirmation,
-    String? customTimeZone,
-    String? deliveryNotes,
-  });
+  $Res call(
+      {bool notifyAboutCapsule,
+      bool anonymousSending,
+      bool oneTimeView,
+      DeliveryMethod deliveryMethod,
+      bool allowSharing,
+      bool sendDeliveryConfirmation,
+      String? customTimeZone,
+      String? deliveryNotes});
 }
 
 /// @nodoc
@@ -104,65 +101,60 @@ class _$MessageSettingsCopyWithImpl<$Res, $Val extends MessageSettings>
     Object? customTimeZone = freezed,
     Object? deliveryNotes = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            notifyAboutCapsule: null == notifyAboutCapsule
-                ? _value.notifyAboutCapsule
-                : notifyAboutCapsule // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            anonymousSending: null == anonymousSending
-                ? _value.anonymousSending
-                : anonymousSending // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            oneTimeView: null == oneTimeView
-                ? _value.oneTimeView
-                : oneTimeView // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            deliveryMethod: null == deliveryMethod
-                ? _value.deliveryMethod
-                : deliveryMethod // ignore: cast_nullable_to_non_nullable
-                      as DeliveryMethod,
-            allowSharing: null == allowSharing
-                ? _value.allowSharing
-                : allowSharing // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            sendDeliveryConfirmation: null == sendDeliveryConfirmation
-                ? _value.sendDeliveryConfirmation
-                : sendDeliveryConfirmation // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            customTimeZone: freezed == customTimeZone
-                ? _value.customTimeZone
-                : customTimeZone // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            deliveryNotes: freezed == deliveryNotes
-                ? _value.deliveryNotes
-                : deliveryNotes // ignore: cast_nullable_to_non_nullable
-                      as String?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      notifyAboutCapsule: null == notifyAboutCapsule
+          ? _value.notifyAboutCapsule
+          : notifyAboutCapsule // ignore: cast_nullable_to_non_nullable
+              as bool,
+      anonymousSending: null == anonymousSending
+          ? _value.anonymousSending
+          : anonymousSending // ignore: cast_nullable_to_non_nullable
+              as bool,
+      oneTimeView: null == oneTimeView
+          ? _value.oneTimeView
+          : oneTimeView // ignore: cast_nullable_to_non_nullable
+              as bool,
+      deliveryMethod: null == deliveryMethod
+          ? _value.deliveryMethod
+          : deliveryMethod // ignore: cast_nullable_to_non_nullable
+              as DeliveryMethod,
+      allowSharing: null == allowSharing
+          ? _value.allowSharing
+          : allowSharing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      sendDeliveryConfirmation: null == sendDeliveryConfirmation
+          ? _value.sendDeliveryConfirmation
+          : sendDeliveryConfirmation // ignore: cast_nullable_to_non_nullable
+              as bool,
+      customTimeZone: freezed == customTimeZone
+          ? _value.customTimeZone
+          : customTimeZone // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deliveryNotes: freezed == deliveryNotes
+          ? _value.deliveryNotes
+          : deliveryNotes // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$MessageSettingsImplCopyWith<$Res>
     implements $MessageSettingsCopyWith<$Res> {
-  factory _$$MessageSettingsImplCopyWith(
-    _$MessageSettingsImpl value,
-    $Res Function(_$MessageSettingsImpl) then,
-  ) = __$$MessageSettingsImplCopyWithImpl<$Res>;
+  factory _$$MessageSettingsImplCopyWith(_$MessageSettingsImpl value,
+          $Res Function(_$MessageSettingsImpl) then) =
+      __$$MessageSettingsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    bool notifyAboutCapsule,
-    bool anonymousSending,
-    bool oneTimeView,
-    DeliveryMethod deliveryMethod,
-    bool allowSharing,
-    bool sendDeliveryConfirmation,
-    String? customTimeZone,
-    String? deliveryNotes,
-  });
+  $Res call(
+      {bool notifyAboutCapsule,
+      bool anonymousSending,
+      bool oneTimeView,
+      DeliveryMethod deliveryMethod,
+      bool allowSharing,
+      bool sendDeliveryConfirmation,
+      String? customTimeZone,
+      String? deliveryNotes});
 }
 
 /// @nodoc
@@ -170,9 +162,8 @@ class __$$MessageSettingsImplCopyWithImpl<$Res>
     extends _$MessageSettingsCopyWithImpl<$Res, _$MessageSettingsImpl>
     implements _$$MessageSettingsImplCopyWith<$Res> {
   __$$MessageSettingsImplCopyWithImpl(
-    _$MessageSettingsImpl _value,
-    $Res Function(_$MessageSettingsImpl) _then,
-  ) : super(_value, _then);
+      _$MessageSettingsImpl _value, $Res Function(_$MessageSettingsImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of MessageSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -188,58 +179,55 @@ class __$$MessageSettingsImplCopyWithImpl<$Res>
     Object? customTimeZone = freezed,
     Object? deliveryNotes = freezed,
   }) {
-    return _then(
-      _$MessageSettingsImpl(
-        notifyAboutCapsule: null == notifyAboutCapsule
-            ? _value.notifyAboutCapsule
-            : notifyAboutCapsule // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        anonymousSending: null == anonymousSending
-            ? _value.anonymousSending
-            : anonymousSending // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        oneTimeView: null == oneTimeView
-            ? _value.oneTimeView
-            : oneTimeView // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        deliveryMethod: null == deliveryMethod
-            ? _value.deliveryMethod
-            : deliveryMethod // ignore: cast_nullable_to_non_nullable
-                  as DeliveryMethod,
-        allowSharing: null == allowSharing
-            ? _value.allowSharing
-            : allowSharing // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        sendDeliveryConfirmation: null == sendDeliveryConfirmation
-            ? _value.sendDeliveryConfirmation
-            : sendDeliveryConfirmation // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        customTimeZone: freezed == customTimeZone
-            ? _value.customTimeZone
-            : customTimeZone // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        deliveryNotes: freezed == deliveryNotes
-            ? _value.deliveryNotes
-            : deliveryNotes // ignore: cast_nullable_to_non_nullable
-                  as String?,
-      ),
-    );
+    return _then(_$MessageSettingsImpl(
+      notifyAboutCapsule: null == notifyAboutCapsule
+          ? _value.notifyAboutCapsule
+          : notifyAboutCapsule // ignore: cast_nullable_to_non_nullable
+              as bool,
+      anonymousSending: null == anonymousSending
+          ? _value.anonymousSending
+          : anonymousSending // ignore: cast_nullable_to_non_nullable
+              as bool,
+      oneTimeView: null == oneTimeView
+          ? _value.oneTimeView
+          : oneTimeView // ignore: cast_nullable_to_non_nullable
+              as bool,
+      deliveryMethod: null == deliveryMethod
+          ? _value.deliveryMethod
+          : deliveryMethod // ignore: cast_nullable_to_non_nullable
+              as DeliveryMethod,
+      allowSharing: null == allowSharing
+          ? _value.allowSharing
+          : allowSharing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      sendDeliveryConfirmation: null == sendDeliveryConfirmation
+          ? _value.sendDeliveryConfirmation
+          : sendDeliveryConfirmation // ignore: cast_nullable_to_non_nullable
+              as bool,
+      customTimeZone: freezed == customTimeZone
+          ? _value.customTimeZone
+          : customTimeZone // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deliveryNotes: freezed == deliveryNotes
+          ? _value.deliveryNotes
+          : deliveryNotes // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$MessageSettingsImpl implements _MessageSettings {
-  const _$MessageSettingsImpl({
-    this.notifyAboutCapsule = true,
-    this.anonymousSending = false,
-    this.oneTimeView = false,
-    this.deliveryMethod = DeliveryMethod.appOnly,
-    this.allowSharing = true,
-    this.sendDeliveryConfirmation = true,
-    this.customTimeZone,
-    this.deliveryNotes,
-  });
+  const _$MessageSettingsImpl(
+      {this.notifyAboutCapsule = true,
+      this.anonymousSending = false,
+      this.oneTimeView = false,
+      this.deliveryMethod = DeliveryMethod.appOnly,
+      this.allowSharing = true,
+      this.sendDeliveryConfirmation = true,
+      this.customTimeZone,
+      this.deliveryNotes});
 
   factory _$MessageSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$MessageSettingsImplFromJson(json);
@@ -309,9 +297,7 @@ class _$MessageSettingsImpl implements _MessageSettings {
             (identical(other.allowSharing, allowSharing) ||
                 other.allowSharing == allowSharing) &&
             (identical(
-                  other.sendDeliveryConfirmation,
-                  sendDeliveryConfirmation,
-                ) ||
+                    other.sendDeliveryConfirmation, sendDeliveryConfirmation) ||
                 other.sendDeliveryConfirmation == sendDeliveryConfirmation) &&
             (identical(other.customTimeZone, customTimeZone) ||
                 other.customTimeZone == customTimeZone) &&
@@ -322,16 +308,15 @@ class _$MessageSettingsImpl implements _MessageSettings {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    notifyAboutCapsule,
-    anonymousSending,
-    oneTimeView,
-    deliveryMethod,
-    allowSharing,
-    sendDeliveryConfirmation,
-    customTimeZone,
-    deliveryNotes,
-  );
+      runtimeType,
+      notifyAboutCapsule,
+      anonymousSending,
+      oneTimeView,
+      deliveryMethod,
+      allowSharing,
+      sendDeliveryConfirmation,
+      customTimeZone,
+      deliveryNotes);
 
   /// Create a copy of MessageSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -340,27 +325,26 @@ class _$MessageSettingsImpl implements _MessageSettings {
   @pragma('vm:prefer-inline')
   _$$MessageSettingsImplCopyWith<_$MessageSettingsImpl> get copyWith =>
       __$$MessageSettingsImplCopyWithImpl<_$MessageSettingsImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$MessageSettingsImplToJson(this);
+    return _$$MessageSettingsImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _MessageSettings implements MessageSettings {
-  const factory _MessageSettings({
-    final bool notifyAboutCapsule,
-    final bool anonymousSending,
-    final bool oneTimeView,
-    final DeliveryMethod deliveryMethod,
-    final bool allowSharing,
-    final bool sendDeliveryConfirmation,
-    final String? customTimeZone,
-    final String? deliveryNotes,
-  }) = _$MessageSettingsImpl;
+  const factory _MessageSettings(
+      {final bool notifyAboutCapsule,
+      final bool anonymousSending,
+      final bool oneTimeView,
+      final DeliveryMethod deliveryMethod,
+      final bool allowSharing,
+      final bool sendDeliveryConfirmation,
+      final String? customTimeZone,
+      final String? deliveryNotes}) = _$MessageSettingsImpl;
 
   factory _MessageSettings.fromJson(Map<String, dynamic> json) =
       _$MessageSettingsImpl.fromJson;

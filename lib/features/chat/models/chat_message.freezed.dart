@@ -12,8 +12,7 @@ part of 'chat_message.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Attachment _$AttachmentFromJson(Map<String, dynamic> json) {
   return _Attachment.fromJson(json);
@@ -40,17 +39,15 @@ mixin _$Attachment {
 /// @nodoc
 abstract class $AttachmentCopyWith<$Res> {
   factory $AttachmentCopyWith(
-    Attachment value,
-    $Res Function(Attachment) then,
-  ) = _$AttachmentCopyWithImpl<$Res, Attachment>;
+          Attachment value, $Res Function(Attachment) then) =
+      _$AttachmentCopyWithImpl<$Res, Attachment>;
   @useResult
-  $Res call({
-    String id,
-    String fileName,
-    String fileUrl,
-    String fileType,
-    int fileSize,
-  });
+  $Res call(
+      {String id,
+      String fileName,
+      String fileUrl,
+      String fileType,
+      int fileSize});
 }
 
 /// @nodoc
@@ -74,31 +71,28 @@ class _$AttachmentCopyWithImpl<$Res, $Val extends Attachment>
     Object? fileType = null,
     Object? fileSize = null,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            fileName: null == fileName
-                ? _value.fileName
-                : fileName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            fileUrl: null == fileUrl
-                ? _value.fileUrl
-                : fileUrl // ignore: cast_nullable_to_non_nullable
-                      as String,
-            fileType: null == fileType
-                ? _value.fileType
-                : fileType // ignore: cast_nullable_to_non_nullable
-                      as String,
-            fileSize: null == fileSize
-                ? _value.fileSize
-                : fileSize // ignore: cast_nullable_to_non_nullable
-                      as int,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileName: null == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileUrl: null == fileUrl
+          ? _value.fileUrl
+          : fileUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileType: null == fileType
+          ? _value.fileType
+          : fileType // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileSize: null == fileSize
+          ? _value.fileSize
+          : fileSize // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
   }
 }
 
@@ -106,18 +100,16 @@ class _$AttachmentCopyWithImpl<$Res, $Val extends Attachment>
 abstract class _$$AttachmentImplCopyWith<$Res>
     implements $AttachmentCopyWith<$Res> {
   factory _$$AttachmentImplCopyWith(
-    _$AttachmentImpl value,
-    $Res Function(_$AttachmentImpl) then,
-  ) = __$$AttachmentImplCopyWithImpl<$Res>;
+          _$AttachmentImpl value, $Res Function(_$AttachmentImpl) then) =
+      __$$AttachmentImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String fileName,
-    String fileUrl,
-    String fileType,
-    int fileSize,
-  });
+  $Res call(
+      {String id,
+      String fileName,
+      String fileUrl,
+      String fileType,
+      int fileSize});
 }
 
 /// @nodoc
@@ -125,9 +117,8 @@ class __$$AttachmentImplCopyWithImpl<$Res>
     extends _$AttachmentCopyWithImpl<$Res, _$AttachmentImpl>
     implements _$$AttachmentImplCopyWith<$Res> {
   __$$AttachmentImplCopyWithImpl(
-    _$AttachmentImpl _value,
-    $Res Function(_$AttachmentImpl) _then,
-  ) : super(_value, _then);
+      _$AttachmentImpl _value, $Res Function(_$AttachmentImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of Attachment
   /// with the given fields replaced by the non-null parameter values.
@@ -140,43 +131,40 @@ class __$$AttachmentImplCopyWithImpl<$Res>
     Object? fileType = null,
     Object? fileSize = null,
   }) {
-    return _then(
-      _$AttachmentImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        fileName: null == fileName
-            ? _value.fileName
-            : fileName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        fileUrl: null == fileUrl
-            ? _value.fileUrl
-            : fileUrl // ignore: cast_nullable_to_non_nullable
-                  as String,
-        fileType: null == fileType
-            ? _value.fileType
-            : fileType // ignore: cast_nullable_to_non_nullable
-                  as String,
-        fileSize: null == fileSize
-            ? _value.fileSize
-            : fileSize // ignore: cast_nullable_to_non_nullable
-                  as int,
-      ),
-    );
+    return _then(_$AttachmentImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileName: null == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileUrl: null == fileUrl
+          ? _value.fileUrl
+          : fileUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileType: null == fileType
+          ? _value.fileType
+          : fileType // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileSize: null == fileSize
+          ? _value.fileSize
+          : fileSize // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$AttachmentImpl with DiagnosticableTreeMixin implements _Attachment {
-  const _$AttachmentImpl({
-    required this.id,
-    required this.fileName,
-    required this.fileUrl,
-    required this.fileType,
-    required this.fileSize,
-  });
+  const _$AttachmentImpl(
+      {required this.id,
+      required this.fileName,
+      required this.fileUrl,
+      required this.fileType,
+      required this.fileSize});
 
   factory _$AttachmentImpl.fromJson(Map<String, dynamic> json) =>
       _$$AttachmentImplFromJson(json);
@@ -239,18 +227,19 @@ class _$AttachmentImpl with DiagnosticableTreeMixin implements _Attachment {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AttachmentImplToJson(this);
+    return _$$AttachmentImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _Attachment implements Attachment {
-  const factory _Attachment({
-    required final String id,
-    required final String fileName,
-    required final String fileUrl,
-    required final String fileType,
-    required final int fileSize,
-  }) = _$AttachmentImpl;
+  const factory _Attachment(
+      {required final String id,
+      required final String fileName,
+      required final String fileUrl,
+      required final String fileType,
+      required final int fileSize}) = _$AttachmentImpl;
 
   factory _Attachment.fromJson(Map<String, dynamic> json) =
       _$AttachmentImpl.fromJson;
@@ -321,23 +310,20 @@ class _$ReactionCopyWithImpl<$Res, $Val extends Reaction>
     Object? emoji = null,
     Object? createdAt = null,
   }) {
-    return _then(
-      _value.copyWith(
-            userId: null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            emoji: null == emoji
-                ? _value.emoji
-                : emoji // ignore: cast_nullable_to_non_nullable
-                      as String,
-            createdAt: null == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      emoji: null == emoji
+          ? _value.emoji
+          : emoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ) as $Val);
   }
 }
 
@@ -345,9 +331,8 @@ class _$ReactionCopyWithImpl<$Res, $Val extends Reaction>
 abstract class _$$ReactionImplCopyWith<$Res>
     implements $ReactionCopyWith<$Res> {
   factory _$$ReactionImplCopyWith(
-    _$ReactionImpl value,
-    $Res Function(_$ReactionImpl) then,
-  ) = __$$ReactionImplCopyWithImpl<$Res>;
+          _$ReactionImpl value, $Res Function(_$ReactionImpl) then) =
+      __$$ReactionImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String userId, String emoji, DateTime createdAt});
@@ -358,9 +343,8 @@ class __$$ReactionImplCopyWithImpl<$Res>
     extends _$ReactionCopyWithImpl<$Res, _$ReactionImpl>
     implements _$$ReactionImplCopyWith<$Res> {
   __$$ReactionImplCopyWithImpl(
-    _$ReactionImpl _value,
-    $Res Function(_$ReactionImpl) _then,
-  ) : super(_value, _then);
+      _$ReactionImpl _value, $Res Function(_$ReactionImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of Reaction
   /// with the given fields replaced by the non-null parameter values.
@@ -371,33 +355,28 @@ class __$$ReactionImplCopyWithImpl<$Res>
     Object? emoji = null,
     Object? createdAt = null,
   }) {
-    return _then(
-      _$ReactionImpl(
-        userId: null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        emoji: null == emoji
-            ? _value.emoji
-            : emoji // ignore: cast_nullable_to_non_nullable
-                  as String,
-        createdAt: null == createdAt
-            ? _value.createdAt
-            : createdAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-      ),
-    );
+    return _then(_$ReactionImpl(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      emoji: null == emoji
+          ? _value.emoji
+          : emoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ReactionImpl with DiagnosticableTreeMixin implements _Reaction {
-  const _$ReactionImpl({
-    required this.userId,
-    required this.emoji,
-    required this.createdAt,
-  });
+  const _$ReactionImpl(
+      {required this.userId, required this.emoji, required this.createdAt});
 
   factory _$ReactionImpl.fromJson(Map<String, dynamic> json) =>
       _$$ReactionImplFromJson(json);
@@ -449,16 +428,17 @@ class _$ReactionImpl with DiagnosticableTreeMixin implements _Reaction {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ReactionImplToJson(this);
+    return _$$ReactionImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _Reaction implements Reaction {
-  const factory _Reaction({
-    required final String userId,
-    required final String emoji,
-    required final DateTime createdAt,
-  }) = _$ReactionImpl;
+  const factory _Reaction(
+      {required final String userId,
+      required final String emoji,
+      required final DateTime createdAt}) = _$ReactionImpl;
 
   factory _Reaction.fromJson(Map<String, dynamic> json) =
       _$ReactionImpl.fromJson;
@@ -503,17 +483,15 @@ mixin _$VoiceMessage {
 /// @nodoc
 abstract class $VoiceMessageCopyWith<$Res> {
   factory $VoiceMessageCopyWith(
-    VoiceMessage value,
-    $Res Function(VoiceMessage) then,
-  ) = _$VoiceMessageCopyWithImpl<$Res, VoiceMessage>;
+          VoiceMessage value, $Res Function(VoiceMessage) then) =
+      _$VoiceMessageCopyWithImpl<$Res, VoiceMessage>;
   @useResult
-  $Res call({
-    String audioUrl,
-    Duration duration,
-    bool isPlaying,
-    double progress,
-    String? waveformData,
-  });
+  $Res call(
+      {String audioUrl,
+      Duration duration,
+      bool isPlaying,
+      double progress,
+      String? waveformData});
 }
 
 /// @nodoc
@@ -537,31 +515,28 @@ class _$VoiceMessageCopyWithImpl<$Res, $Val extends VoiceMessage>
     Object? progress = null,
     Object? waveformData = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            audioUrl: null == audioUrl
-                ? _value.audioUrl
-                : audioUrl // ignore: cast_nullable_to_non_nullable
-                      as String,
-            duration: null == duration
-                ? _value.duration
-                : duration // ignore: cast_nullable_to_non_nullable
-                      as Duration,
-            isPlaying: null == isPlaying
-                ? _value.isPlaying
-                : isPlaying // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            progress: null == progress
-                ? _value.progress
-                : progress // ignore: cast_nullable_to_non_nullable
-                      as double,
-            waveformData: freezed == waveformData
-                ? _value.waveformData
-                : waveformData // ignore: cast_nullable_to_non_nullable
-                      as String?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      audioUrl: null == audioUrl
+          ? _value.audioUrl
+          : audioUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      duration: null == duration
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      isPlaying: null == isPlaying
+          ? _value.isPlaying
+          : isPlaying // ignore: cast_nullable_to_non_nullable
+              as bool,
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as double,
+      waveformData: freezed == waveformData
+          ? _value.waveformData
+          : waveformData // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
   }
 }
 
@@ -569,18 +544,16 @@ class _$VoiceMessageCopyWithImpl<$Res, $Val extends VoiceMessage>
 abstract class _$$VoiceMessageImplCopyWith<$Res>
     implements $VoiceMessageCopyWith<$Res> {
   factory _$$VoiceMessageImplCopyWith(
-    _$VoiceMessageImpl value,
-    $Res Function(_$VoiceMessageImpl) then,
-  ) = __$$VoiceMessageImplCopyWithImpl<$Res>;
+          _$VoiceMessageImpl value, $Res Function(_$VoiceMessageImpl) then) =
+      __$$VoiceMessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String audioUrl,
-    Duration duration,
-    bool isPlaying,
-    double progress,
-    String? waveformData,
-  });
+  $Res call(
+      {String audioUrl,
+      Duration duration,
+      bool isPlaying,
+      double progress,
+      String? waveformData});
 }
 
 /// @nodoc
@@ -588,9 +561,8 @@ class __$$VoiceMessageImplCopyWithImpl<$Res>
     extends _$VoiceMessageCopyWithImpl<$Res, _$VoiceMessageImpl>
     implements _$$VoiceMessageImplCopyWith<$Res> {
   __$$VoiceMessageImplCopyWithImpl(
-    _$VoiceMessageImpl _value,
-    $Res Function(_$VoiceMessageImpl) _then,
-  ) : super(_value, _then);
+      _$VoiceMessageImpl _value, $Res Function(_$VoiceMessageImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of VoiceMessage
   /// with the given fields replaced by the non-null parameter values.
@@ -603,43 +575,40 @@ class __$$VoiceMessageImplCopyWithImpl<$Res>
     Object? progress = null,
     Object? waveformData = freezed,
   }) {
-    return _then(
-      _$VoiceMessageImpl(
-        audioUrl: null == audioUrl
-            ? _value.audioUrl
-            : audioUrl // ignore: cast_nullable_to_non_nullable
-                  as String,
-        duration: null == duration
-            ? _value.duration
-            : duration // ignore: cast_nullable_to_non_nullable
-                  as Duration,
-        isPlaying: null == isPlaying
-            ? _value.isPlaying
-            : isPlaying // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        progress: null == progress
-            ? _value.progress
-            : progress // ignore: cast_nullable_to_non_nullable
-                  as double,
-        waveformData: freezed == waveformData
-            ? _value.waveformData
-            : waveformData // ignore: cast_nullable_to_non_nullable
-                  as String?,
-      ),
-    );
+    return _then(_$VoiceMessageImpl(
+      audioUrl: null == audioUrl
+          ? _value.audioUrl
+          : audioUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      duration: null == duration
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      isPlaying: null == isPlaying
+          ? _value.isPlaying
+          : isPlaying // ignore: cast_nullable_to_non_nullable
+              as bool,
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as double,
+      waveformData: freezed == waveformData
+          ? _value.waveformData
+          : waveformData // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$VoiceMessageImpl with DiagnosticableTreeMixin implements _VoiceMessage {
-  const _$VoiceMessageImpl({
-    required this.audioUrl,
-    required this.duration,
-    this.isPlaying = false,
-    this.progress = 0.0,
-    this.waveformData,
-  });
+  const _$VoiceMessageImpl(
+      {required this.audioUrl,
+      required this.duration,
+      this.isPlaying = false,
+      this.progress = 0.0,
+      this.waveformData});
 
   factory _$VoiceMessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$VoiceMessageImplFromJson(json);
@@ -694,13 +663,7 @@ class _$VoiceMessageImpl with DiagnosticableTreeMixin implements _VoiceMessage {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    audioUrl,
-    duration,
-    isPlaying,
-    progress,
-    waveformData,
-  );
+      runtimeType, audioUrl, duration, isPlaying, progress, waveformData);
 
   /// Create a copy of VoiceMessage
   /// with the given fields replaced by the non-null parameter values.
@@ -712,18 +675,19 @@ class _$VoiceMessageImpl with DiagnosticableTreeMixin implements _VoiceMessage {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$VoiceMessageImplToJson(this);
+    return _$$VoiceMessageImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _VoiceMessage implements VoiceMessage {
-  const factory _VoiceMessage({
-    required final String audioUrl,
-    required final Duration duration,
-    final bool isPlaying,
-    final double progress,
-    final String? waveformData,
-  }) = _$VoiceMessageImpl;
+  const factory _VoiceMessage(
+      {required final String audioUrl,
+      required final Duration duration,
+      final bool isPlaying,
+      final double progress,
+      final String? waveformData}) = _$VoiceMessageImpl;
 
   factory _VoiceMessage.fromJson(Map<String, dynamic> json) =
       _$VoiceMessageImpl.fromJson;
@@ -772,17 +736,15 @@ mixin _$ImageMessage {
 /// @nodoc
 abstract class $ImageMessageCopyWith<$Res> {
   factory $ImageMessageCopyWith(
-    ImageMessage value,
-    $Res Function(ImageMessage) then,
-  ) = _$ImageMessageCopyWithImpl<$Res, ImageMessage>;
+          ImageMessage value, $Res Function(ImageMessage) then) =
+      _$ImageMessageCopyWithImpl<$Res, ImageMessage>;
   @useResult
-  $Res call({
-    String imageUrl,
-    String? thumbnailUrl,
-    String? caption,
-    double? width,
-    double? height,
-  });
+  $Res call(
+      {String imageUrl,
+      String? thumbnailUrl,
+      String? caption,
+      double? width,
+      double? height});
 }
 
 /// @nodoc
@@ -806,31 +768,28 @@ class _$ImageMessageCopyWithImpl<$Res, $Val extends ImageMessage>
     Object? width = freezed,
     Object? height = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            imageUrl: null == imageUrl
-                ? _value.imageUrl
-                : imageUrl // ignore: cast_nullable_to_non_nullable
-                      as String,
-            thumbnailUrl: freezed == thumbnailUrl
-                ? _value.thumbnailUrl
-                : thumbnailUrl // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            caption: freezed == caption
-                ? _value.caption
-                : caption // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            width: freezed == width
-                ? _value.width
-                : width // ignore: cast_nullable_to_non_nullable
-                      as double?,
-            height: freezed == height
-                ? _value.height
-                : height // ignore: cast_nullable_to_non_nullable
-                      as double?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      thumbnailUrl: freezed == thumbnailUrl
+          ? _value.thumbnailUrl
+          : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      caption: freezed == caption
+          ? _value.caption
+          : caption // ignore: cast_nullable_to_non_nullable
+              as String?,
+      width: freezed == width
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as double?,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ) as $Val);
   }
 }
 
@@ -838,18 +797,16 @@ class _$ImageMessageCopyWithImpl<$Res, $Val extends ImageMessage>
 abstract class _$$ImageMessageImplCopyWith<$Res>
     implements $ImageMessageCopyWith<$Res> {
   factory _$$ImageMessageImplCopyWith(
-    _$ImageMessageImpl value,
-    $Res Function(_$ImageMessageImpl) then,
-  ) = __$$ImageMessageImplCopyWithImpl<$Res>;
+          _$ImageMessageImpl value, $Res Function(_$ImageMessageImpl) then) =
+      __$$ImageMessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String imageUrl,
-    String? thumbnailUrl,
-    String? caption,
-    double? width,
-    double? height,
-  });
+  $Res call(
+      {String imageUrl,
+      String? thumbnailUrl,
+      String? caption,
+      double? width,
+      double? height});
 }
 
 /// @nodoc
@@ -857,9 +814,8 @@ class __$$ImageMessageImplCopyWithImpl<$Res>
     extends _$ImageMessageCopyWithImpl<$Res, _$ImageMessageImpl>
     implements _$$ImageMessageImplCopyWith<$Res> {
   __$$ImageMessageImplCopyWithImpl(
-    _$ImageMessageImpl _value,
-    $Res Function(_$ImageMessageImpl) _then,
-  ) : super(_value, _then);
+      _$ImageMessageImpl _value, $Res Function(_$ImageMessageImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ImageMessage
   /// with the given fields replaced by the non-null parameter values.
@@ -872,43 +828,40 @@ class __$$ImageMessageImplCopyWithImpl<$Res>
     Object? width = freezed,
     Object? height = freezed,
   }) {
-    return _then(
-      _$ImageMessageImpl(
-        imageUrl: null == imageUrl
-            ? _value.imageUrl
-            : imageUrl // ignore: cast_nullable_to_non_nullable
-                  as String,
-        thumbnailUrl: freezed == thumbnailUrl
-            ? _value.thumbnailUrl
-            : thumbnailUrl // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        caption: freezed == caption
-            ? _value.caption
-            : caption // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        width: freezed == width
-            ? _value.width
-            : width // ignore: cast_nullable_to_non_nullable
-                  as double?,
-        height: freezed == height
-            ? _value.height
-            : height // ignore: cast_nullable_to_non_nullable
-                  as double?,
-      ),
-    );
+    return _then(_$ImageMessageImpl(
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      thumbnailUrl: freezed == thumbnailUrl
+          ? _value.thumbnailUrl
+          : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      caption: freezed == caption
+          ? _value.caption
+          : caption // ignore: cast_nullable_to_non_nullable
+              as String?,
+      width: freezed == width
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as double?,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ImageMessageImpl with DiagnosticableTreeMixin implements _ImageMessage {
-  const _$ImageMessageImpl({
-    required this.imageUrl,
-    this.thumbnailUrl,
-    this.caption,
-    this.width,
-    this.height,
-  });
+  const _$ImageMessageImpl(
+      {required this.imageUrl,
+      this.thumbnailUrl,
+      this.caption,
+      this.width,
+      this.height});
 
   factory _$ImageMessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$ImageMessageImplFromJson(json);
@@ -970,18 +923,19 @@ class _$ImageMessageImpl with DiagnosticableTreeMixin implements _ImageMessage {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ImageMessageImplToJson(this);
+    return _$$ImageMessageImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _ImageMessage implements ImageMessage {
-  const factory _ImageMessage({
-    required final String imageUrl,
-    final String? thumbnailUrl,
-    final String? caption,
-    final double? width,
-    final double? height,
-  }) = _$ImageMessageImpl;
+  const factory _ImageMessage(
+      {required final String imageUrl,
+      final String? thumbnailUrl,
+      final String? caption,
+      final double? width,
+      final double? height}) = _$ImageMessageImpl;
 
   factory _ImageMessage.fromJson(Map<String, dynamic> json) =
       _$ImageMessageImpl.fromJson;
@@ -1006,8 +960,7 @@ abstract class _ImageMessage implements ImageMessage {
 }
 
 ConnectionStoneMessage _$ConnectionStoneMessageFromJson(
-  Map<String, dynamic> json,
-) {
+    Map<String, dynamic> json) {
   return _ConnectionStoneMessage.fromJson(json);
 }
 
@@ -1030,24 +983,17 @@ mixin _$ConnectionStoneMessage {
 
 /// @nodoc
 abstract class $ConnectionStoneMessageCopyWith<$Res> {
-  factory $ConnectionStoneMessageCopyWith(
-    ConnectionStoneMessage value,
-    $Res Function(ConnectionStoneMessage) then,
-  ) = _$ConnectionStoneMessageCopyWithImpl<$Res, ConnectionStoneMessage>;
+  factory $ConnectionStoneMessageCopyWith(ConnectionStoneMessage value,
+          $Res Function(ConnectionStoneMessage) then) =
+      _$ConnectionStoneMessageCopyWithImpl<$Res, ConnectionStoneMessage>;
   @useResult
-  $Res call({
-    String stoneType,
-    String emotion,
-    String message,
-    DateTime? timestamp,
-  });
+  $Res call(
+      {String stoneType, String emotion, String message, DateTime? timestamp});
 }
 
 /// @nodoc
-class _$ConnectionStoneMessageCopyWithImpl<
-  $Res,
-  $Val extends ConnectionStoneMessage
->
+class _$ConnectionStoneMessageCopyWithImpl<$Res,
+        $Val extends ConnectionStoneMessage>
     implements $ConnectionStoneMessageCopyWith<$Res> {
   _$ConnectionStoneMessageCopyWithImpl(this._value, this._then);
 
@@ -1066,27 +1012,24 @@ class _$ConnectionStoneMessageCopyWithImpl<
     Object? message = null,
     Object? timestamp = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            stoneType: null == stoneType
-                ? _value.stoneType
-                : stoneType // ignore: cast_nullable_to_non_nullable
-                      as String,
-            emotion: null == emotion
-                ? _value.emotion
-                : emotion // ignore: cast_nullable_to_non_nullable
-                      as String,
-            message: null == message
-                ? _value.message
-                : message // ignore: cast_nullable_to_non_nullable
-                      as String,
-            timestamp: freezed == timestamp
-                ? _value.timestamp
-                : timestamp // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      stoneType: null == stoneType
+          ? _value.stoneType
+          : stoneType // ignore: cast_nullable_to_non_nullable
+              as String,
+      emotion: null == emotion
+          ? _value.emotion
+          : emotion // ignore: cast_nullable_to_non_nullable
+              as String,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      timestamp: freezed == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
   }
 }
 
@@ -1094,28 +1037,24 @@ class _$ConnectionStoneMessageCopyWithImpl<
 abstract class _$$ConnectionStoneMessageImplCopyWith<$Res>
     implements $ConnectionStoneMessageCopyWith<$Res> {
   factory _$$ConnectionStoneMessageImplCopyWith(
-    _$ConnectionStoneMessageImpl value,
-    $Res Function(_$ConnectionStoneMessageImpl) then,
-  ) = __$$ConnectionStoneMessageImplCopyWithImpl<$Res>;
+          _$ConnectionStoneMessageImpl value,
+          $Res Function(_$ConnectionStoneMessageImpl) then) =
+      __$$ConnectionStoneMessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String stoneType,
-    String emotion,
-    String message,
-    DateTime? timestamp,
-  });
+  $Res call(
+      {String stoneType, String emotion, String message, DateTime? timestamp});
 }
 
 /// @nodoc
 class __$$ConnectionStoneMessageImplCopyWithImpl<$Res>
-    extends
-        _$ConnectionStoneMessageCopyWithImpl<$Res, _$ConnectionStoneMessageImpl>
+    extends _$ConnectionStoneMessageCopyWithImpl<$Res,
+        _$ConnectionStoneMessageImpl>
     implements _$$ConnectionStoneMessageImplCopyWith<$Res> {
   __$$ConnectionStoneMessageImplCopyWithImpl(
-    _$ConnectionStoneMessageImpl _value,
-    $Res Function(_$ConnectionStoneMessageImpl) _then,
-  ) : super(_value, _then);
+      _$ConnectionStoneMessageImpl _value,
+      $Res Function(_$ConnectionStoneMessageImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ConnectionStoneMessage
   /// with the given fields replaced by the non-null parameter values.
@@ -1127,26 +1066,24 @@ class __$$ConnectionStoneMessageImplCopyWithImpl<$Res>
     Object? message = null,
     Object? timestamp = freezed,
   }) {
-    return _then(
-      _$ConnectionStoneMessageImpl(
-        stoneType: null == stoneType
-            ? _value.stoneType
-            : stoneType // ignore: cast_nullable_to_non_nullable
-                  as String,
-        emotion: null == emotion
-            ? _value.emotion
-            : emotion // ignore: cast_nullable_to_non_nullable
-                  as String,
-        message: null == message
-            ? _value.message
-            : message // ignore: cast_nullable_to_non_nullable
-                  as String,
-        timestamp: freezed == timestamp
-            ? _value.timestamp
-            : timestamp // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-      ),
-    );
+    return _then(_$ConnectionStoneMessageImpl(
+      stoneType: null == stoneType
+          ? _value.stoneType
+          : stoneType // ignore: cast_nullable_to_non_nullable
+              as String,
+      emotion: null == emotion
+          ? _value.emotion
+          : emotion // ignore: cast_nullable_to_non_nullable
+              as String,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      timestamp: freezed == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
   }
 }
 
@@ -1155,12 +1092,11 @@ class __$$ConnectionStoneMessageImplCopyWithImpl<$Res>
 class _$ConnectionStoneMessageImpl
     with DiagnosticableTreeMixin
     implements _ConnectionStoneMessage {
-  const _$ConnectionStoneMessageImpl({
-    required this.stoneType,
-    required this.emotion,
-    this.message = '',
-    this.timestamp,
-  });
+  const _$ConnectionStoneMessageImpl(
+      {required this.stoneType,
+      required this.emotion,
+      this.message = '',
+      this.timestamp});
 
   factory _$ConnectionStoneMessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConnectionStoneMessageImplFromJson(json);
@@ -1215,25 +1151,23 @@ class _$ConnectionStoneMessageImpl
   @override
   @pragma('vm:prefer-inline')
   _$$ConnectionStoneMessageImplCopyWith<_$ConnectionStoneMessageImpl>
-  get copyWith =>
-      __$$ConnectionStoneMessageImplCopyWithImpl<_$ConnectionStoneMessageImpl>(
-        this,
-        _$identity,
-      );
+      get copyWith => __$$ConnectionStoneMessageImplCopyWithImpl<
+          _$ConnectionStoneMessageImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ConnectionStoneMessageImplToJson(this);
+    return _$$ConnectionStoneMessageImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _ConnectionStoneMessage implements ConnectionStoneMessage {
-  const factory _ConnectionStoneMessage({
-    required final String stoneType,
-    required final String emotion,
-    final String message,
-    final DateTime? timestamp,
-  }) = _$ConnectionStoneMessageImpl;
+  const factory _ConnectionStoneMessage(
+      {required final String stoneType,
+      required final String emotion,
+      final String message,
+      final DateTime? timestamp}) = _$ConnectionStoneMessageImpl;
 
   factory _ConnectionStoneMessage.fromJson(Map<String, dynamic> json) =
       _$ConnectionStoneMessageImpl.fromJson;
@@ -1252,7 +1186,7 @@ abstract class _ConnectionStoneMessage implements ConnectionStoneMessage {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConnectionStoneMessageImplCopyWith<_$ConnectionStoneMessageImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 MessageReaction _$MessageReactionFromJson(Map<String, dynamic> json) {
@@ -1281,18 +1215,16 @@ mixin _$MessageReaction {
 /// @nodoc
 abstract class $MessageReactionCopyWith<$Res> {
   factory $MessageReactionCopyWith(
-    MessageReaction value,
-    $Res Function(MessageReaction) then,
-  ) = _$MessageReactionCopyWithImpl<$Res, MessageReaction>;
+          MessageReaction value, $Res Function(MessageReaction) then) =
+      _$MessageReactionCopyWithImpl<$Res, MessageReaction>;
   @useResult
-  $Res call({
-    String id,
-    String emoji,
-    String userId,
-    String userName,
-    DateTime timestamp,
-    bool isFromMe,
-  });
+  $Res call(
+      {String id,
+      String emoji,
+      String userId,
+      String userName,
+      DateTime timestamp,
+      bool isFromMe});
 }
 
 /// @nodoc
@@ -1317,55 +1249,50 @@ class _$MessageReactionCopyWithImpl<$Res, $Val extends MessageReaction>
     Object? timestamp = null,
     Object? isFromMe = null,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            emoji: null == emoji
-                ? _value.emoji
-                : emoji // ignore: cast_nullable_to_non_nullable
-                      as String,
-            userId: null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            userName: null == userName
-                ? _value.userName
-                : userName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            timestamp: null == timestamp
-                ? _value.timestamp
-                : timestamp // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            isFromMe: null == isFromMe
-                ? _value.isFromMe
-                : isFromMe // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      emoji: null == emoji
+          ? _value.emoji
+          : emoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      timestamp: null == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isFromMe: null == isFromMe
+          ? _value.isFromMe
+          : isFromMe // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$MessageReactionImplCopyWith<$Res>
     implements $MessageReactionCopyWith<$Res> {
-  factory _$$MessageReactionImplCopyWith(
-    _$MessageReactionImpl value,
-    $Res Function(_$MessageReactionImpl) then,
-  ) = __$$MessageReactionImplCopyWithImpl<$Res>;
+  factory _$$MessageReactionImplCopyWith(_$MessageReactionImpl value,
+          $Res Function(_$MessageReactionImpl) then) =
+      __$$MessageReactionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String emoji,
-    String userId,
-    String userName,
-    DateTime timestamp,
-    bool isFromMe,
-  });
+  $Res call(
+      {String id,
+      String emoji,
+      String userId,
+      String userName,
+      DateTime timestamp,
+      bool isFromMe});
 }
 
 /// @nodoc
@@ -1373,9 +1300,8 @@ class __$$MessageReactionImplCopyWithImpl<$Res>
     extends _$MessageReactionCopyWithImpl<$Res, _$MessageReactionImpl>
     implements _$$MessageReactionImplCopyWith<$Res> {
   __$$MessageReactionImplCopyWithImpl(
-    _$MessageReactionImpl _value,
-    $Res Function(_$MessageReactionImpl) _then,
-  ) : super(_value, _then);
+      _$MessageReactionImpl _value, $Res Function(_$MessageReactionImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of MessageReaction
   /// with the given fields replaced by the non-null parameter values.
@@ -1389,34 +1315,32 @@ class __$$MessageReactionImplCopyWithImpl<$Res>
     Object? timestamp = null,
     Object? isFromMe = null,
   }) {
-    return _then(
-      _$MessageReactionImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        emoji: null == emoji
-            ? _value.emoji
-            : emoji // ignore: cast_nullable_to_non_nullable
-                  as String,
-        userId: null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        userName: null == userName
-            ? _value.userName
-            : userName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        timestamp: null == timestamp
-            ? _value.timestamp
-            : timestamp // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        isFromMe: null == isFromMe
-            ? _value.isFromMe
-            : isFromMe // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$MessageReactionImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      emoji: null == emoji
+          ? _value.emoji
+          : emoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      timestamp: null == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isFromMe: null == isFromMe
+          ? _value.isFromMe
+          : isFromMe // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
@@ -1425,14 +1349,13 @@ class __$$MessageReactionImplCopyWithImpl<$Res>
 class _$MessageReactionImpl
     with DiagnosticableTreeMixin
     implements _MessageReaction {
-  const _$MessageReactionImpl({
-    required this.id,
-    required this.emoji,
-    required this.userId,
-    required this.userName,
-    required this.timestamp,
-    this.isFromMe = false,
-  });
+  const _$MessageReactionImpl(
+      {required this.id,
+      required this.emoji,
+      required this.userId,
+      required this.userName,
+      required this.timestamp,
+      this.isFromMe = false});
 
   factory _$MessageReactionImpl.fromJson(Map<String, dynamic> json) =>
       _$$MessageReactionImplFromJson(json);
@@ -1488,14 +1411,7 @@ class _$MessageReactionImpl
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    emoji,
-    userId,
-    userName,
-    timestamp,
-    isFromMe,
-  );
+      runtimeType, id, emoji, userId, userName, timestamp, isFromMe);
 
   /// Create a copy of MessageReaction
   /// with the given fields replaced by the non-null parameter values.
@@ -1504,25 +1420,24 @@ class _$MessageReactionImpl
   @pragma('vm:prefer-inline')
   _$$MessageReactionImplCopyWith<_$MessageReactionImpl> get copyWith =>
       __$$MessageReactionImplCopyWithImpl<_$MessageReactionImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$MessageReactionImplToJson(this);
+    return _$$MessageReactionImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _MessageReaction implements MessageReaction {
-  const factory _MessageReaction({
-    required final String id,
-    required final String emoji,
-    required final String userId,
-    required final String userName,
-    required final DateTime timestamp,
-    final bool isFromMe,
-  }) = _$MessageReactionImpl;
+  const factory _MessageReaction(
+      {required final String id,
+      required final String emoji,
+      required final String userId,
+      required final String userName,
+      required final DateTime timestamp,
+      final bool isFromMe}) = _$MessageReactionImpl;
 
   factory _MessageReaction.fromJson(Map<String, dynamic> json) =
       _$MessageReactionImpl.fromJson;
@@ -1571,9 +1486,8 @@ mixin _$SelfDestructMessage {
 /// @nodoc
 abstract class $SelfDestructMessageCopyWith<$Res> {
   factory $SelfDestructMessageCopyWith(
-    SelfDestructMessage value,
-    $Res Function(SelfDestructMessage) then,
-  ) = _$SelfDestructMessageCopyWithImpl<$Res, SelfDestructMessage>;
+          SelfDestructMessage value, $Res Function(SelfDestructMessage) then) =
+      _$SelfDestructMessageCopyWithImpl<$Res, SelfDestructMessage>;
   @useResult
   $Res call({Duration countdown, DateTime createdAt, bool isExpired});
 }
@@ -1597,33 +1511,29 @@ class _$SelfDestructMessageCopyWithImpl<$Res, $Val extends SelfDestructMessage>
     Object? createdAt = null,
     Object? isExpired = null,
   }) {
-    return _then(
-      _value.copyWith(
-            countdown: null == countdown
-                ? _value.countdown
-                : countdown // ignore: cast_nullable_to_non_nullable
-                      as Duration,
-            createdAt: null == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            isExpired: null == isExpired
-                ? _value.isExpired
-                : isExpired // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      countdown: null == countdown
+          ? _value.countdown
+          : countdown // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isExpired: null == isExpired
+          ? _value.isExpired
+          : isExpired // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$SelfDestructMessageImplCopyWith<$Res>
     implements $SelfDestructMessageCopyWith<$Res> {
-  factory _$$SelfDestructMessageImplCopyWith(
-    _$SelfDestructMessageImpl value,
-    $Res Function(_$SelfDestructMessageImpl) then,
-  ) = __$$SelfDestructMessageImplCopyWithImpl<$Res>;
+  factory _$$SelfDestructMessageImplCopyWith(_$SelfDestructMessageImpl value,
+          $Res Function(_$SelfDestructMessageImpl) then) =
+      __$$SelfDestructMessageImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({Duration countdown, DateTime createdAt, bool isExpired});
@@ -1633,10 +1543,9 @@ abstract class _$$SelfDestructMessageImplCopyWith<$Res>
 class __$$SelfDestructMessageImplCopyWithImpl<$Res>
     extends _$SelfDestructMessageCopyWithImpl<$Res, _$SelfDestructMessageImpl>
     implements _$$SelfDestructMessageImplCopyWith<$Res> {
-  __$$SelfDestructMessageImplCopyWithImpl(
-    _$SelfDestructMessageImpl _value,
-    $Res Function(_$SelfDestructMessageImpl) _then,
-  ) : super(_value, _then);
+  __$$SelfDestructMessageImplCopyWithImpl(_$SelfDestructMessageImpl _value,
+      $Res Function(_$SelfDestructMessageImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of SelfDestructMessage
   /// with the given fields replaced by the non-null parameter values.
@@ -1647,22 +1556,20 @@ class __$$SelfDestructMessageImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? isExpired = null,
   }) {
-    return _then(
-      _$SelfDestructMessageImpl(
-        countdown: null == countdown
-            ? _value.countdown
-            : countdown // ignore: cast_nullable_to_non_nullable
-                  as Duration,
-        createdAt: null == createdAt
-            ? _value.createdAt
-            : createdAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        isExpired: null == isExpired
-            ? _value.isExpired
-            : isExpired // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$SelfDestructMessageImpl(
+      countdown: null == countdown
+          ? _value.countdown
+          : countdown // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isExpired: null == isExpired
+          ? _value.isExpired
+          : isExpired // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
@@ -1670,11 +1577,11 @@ class __$$SelfDestructMessageImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SelfDestructMessageImpl extends _SelfDestructMessage
     with DiagnosticableTreeMixin {
-  const _$SelfDestructMessageImpl({
-    required this.countdown,
-    required this.createdAt,
-    this.isExpired = false,
-  }) : super._();
+  const _$SelfDestructMessageImpl(
+      {required this.countdown,
+      required this.createdAt,
+      this.isExpired = false})
+      : super._();
 
   factory _$SelfDestructMessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$SelfDestructMessageImplFromJson(json);
@@ -1726,22 +1633,21 @@ class _$SelfDestructMessageImpl extends _SelfDestructMessage
   @pragma('vm:prefer-inline')
   _$$SelfDestructMessageImplCopyWith<_$SelfDestructMessageImpl> get copyWith =>
       __$$SelfDestructMessageImplCopyWithImpl<_$SelfDestructMessageImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SelfDestructMessageImplToJson(this);
+    return _$$SelfDestructMessageImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _SelfDestructMessage extends SelfDestructMessage {
-  const factory _SelfDestructMessage({
-    required final Duration countdown,
-    required final DateTime createdAt,
-    final bool isExpired,
-  }) = _$SelfDestructMessageImpl;
+  const factory _SelfDestructMessage(
+      {required final Duration countdown,
+      required final DateTime createdAt,
+      final bool isExpired}) = _$SelfDestructMessageImpl;
   const _SelfDestructMessage._() : super._();
 
   factory _SelfDestructMessage.fromJson(Map<String, dynamic> json) =
@@ -1796,7 +1702,7 @@ mixin _$ChatMessage {
       throw _privateConstructorUsedError; // Added missing field
   String? get securityLevel =>
       throw _privateConstructorUsedError; // Added missing field
-  // Additional fields for UI state
+// Additional fields for UI state
   MessageStatus get status => throw _privateConstructorUsedError;
   bool get isFromMe => throw _privateConstructorUsedError;
 
@@ -1813,34 +1719,32 @@ mixin _$ChatMessage {
 /// @nodoc
 abstract class $ChatMessageCopyWith<$Res> {
   factory $ChatMessageCopyWith(
-    ChatMessage value,
-    $Res Function(ChatMessage) then,
-  ) = _$ChatMessageCopyWithImpl<$Res, ChatMessage>;
+          ChatMessage value, $Res Function(ChatMessage) then) =
+      _$ChatMessageCopyWithImpl<$Res, ChatMessage>;
   @useResult
-  $Res call({
-    String id,
-    String conversationId,
-    String senderId,
-    String senderUsername,
-    String content,
-    MessageType messageType,
-    DateTime createdAt,
-    DateTime? updatedAt,
-    DateTime? editedAt,
-    bool isEdited,
-    bool isDestroyed,
-    String? replyToMessageId,
-    List<Attachment> attachments,
-    List<Reaction> reactions,
-    List<String> readBy,
-    List<String> deliveredTo,
-    DateTime? selfDestructAt,
-    bool encrypted,
-    String? encryptionType,
-    String? securityLevel,
-    MessageStatus status,
-    bool isFromMe,
-  });
+  $Res call(
+      {String id,
+      String conversationId,
+      String senderId,
+      String senderUsername,
+      String content,
+      MessageType messageType,
+      DateTime createdAt,
+      DateTime? updatedAt,
+      DateTime? editedAt,
+      bool isEdited,
+      bool isDestroyed,
+      String? replyToMessageId,
+      List<Attachment> attachments,
+      List<Reaction> reactions,
+      List<String> readBy,
+      List<String> deliveredTo,
+      DateTime? selfDestructAt,
+      bool encrypted,
+      String? encryptionType,
+      String? securityLevel,
+      MessageStatus status,
+      bool isFromMe});
 }
 
 /// @nodoc
@@ -1881,99 +1785,96 @@ class _$ChatMessageCopyWithImpl<$Res, $Val extends ChatMessage>
     Object? status = null,
     Object? isFromMe = null,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            conversationId: null == conversationId
-                ? _value.conversationId
-                : conversationId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            senderId: null == senderId
-                ? _value.senderId
-                : senderId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            senderUsername: null == senderUsername
-                ? _value.senderUsername
-                : senderUsername // ignore: cast_nullable_to_non_nullable
-                      as String,
-            content: null == content
-                ? _value.content
-                : content // ignore: cast_nullable_to_non_nullable
-                      as String,
-            messageType: null == messageType
-                ? _value.messageType
-                : messageType // ignore: cast_nullable_to_non_nullable
-                      as MessageType,
-            createdAt: null == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            updatedAt: freezed == updatedAt
-                ? _value.updatedAt
-                : updatedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            editedAt: freezed == editedAt
-                ? _value.editedAt
-                : editedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            isEdited: null == isEdited
-                ? _value.isEdited
-                : isEdited // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isDestroyed: null == isDestroyed
-                ? _value.isDestroyed
-                : isDestroyed // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            replyToMessageId: freezed == replyToMessageId
-                ? _value.replyToMessageId
-                : replyToMessageId // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            attachments: null == attachments
-                ? _value.attachments
-                : attachments // ignore: cast_nullable_to_non_nullable
-                      as List<Attachment>,
-            reactions: null == reactions
-                ? _value.reactions
-                : reactions // ignore: cast_nullable_to_non_nullable
-                      as List<Reaction>,
-            readBy: null == readBy
-                ? _value.readBy
-                : readBy // ignore: cast_nullable_to_non_nullable
-                      as List<String>,
-            deliveredTo: null == deliveredTo
-                ? _value.deliveredTo
-                : deliveredTo // ignore: cast_nullable_to_non_nullable
-                      as List<String>,
-            selfDestructAt: freezed == selfDestructAt
-                ? _value.selfDestructAt
-                : selfDestructAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            encrypted: null == encrypted
-                ? _value.encrypted
-                : encrypted // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            encryptionType: freezed == encryptionType
-                ? _value.encryptionType
-                : encryptionType // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            securityLevel: freezed == securityLevel
-                ? _value.securityLevel
-                : securityLevel // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            status: null == status
-                ? _value.status
-                : status // ignore: cast_nullable_to_non_nullable
-                      as MessageStatus,
-            isFromMe: null == isFromMe
-                ? _value.isFromMe
-                : isFromMe // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      conversationId: null == conversationId
+          ? _value.conversationId
+          : conversationId // ignore: cast_nullable_to_non_nullable
+              as String,
+      senderId: null == senderId
+          ? _value.senderId
+          : senderId // ignore: cast_nullable_to_non_nullable
+              as String,
+      senderUsername: null == senderUsername
+          ? _value.senderUsername
+          : senderUsername // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      messageType: null == messageType
+          ? _value.messageType
+          : messageType // ignore: cast_nullable_to_non_nullable
+              as MessageType,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      editedAt: freezed == editedAt
+          ? _value.editedAt
+          : editedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      isEdited: null == isEdited
+          ? _value.isEdited
+          : isEdited // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDestroyed: null == isDestroyed
+          ? _value.isDestroyed
+          : isDestroyed // ignore: cast_nullable_to_non_nullable
+              as bool,
+      replyToMessageId: freezed == replyToMessageId
+          ? _value.replyToMessageId
+          : replyToMessageId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      attachments: null == attachments
+          ? _value.attachments
+          : attachments // ignore: cast_nullable_to_non_nullable
+              as List<Attachment>,
+      reactions: null == reactions
+          ? _value.reactions
+          : reactions // ignore: cast_nullable_to_non_nullable
+              as List<Reaction>,
+      readBy: null == readBy
+          ? _value.readBy
+          : readBy // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      deliveredTo: null == deliveredTo
+          ? _value.deliveredTo
+          : deliveredTo // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      selfDestructAt: freezed == selfDestructAt
+          ? _value.selfDestructAt
+          : selfDestructAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      encrypted: null == encrypted
+          ? _value.encrypted
+          : encrypted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      encryptionType: freezed == encryptionType
+          ? _value.encryptionType
+          : encryptionType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      securityLevel: freezed == securityLevel
+          ? _value.securityLevel
+          : securityLevel // ignore: cast_nullable_to_non_nullable
+              as String?,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as MessageStatus,
+      isFromMe: null == isFromMe
+          ? _value.isFromMe
+          : isFromMe // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 }
 
@@ -1981,35 +1882,33 @@ class _$ChatMessageCopyWithImpl<$Res, $Val extends ChatMessage>
 abstract class _$$ChatMessageImplCopyWith<$Res>
     implements $ChatMessageCopyWith<$Res> {
   factory _$$ChatMessageImplCopyWith(
-    _$ChatMessageImpl value,
-    $Res Function(_$ChatMessageImpl) then,
-  ) = __$$ChatMessageImplCopyWithImpl<$Res>;
+          _$ChatMessageImpl value, $Res Function(_$ChatMessageImpl) then) =
+      __$$ChatMessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String conversationId,
-    String senderId,
-    String senderUsername,
-    String content,
-    MessageType messageType,
-    DateTime createdAt,
-    DateTime? updatedAt,
-    DateTime? editedAt,
-    bool isEdited,
-    bool isDestroyed,
-    String? replyToMessageId,
-    List<Attachment> attachments,
-    List<Reaction> reactions,
-    List<String> readBy,
-    List<String> deliveredTo,
-    DateTime? selfDestructAt,
-    bool encrypted,
-    String? encryptionType,
-    String? securityLevel,
-    MessageStatus status,
-    bool isFromMe,
-  });
+  $Res call(
+      {String id,
+      String conversationId,
+      String senderId,
+      String senderUsername,
+      String content,
+      MessageType messageType,
+      DateTime createdAt,
+      DateTime? updatedAt,
+      DateTime? editedAt,
+      bool isEdited,
+      bool isDestroyed,
+      String? replyToMessageId,
+      List<Attachment> attachments,
+      List<Reaction> reactions,
+      List<String> readBy,
+      List<String> deliveredTo,
+      DateTime? selfDestructAt,
+      bool encrypted,
+      String? encryptionType,
+      String? securityLevel,
+      MessageStatus status,
+      bool isFromMe});
 }
 
 /// @nodoc
@@ -2017,9 +1916,8 @@ class __$$ChatMessageImplCopyWithImpl<$Res>
     extends _$ChatMessageCopyWithImpl<$Res, _$ChatMessageImpl>
     implements _$$ChatMessageImplCopyWith<$Res> {
   __$$ChatMessageImplCopyWithImpl(
-    _$ChatMessageImpl _value,
-    $Res Function(_$ChatMessageImpl) _then,
-  ) : super(_value, _then);
+      _$ChatMessageImpl _value, $Res Function(_$ChatMessageImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ChatMessage
   /// with the given fields replaced by the non-null parameter values.
@@ -2049,145 +1947,143 @@ class __$$ChatMessageImplCopyWithImpl<$Res>
     Object? status = null,
     Object? isFromMe = null,
   }) {
-    return _then(
-      _$ChatMessageImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        conversationId: null == conversationId
-            ? _value.conversationId
-            : conversationId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        senderId: null == senderId
-            ? _value.senderId
-            : senderId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        senderUsername: null == senderUsername
-            ? _value.senderUsername
-            : senderUsername // ignore: cast_nullable_to_non_nullable
-                  as String,
-        content: null == content
-            ? _value.content
-            : content // ignore: cast_nullable_to_non_nullable
-                  as String,
-        messageType: null == messageType
-            ? _value.messageType
-            : messageType // ignore: cast_nullable_to_non_nullable
-                  as MessageType,
-        createdAt: null == createdAt
-            ? _value.createdAt
-            : createdAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        updatedAt: freezed == updatedAt
-            ? _value.updatedAt
-            : updatedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        editedAt: freezed == editedAt
-            ? _value.editedAt
-            : editedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        isEdited: null == isEdited
-            ? _value.isEdited
-            : isEdited // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isDestroyed: null == isDestroyed
-            ? _value.isDestroyed
-            : isDestroyed // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        replyToMessageId: freezed == replyToMessageId
-            ? _value.replyToMessageId
-            : replyToMessageId // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        attachments: null == attachments
-            ? _value._attachments
-            : attachments // ignore: cast_nullable_to_non_nullable
-                  as List<Attachment>,
-        reactions: null == reactions
-            ? _value._reactions
-            : reactions // ignore: cast_nullable_to_non_nullable
-                  as List<Reaction>,
-        readBy: null == readBy
-            ? _value._readBy
-            : readBy // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
-        deliveredTo: null == deliveredTo
-            ? _value._deliveredTo
-            : deliveredTo // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
-        selfDestructAt: freezed == selfDestructAt
-            ? _value.selfDestructAt
-            : selfDestructAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        encrypted: null == encrypted
-            ? _value.encrypted
-            : encrypted // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        encryptionType: freezed == encryptionType
-            ? _value.encryptionType
-            : encryptionType // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        securityLevel: freezed == securityLevel
-            ? _value.securityLevel
-            : securityLevel // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        status: null == status
-            ? _value.status
-            : status // ignore: cast_nullable_to_non_nullable
-                  as MessageStatus,
-        isFromMe: null == isFromMe
-            ? _value.isFromMe
-            : isFromMe // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$ChatMessageImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      conversationId: null == conversationId
+          ? _value.conversationId
+          : conversationId // ignore: cast_nullable_to_non_nullable
+              as String,
+      senderId: null == senderId
+          ? _value.senderId
+          : senderId // ignore: cast_nullable_to_non_nullable
+              as String,
+      senderUsername: null == senderUsername
+          ? _value.senderUsername
+          : senderUsername // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      messageType: null == messageType
+          ? _value.messageType
+          : messageType // ignore: cast_nullable_to_non_nullable
+              as MessageType,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      editedAt: freezed == editedAt
+          ? _value.editedAt
+          : editedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      isEdited: null == isEdited
+          ? _value.isEdited
+          : isEdited // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDestroyed: null == isDestroyed
+          ? _value.isDestroyed
+          : isDestroyed // ignore: cast_nullable_to_non_nullable
+              as bool,
+      replyToMessageId: freezed == replyToMessageId
+          ? _value.replyToMessageId
+          : replyToMessageId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      attachments: null == attachments
+          ? _value._attachments
+          : attachments // ignore: cast_nullable_to_non_nullable
+              as List<Attachment>,
+      reactions: null == reactions
+          ? _value._reactions
+          : reactions // ignore: cast_nullable_to_non_nullable
+              as List<Reaction>,
+      readBy: null == readBy
+          ? _value._readBy
+          : readBy // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      deliveredTo: null == deliveredTo
+          ? _value._deliveredTo
+          : deliveredTo // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      selfDestructAt: freezed == selfDestructAt
+          ? _value.selfDestructAt
+          : selfDestructAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      encrypted: null == encrypted
+          ? _value.encrypted
+          : encrypted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      encryptionType: freezed == encryptionType
+          ? _value.encryptionType
+          : encryptionType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      securityLevel: freezed == securityLevel
+          ? _value.securityLevel
+          : securityLevel // ignore: cast_nullable_to_non_nullable
+              as String?,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as MessageStatus,
+      isFromMe: null == isFromMe
+          ? _value.isFromMe
+          : isFromMe // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
-  const _$ChatMessageImpl({
-    required this.id,
-    required this.conversationId,
-    required this.senderId,
-    required this.senderUsername,
-    required this.content,
-    required this.messageType,
-    required this.createdAt,
-    this.updatedAt,
-    this.editedAt,
-    this.isEdited = false,
-    this.isDestroyed = false,
-    this.replyToMessageId,
-    final List<Attachment> attachments = const [],
-    final List<Reaction> reactions = const [],
-    final List<String> readBy = const [],
-    final List<String> deliveredTo = const [],
-    this.selfDestructAt,
-    this.encrypted = true,
-    this.encryptionType,
-    this.securityLevel,
-    this.status = MessageStatus.sent,
-    this.isFromMe = false,
-  }) : _attachments = attachments,
-       _reactions = reactions,
-       _readBy = readBy,
-       _deliveredTo = deliveredTo,
-       super._();
+  const _$ChatMessageImpl(
+      {required this.id,
+      required this.conversationId,
+      required this.senderId,
+      required this.senderUsername,
+      required this.content,
+      required this.messageType,
+      required this.createdAt,
+      this.updatedAt,
+      this.editedAt,
+      this.isEdited = false,
+      this.isDestroyed = false,
+      this.replyToMessageId,
+      final List<Attachment> attachments = const [],
+      final List<Reaction> reactions = const [],
+      final List<String> readBy = const [],
+      final List<String> deliveredTo = const [],
+      this.selfDestructAt,
+      this.encrypted = true,
+      this.encryptionType,
+      this.securityLevel,
+      this.status = MessageStatus.sent,
+      this.isFromMe = false})
+      : _attachments = attachments,
+        _reactions = reactions,
+        _readBy = readBy,
+        _deliveredTo = deliveredTo,
+        super._();
 
   factory _$ChatMessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$ChatMessageImplFromJson(json);
 
   @override
   final String id;
-  // UUID
+// UUID
   @override
   final String conversationId;
-  // UUID
+// UUID
   @override
   final String senderId;
-  // UUID
+// UUID
   @override
   final String senderUsername;
   @override
@@ -2200,7 +2096,7 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
   final DateTime? updatedAt;
   @override
   final DateTime? editedAt;
-  // Added missing field
+// Added missing field
   @override
   @JsonKey()
   final bool isEdited;
@@ -2209,9 +2105,9 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
   final bool isDestroyed;
   @override
   final String? replyToMessageId;
-  // UUID or null
+// UUID or null
   final List<Attachment> _attachments;
-  // UUID or null
+// UUID or null
   @override
   @JsonKey()
   List<Attachment> get attachments {
@@ -2238,9 +2134,9 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
     return EqualUnmodifiableListView(_readBy);
   }
 
-  // List of user IDs who read the message
+// List of user IDs who read the message
   final List<String> _deliveredTo;
-  // List of user IDs who read the message
+// List of user IDs who read the message
   @override
   @JsonKey()
   List<String> get deliveredTo {
@@ -2249,21 +2145,21 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
     return EqualUnmodifiableListView(_deliveredTo);
   }
 
-  // List of user IDs who received the message
+// List of user IDs who received the message
   @override
   final DateTime? selfDestructAt;
-  // Added missing field
+// Added missing field
   @override
   @JsonKey()
   final bool encrypted;
-  // Added missing field
+// Added missing field
   @override
   final String? encryptionType;
-  // Added missing field
+// Added missing field
   @override
   final String? securityLevel;
-  // Added missing field
-  // Additional fields for UI state
+// Added missing field
+// Additional fields for UI state
   @override
   @JsonKey()
   final MessageStatus status;
@@ -2332,19 +2228,13 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
                 other.isDestroyed == isDestroyed) &&
             (identical(other.replyToMessageId, replyToMessageId) ||
                 other.replyToMessageId == replyToMessageId) &&
-            const DeepCollectionEquality().equals(
-              other._attachments,
-              _attachments,
-            ) &&
-            const DeepCollectionEquality().equals(
-              other._reactions,
-              _reactions,
-            ) &&
+            const DeepCollectionEquality()
+                .equals(other._attachments, _attachments) &&
+            const DeepCollectionEquality()
+                .equals(other._reactions, _reactions) &&
             const DeepCollectionEquality().equals(other._readBy, _readBy) &&
-            const DeepCollectionEquality().equals(
-              other._deliveredTo,
-              _deliveredTo,
-            ) &&
+            const DeepCollectionEquality()
+                .equals(other._deliveredTo, _deliveredTo) &&
             (identical(other.selfDestructAt, selfDestructAt) ||
                 other.selfDestructAt == selfDestructAt) &&
             (identical(other.encrypted, encrypted) ||
@@ -2361,30 +2251,30 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hashAll([
-    runtimeType,
-    id,
-    conversationId,
-    senderId,
-    senderUsername,
-    content,
-    messageType,
-    createdAt,
-    updatedAt,
-    editedAt,
-    isEdited,
-    isDestroyed,
-    replyToMessageId,
-    const DeepCollectionEquality().hash(_attachments),
-    const DeepCollectionEquality().hash(_reactions),
-    const DeepCollectionEquality().hash(_readBy),
-    const DeepCollectionEquality().hash(_deliveredTo),
-    selfDestructAt,
-    encrypted,
-    encryptionType,
-    securityLevel,
-    status,
-    isFromMe,
-  ]);
+        runtimeType,
+        id,
+        conversationId,
+        senderId,
+        senderUsername,
+        content,
+        messageType,
+        createdAt,
+        updatedAt,
+        editedAt,
+        isEdited,
+        isDestroyed,
+        replyToMessageId,
+        const DeepCollectionEquality().hash(_attachments),
+        const DeepCollectionEquality().hash(_reactions),
+        const DeepCollectionEquality().hash(_readBy),
+        const DeepCollectionEquality().hash(_deliveredTo),
+        selfDestructAt,
+        encrypted,
+        encryptionType,
+        securityLevel,
+        status,
+        isFromMe
+      ]);
 
   /// Create a copy of ChatMessage
   /// with the given fields replaced by the non-null parameter values.
@@ -2396,35 +2286,36 @@ class _$ChatMessageImpl extends _ChatMessage with DiagnosticableTreeMixin {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ChatMessageImplToJson(this);
+    return _$$ChatMessageImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _ChatMessage extends ChatMessage {
-  const factory _ChatMessage({
-    required final String id,
-    required final String conversationId,
-    required final String senderId,
-    required final String senderUsername,
-    required final String content,
-    required final MessageType messageType,
-    required final DateTime createdAt,
-    final DateTime? updatedAt,
-    final DateTime? editedAt,
-    final bool isEdited,
-    final bool isDestroyed,
-    final String? replyToMessageId,
-    final List<Attachment> attachments,
-    final List<Reaction> reactions,
-    final List<String> readBy,
-    final List<String> deliveredTo,
-    final DateTime? selfDestructAt,
-    final bool encrypted,
-    final String? encryptionType,
-    final String? securityLevel,
-    final MessageStatus status,
-    final bool isFromMe,
-  }) = _$ChatMessageImpl;
+  const factory _ChatMessage(
+      {required final String id,
+      required final String conversationId,
+      required final String senderId,
+      required final String senderUsername,
+      required final String content,
+      required final MessageType messageType,
+      required final DateTime createdAt,
+      final DateTime? updatedAt,
+      final DateTime? editedAt,
+      final bool isEdited,
+      final bool isDestroyed,
+      final String? replyToMessageId,
+      final List<Attachment> attachments,
+      final List<Reaction> reactions,
+      final List<String> readBy,
+      final List<String> deliveredTo,
+      final DateTime? selfDestructAt,
+      final bool encrypted,
+      final String? encryptionType,
+      final String? securityLevel,
+      final MessageStatus status,
+      final bool isFromMe}) = _$ChatMessageImpl;
   const _ChatMessage._() : super._();
 
   factory _ChatMessage.fromJson(Map<String, dynamic> json) =
@@ -2470,7 +2361,7 @@ abstract class _ChatMessage extends ChatMessage {
   String? get encryptionType; // Added missing field
   @override
   String? get securityLevel; // Added missing field
-  // Additional fields for UI state
+// Additional fields for UI state
   @override
   MessageStatus get status;
   @override
@@ -2511,19 +2402,17 @@ mixin _$MessageDraft {
 /// @nodoc
 abstract class $MessageDraftCopyWith<$Res> {
   factory $MessageDraftCopyWith(
-    MessageDraft value,
-    $Res Function(MessageDraft) then,
-  ) = _$MessageDraftCopyWithImpl<$Res, MessageDraft>;
+          MessageDraft value, $Res Function(MessageDraft) then) =
+      _$MessageDraftCopyWithImpl<$Res, MessageDraft>;
   @useResult
-  $Res call({
-    String content,
-    MessageType type,
-    String? replyToMessageId,
-    VoiceMessage? voiceMessage,
-    ImageMessage? imageMessage,
-    bool isSelfDestruct,
-    Duration? selfDestructDuration,
-  });
+  $Res call(
+      {String content,
+      MessageType type,
+      String? replyToMessageId,
+      VoiceMessage? voiceMessage,
+      ImageMessage? imageMessage,
+      bool isSelfDestruct,
+      Duration? selfDestructDuration});
 
   $VoiceMessageCopyWith<$Res>? get voiceMessage;
   $ImageMessageCopyWith<$Res>? get imageMessage;
@@ -2552,39 +2441,36 @@ class _$MessageDraftCopyWithImpl<$Res, $Val extends MessageDraft>
     Object? isSelfDestruct = null,
     Object? selfDestructDuration = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            content: null == content
-                ? _value.content
-                : content // ignore: cast_nullable_to_non_nullable
-                      as String,
-            type: null == type
-                ? _value.type
-                : type // ignore: cast_nullable_to_non_nullable
-                      as MessageType,
-            replyToMessageId: freezed == replyToMessageId
-                ? _value.replyToMessageId
-                : replyToMessageId // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            voiceMessage: freezed == voiceMessage
-                ? _value.voiceMessage
-                : voiceMessage // ignore: cast_nullable_to_non_nullable
-                      as VoiceMessage?,
-            imageMessage: freezed == imageMessage
-                ? _value.imageMessage
-                : imageMessage // ignore: cast_nullable_to_non_nullable
-                      as ImageMessage?,
-            isSelfDestruct: null == isSelfDestruct
-                ? _value.isSelfDestruct
-                : isSelfDestruct // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            selfDestructDuration: freezed == selfDestructDuration
-                ? _value.selfDestructDuration
-                : selfDestructDuration // ignore: cast_nullable_to_non_nullable
-                      as Duration?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as MessageType,
+      replyToMessageId: freezed == replyToMessageId
+          ? _value.replyToMessageId
+          : replyToMessageId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      voiceMessage: freezed == voiceMessage
+          ? _value.voiceMessage
+          : voiceMessage // ignore: cast_nullable_to_non_nullable
+              as VoiceMessage?,
+      imageMessage: freezed == imageMessage
+          ? _value.imageMessage
+          : imageMessage // ignore: cast_nullable_to_non_nullable
+              as ImageMessage?,
+      isSelfDestruct: null == isSelfDestruct
+          ? _value.isSelfDestruct
+          : isSelfDestruct // ignore: cast_nullable_to_non_nullable
+              as bool,
+      selfDestructDuration: freezed == selfDestructDuration
+          ? _value.selfDestructDuration
+          : selfDestructDuration // ignore: cast_nullable_to_non_nullable
+              as Duration?,
+    ) as $Val);
   }
 
   /// Create a copy of MessageDraft
@@ -2620,20 +2506,18 @@ class _$MessageDraftCopyWithImpl<$Res, $Val extends MessageDraft>
 abstract class _$$MessageDraftImplCopyWith<$Res>
     implements $MessageDraftCopyWith<$Res> {
   factory _$$MessageDraftImplCopyWith(
-    _$MessageDraftImpl value,
-    $Res Function(_$MessageDraftImpl) then,
-  ) = __$$MessageDraftImplCopyWithImpl<$Res>;
+          _$MessageDraftImpl value, $Res Function(_$MessageDraftImpl) then) =
+      __$$MessageDraftImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String content,
-    MessageType type,
-    String? replyToMessageId,
-    VoiceMessage? voiceMessage,
-    ImageMessage? imageMessage,
-    bool isSelfDestruct,
-    Duration? selfDestructDuration,
-  });
+  $Res call(
+      {String content,
+      MessageType type,
+      String? replyToMessageId,
+      VoiceMessage? voiceMessage,
+      ImageMessage? imageMessage,
+      bool isSelfDestruct,
+      Duration? selfDestructDuration});
 
   @override
   $VoiceMessageCopyWith<$Res>? get voiceMessage;
@@ -2646,9 +2530,8 @@ class __$$MessageDraftImplCopyWithImpl<$Res>
     extends _$MessageDraftCopyWithImpl<$Res, _$MessageDraftImpl>
     implements _$$MessageDraftImplCopyWith<$Res> {
   __$$MessageDraftImplCopyWithImpl(
-    _$MessageDraftImpl _value,
-    $Res Function(_$MessageDraftImpl) _then,
-  ) : super(_value, _then);
+      _$MessageDraftImpl _value, $Res Function(_$MessageDraftImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of MessageDraft
   /// with the given fields replaced by the non-null parameter values.
@@ -2663,53 +2546,51 @@ class __$$MessageDraftImplCopyWithImpl<$Res>
     Object? isSelfDestruct = null,
     Object? selfDestructDuration = freezed,
   }) {
-    return _then(
-      _$MessageDraftImpl(
-        content: null == content
-            ? _value.content
-            : content // ignore: cast_nullable_to_non_nullable
-                  as String,
-        type: null == type
-            ? _value.type
-            : type // ignore: cast_nullable_to_non_nullable
-                  as MessageType,
-        replyToMessageId: freezed == replyToMessageId
-            ? _value.replyToMessageId
-            : replyToMessageId // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        voiceMessage: freezed == voiceMessage
-            ? _value.voiceMessage
-            : voiceMessage // ignore: cast_nullable_to_non_nullable
-                  as VoiceMessage?,
-        imageMessage: freezed == imageMessage
-            ? _value.imageMessage
-            : imageMessage // ignore: cast_nullable_to_non_nullable
-                  as ImageMessage?,
-        isSelfDestruct: null == isSelfDestruct
-            ? _value.isSelfDestruct
-            : isSelfDestruct // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        selfDestructDuration: freezed == selfDestructDuration
-            ? _value.selfDestructDuration
-            : selfDestructDuration // ignore: cast_nullable_to_non_nullable
-                  as Duration?,
-      ),
-    );
+    return _then(_$MessageDraftImpl(
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as MessageType,
+      replyToMessageId: freezed == replyToMessageId
+          ? _value.replyToMessageId
+          : replyToMessageId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      voiceMessage: freezed == voiceMessage
+          ? _value.voiceMessage
+          : voiceMessage // ignore: cast_nullable_to_non_nullable
+              as VoiceMessage?,
+      imageMessage: freezed == imageMessage
+          ? _value.imageMessage
+          : imageMessage // ignore: cast_nullable_to_non_nullable
+              as ImageMessage?,
+      isSelfDestruct: null == isSelfDestruct
+          ? _value.isSelfDestruct
+          : isSelfDestruct // ignore: cast_nullable_to_non_nullable
+              as bool,
+      selfDestructDuration: freezed == selfDestructDuration
+          ? _value.selfDestructDuration
+          : selfDestructDuration // ignore: cast_nullable_to_non_nullable
+              as Duration?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$MessageDraftImpl extends _MessageDraft with DiagnosticableTreeMixin {
-  const _$MessageDraftImpl({
-    this.content = '',
-    this.type = MessageType.text,
-    this.replyToMessageId,
-    this.voiceMessage,
-    this.imageMessage,
-    this.isSelfDestruct = false,
-    this.selfDestructDuration,
-  }) : super._();
+  const _$MessageDraftImpl(
+      {this.content = '',
+      this.type = MessageType.text,
+      this.replyToMessageId,
+      this.voiceMessage,
+      this.imageMessage,
+      this.isSelfDestruct = false,
+      this.selfDestructDuration})
+      : super._();
 
   factory _$MessageDraftImpl.fromJson(Map<String, dynamic> json) =>
       _$$MessageDraftImplFromJson(json);
@@ -2772,16 +2653,8 @@ class _$MessageDraftImpl extends _MessageDraft with DiagnosticableTreeMixin {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    content,
-    type,
-    replyToMessageId,
-    voiceMessage,
-    imageMessage,
-    isSelfDestruct,
-    selfDestructDuration,
-  );
+  int get hashCode => Object.hash(runtimeType, content, type, replyToMessageId,
+      voiceMessage, imageMessage, isSelfDestruct, selfDestructDuration);
 
   /// Create a copy of MessageDraft
   /// with the given fields replaced by the non-null parameter values.
@@ -2793,20 +2666,21 @@ class _$MessageDraftImpl extends _MessageDraft with DiagnosticableTreeMixin {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$MessageDraftImplToJson(this);
+    return _$$MessageDraftImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _MessageDraft extends MessageDraft {
-  const factory _MessageDraft({
-    final String content,
-    final MessageType type,
-    final String? replyToMessageId,
-    final VoiceMessage? voiceMessage,
-    final ImageMessage? imageMessage,
-    final bool isSelfDestruct,
-    final Duration? selfDestructDuration,
-  }) = _$MessageDraftImpl;
+  const factory _MessageDraft(
+      {final String content,
+      final MessageType type,
+      final String? replyToMessageId,
+      final VoiceMessage? voiceMessage,
+      final ImageMessage? imageMessage,
+      final bool isSelfDestruct,
+      final Duration? selfDestructDuration}) = _$MessageDraftImpl;
   const _MessageDraft._() : super._();
 
   factory _MessageDraft.fromJson(Map<String, dynamic> json) =
@@ -2859,16 +2733,11 @@ mixin _$TypingIndicator {
 /// @nodoc
 abstract class $TypingIndicatorCopyWith<$Res> {
   factory $TypingIndicatorCopyWith(
-    TypingIndicator value,
-    $Res Function(TypingIndicator) then,
-  ) = _$TypingIndicatorCopyWithImpl<$Res, TypingIndicator>;
+          TypingIndicator value, $Res Function(TypingIndicator) then) =
+      _$TypingIndicatorCopyWithImpl<$Res, TypingIndicator>;
   @useResult
-  $Res call({
-    String userId,
-    String userName,
-    DateTime startedAt,
-    bool isActive,
-  });
+  $Res call(
+      {String userId, String userName, DateTime startedAt, bool isActive});
 }
 
 /// @nodoc
@@ -2891,45 +2760,37 @@ class _$TypingIndicatorCopyWithImpl<$Res, $Val extends TypingIndicator>
     Object? startedAt = null,
     Object? isActive = null,
   }) {
-    return _then(
-      _value.copyWith(
-            userId: null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            userName: null == userName
-                ? _value.userName
-                : userName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            startedAt: null == startedAt
-                ? _value.startedAt
-                : startedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            isActive: null == isActive
-                ? _value.isActive
-                : isActive // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      startedAt: null == startedAt
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$TypingIndicatorImplCopyWith<$Res>
     implements $TypingIndicatorCopyWith<$Res> {
-  factory _$$TypingIndicatorImplCopyWith(
-    _$TypingIndicatorImpl value,
-    $Res Function(_$TypingIndicatorImpl) then,
-  ) = __$$TypingIndicatorImplCopyWithImpl<$Res>;
+  factory _$$TypingIndicatorImplCopyWith(_$TypingIndicatorImpl value,
+          $Res Function(_$TypingIndicatorImpl) then) =
+      __$$TypingIndicatorImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String userId,
-    String userName,
-    DateTime startedAt,
-    bool isActive,
-  });
+  $Res call(
+      {String userId, String userName, DateTime startedAt, bool isActive});
 }
 
 /// @nodoc
@@ -2937,9 +2798,8 @@ class __$$TypingIndicatorImplCopyWithImpl<$Res>
     extends _$TypingIndicatorCopyWithImpl<$Res, _$TypingIndicatorImpl>
     implements _$$TypingIndicatorImplCopyWith<$Res> {
   __$$TypingIndicatorImplCopyWithImpl(
-    _$TypingIndicatorImpl _value,
-    $Res Function(_$TypingIndicatorImpl) _then,
-  ) : super(_value, _then);
+      _$TypingIndicatorImpl _value, $Res Function(_$TypingIndicatorImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of TypingIndicator
   /// with the given fields replaced by the non-null parameter values.
@@ -2951,26 +2811,24 @@ class __$$TypingIndicatorImplCopyWithImpl<$Res>
     Object? startedAt = null,
     Object? isActive = null,
   }) {
-    return _then(
-      _$TypingIndicatorImpl(
-        userId: null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        userName: null == userName
-            ? _value.userName
-            : userName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        startedAt: null == startedAt
-            ? _value.startedAt
-            : startedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        isActive: null == isActive
-            ? _value.isActive
-            : isActive // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$TypingIndicatorImpl(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      startedAt: null == startedAt
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
@@ -2978,12 +2836,12 @@ class __$$TypingIndicatorImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TypingIndicatorImpl extends _TypingIndicator
     with DiagnosticableTreeMixin {
-  const _$TypingIndicatorImpl({
-    required this.userId,
-    required this.userName,
-    required this.startedAt,
-    this.isActive = false,
-  }) : super._();
+  const _$TypingIndicatorImpl(
+      {required this.userId,
+      required this.userName,
+      required this.startedAt,
+      this.isActive = false})
+      : super._();
 
   factory _$TypingIndicatorImpl.fromJson(Map<String, dynamic> json) =>
       _$$TypingIndicatorImplFromJson(json);
@@ -3040,23 +2898,22 @@ class _$TypingIndicatorImpl extends _TypingIndicator
   @pragma('vm:prefer-inline')
   _$$TypingIndicatorImplCopyWith<_$TypingIndicatorImpl> get copyWith =>
       __$$TypingIndicatorImplCopyWithImpl<_$TypingIndicatorImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$TypingIndicatorImplToJson(this);
+    return _$$TypingIndicatorImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _TypingIndicator extends TypingIndicator {
-  const factory _TypingIndicator({
-    required final String userId,
-    required final String userName,
-    required final DateTime startedAt,
-    final bool isActive,
-  }) = _$TypingIndicatorImpl;
+  const factory _TypingIndicator(
+      {required final String userId,
+      required final String userName,
+      required final DateTime startedAt,
+      final bool isActive}) = _$TypingIndicatorImpl;
   const _TypingIndicator._() : super._();
 
   factory _TypingIndicator.fromJson(Map<String, dynamic> json) =
@@ -3103,16 +2960,11 @@ mixin _$ReadReceipt {
 /// @nodoc
 abstract class $ReadReceiptCopyWith<$Res> {
   factory $ReadReceiptCopyWith(
-    ReadReceipt value,
-    $Res Function(ReadReceipt) then,
-  ) = _$ReadReceiptCopyWithImpl<$Res, ReadReceipt>;
+          ReadReceipt value, $Res Function(ReadReceipt) then) =
+      _$ReadReceiptCopyWithImpl<$Res, ReadReceipt>;
   @useResult
-  $Res call({
-    String messageId,
-    String userId,
-    String userName,
-    DateTime readAt,
-  });
+  $Res call(
+      {String messageId, String userId, String userName, DateTime readAt});
 }
 
 /// @nodoc
@@ -3135,27 +2987,24 @@ class _$ReadReceiptCopyWithImpl<$Res, $Val extends ReadReceipt>
     Object? userName = null,
     Object? readAt = null,
   }) {
-    return _then(
-      _value.copyWith(
-            messageId: null == messageId
-                ? _value.messageId
-                : messageId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            userId: null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            userName: null == userName
-                ? _value.userName
-                : userName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            readAt: null == readAt
-                ? _value.readAt
-                : readAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      messageId: null == messageId
+          ? _value.messageId
+          : messageId // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      readAt: null == readAt
+          ? _value.readAt
+          : readAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ) as $Val);
   }
 }
 
@@ -3163,17 +3012,12 @@ class _$ReadReceiptCopyWithImpl<$Res, $Val extends ReadReceipt>
 abstract class _$$ReadReceiptImplCopyWith<$Res>
     implements $ReadReceiptCopyWith<$Res> {
   factory _$$ReadReceiptImplCopyWith(
-    _$ReadReceiptImpl value,
-    $Res Function(_$ReadReceiptImpl) then,
-  ) = __$$ReadReceiptImplCopyWithImpl<$Res>;
+          _$ReadReceiptImpl value, $Res Function(_$ReadReceiptImpl) then) =
+      __$$ReadReceiptImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String messageId,
-    String userId,
-    String userName,
-    DateTime readAt,
-  });
+  $Res call(
+      {String messageId, String userId, String userName, DateTime readAt});
 }
 
 /// @nodoc
@@ -3181,9 +3025,8 @@ class __$$ReadReceiptImplCopyWithImpl<$Res>
     extends _$ReadReceiptCopyWithImpl<$Res, _$ReadReceiptImpl>
     implements _$$ReadReceiptImplCopyWith<$Res> {
   __$$ReadReceiptImplCopyWithImpl(
-    _$ReadReceiptImpl _value,
-    $Res Function(_$ReadReceiptImpl) _then,
-  ) : super(_value, _then);
+      _$ReadReceiptImpl _value, $Res Function(_$ReadReceiptImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ReadReceipt
   /// with the given fields replaced by the non-null parameter values.
@@ -3195,38 +3038,35 @@ class __$$ReadReceiptImplCopyWithImpl<$Res>
     Object? userName = null,
     Object? readAt = null,
   }) {
-    return _then(
-      _$ReadReceiptImpl(
-        messageId: null == messageId
-            ? _value.messageId
-            : messageId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        userId: null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        userName: null == userName
-            ? _value.userName
-            : userName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        readAt: null == readAt
-            ? _value.readAt
-            : readAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-      ),
-    );
+    return _then(_$ReadReceiptImpl(
+      messageId: null == messageId
+          ? _value.messageId
+          : messageId // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      readAt: null == readAt
+          ? _value.readAt
+          : readAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ReadReceiptImpl with DiagnosticableTreeMixin implements _ReadReceipt {
-  const _$ReadReceiptImpl({
-    required this.messageId,
-    required this.userId,
-    required this.userName,
-    required this.readAt,
-  });
+  const _$ReadReceiptImpl(
+      {required this.messageId,
+      required this.userId,
+      required this.userName,
+      required this.readAt});
 
   factory _$ReadReceiptImpl.fromJson(Map<String, dynamic> json) =>
       _$$ReadReceiptImplFromJson(json);
@@ -3284,17 +3124,18 @@ class _$ReadReceiptImpl with DiagnosticableTreeMixin implements _ReadReceipt {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ReadReceiptImplToJson(this);
+    return _$$ReadReceiptImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _ReadReceipt implements ReadReceipt {
-  const factory _ReadReceipt({
-    required final String messageId,
-    required final String userId,
-    required final String userName,
-    required final DateTime readAt,
-  }) = _$ReadReceiptImpl;
+  const factory _ReadReceipt(
+      {required final String messageId,
+      required final String userId,
+      required final String userName,
+      required final DateTime readAt}) = _$ReadReceiptImpl;
 
   factory _ReadReceipt.fromJson(Map<String, dynamic> json) =
       _$ReadReceiptImpl.fromJson;

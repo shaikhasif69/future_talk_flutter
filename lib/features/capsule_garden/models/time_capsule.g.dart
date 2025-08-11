@@ -16,10 +16,8 @@ _$TimeCapsuleImpl _$$TimeCapsuleImplFromJson(Map<String, dynamic> json) =>
       recipientInitial: json['recipientInitial'] as String,
       plantedAt: DateTime.parse(json['plantedAt'] as String),
       deliveryAt: DateTime.parse(json['deliveryAt'] as String),
-      growthStage: $enumDecode(
-        _$CapsuleGrowthStageEnumMap,
-        json['growthStage'],
-      ),
+      growthStage:
+          $enumDecode(_$CapsuleGrowthStageEnumMap, json['growthStage']),
       emoji: json['emoji'] as String,
       type: $enumDecode(_$CapsuleTypeEnumMap, json['type']),
       isReady: json['isReady'] as bool? ?? false,

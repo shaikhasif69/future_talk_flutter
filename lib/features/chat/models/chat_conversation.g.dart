@@ -30,10 +30,8 @@ const _$ParticipantRoleEnumMap = {
 _$ConversationImpl _$$ConversationImplFromJson(Map<String, dynamic> json) =>
     _$ConversationImpl(
       id: json['id'] as String,
-      conversationType: $enumDecode(
-        _$ConversationTypeEnumMap,
-        json['conversationType'],
-      ),
+      conversationType:
+          $enumDecode(_$ConversationTypeEnumMap, json['conversationType']),
       createdAt: DateTime.parse(json['createdAt'] as String),
       lastMessageAt: DateTime.parse(json['lastMessageAt'] as String),
       isArchived: json['isArchived'] as bool? ?? false,

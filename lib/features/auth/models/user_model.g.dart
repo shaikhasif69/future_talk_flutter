@@ -7,37 +7,34 @@ part of 'user_model.dart';
 // **************************************************************************
 
 _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
-  id: json['id'] as String,
-  email: json['email'] as String,
-  username: json['username'] as String,
-  firstName: json['firstName'] as String?,
-  lastName: json['lastName'] as String?,
-  profilePictureUrl: json['profilePictureUrl'] as String?,
-  socialBattery: (json['socialBattery'] as num?)?.toInt() ?? 75,
-  hasCompletedOnboarding: json['hasCompletedOnboarding'] as bool? ?? false,
-  communicationStyle:
-      $enumDecodeNullable(
-        _$CommunicationStyleEnumMap,
-        json['communicationStyle'],
-      ) ??
-      CommunicationStyle.balanced,
-  availability:
-      $enumDecodeNullable(_$AvailabilityStatusEnumMap, json['availability']) ??
-      AvailabilityStatus.available,
-  createdAt: DateTime.parse(json['createdAt'] as String),
-  updatedAt: DateTime.parse(json['updatedAt'] as String),
-  timezone: json['timezone'] as String?,
-  preferredLanguage: json['preferredLanguage'] as String? ?? 'en',
-  pushNotificationsEnabled: json['pushNotificationsEnabled'] as bool? ?? true,
-  isDiscoverable: json['isDiscoverable'] as bool? ?? true,
-  bio: json['bio'] as String?,
-  currentMood: json['currentMood'] as String?,
-  interestTags:
-      (json['interestTags'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList() ??
-      const [],
-);
+      id: json['id'] as String,
+      email: json['email'] as String,
+      username: json['username'] as String,
+      firstName: json['firstName'] as String?,
+      lastName: json['lastName'] as String?,
+      profilePictureUrl: json['profilePictureUrl'] as String?,
+      socialBattery: (json['socialBattery'] as num?)?.toInt() ?? 75,
+      hasCompletedOnboarding: json['hasCompletedOnboarding'] as bool? ?? false,
+      communicationStyle: $enumDecodeNullable(
+              _$CommunicationStyleEnumMap, json['communicationStyle']) ??
+          CommunicationStyle.balanced,
+      availability: $enumDecodeNullable(
+              _$AvailabilityStatusEnumMap, json['availability']) ??
+          AvailabilityStatus.available,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      timezone: json['timezone'] as String?,
+      preferredLanguage: json['preferredLanguage'] as String? ?? 'en',
+      pushNotificationsEnabled:
+          json['pushNotificationsEnabled'] as bool? ?? true,
+      isDiscoverable: json['isDiscoverable'] as bool? ?? true,
+      bio: json['bio'] as String?,
+      currentMood: json['currentMood'] as String?,
+      interestTags: (json['interestTags'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+    );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
     <String, dynamic>{
@@ -115,16 +112,16 @@ _$CreateUserDataImpl _$$CreateUserDataImplFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$$CreateUserDataImplToJson(
-  _$CreateUserDataImpl instance,
-) => <String, dynamic>{
-  'email': instance.email,
-  'username': instance.username,
-  'password': instance.password,
-  'firstName': instance.firstName,
-  'lastName': instance.lastName,
-  'agreedToTerms': instance.agreedToTerms,
-  'allowMarketingEmails': instance.allowMarketingEmails,
-};
+        _$CreateUserDataImpl instance) =>
+    <String, dynamic>{
+      'email': instance.email,
+      'username': instance.username,
+      'password': instance.password,
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
+      'agreedToTerms': instance.agreedToTerms,
+      'allowMarketingEmails': instance.allowMarketingEmails,
+    };
 
 _$LoginDataImpl _$$LoginDataImplFromJson(Map<String, dynamic> json) =>
     _$LoginDataImpl(

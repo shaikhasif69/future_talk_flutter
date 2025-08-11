@@ -13,9 +13,8 @@ String _$authHash() => r'1c8a18a91d39d494294546c4afd3b48966439402';
 final authProvider = AutoDisposeNotifierProvider<Auth, AuthState>.internal(
   Auth.new,
   name: r'authProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$authHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$authHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

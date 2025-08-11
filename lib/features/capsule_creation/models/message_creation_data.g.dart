@@ -7,56 +7,54 @@ part of 'message_creation_data.dart';
 // **************************************************************************
 
 _$MessageCreationDataImpl _$$MessageCreationDataImplFromJson(
-  Map<String, dynamic> json,
-) => _$MessageCreationDataImpl(
-  textContent: json['textContent'] as String? ?? '',
-  voiceRecordings:
-      (json['voiceRecordings'] as List<dynamic>?)
-          ?.map((e) => VoiceRecording.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  mode:
-      $enumDecodeNullable(_$MessageModeEnumMap, json['mode']) ??
-      MessageMode.write,
-  selectedFont:
-      $enumDecodeNullable(_$MessageFontEnumMap, json['selectedFont']) ??
-      MessageFont.crimsonPro,
-  fontSize: (json['fontSize'] as num?)?.toDouble() ?? 16.0,
-  wordCount: (json['wordCount'] as num?)?.toInt() ?? 0,
-  characterCount: (json['characterCount'] as num?)?.toInt() ?? 0,
-  isRecording: json['isRecording'] as bool? ?? false,
-  recordingDuration: (json['recordingDuration'] as num?)?.toInt() ?? 0,
-  isLoading: json['isLoading'] as bool? ?? false,
-  lastAutoSave: json['lastAutoSave'] == null
-      ? null
-      : DateTime.parse(json['lastAutoSave'] as String),
-  draftId: json['draftId'] as String?,
-  hasUnsavedChanges: json['hasUnsavedChanges'] as bool? ?? false,
-  sessionStartTime: json['sessionStartTime'] == null
-      ? null
-      : DateTime.parse(json['sessionStartTime'] as String),
-  totalWritingTime: (json['totalWritingTime'] as num?)?.toInt() ?? 0,
-);
+        Map<String, dynamic> json) =>
+    _$MessageCreationDataImpl(
+      textContent: json['textContent'] as String? ?? '',
+      voiceRecordings: (json['voiceRecordings'] as List<dynamic>?)
+              ?.map((e) => VoiceRecording.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      mode: $enumDecodeNullable(_$MessageModeEnumMap, json['mode']) ??
+          MessageMode.write,
+      selectedFont:
+          $enumDecodeNullable(_$MessageFontEnumMap, json['selectedFont']) ??
+              MessageFont.crimsonPro,
+      fontSize: (json['fontSize'] as num?)?.toDouble() ?? 16.0,
+      wordCount: (json['wordCount'] as num?)?.toInt() ?? 0,
+      characterCount: (json['characterCount'] as num?)?.toInt() ?? 0,
+      isRecording: json['isRecording'] as bool? ?? false,
+      recordingDuration: (json['recordingDuration'] as num?)?.toInt() ?? 0,
+      isLoading: json['isLoading'] as bool? ?? false,
+      lastAutoSave: json['lastAutoSave'] == null
+          ? null
+          : DateTime.parse(json['lastAutoSave'] as String),
+      draftId: json['draftId'] as String?,
+      hasUnsavedChanges: json['hasUnsavedChanges'] as bool? ?? false,
+      sessionStartTime: json['sessionStartTime'] == null
+          ? null
+          : DateTime.parse(json['sessionStartTime'] as String),
+      totalWritingTime: (json['totalWritingTime'] as num?)?.toInt() ?? 0,
+    );
 
 Map<String, dynamic> _$$MessageCreationDataImplToJson(
-  _$MessageCreationDataImpl instance,
-) => <String, dynamic>{
-  'textContent': instance.textContent,
-  'voiceRecordings': instance.voiceRecordings,
-  'mode': _$MessageModeEnumMap[instance.mode]!,
-  'selectedFont': _$MessageFontEnumMap[instance.selectedFont]!,
-  'fontSize': instance.fontSize,
-  'wordCount': instance.wordCount,
-  'characterCount': instance.characterCount,
-  'isRecording': instance.isRecording,
-  'recordingDuration': instance.recordingDuration,
-  'isLoading': instance.isLoading,
-  'lastAutoSave': instance.lastAutoSave?.toIso8601String(),
-  'draftId': instance.draftId,
-  'hasUnsavedChanges': instance.hasUnsavedChanges,
-  'sessionStartTime': instance.sessionStartTime?.toIso8601String(),
-  'totalWritingTime': instance.totalWritingTime,
-};
+        _$MessageCreationDataImpl instance) =>
+    <String, dynamic>{
+      'textContent': instance.textContent,
+      'voiceRecordings': instance.voiceRecordings,
+      'mode': _$MessageModeEnumMap[instance.mode]!,
+      'selectedFont': _$MessageFontEnumMap[instance.selectedFont]!,
+      'fontSize': instance.fontSize,
+      'wordCount': instance.wordCount,
+      'characterCount': instance.characterCount,
+      'isRecording': instance.isRecording,
+      'recordingDuration': instance.recordingDuration,
+      'isLoading': instance.isLoading,
+      'lastAutoSave': instance.lastAutoSave?.toIso8601String(),
+      'draftId': instance.draftId,
+      'hasUnsavedChanges': instance.hasUnsavedChanges,
+      'sessionStartTime': instance.sessionStartTime?.toIso8601String(),
+      'totalWritingTime': instance.totalWritingTime,
+    };
 
 const _$MessageModeEnumMap = {
   MessageMode.write: 'write',
@@ -90,18 +88,18 @@ _$VoiceRecordingImpl _$$VoiceRecordingImplFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$$VoiceRecordingImplToJson(
-  _$VoiceRecordingImpl instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'filePath': instance.filePath,
-  'duration': instance.duration,
-  'createdAt': instance.createdAt.toIso8601String(),
-  'waveformData': instance.waveformData,
-  'quality': _$RecordingQualityEnumMap[instance.quality],
-  'isEmbedded': instance.isEmbedded,
-  'textPosition': instance.textPosition,
-  'displayName': instance.displayName,
-};
+        _$VoiceRecordingImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'filePath': instance.filePath,
+      'duration': instance.duration,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'waveformData': instance.waveformData,
+      'quality': _$RecordingQualityEnumMap[instance.quality],
+      'isEmbedded': instance.isEmbedded,
+      'textPosition': instance.textPosition,
+      'displayName': instance.displayName,
+    };
 
 const _$RecordingQualityEnumMap = {
   RecordingQuality.low: 'low',

@@ -12,8 +12,7 @@ part of 'time_capsule.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 TimeCapsule _$TimeCapsuleFromJson(Map<String, dynamic> json) {
   return _TimeCapsule.fromJson(json);
@@ -50,27 +49,25 @@ mixin _$TimeCapsule {
 /// @nodoc
 abstract class $TimeCapsuleCopyWith<$Res> {
   factory $TimeCapsuleCopyWith(
-    TimeCapsule value,
-    $Res Function(TimeCapsule) then,
-  ) = _$TimeCapsuleCopyWithImpl<$Res, TimeCapsule>;
+          TimeCapsule value, $Res Function(TimeCapsule) then) =
+      _$TimeCapsuleCopyWithImpl<$Res, TimeCapsule>;
   @useResult
-  $Res call({
-    String id,
-    String title,
-    String content,
-    String recipientId,
-    String recipientName,
-    String recipientInitial,
-    DateTime plantedAt,
-    DateTime deliveryAt,
-    CapsuleGrowthStage growthStage,
-    String emoji,
-    CapsuleType type,
-    bool isReady,
-    double progress,
-    String? theme,
-    Map<String, dynamic>? metadata,
-  });
+  $Res call(
+      {String id,
+      String title,
+      String content,
+      String recipientId,
+      String recipientName,
+      String recipientInitial,
+      DateTime plantedAt,
+      DateTime deliveryAt,
+      CapsuleGrowthStage growthStage,
+      String emoji,
+      CapsuleType type,
+      bool isReady,
+      double progress,
+      String? theme,
+      Map<String, dynamic>? metadata});
 }
 
 /// @nodoc
@@ -104,71 +101,68 @@ class _$TimeCapsuleCopyWithImpl<$Res, $Val extends TimeCapsule>
     Object? theme = freezed,
     Object? metadata = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            title: null == title
-                ? _value.title
-                : title // ignore: cast_nullable_to_non_nullable
-                      as String,
-            content: null == content
-                ? _value.content
-                : content // ignore: cast_nullable_to_non_nullable
-                      as String,
-            recipientId: null == recipientId
-                ? _value.recipientId
-                : recipientId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            recipientName: null == recipientName
-                ? _value.recipientName
-                : recipientName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            recipientInitial: null == recipientInitial
-                ? _value.recipientInitial
-                : recipientInitial // ignore: cast_nullable_to_non_nullable
-                      as String,
-            plantedAt: null == plantedAt
-                ? _value.plantedAt
-                : plantedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            deliveryAt: null == deliveryAt
-                ? _value.deliveryAt
-                : deliveryAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            growthStage: null == growthStage
-                ? _value.growthStage
-                : growthStage // ignore: cast_nullable_to_non_nullable
-                      as CapsuleGrowthStage,
-            emoji: null == emoji
-                ? _value.emoji
-                : emoji // ignore: cast_nullable_to_non_nullable
-                      as String,
-            type: null == type
-                ? _value.type
-                : type // ignore: cast_nullable_to_non_nullable
-                      as CapsuleType,
-            isReady: null == isReady
-                ? _value.isReady
-                : isReady // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            progress: null == progress
-                ? _value.progress
-                : progress // ignore: cast_nullable_to_non_nullable
-                      as double,
-            theme: freezed == theme
-                ? _value.theme
-                : theme // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            metadata: freezed == metadata
-                ? _value.metadata
-                : metadata // ignore: cast_nullable_to_non_nullable
-                      as Map<String, dynamic>?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      recipientId: null == recipientId
+          ? _value.recipientId
+          : recipientId // ignore: cast_nullable_to_non_nullable
+              as String,
+      recipientName: null == recipientName
+          ? _value.recipientName
+          : recipientName // ignore: cast_nullable_to_non_nullable
+              as String,
+      recipientInitial: null == recipientInitial
+          ? _value.recipientInitial
+          : recipientInitial // ignore: cast_nullable_to_non_nullable
+              as String,
+      plantedAt: null == plantedAt
+          ? _value.plantedAt
+          : plantedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      deliveryAt: null == deliveryAt
+          ? _value.deliveryAt
+          : deliveryAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      growthStage: null == growthStage
+          ? _value.growthStage
+          : growthStage // ignore: cast_nullable_to_non_nullable
+              as CapsuleGrowthStage,
+      emoji: null == emoji
+          ? _value.emoji
+          : emoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as CapsuleType,
+      isReady: null == isReady
+          ? _value.isReady
+          : isReady // ignore: cast_nullable_to_non_nullable
+              as bool,
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as double,
+      theme: freezed == theme
+          ? _value.theme
+          : theme // ignore: cast_nullable_to_non_nullable
+              as String?,
+      metadata: freezed == metadata
+          ? _value.metadata
+          : metadata // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
+    ) as $Val);
   }
 }
 
@@ -176,28 +170,26 @@ class _$TimeCapsuleCopyWithImpl<$Res, $Val extends TimeCapsule>
 abstract class _$$TimeCapsuleImplCopyWith<$Res>
     implements $TimeCapsuleCopyWith<$Res> {
   factory _$$TimeCapsuleImplCopyWith(
-    _$TimeCapsuleImpl value,
-    $Res Function(_$TimeCapsuleImpl) then,
-  ) = __$$TimeCapsuleImplCopyWithImpl<$Res>;
+          _$TimeCapsuleImpl value, $Res Function(_$TimeCapsuleImpl) then) =
+      __$$TimeCapsuleImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String title,
-    String content,
-    String recipientId,
-    String recipientName,
-    String recipientInitial,
-    DateTime plantedAt,
-    DateTime deliveryAt,
-    CapsuleGrowthStage growthStage,
-    String emoji,
-    CapsuleType type,
-    bool isReady,
-    double progress,
-    String? theme,
-    Map<String, dynamic>? metadata,
-  });
+  $Res call(
+      {String id,
+      String title,
+      String content,
+      String recipientId,
+      String recipientName,
+      String recipientInitial,
+      DateTime plantedAt,
+      DateTime deliveryAt,
+      CapsuleGrowthStage growthStage,
+      String emoji,
+      CapsuleType type,
+      bool isReady,
+      double progress,
+      String? theme,
+      Map<String, dynamic>? metadata});
 }
 
 /// @nodoc
@@ -205,9 +197,8 @@ class __$$TimeCapsuleImplCopyWithImpl<$Res>
     extends _$TimeCapsuleCopyWithImpl<$Res, _$TimeCapsuleImpl>
     implements _$$TimeCapsuleImplCopyWith<$Res> {
   __$$TimeCapsuleImplCopyWithImpl(
-    _$TimeCapsuleImpl _value,
-    $Res Function(_$TimeCapsuleImpl) _then,
-  ) : super(_value, _then);
+      _$TimeCapsuleImpl _value, $Res Function(_$TimeCapsuleImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of TimeCapsule
   /// with the given fields replaced by the non-null parameter values.
@@ -230,93 +221,91 @@ class __$$TimeCapsuleImplCopyWithImpl<$Res>
     Object? theme = freezed,
     Object? metadata = freezed,
   }) {
-    return _then(
-      _$TimeCapsuleImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        title: null == title
-            ? _value.title
-            : title // ignore: cast_nullable_to_non_nullable
-                  as String,
-        content: null == content
-            ? _value.content
-            : content // ignore: cast_nullable_to_non_nullable
-                  as String,
-        recipientId: null == recipientId
-            ? _value.recipientId
-            : recipientId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        recipientName: null == recipientName
-            ? _value.recipientName
-            : recipientName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        recipientInitial: null == recipientInitial
-            ? _value.recipientInitial
-            : recipientInitial // ignore: cast_nullable_to_non_nullable
-                  as String,
-        plantedAt: null == plantedAt
-            ? _value.plantedAt
-            : plantedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        deliveryAt: null == deliveryAt
-            ? _value.deliveryAt
-            : deliveryAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        growthStage: null == growthStage
-            ? _value.growthStage
-            : growthStage // ignore: cast_nullable_to_non_nullable
-                  as CapsuleGrowthStage,
-        emoji: null == emoji
-            ? _value.emoji
-            : emoji // ignore: cast_nullable_to_non_nullable
-                  as String,
-        type: null == type
-            ? _value.type
-            : type // ignore: cast_nullable_to_non_nullable
-                  as CapsuleType,
-        isReady: null == isReady
-            ? _value.isReady
-            : isReady // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        progress: null == progress
-            ? _value.progress
-            : progress // ignore: cast_nullable_to_non_nullable
-                  as double,
-        theme: freezed == theme
-            ? _value.theme
-            : theme // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        metadata: freezed == metadata
-            ? _value._metadata
-            : metadata // ignore: cast_nullable_to_non_nullable
-                  as Map<String, dynamic>?,
-      ),
-    );
+    return _then(_$TimeCapsuleImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      recipientId: null == recipientId
+          ? _value.recipientId
+          : recipientId // ignore: cast_nullable_to_non_nullable
+              as String,
+      recipientName: null == recipientName
+          ? _value.recipientName
+          : recipientName // ignore: cast_nullable_to_non_nullable
+              as String,
+      recipientInitial: null == recipientInitial
+          ? _value.recipientInitial
+          : recipientInitial // ignore: cast_nullable_to_non_nullable
+              as String,
+      plantedAt: null == plantedAt
+          ? _value.plantedAt
+          : plantedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      deliveryAt: null == deliveryAt
+          ? _value.deliveryAt
+          : deliveryAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      growthStage: null == growthStage
+          ? _value.growthStage
+          : growthStage // ignore: cast_nullable_to_non_nullable
+              as CapsuleGrowthStage,
+      emoji: null == emoji
+          ? _value.emoji
+          : emoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as CapsuleType,
+      isReady: null == isReady
+          ? _value.isReady
+          : isReady // ignore: cast_nullable_to_non_nullable
+              as bool,
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as double,
+      theme: freezed == theme
+          ? _value.theme
+          : theme // ignore: cast_nullable_to_non_nullable
+              as String?,
+      metadata: freezed == metadata
+          ? _value._metadata
+          : metadata // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$TimeCapsuleImpl implements _TimeCapsule {
-  const _$TimeCapsuleImpl({
-    required this.id,
-    required this.title,
-    required this.content,
-    required this.recipientId,
-    required this.recipientName,
-    required this.recipientInitial,
-    required this.plantedAt,
-    required this.deliveryAt,
-    required this.growthStage,
-    required this.emoji,
-    required this.type,
-    this.isReady = false,
-    this.progress = 0.0,
-    this.theme,
-    final Map<String, dynamic>? metadata,
-  }) : _metadata = metadata;
+  const _$TimeCapsuleImpl(
+      {required this.id,
+      required this.title,
+      required this.content,
+      required this.recipientId,
+      required this.recipientName,
+      required this.recipientInitial,
+      required this.plantedAt,
+      required this.deliveryAt,
+      required this.growthStage,
+      required this.emoji,
+      required this.type,
+      this.isReady = false,
+      this.progress = 0.0,
+      this.theme,
+      final Map<String, dynamic>? metadata})
+      : _metadata = metadata;
 
   factory _$TimeCapsuleImpl.fromJson(Map<String, dynamic> json) =>
       _$$TimeCapsuleImplFromJson(json);
@@ -398,23 +387,22 @@ class _$TimeCapsuleImpl implements _TimeCapsule {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    title,
-    content,
-    recipientId,
-    recipientName,
-    recipientInitial,
-    plantedAt,
-    deliveryAt,
-    growthStage,
-    emoji,
-    type,
-    isReady,
-    progress,
-    theme,
-    const DeepCollectionEquality().hash(_metadata),
-  );
+      runtimeType,
+      id,
+      title,
+      content,
+      recipientId,
+      recipientName,
+      recipientInitial,
+      plantedAt,
+      deliveryAt,
+      growthStage,
+      emoji,
+      type,
+      isReady,
+      progress,
+      theme,
+      const DeepCollectionEquality().hash(_metadata));
 
   /// Create a copy of TimeCapsule
   /// with the given fields replaced by the non-null parameter values.
@@ -426,28 +414,29 @@ class _$TimeCapsuleImpl implements _TimeCapsule {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$TimeCapsuleImplToJson(this);
+    return _$$TimeCapsuleImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _TimeCapsule implements TimeCapsule {
-  const factory _TimeCapsule({
-    required final String id,
-    required final String title,
-    required final String content,
-    required final String recipientId,
-    required final String recipientName,
-    required final String recipientInitial,
-    required final DateTime plantedAt,
-    required final DateTime deliveryAt,
-    required final CapsuleGrowthStage growthStage,
-    required final String emoji,
-    required final CapsuleType type,
-    final bool isReady,
-    final double progress,
-    final String? theme,
-    final Map<String, dynamic>? metadata,
-  }) = _$TimeCapsuleImpl;
+  const factory _TimeCapsule(
+      {required final String id,
+      required final String title,
+      required final String content,
+      required final String recipientId,
+      required final String recipientName,
+      required final String recipientInitial,
+      required final DateTime plantedAt,
+      required final DateTime deliveryAt,
+      required final CapsuleGrowthStage growthStage,
+      required final String emoji,
+      required final CapsuleType type,
+      final bool isReady,
+      final double progress,
+      final String? theme,
+      final Map<String, dynamic>? metadata}) = _$TimeCapsuleImpl;
 
   factory _TimeCapsule.fromJson(Map<String, dynamic> json) =
       _$TimeCapsuleImpl.fromJson;
@@ -517,18 +506,16 @@ mixin _$GardenStats {
 /// @nodoc
 abstract class $GardenStatsCopyWith<$Res> {
   factory $GardenStatsCopyWith(
-    GardenStats value,
-    $Res Function(GardenStats) then,
-  ) = _$GardenStatsCopyWithImpl<$Res, GardenStats>;
+          GardenStats value, $Res Function(GardenStats) then) =
+      _$GardenStatsCopyWithImpl<$Res, GardenStats>;
   @useResult
-  $Res call({
-    int totalPlanted,
-    int growing,
-    int ready,
-    int delivered,
-    int recentlyPlanted,
-    double averageGrowthProgress,
-  });
+  $Res call(
+      {int totalPlanted,
+      int growing,
+      int ready,
+      int delivered,
+      int recentlyPlanted,
+      double averageGrowthProgress});
 }
 
 /// @nodoc
@@ -553,35 +540,32 @@ class _$GardenStatsCopyWithImpl<$Res, $Val extends GardenStats>
     Object? recentlyPlanted = null,
     Object? averageGrowthProgress = null,
   }) {
-    return _then(
-      _value.copyWith(
-            totalPlanted: null == totalPlanted
-                ? _value.totalPlanted
-                : totalPlanted // ignore: cast_nullable_to_non_nullable
-                      as int,
-            growing: null == growing
-                ? _value.growing
-                : growing // ignore: cast_nullable_to_non_nullable
-                      as int,
-            ready: null == ready
-                ? _value.ready
-                : ready // ignore: cast_nullable_to_non_nullable
-                      as int,
-            delivered: null == delivered
-                ? _value.delivered
-                : delivered // ignore: cast_nullable_to_non_nullable
-                      as int,
-            recentlyPlanted: null == recentlyPlanted
-                ? _value.recentlyPlanted
-                : recentlyPlanted // ignore: cast_nullable_to_non_nullable
-                      as int,
-            averageGrowthProgress: null == averageGrowthProgress
-                ? _value.averageGrowthProgress
-                : averageGrowthProgress // ignore: cast_nullable_to_non_nullable
-                      as double,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      totalPlanted: null == totalPlanted
+          ? _value.totalPlanted
+          : totalPlanted // ignore: cast_nullable_to_non_nullable
+              as int,
+      growing: null == growing
+          ? _value.growing
+          : growing // ignore: cast_nullable_to_non_nullable
+              as int,
+      ready: null == ready
+          ? _value.ready
+          : ready // ignore: cast_nullable_to_non_nullable
+              as int,
+      delivered: null == delivered
+          ? _value.delivered
+          : delivered // ignore: cast_nullable_to_non_nullable
+              as int,
+      recentlyPlanted: null == recentlyPlanted
+          ? _value.recentlyPlanted
+          : recentlyPlanted // ignore: cast_nullable_to_non_nullable
+              as int,
+      averageGrowthProgress: null == averageGrowthProgress
+          ? _value.averageGrowthProgress
+          : averageGrowthProgress // ignore: cast_nullable_to_non_nullable
+              as double,
+    ) as $Val);
   }
 }
 
@@ -589,19 +573,17 @@ class _$GardenStatsCopyWithImpl<$Res, $Val extends GardenStats>
 abstract class _$$GardenStatsImplCopyWith<$Res>
     implements $GardenStatsCopyWith<$Res> {
   factory _$$GardenStatsImplCopyWith(
-    _$GardenStatsImpl value,
-    $Res Function(_$GardenStatsImpl) then,
-  ) = __$$GardenStatsImplCopyWithImpl<$Res>;
+          _$GardenStatsImpl value, $Res Function(_$GardenStatsImpl) then) =
+      __$$GardenStatsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    int totalPlanted,
-    int growing,
-    int ready,
-    int delivered,
-    int recentlyPlanted,
-    double averageGrowthProgress,
-  });
+  $Res call(
+      {int totalPlanted,
+      int growing,
+      int ready,
+      int delivered,
+      int recentlyPlanted,
+      double averageGrowthProgress});
 }
 
 /// @nodoc
@@ -609,9 +591,8 @@ class __$$GardenStatsImplCopyWithImpl<$Res>
     extends _$GardenStatsCopyWithImpl<$Res, _$GardenStatsImpl>
     implements _$$GardenStatsImplCopyWith<$Res> {
   __$$GardenStatsImplCopyWithImpl(
-    _$GardenStatsImpl _value,
-    $Res Function(_$GardenStatsImpl) _then,
-  ) : super(_value, _then);
+      _$GardenStatsImpl _value, $Res Function(_$GardenStatsImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of GardenStats
   /// with the given fields replaced by the non-null parameter values.
@@ -625,48 +606,45 @@ class __$$GardenStatsImplCopyWithImpl<$Res>
     Object? recentlyPlanted = null,
     Object? averageGrowthProgress = null,
   }) {
-    return _then(
-      _$GardenStatsImpl(
-        totalPlanted: null == totalPlanted
-            ? _value.totalPlanted
-            : totalPlanted // ignore: cast_nullable_to_non_nullable
-                  as int,
-        growing: null == growing
-            ? _value.growing
-            : growing // ignore: cast_nullable_to_non_nullable
-                  as int,
-        ready: null == ready
-            ? _value.ready
-            : ready // ignore: cast_nullable_to_non_nullable
-                  as int,
-        delivered: null == delivered
-            ? _value.delivered
-            : delivered // ignore: cast_nullable_to_non_nullable
-                  as int,
-        recentlyPlanted: null == recentlyPlanted
-            ? _value.recentlyPlanted
-            : recentlyPlanted // ignore: cast_nullable_to_non_nullable
-                  as int,
-        averageGrowthProgress: null == averageGrowthProgress
-            ? _value.averageGrowthProgress
-            : averageGrowthProgress // ignore: cast_nullable_to_non_nullable
-                  as double,
-      ),
-    );
+    return _then(_$GardenStatsImpl(
+      totalPlanted: null == totalPlanted
+          ? _value.totalPlanted
+          : totalPlanted // ignore: cast_nullable_to_non_nullable
+              as int,
+      growing: null == growing
+          ? _value.growing
+          : growing // ignore: cast_nullable_to_non_nullable
+              as int,
+      ready: null == ready
+          ? _value.ready
+          : ready // ignore: cast_nullable_to_non_nullable
+              as int,
+      delivered: null == delivered
+          ? _value.delivered
+          : delivered // ignore: cast_nullable_to_non_nullable
+              as int,
+      recentlyPlanted: null == recentlyPlanted
+          ? _value.recentlyPlanted
+          : recentlyPlanted // ignore: cast_nullable_to_non_nullable
+              as int,
+      averageGrowthProgress: null == averageGrowthProgress
+          ? _value.averageGrowthProgress
+          : averageGrowthProgress // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$GardenStatsImpl implements _GardenStats {
-  const _$GardenStatsImpl({
-    this.totalPlanted = 0,
-    this.growing = 0,
-    this.ready = 0,
-    this.delivered = 0,
-    this.recentlyPlanted = 0,
-    this.averageGrowthProgress = 0.0,
-  });
+  const _$GardenStatsImpl(
+      {this.totalPlanted = 0,
+      this.growing = 0,
+      this.ready = 0,
+      this.delivered = 0,
+      this.recentlyPlanted = 0,
+      this.averageGrowthProgress = 0.0});
 
   factory _$GardenStatsImpl.fromJson(Map<String, dynamic> json) =>
       _$$GardenStatsImplFromJson(json);
@@ -714,15 +692,8 @@ class _$GardenStatsImpl implements _GardenStats {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    totalPlanted,
-    growing,
-    ready,
-    delivered,
-    recentlyPlanted,
-    averageGrowthProgress,
-  );
+  int get hashCode => Object.hash(runtimeType, totalPlanted, growing, ready,
+      delivered, recentlyPlanted, averageGrowthProgress);
 
   /// Create a copy of GardenStats
   /// with the given fields replaced by the non-null parameter values.
@@ -734,19 +705,20 @@ class _$GardenStatsImpl implements _GardenStats {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$GardenStatsImplToJson(this);
+    return _$$GardenStatsImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _GardenStats implements GardenStats {
-  const factory _GardenStats({
-    final int totalPlanted,
-    final int growing,
-    final int ready,
-    final int delivered,
-    final int recentlyPlanted,
-    final double averageGrowthProgress,
-  }) = _$GardenStatsImpl;
+  const factory _GardenStats(
+      {final int totalPlanted,
+      final int growing,
+      final int ready,
+      final int delivered,
+      final int recentlyPlanted,
+      final double averageGrowthProgress}) = _$GardenStatsImpl;
 
   factory _GardenStats.fromJson(Map<String, dynamic> json) =
       _$GardenStatsImpl.fromJson;
@@ -796,16 +768,14 @@ mixin _$GardenSection {
 /// @nodoc
 abstract class $GardenSectionCopyWith<$Res> {
   factory $GardenSectionCopyWith(
-    GardenSection value,
-    $Res Function(GardenSection) then,
-  ) = _$GardenSectionCopyWithImpl<$Res, GardenSection>;
+          GardenSection value, $Res Function(GardenSection) then) =
+      _$GardenSectionCopyWithImpl<$Res, GardenSection>;
   @useResult
-  $Res call({
-    String title,
-    String emoji,
-    List<TimeCapsule> capsules,
-    GardenSectionType type,
-  });
+  $Res call(
+      {String title,
+      String emoji,
+      List<TimeCapsule> capsules,
+      GardenSectionType type});
 }
 
 /// @nodoc
@@ -828,27 +798,24 @@ class _$GardenSectionCopyWithImpl<$Res, $Val extends GardenSection>
     Object? capsules = null,
     Object? type = null,
   }) {
-    return _then(
-      _value.copyWith(
-            title: null == title
-                ? _value.title
-                : title // ignore: cast_nullable_to_non_nullable
-                      as String,
-            emoji: null == emoji
-                ? _value.emoji
-                : emoji // ignore: cast_nullable_to_non_nullable
-                      as String,
-            capsules: null == capsules
-                ? _value.capsules
-                : capsules // ignore: cast_nullable_to_non_nullable
-                      as List<TimeCapsule>,
-            type: null == type
-                ? _value.type
-                : type // ignore: cast_nullable_to_non_nullable
-                      as GardenSectionType,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      emoji: null == emoji
+          ? _value.emoji
+          : emoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      capsules: null == capsules
+          ? _value.capsules
+          : capsules // ignore: cast_nullable_to_non_nullable
+              as List<TimeCapsule>,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as GardenSectionType,
+    ) as $Val);
   }
 }
 
@@ -856,17 +823,15 @@ class _$GardenSectionCopyWithImpl<$Res, $Val extends GardenSection>
 abstract class _$$GardenSectionImplCopyWith<$Res>
     implements $GardenSectionCopyWith<$Res> {
   factory _$$GardenSectionImplCopyWith(
-    _$GardenSectionImpl value,
-    $Res Function(_$GardenSectionImpl) then,
-  ) = __$$GardenSectionImplCopyWithImpl<$Res>;
+          _$GardenSectionImpl value, $Res Function(_$GardenSectionImpl) then) =
+      __$$GardenSectionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String title,
-    String emoji,
-    List<TimeCapsule> capsules,
-    GardenSectionType type,
-  });
+  $Res call(
+      {String title,
+      String emoji,
+      List<TimeCapsule> capsules,
+      GardenSectionType type});
 }
 
 /// @nodoc
@@ -874,9 +839,8 @@ class __$$GardenSectionImplCopyWithImpl<$Res>
     extends _$GardenSectionCopyWithImpl<$Res, _$GardenSectionImpl>
     implements _$$GardenSectionImplCopyWith<$Res> {
   __$$GardenSectionImplCopyWithImpl(
-    _$GardenSectionImpl _value,
-    $Res Function(_$GardenSectionImpl) _then,
-  ) : super(_value, _then);
+      _$GardenSectionImpl _value, $Res Function(_$GardenSectionImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of GardenSection
   /// with the given fields replaced by the non-null parameter values.
@@ -888,38 +852,36 @@ class __$$GardenSectionImplCopyWithImpl<$Res>
     Object? capsules = null,
     Object? type = null,
   }) {
-    return _then(
-      _$GardenSectionImpl(
-        title: null == title
-            ? _value.title
-            : title // ignore: cast_nullable_to_non_nullable
-                  as String,
-        emoji: null == emoji
-            ? _value.emoji
-            : emoji // ignore: cast_nullable_to_non_nullable
-                  as String,
-        capsules: null == capsules
-            ? _value._capsules
-            : capsules // ignore: cast_nullable_to_non_nullable
-                  as List<TimeCapsule>,
-        type: null == type
-            ? _value.type
-            : type // ignore: cast_nullable_to_non_nullable
-                  as GardenSectionType,
-      ),
-    );
+    return _then(_$GardenSectionImpl(
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      emoji: null == emoji
+          ? _value.emoji
+          : emoji // ignore: cast_nullable_to_non_nullable
+              as String,
+      capsules: null == capsules
+          ? _value._capsules
+          : capsules // ignore: cast_nullable_to_non_nullable
+              as List<TimeCapsule>,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as GardenSectionType,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$GardenSectionImpl implements _GardenSection {
-  const _$GardenSectionImpl({
-    required this.title,
-    required this.emoji,
-    required final List<TimeCapsule> capsules,
-    required this.type,
-  }) : _capsules = capsules;
+  const _$GardenSectionImpl(
+      {required this.title,
+      required this.emoji,
+      required final List<TimeCapsule> capsules,
+      required this.type})
+      : _capsules = capsules;
 
   factory _$GardenSectionImpl.fromJson(Map<String, dynamic> json) =>
       _$$GardenSectionImplFromJson(json);
@@ -957,13 +919,8 @@ class _$GardenSectionImpl implements _GardenSection {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    title,
-    emoji,
-    const DeepCollectionEquality().hash(_capsules),
-    type,
-  );
+  int get hashCode => Object.hash(runtimeType, title, emoji,
+      const DeepCollectionEquality().hash(_capsules), type);
 
   /// Create a copy of GardenSection
   /// with the given fields replaced by the non-null parameter values.
@@ -975,17 +932,18 @@ class _$GardenSectionImpl implements _GardenSection {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$GardenSectionImplToJson(this);
+    return _$$GardenSectionImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _GardenSection implements GardenSection {
-  const factory _GardenSection({
-    required final String title,
-    required final String emoji,
-    required final List<TimeCapsule> capsules,
-    required final GardenSectionType type,
-  }) = _$GardenSectionImpl;
+  const factory _GardenSection(
+      {required final String title,
+      required final String emoji,
+      required final List<TimeCapsule> capsules,
+      required final GardenSectionType type}) = _$GardenSectionImpl;
 
   factory _GardenSection.fromJson(Map<String, dynamic> json) =
       _$GardenSectionImpl.fromJson;

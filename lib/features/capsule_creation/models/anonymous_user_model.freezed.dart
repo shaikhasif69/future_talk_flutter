@@ -12,8 +12,7 @@ part of 'anonymous_user_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 AnonymousUser _$AnonymousUserFromJson(Map<String, dynamic> json) {
   return _AnonymousUser.fromJson(json);
@@ -55,19 +54,17 @@ mixin _$AnonymousUser {
 /// @nodoc
 abstract class $AnonymousUserCopyWith<$Res> {
   factory $AnonymousUserCopyWith(
-    AnonymousUser value,
-    $Res Function(AnonymousUser) then,
-  ) = _$AnonymousUserCopyWithImpl<$Res, AnonymousUser>;
+          AnonymousUser value, $Res Function(AnonymousUser) then) =
+      _$AnonymousUserCopyWithImpl<$Res, AnonymousUser>;
   @useResult
-  $Res call({
-    String id,
-    String name,
-    String username,
-    String email,
-    String avatar,
-    bool isOnline,
-    bool acceptsAnonymousMessages,
-  });
+  $Res call(
+      {String id,
+      String name,
+      String username,
+      String email,
+      String avatar,
+      bool isOnline,
+      bool acceptsAnonymousMessages});
 }
 
 /// @nodoc
@@ -93,39 +90,36 @@ class _$AnonymousUserCopyWithImpl<$Res, $Val extends AnonymousUser>
     Object? isOnline = null,
     Object? acceptsAnonymousMessages = null,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            name: null == name
-                ? _value.name
-                : name // ignore: cast_nullable_to_non_nullable
-                      as String,
-            username: null == username
-                ? _value.username
-                : username // ignore: cast_nullable_to_non_nullable
-                      as String,
-            email: null == email
-                ? _value.email
-                : email // ignore: cast_nullable_to_non_nullable
-                      as String,
-            avatar: null == avatar
-                ? _value.avatar
-                : avatar // ignore: cast_nullable_to_non_nullable
-                      as String,
-            isOnline: null == isOnline
-                ? _value.isOnline
-                : isOnline // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            acceptsAnonymousMessages: null == acceptsAnonymousMessages
-                ? _value.acceptsAnonymousMessages
-                : acceptsAnonymousMessages // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      avatar: null == avatar
+          ? _value.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as String,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
+      acceptsAnonymousMessages: null == acceptsAnonymousMessages
+          ? _value.acceptsAnonymousMessages
+          : acceptsAnonymousMessages // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 }
 
@@ -133,20 +127,18 @@ class _$AnonymousUserCopyWithImpl<$Res, $Val extends AnonymousUser>
 abstract class _$$AnonymousUserImplCopyWith<$Res>
     implements $AnonymousUserCopyWith<$Res> {
   factory _$$AnonymousUserImplCopyWith(
-    _$AnonymousUserImpl value,
-    $Res Function(_$AnonymousUserImpl) then,
-  ) = __$$AnonymousUserImplCopyWithImpl<$Res>;
+          _$AnonymousUserImpl value, $Res Function(_$AnonymousUserImpl) then) =
+      __$$AnonymousUserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String name,
-    String username,
-    String email,
-    String avatar,
-    bool isOnline,
-    bool acceptsAnonymousMessages,
-  });
+  $Res call(
+      {String id,
+      String name,
+      String username,
+      String email,
+      String avatar,
+      bool isOnline,
+      bool acceptsAnonymousMessages});
 }
 
 /// @nodoc
@@ -154,9 +146,8 @@ class __$$AnonymousUserImplCopyWithImpl<$Res>
     extends _$AnonymousUserCopyWithImpl<$Res, _$AnonymousUserImpl>
     implements _$$AnonymousUserImplCopyWith<$Res> {
   __$$AnonymousUserImplCopyWithImpl(
-    _$AnonymousUserImpl _value,
-    $Res Function(_$AnonymousUserImpl) _then,
-  ) : super(_value, _then);
+      _$AnonymousUserImpl _value, $Res Function(_$AnonymousUserImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of AnonymousUser
   /// with the given fields replaced by the non-null parameter values.
@@ -171,53 +162,50 @@ class __$$AnonymousUserImplCopyWithImpl<$Res>
     Object? isOnline = null,
     Object? acceptsAnonymousMessages = null,
   }) {
-    return _then(
-      _$AnonymousUserImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        name: null == name
-            ? _value.name
-            : name // ignore: cast_nullable_to_non_nullable
-                  as String,
-        username: null == username
-            ? _value.username
-            : username // ignore: cast_nullable_to_non_nullable
-                  as String,
-        email: null == email
-            ? _value.email
-            : email // ignore: cast_nullable_to_non_nullable
-                  as String,
-        avatar: null == avatar
-            ? _value.avatar
-            : avatar // ignore: cast_nullable_to_non_nullable
-                  as String,
-        isOnline: null == isOnline
-            ? _value.isOnline
-            : isOnline // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        acceptsAnonymousMessages: null == acceptsAnonymousMessages
-            ? _value.acceptsAnonymousMessages
-            : acceptsAnonymousMessages // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$AnonymousUserImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      avatar: null == avatar
+          ? _value.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as String,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
+      acceptsAnonymousMessages: null == acceptsAnonymousMessages
+          ? _value.acceptsAnonymousMessages
+          : acceptsAnonymousMessages // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$AnonymousUserImpl implements _AnonymousUser {
-  const _$AnonymousUserImpl({
-    required this.id,
-    required this.name,
-    required this.username,
-    required this.email,
-    required this.avatar,
-    this.isOnline = false,
-    this.acceptsAnonymousMessages = true,
-  });
+  const _$AnonymousUserImpl(
+      {required this.id,
+      required this.name,
+      required this.username,
+      required this.email,
+      required this.avatar,
+      this.isOnline = false,
+      this.acceptsAnonymousMessages = true});
 
   factory _$AnonymousUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$AnonymousUserImplFromJson(json);
@@ -271,24 +259,14 @@ class _$AnonymousUserImpl implements _AnonymousUser {
             (identical(other.isOnline, isOnline) ||
                 other.isOnline == isOnline) &&
             (identical(
-                  other.acceptsAnonymousMessages,
-                  acceptsAnonymousMessages,
-                ) ||
+                    other.acceptsAnonymousMessages, acceptsAnonymousMessages) ||
                 other.acceptsAnonymousMessages == acceptsAnonymousMessages));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    name,
-    username,
-    email,
-    avatar,
-    isOnline,
-    acceptsAnonymousMessages,
-  );
+  int get hashCode => Object.hash(runtimeType, id, name, username, email,
+      avatar, isOnline, acceptsAnonymousMessages);
 
   /// Create a copy of AnonymousUser
   /// with the given fields replaced by the non-null parameter values.
@@ -300,20 +278,21 @@ class _$AnonymousUserImpl implements _AnonymousUser {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AnonymousUserImplToJson(this);
+    return _$$AnonymousUserImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _AnonymousUser implements AnonymousUser {
-  const factory _AnonymousUser({
-    required final String id,
-    required final String name,
-    required final String username,
-    required final String email,
-    required final String avatar,
-    final bool isOnline,
-    final bool acceptsAnonymousMessages,
-  }) = _$AnonymousUserImpl;
+  const factory _AnonymousUser(
+      {required final String id,
+      required final String name,
+      required final String username,
+      required final String email,
+      required final String avatar,
+      final bool isOnline,
+      final bool acceptsAnonymousMessages}) = _$AnonymousUserImpl;
 
   factory _AnonymousUser.fromJson(Map<String, dynamic> json) =
       _$AnonymousUserImpl.fromJson;

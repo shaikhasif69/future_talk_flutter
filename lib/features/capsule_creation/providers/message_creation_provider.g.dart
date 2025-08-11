@@ -34,14 +34,14 @@ String _$messageTextStatisticsHash() =>
 @ProviderFor(messageTextStatistics)
 final messageTextStatisticsProvider =
     AutoDisposeProvider<TextStatistics>.internal(
-      messageTextStatistics,
-      name: r'messageTextStatisticsProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$messageTextStatisticsHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  messageTextStatistics,
+  name: r'messageTextStatisticsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$messageTextStatisticsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
@@ -114,19 +114,16 @@ String _$messageCreationNotifierHash() =>
 ///
 /// Copied from [MessageCreationNotifier].
 @ProviderFor(MessageCreationNotifier)
-final messageCreationNotifierProvider =
-    AutoDisposeNotifierProvider<
-      MessageCreationNotifier,
-      MessageCreationData
-    >.internal(
-      MessageCreationNotifier.new,
-      name: r'messageCreationNotifierProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$messageCreationNotifierHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+final messageCreationNotifierProvider = AutoDisposeNotifierProvider<
+    MessageCreationNotifier, MessageCreationData>.internal(
+  MessageCreationNotifier.new,
+  name: r'messageCreationNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$messageCreationNotifierHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$MessageCreationNotifier = AutoDisposeNotifier<MessageCreationData>;
 // ignore_for_file: type=lint
