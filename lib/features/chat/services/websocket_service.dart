@@ -34,6 +34,7 @@ enum WebSocketEventType {
   messageOverallStatusUpdate,
   userDeliveryConfirmation,
   userStatus,
+  messageReadReceiptConfirmed,
   
   // Typing events
   typingIndicator,
@@ -152,6 +153,8 @@ class WebSocketMessage {
         return 'user_delivery_confirmation';
       case WebSocketEventType.userStatus:
         return 'user_status';
+      case WebSocketEventType.messageReadReceiptConfirmed:
+        return 'message_read_receipt_confirmed';
       case WebSocketEventType.typingIndicator:
         return 'typing_indicator';
       case WebSocketEventType.typingIndicatorSent:
@@ -189,6 +192,8 @@ class WebSocketMessage {
         return WebSocketEventType.userDeliveryConfirmation;
       case 'user_status':
         return WebSocketEventType.userStatus;
+      case 'message_read_receipt_confirmed':
+        return WebSocketEventType.messageReadReceiptConfirmed;
       case 'typing_indicator':
         return WebSocketEventType.typingIndicator;
       case 'typing_indicator_sent':
@@ -553,6 +558,11 @@ class ChatWebSocketService extends ChangeNotifier {
         case WebSocketEventType.userStatus:
           debugPrint('👤 [WebSocket] User status update: ${message.userId} is ${messageData['status']}');
           // Could be used for online/offline status in the UI
+          break;
+          
+        case WebSocketEventType.messageReadReceiptConfirmed:
+          debugPrint('✅ [WebSocket] Read receipt confirmed for message: ${message.messageId}');
+          // Confirmation that read receipt was processed
           break;
           
         case WebSocketEventType.conversationJoined:

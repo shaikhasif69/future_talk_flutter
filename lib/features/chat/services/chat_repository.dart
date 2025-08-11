@@ -348,16 +348,28 @@ class ChatRepository {
         .replace(queryParameters: queryParams);
 
     debugPrint('🔗 [ChatRepository] Fetching messages for conversation: $conversationId, limit=$limit, beforeMessageId=$beforeMessageId');
+    debugPrint('🔗 [ChatRepository] Request URI: $uri');
+    debugPrint('🔗 [ChatRepository] Query parameters: ${uri.queryParameters}');
 
     try {
       final response = await http.get(uri, headers: await _getHeaders());
       
+      debugPrint('🔗 [ChatRepository] Response status: ${response.statusCode}');
+      debugPrint('🔗 [ChatRepository] Response body: ${response.body}');
+      
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseData = jsonDecode(response.body);
+        debugPrint('🔗 [ChatRepository] Parsed response type: ${responseData.runtimeType}');
         
         if (responseData is List) {
+          debugPrint('🔗 [ChatRepository] Response is a list with ${responseData.length} items');
           // Get current user ID for message processing
           final userId = await _getCurrentUserId();
+          
+          // Log each message before processing
+          if (responseData.isNotEmpty) {
+            debugPrint('🔗 [ChatRepository] Sample message from API: ${responseData[0]}');
+          }
           
           // Messages come from API in reverse chronological order (newest first)
           // We need to reverse them for display (oldest first, newest last)
@@ -371,6 +383,10 @@ class ChatRepository {
               .toList();
               
           debugPrint('🔗 [ChatRepository] Loaded ${messages.length} messages, reversed for display');
+          if (messages.isNotEmpty) {
+            debugPrint('🔗 [ChatRepository] First message content: ${messages.first.content}');
+            debugPrint('🔗 [ChatRepository] Last message content: ${messages.last.content}');
+          }
           return ApiResult.success(messages);
         } else {
           return ApiResult.failure(ApiError(

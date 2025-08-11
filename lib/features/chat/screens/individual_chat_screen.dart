@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../core/constants/app_colors.dart';
@@ -34,6 +35,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   
   bool _isInitialized = false;
   List<msg.ChatMessage> _currentMessages = [];
+  Timer? _messageRefreshTimer;
 
   @override
   void initState() {
@@ -90,6 +92,24 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
         setState(() {
           _isInitialized = true;
         });
+        
+        // Start periodic refresh as fallback for WebSocket issues
+        _startPeriodicRefresh();
+      }
+    });
+  }
+
+  /// Start periodic message refresh as fallback for WebSocket failures
+  void _startPeriodicRefresh() {
+    _messageRefreshTimer?.cancel();
+    _messageRefreshTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (mounted && _isInitialized) {
+        debugPrint('🔄 [IndividualChatScreen] Periodic refresh check...');
+        final providerMessages = _chatProvider.getMessages(widget.conversation.id);
+        if (providerMessages.length != _currentMessages.length) {
+          debugPrint('🔄 [IndividualChatScreen] New messages detected via periodic refresh!');
+          _loadCurrentMessages();
+        }
       }
     });
   }
@@ -97,31 +117,38 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
   void _onChatProviderChanged() {
     if (!mounted) return;
     
+    final currentMessageCount = _chatProvider.getMessages(widget.conversation.id).length;
     debugPrint('🔄 [IndividualChatScreen] Provider changed for conversation: ${widget.conversation.id}');
-    debugPrint('🔄 [IndividualChatScreen] Current user ID: ${_chatProvider.currentUserId}');
+    debugPrint('🔄 [IndividualChatScreen] Messages in provider: $currentMessageCount');
+    debugPrint('🔄 [IndividualChatScreen] Messages in UI: ${_currentMessages.length}');
     
-    // Update current messages from provider
+    // Force update current messages from provider
     _loadCurrentMessages();
-    
-    // Auto-scroll to bottom when new messages arrive
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_currentMessages.isNotEmpty) {
-        _scrollToBottom();
-      }
-    });
   }
   
   /// Load current messages for this conversation from the provider
   void _loadCurrentMessages() {
     final conversationMessages = _chatProvider.getMessages(widget.conversation.id);
     
-    // debugPrint('📝 [IndividualChatScreen] Loading ${conversationMessages.length} messages for conversation ${widget.conversation.id}');
-    // debugPrint('📝 [IndividualChatScreen] Current user ID: ${_chatProvider.currentUserId}');
+    debugPrint('📝 [IndividualChatScreen] Loading ${conversationMessages.length} messages for conversation ${widget.conversation.id}');
+    debugPrint('📝 [IndividualChatScreen] Current messages in UI: ${_currentMessages.length}');
     
-    // Only update if messages have actually changed to avoid unnecessary rebuilds
-    if (conversationMessages.length != _currentMessages.length ||
-        (conversationMessages.isNotEmpty && _currentMessages.isNotEmpty &&
-         conversationMessages.last.id != _currentMessages.last.id)) {
+    // Always update messages to ensure real-time display
+    // The performance impact is minimal and ensures immediate UI updates
+    bool shouldUpdate = true;
+    
+    // Only skip update if both lists are identical (same length and same message IDs)
+    if (conversationMessages.length == _currentMessages.length && conversationMessages.isNotEmpty && _currentMessages.isNotEmpty) {
+      shouldUpdate = false;
+      for (int i = 0; i < conversationMessages.length; i++) {
+        if (conversationMessages[i].id != _currentMessages[i].id) {
+          shouldUpdate = true;
+          break;
+        }
+      }
+    }
+    
+    if (shouldUpdate) {
       
       // debugPrint('🔄 [IndividualChatScreen] Messages changed, updating UI messages');
       
@@ -156,18 +183,23 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
         );
       }).toList();
       
+      final previousMessageCount = _currentMessages.length;
       _currentMessages = newMessages;
-      // debugPrint('✅ [IndividualChatScreen] Updated _currentMessages with ${_currentMessages.length} messages');
-
       
-      // Schedule a setState to trigger rebuild and auto-scroll to bottom
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          setState(() {});
-          // Auto-scroll to bottom for new messages
-          _scrollToBottom();
+      debugPrint('✅ [IndividualChatScreen] Updated _currentMessages: ${previousMessageCount} → ${_currentMessages.length} messages');
+      
+      // Trigger immediate setState for real-time updates
+      if (mounted) {
+        setState(() {});
+        
+        // Auto-scroll to bottom if new messages were added
+        if (_currentMessages.length > previousMessageCount) {
+          debugPrint('📜 [IndividualChatScreen] New messages detected, scrolling to bottom');
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _scrollToBottom();
+          });
         }
-      });
+      }
     } else {
       debugPrint('💡 [IndividualChatScreen] Messages unchanged, no UI update needed');
     }
@@ -323,6 +355,7 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
 
   @override
   void dispose() {
+    _messageRefreshTimer?.cancel();
     _messageController.dispose();
     _chatProvider.removeListener(_onChatProviderChanged);
     _scrollController.dispose();
@@ -458,8 +491,8 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     return ListenableBuilder(
       listenable: _chatProvider,
       builder: (context, _) {
-        // Refresh messages from provider whenever it changes
-        _loadCurrentMessages();
+        // Messages are already updated via _onChatProviderChanged listener
+        // Avoid calling _loadCurrentMessages() here as it causes setState() during build
         
         // Show loading indicator while messages are loading
         final conversationId = widget.conversation.id;
@@ -1411,10 +1444,16 @@ class _IndividualChatScreenState extends State<IndividualChatScreen>
     // Send via provider
     await _chatProvider.sendMessage(conversationId, content);
 
+    // Force refresh messages immediately after sending
+    debugPrint('🔄 [IndividualChatScreen] Force refreshing messages after send');
+    _loadCurrentMessages();
+
     // Give haptic feedback
     HapticFeedback.lightImpact();
     
-    // Scroll to bottom
-    _scrollToBottom();
+    // Scroll to bottom after a brief delay to ensure message is rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToBottom();
+    });
   }
 }

@@ -153,7 +153,13 @@ class RealtimeChatProvider extends ChangeNotifier {
     notifyListeners();
     
     // Join conversation via WebSocket for real-time updates
-    await _webSocketService.joinConversation(conversationId);
+    debugPrint('🚪 [RealtimeChatProvider] Joining conversation via WebSocket: $conversationId');
+    final joinResult = await _webSocketService.joinConversation(conversationId);
+    debugPrint('🚪 [RealtimeChatProvider] Join conversation result: $joinResult');
+    
+    if (!joinResult) {
+      debugPrint('❌ [RealtimeChatProvider] FAILED to join conversation - WebSocket messages will NOT be received!');
+    }
     
     // Load messages for this conversation
     await loadMessages(conversationId, isInitialLoad: true);
