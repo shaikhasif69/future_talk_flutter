@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../shared/widgets/indicators/ft_loading_indicator.dart';
-import '../../chat/models/social_battery_status.dart';
+// import '../../chat/models/social_battery_status.dart'; // Commented out for now
 import '../models/profile_data.dart';
 import '../providers/profile_provider.dart';
 import '../widgets/profile_header.dart';
-import '../widgets/social_battery_section.dart';
+// import '../widgets/social_battery_section.dart'; // Commented out for now
 import '../widgets/profile_stats_section.dart';
 import '../widgets/premium_features_section.dart';
 import '../widgets/profile_actions_section.dart';
@@ -28,9 +29,7 @@ class ProfileScreen extends ConsumerStatefulWidget {
 class _ProfileScreenState extends ConsumerState<ProfileScreen>
     with TickerProviderStateMixin {
   late ScrollController _scrollController;
-  late AnimationController _refreshController;
   
-  bool _isRefreshing = false;
   double _scrollOffset = 0.0;
 
   @override
@@ -38,10 +37,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     super.initState();
     
     _scrollController = ScrollController();
-    _refreshController = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
     
     // Listen to scroll changes for parallax effects
     _scrollController.addListener(_handleScroll);
@@ -51,7 +46,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
   void dispose() {
     _scrollController.removeListener(_handleScroll);
     _scrollController.dispose();
-    _refreshController.dispose();
     super.dispose();
   }
 
@@ -61,58 +55,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     });
   }
 
-  Future<void> _handleRefresh() async {
-    if (_isRefreshing) return;
-    
-    setState(() => _isRefreshing = true);
-    _refreshController.forward();
-    
-    try {
-      await ref.read(profileProvider.notifier).refresh();
-      
-      // Show success feedback
-      if (mounted) {
-        HapticFeedback.lightImpact();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Profile refreshed',
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.pearlWhite,
-              ),
-            ),
-            backgroundColor: AppColors.sageGreen,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-            ),
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      }
-    } catch (error) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Failed to refresh profile',
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.pearlWhite,
-              ),
-            ),
-            backgroundColor: AppColors.dustyRose,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-            ),
-          ),
-        );
-      }
-    } finally {
-      _refreshController.reverse();
-      setState(() => _isRefreshing = false);
-    }
-  }
 
   void _handleBackPressed() {
     HapticFeedback.lightImpact();
@@ -121,8 +63,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
 
   void _handleSettingsPressed() {
     HapticFeedback.mediumImpact();
-    // Navigate to settings screen
-    debugPrint('Navigate to settings');
+    context.push('/settings');
   }
 
   void _handleAvatarTapped() {
@@ -137,9 +78,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     debugPrint('Edit avatar pressed');
   }
 
-  void _handleBatteryLevelChanged(SocialBatteryLevel newLevel) {
-    ref.read(profileProvider.notifier).updateBatteryLevel(newLevel);
-  }
+  // void _handleBatteryLevelChanged(SocialBatteryLevel newLevel) {
+  //   ref.read(profileProvider.notifier).updateBatteryLevel(newLevel);
+  // }
 
   void _handleFriendTapped(ProfileFriend friend) {
     HapticFeedback.lightImpact();
@@ -154,6 +95,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
       friends: friends,
       onFriendTapped: _handleFriendTapped,
     );
+  }
+
+  void _navigateToFriendsScreen() {
+    HapticFeedback.lightImpact();
+    context.push('/friends');
   }
 
   Future<void> _handleProfileAction(String actionId) async {
@@ -242,7 +188,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
             SizedBox(height: AppDimensions.spacingXL),
             
             ElevatedButton(
-              onPressed: _handleRefresh,
+              onPressed: () => ref.read(profileProvider.notifier).refresh(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.sageGreen,
                 foregroundColor: Colors.white,
@@ -268,13 +214,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
   }
 
   Widget _buildProfileContent(ProfileData profileData) {
-    return RefreshIndicator(
-      onRefresh: _handleRefresh,
-      color: AppColors.sageGreen,
-      backgroundColor: AppColors.pearlWhite,
+    return ScrollConfiguration(
+      behavior: const ScrollBehavior().copyWith(
+        overscroll: false,
+        physics: const ClampingScrollPhysics(),
+      ),
       child: CustomScrollView(
         controller: _scrollController,
-        physics: const BouncingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         slivers: [
           // Profile header with parallax effect
           SliverToBoxAdapter(
@@ -291,12 +238,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
           ),
           
           // Social battery section
-          SliverToBoxAdapter(
-            child: SocialBatterySection(
-              batteryStatus: profileData.batteryStatus,
-              onBatteryLevelChanged: _handleBatteryLevelChanged,
-            ),
-          ),
+          // SliverToBoxAdapter(
+          //   child: SocialBatterySection(
+          //     batteryStatus: profileData.batteryStatus,
+          //     onBatteryLevelChanged: _handleBatteryLevelChanged,
+          //   ),
+          // ),
           
           // Profile content sections
           SliverToBoxAdapter(
@@ -306,6 +253,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                 ProfileStatsSection(
                   stats: profileData.stats,
                 ),
+                
+                // Friends count button
+                _buildFriendsButton(profileData),
                 
                 // Premium features section
                 if (profileData.premiumFeatures.isPremium)
@@ -417,6 +367,126 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
         ),
       ),
     ).animate(delay: 400.ms).fadeIn(duration: 600.ms).slideY(begin: 0.2);
+  }
+
+  Widget _buildFriendsButton(ProfileData profileData) {
+    // Get friends count - fallback to 0 if friends list is empty
+    final friendsCount = profileData.friends.length;
+    final friendsText = friendsCount == 1 ? '1 friend' : '$friendsCount friends';
+    
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: AppDimensions.getResponsivePadding(
+          MediaQuery.of(context).size.width,
+        ),
+      ).copyWith(bottom: AppDimensions.spacingL),
+      child: GestureDetector(
+        onTap: _navigateToFriendsScreen,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.spacingL,
+            vertical: AppDimensions.spacingM + 2,
+          ),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppColors.sageGreen.withValues(alpha: 0.12),
+                AppColors.warmPeach.withValues(alpha: 0.08),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+            border: Border.all(
+              color: AppColors.sageGreen.withValues(alpha: 0.25),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.sageGreen.withValues(alpha: 0.08),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              // Friends icon with stronger background
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      AppColors.sageGreen.withValues(alpha: 0.2),
+                      AppColors.sageGreen.withValues(alpha: 0.15),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.sageGreen.withValues(alpha: 0.3),
+                    width: 0.5,
+                  ),
+                ),
+                child: Icon(
+                  Icons.people_rounded,
+                  size: 22,
+                  color: AppColors.sageGreen,
+                ),
+              ),
+              
+              const SizedBox(width: AppDimensions.spacingM),
+              
+              // Text content with better styling
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Friends',
+                      style: AppTextStyles.titleMedium.copyWith(
+                        color: AppColors.softCharcoal,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      friendsText,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.sageGreen,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              // Arrow icon with background
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: AppColors.sageGreen.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 14,
+                  color: AppColors.sageGreen,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ).animate(delay: 300.ms)
+     .fadeIn(duration: 600.ms)
+     .slideX(begin: 0.2)
+     .then()
+     .shimmer(duration: 2000.ms, color: AppColors.sageGreen.withValues(alpha: 0.1));
   }
 
   List<ProfileAction> _buildProfileActions() {

@@ -49,6 +49,11 @@ class _DynamicProfileScreenState extends ConsumerState<DynamicProfileScreen> {
     _showComingSoonSnackBar('Edit Profile');
   }
 
+  void _handleFriendsPressed() {
+    HapticFeedback.lightImpact();
+    context.push('/friends');
+  }
+
   void _handleLogout() async {
     HapticFeedback.mediumImpact();
     
@@ -376,6 +381,12 @@ class _DynamicProfileScreenState extends ConsumerState<DynamicProfileScreen> {
 
   Widget _buildProfileActions() {
     final actions = [
+      {
+        'icon': '👥',
+        'title': 'Friends',
+        'subtitle': '0 friends', // TODO: Get real count from API
+        'onTap': _handleFriendsPressed,
+      },
       {
         'icon': '✏️',
         'title': 'Edit Profile',

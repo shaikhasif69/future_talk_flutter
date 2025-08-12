@@ -36,6 +36,7 @@ class FindFriendsModal extends ConsumerStatefulWidget {
 class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
     with TickerProviderStateMixin {
   late TextEditingController _searchController;
+  late TextEditingController _noteController;
   late AnimationController _stateController;
   late AnimationController _iconController;
 
@@ -44,12 +45,14 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
   String _searchQuery = '';
   String? _lastSearchQuery; // Track last search to avoid duplicate searches
   String? _errorMessage;
+  String _noteText = '';
 
   @override
   void initState() {
     super.initState();
     
     _searchController = TextEditingController();
+    _noteController = TextEditingController();
     
     _stateController = AnimationController(
       duration: AppDurations.slow,
@@ -69,11 +72,18 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
         _searchQuery = _searchController.text.trim();
       });
     });
+    
+    _noteController.addListener(() {
+      setState(() {
+        _noteText = _noteController.text;
+      });
+    });
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _noteController.dispose();
     _stateController.dispose();
     _iconController.dispose();
     super.dispose();
@@ -128,13 +138,33 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
       _currentState = FindFriendsState.search;
       _foundUser = null;
       _searchController.clear();
+      _noteController.clear();
       _searchQuery = '';
+      _noteText = '';
       _lastSearchQuery = null;
       _errorMessage = null;
     });
     
     // Restart icon animation
     _iconController.repeat(reverse: true);
+  }
+
+  void _showNoteInput() {
+    HapticFeedback.selectionClick();
+    
+    setState(() {
+      _currentState = FindFriendsState.noteInput;
+      _noteController.clear();
+      _noteText = '';
+    });
+  }
+
+  void _backToUserProfile() {
+    HapticFeedback.selectionClick();
+    
+    setState(() {
+      _currentState = FindFriendsState.found;
+    });
   }
 
   void _handleUserAction(FriendAction action) async {
@@ -145,7 +175,7 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
     // Handle different actions
     switch (action) {
       case FriendAction.addFriend:
-        await _sendFriendRequest();
+        await _promptForNote();
         break;
       case FriendAction.sendMessage:
         _navigateToChat();
@@ -158,17 +188,145 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
     // Notify parent widget
     widget.onUserAction?.call(_foundUser!, action);
   }
+
+  Future<void> _promptForNote() async {
+    // Show option dialog
+    final shouldAddNote = await showDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: Container(
+            padding: const EdgeInsets.all(AppDimensions.spacingL),
+            decoration: BoxDecoration(
+              color: AppColors.pearlWhite,
+              borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.modalShadow,
+                  blurRadius: 16,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.message_rounded,
+                  size: 32,
+                  color: AppColors.sageGreen,
+                ),
+                const SizedBox(height: AppDimensions.spacingM),
+                Text(
+                  'Add a note?',
+                  style: AppTextStyles.titleMedium.copyWith(
+                    color: AppColors.softCharcoal,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: AppDimensions.spacingS),
+                Text(
+                  'Would you like to include a personal message with your friend request?',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.softCharcoalLight,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: AppDimensions.spacingL),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pop(false),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                            color: AppColors.whisperGray.withValues(alpha: 0.5),
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Send without note',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.softCharcoal,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: AppDimensions.spacingS),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pop(true),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                AppColors.sageGreen,
+                                AppColors.sageGreen.withValues(alpha: 0.9),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Add note',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.pearlWhite,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    if (shouldAddNote == true) {
+      _showNoteInput();
+    } else if (shouldAddNote == false) {
+      await _sendFriendRequest(message: null);
+    }
+  }
+
+  Future<void> _sendFriendRequestWithNote() async {
+    if (_noteText.trim().isEmpty) {
+      await _sendFriendRequest(message: null);
+    } else {
+      await _sendFriendRequest(message: _noteText.trim());
+    }
+  }
   
-  Future<void> _sendFriendRequest() async {
+  Future<void> _sendFriendRequest({String? message}) async {
     if (_foundUser == null) return;
     
     final success = await ref.read(friendSearchNotifierProvider.notifier)
-        .sendFriendRequest(targetUsername: _foundUser!.username);
+        .sendFriendRequest(
+          targetUsername: _foundUser!.username, 
+          message: message,
+        );
     
     if (success && mounted) {
       // Update the found user with new friendship status
       setState(() {
         _foundUser = _foundUser!.copyWith(friendshipStatus: FriendshipStatus.pending);
+        _currentState = FindFriendsState.found; // Return to profile view
       });
       
       // Show success feedback
@@ -393,6 +551,10 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
         iconWidget = const Text('⚠️', style: TextStyle(fontSize: 24));
         backgroundColor = AppColors.dustyRose;
         break;
+      case FindFriendsState.noteInput:
+        iconWidget = const Text('📝', style: TextStyle(fontSize: 24));
+        backgroundColor = AppColors.warmPeach;
+        break;
     }
 
     return AnimatedBuilder(
@@ -443,23 +605,27 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
     switch (_currentState) {
       case FindFriendsState.search:
         title = 'Find Friend';
-        subtitle = 'Enter their complete username or email';
+        subtitle = 'Search by username or email';
         break;
       case FindFriendsState.loading:
         title = 'Searching...';
         subtitle = 'Looking for your friend';
         break;
       case FindFriendsState.found:
-        title = 'User Found!';
-        subtitle = 'Connect with ${_foundUser?.displayName ?? 'them'}';
+        title = 'Found!';
+        subtitle = _foundUser?.displayName ?? '';
         break;
       case FindFriendsState.notFound:
-        title = 'No User Found';
-        subtitle = 'Please check spelling and try again';
+        title = 'Not Found';
+        subtitle = 'Check spelling and try again';
         break;
       case FindFriendsState.error:
-        title = 'Search Error';
-        subtitle = _errorMessage ?? 'Something went wrong';
+        title = 'Error';
+        subtitle = 'Please try again';
+        break;
+      case FindFriendsState.noteInput:
+        title = 'Add Note';
+        subtitle = 'Send to ${_foundUser?.displayName ?? ''}';
         break;
     }
 
@@ -516,6 +682,8 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
         return _buildNotFoundContent();
       case FindFriendsState.error:
         return _buildErrorContent();
+      case FindFriendsState.noteInput:
+        return _buildNoteInputContent();
     }
   }
 
@@ -862,7 +1030,7 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
         statusIcon = Icons.person_add_rounded;
         break;
       case FriendshipStatus.pending:
-        badgeColor = AppColors.warmPeach;
+        badgeColor = AppColors.sageGreen;
         statusIcon = Icons.schedule_rounded;
         break;
       case FriendshipStatus.accepted:
@@ -911,7 +1079,7 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
           _buildStatusIndicator(
             label: 'Request Sent',
             icon: Icons.schedule_rounded,
-            color: AppColors.warmPeach,
+            color: AppColors.sageGreen,
           ),
         ] else if (status == FriendshipStatus.blocked) ...[
           _buildStatusIndicator(
@@ -921,8 +1089,8 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
           ),
         ],
         
-        // Secondary actions row
-        if (status == FriendshipStatus.accepted || status == FriendshipStatus.none) ...[
+        // Secondary actions row (available for all statuses except blocked)
+        if (status != FriendshipStatus.blocked) ...[
           const SizedBox(height: AppDimensions.spacingS),
           Row(
             children: [
@@ -1417,6 +1585,146 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
     );
   }
 
+  Widget _buildNoteInputContent() {
+    if (_foundUser == null) return const SizedBox.shrink();
+    
+    return Column(
+      key: const ValueKey('noteInput'),
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Back button
+        Align(
+          alignment: Alignment.topLeft,
+          child: GestureDetector(
+            onTap: _backToUserProfile,
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.softCharcoal.withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.arrow_back_rounded,
+                    size: 16,
+                    color: AppColors.softCharcoal.withValues(alpha: 0.7),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Back',
+                    style: AppTextStyles.labelSmall.copyWith(
+                      color: AppColors.softCharcoal.withValues(alpha: 0.7),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: AppDimensions.spacingL),
+        
+        // Note input field
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.whisperGray.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+            border: Border.all(
+              color: AppColors.sageGreen.withValues(alpha: 0.2),
+              width: 1,
+            ),
+          ),
+          child: TextField(
+            controller: _noteController,
+            maxLines: 4,
+            maxLength: 280,
+            autofocus: true,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.softCharcoal,
+            ),
+            decoration: InputDecoration(
+              hintText: 'Write a personal message... (optional)',
+              hintStyle: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.softCharcoalLight,
+              ),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.all(AppDimensions.spacingL),
+              counterStyle: AppTextStyles.labelSmall.copyWith(
+                color: AppColors.softCharcoalLight,
+                fontSize: 11,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: AppDimensions.spacingL),
+        
+        // Send button
+        GestureDetector(
+          onTap: _sendFriendRequestWithNote,
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  AppColors.sageGreen,
+                  AppColors.sageGreen.withValues(alpha: 0.9),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.sageGreen.withValues(alpha: 0.15),
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.send_rounded,
+                  size: 16,
+                  color: AppColors.pearlWhite,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Send Friend Request',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.pearlWhite,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: AppDimensions.spacingM),
+        
+        // Character count and hint
+        if (_noteText.isNotEmpty)
+          Text(
+            '${_noteText.length}/280 characters',
+            style: AppTextStyles.labelSmall.copyWith(
+              color: _noteText.length > 250 
+                ? AppColors.dustyRose 
+                : AppColors.softCharcoalLight,
+              fontSize: 11,
+            ),
+          ),
+      ]
+          .animate(interval: 100.ms)
+          .fadeIn(duration: AppDurations.medium)
+          .slideY(begin: 0.2, duration: AppDurations.medium),
+    );
+  }
+
   /// Static method to show the modal with proper Riverpod context
   static Future<void> show(
     BuildContext context, {
@@ -1443,4 +1751,5 @@ enum FindFriendsState {
   found,
   notFound,
   error,
+  noteInput,
 }

@@ -15,7 +15,7 @@ import '../models/friend_search_models.dart';
 /// - Block and unblock users
 /// - Manage friendship relationships
 /// 
-/// All methods return ApiResult<T> for consistent error handling
+/// All methods return ApiResult&lt;T&gt; for consistent error handling
 /// and follow Future Talk's API patterns and conventions.
 class FriendSearchService {
   final ApiClient _apiClient = ApiClient();
@@ -664,6 +664,166 @@ class FriendSearchService {
       return ApiResult.failure(_handleDioError(e));
     } catch (e) {
       debugPrint('🔍 [FriendSearchService] Unknown error: $e');
+      return ApiResult.failure(ApiError(
+        message: 'Unknown error occurred: $e',
+        statusCode: -1,
+      ));
+    }
+  }
+
+  /// Get the current user's friends list
+  /// 
+  /// Retrieves all friends of the current user with their current status.
+  /// Results include online status, social battery, and other friend details.
+  /// 
+  /// Parameters:
+  /// - [limit]: Maximum number of friends to return (optional)
+  /// - [offset]: Number of friends to skip (for pagination)
+  /// 
+  /// Returns:
+  /// - Success: List of UserSearchResult representing friends
+  /// - Failure: ApiError with details
+  Future<ApiResult<List<UserSearchResult>>> getFriends({
+    int? limit,
+    int? offset,
+  }) async {
+    try {
+      debugPrint('👥 [FriendSearchService] Getting friends list');
+      
+      final queryParameters = <String, String>{};
+      if (limit != null) queryParameters['limit'] = limit.toString();
+      if (offset != null) queryParameters['offset'] = offset.toString();
+
+      final response = await _apiClient.get(
+        ApiEndpoints.friendsList,
+        queryParameters: queryParameters.isNotEmpty ? queryParameters : null,
+      );
+
+      debugPrint('👥 [FriendSearchService] Friends list response status: ${response.statusCode}');
+      
+      if (response.statusCode == 200) {
+        debugPrint('👥 [FriendSearchService] Friends list retrieved successfully');
+        
+        try {
+          final List<dynamic> friendsData = response.data as List<dynamic>;
+          // Convert friend data to UserSearchResult format
+          final friends = friendsData
+              .map((friendData) => _convertFriendToUserSearchResult(friendData as Map<String, dynamic>))
+              .toList();
+          
+          debugPrint('👥 [FriendSearchService] Parsed ${friends.length} friends');
+          return ApiResult.success(friends);
+        } catch (parseError) {
+          debugPrint('👥 [FriendSearchService] JSON parsing error: $parseError');
+          return ApiResult.failure(ApiError(
+            message: 'Failed to parse friends data: $parseError',
+            statusCode: response.statusCode ?? -1,
+          ));
+        }
+      } else {
+        debugPrint('👥 [FriendSearchService] Friends list failed: ${response.statusCode}');
+        return ApiResult.failure(_parseError(response));
+      }
+    } on DioException catch (e) {
+      debugPrint('👥 [FriendSearchService] Dio exception: $e');
+      return ApiResult.failure(_handleDioError(e));
+    } catch (e) {
+      debugPrint('👥 [FriendSearchService] Unknown error: $e');
+      return ApiResult.failure(ApiError(
+        message: 'Unknown error occurred: $e',
+        statusCode: -1,
+      ));
+    }
+  }
+
+  /// Convert friend API response to UserSearchResult format
+  UserSearchResult _convertFriendToUserSearchResult(Map<String, dynamic> friendData) {
+    // Split display name into firstName and lastName if possible
+    final displayName = friendData['friend_display_name'] as String? ?? '';
+    final nameParts = displayName.split(' ');
+    final firstName = nameParts.isNotEmpty ? nameParts.first : null;
+    final lastName = nameParts.length > 1 ? nameParts.skip(1).join(' ') : null;
+    
+    return UserSearchResult(
+      id: friendData['friend_user_id'] as String,
+      username: friendData['friend_username'] as String,
+      email: null, // Not provided in friends response
+      firstName: firstName,
+      lastName: lastName,
+      profilePictureUrl: friendData['friend_profile_picture'] as String?,
+      bio: null, // Not provided in friends response
+      socialBattery: friendData['friend_social_battery'] as int? ?? 75,
+      friendshipStatus: FriendshipStatus.accepted, // Already friends
+      isOnline: false, // Not provided in friends response
+      lastSeen: DateTime.tryParse(friendData['created_at'] as String? ?? ''),
+      interestTags: const [], // Not provided in friends response
+      mutualFriendsCount: friendData['mutual_friends_count'] as int? ?? 0,
+    );
+  }
+
+  /// Get pending friend requests
+  /// 
+  /// Retrieves all pending friend requests for the current user.
+  /// This includes requests they have received that need response.
+  /// 
+  /// Parameters:
+  /// - [limit]: Maximum number of requests to return (optional)
+  /// - [offset]: Number of requests to skip (for pagination)
+  /// 
+  /// Returns:
+  /// - Success: List of FriendRequest objects
+  /// - Failure: ApiError with details
+  Future<ApiResult<List<FriendRequest>>> getFriendRequests({
+    int? limit,
+    int? offset,
+  }) async {
+    try {
+      debugPrint('📬 [FriendSearchService] Getting friend requests list');
+      
+      final queryParameters = <String, String>{};
+      if (limit != null) queryParameters['limit'] = limit.toString();
+      if (offset != null) queryParameters['offset'] = offset.toString();
+
+      final response = await _apiClient.get(
+        ApiEndpoints.friendRequestsList,
+        queryParameters: queryParameters.isNotEmpty ? queryParameters : null,
+      );
+
+      debugPrint('📬 [FriendSearchService] Friend requests response status: ${response.statusCode}');
+      
+      if (response.statusCode == 200) {
+        debugPrint('📬 [FriendSearchService] Friend requests retrieved successfully');
+        
+        try {
+          // Handle the response structure - it might have 'received' and 'sent' arrays
+          final responseData = response.data as Map<String, dynamic>;
+          
+          // Extract received requests (ones the user needs to respond to)
+          final List<dynamic> receivedData = responseData['received'] as List<dynamic>? ?? [];
+          
+          final requests = receivedData
+              .map((requestData) => FriendRequest.fromJson(requestData as Map<String, dynamic>))
+              .toList();
+          
+          debugPrint('📬 [FriendSearchService] Parsed ${requests.length} friend requests');
+          return ApiResult.success(requests);
+        } catch (parseError) {
+          debugPrint('📬 [FriendSearchService] JSON parsing error: $parseError');
+          debugPrint('📬 [FriendSearchService] Response data: ${response.data}');
+          
+          // If parsing fails, return empty list with warning
+          debugPrint('📬 [FriendSearchService] Returning empty list due to parsing issues');
+          return ApiResult.success(<FriendRequest>[]);
+        }
+      } else {
+        debugPrint('📬 [FriendSearchService] Friend requests failed: ${response.statusCode}');
+        return ApiResult.failure(_parseError(response));
+      }
+    } on DioException catch (e) {
+      debugPrint('📬 [FriendSearchService] Dio exception: $e');
+      return ApiResult.failure(_handleDioError(e));
+    } catch (e) {
+      debugPrint('📬 [FriendSearchService] Unknown error: $e');
       return ApiResult.failure(ApiError(
         message: 'Unknown error occurred: $e',
         statusCode: -1,

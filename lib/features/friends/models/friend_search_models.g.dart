@@ -140,14 +140,14 @@ const _$FriendRequestStatusEnumMap = {
 _$SendFriendRequestDataImpl _$$SendFriendRequestDataImplFromJson(
         Map<String, dynamic> json) =>
     _$SendFriendRequestDataImpl(
-      targetUsername: json['targetUsername'] as String,
+      targetUsername: json['target_username'] as String,
       message: json['message'] as String?,
     );
 
 Map<String, dynamic> _$$SendFriendRequestDataImplToJson(
         _$SendFriendRequestDataImpl instance) =>
     <String, dynamic>{
-      'targetUsername': instance.targetUsername,
+      'target_username': instance.targetUsername,
       'message': instance.message,
     };
 

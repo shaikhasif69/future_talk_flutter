@@ -280,8 +280,8 @@ extension FriendRequestStatusExtension on FriendRequestStatus {
 @freezed
 class SendFriendRequestData with _$SendFriendRequestData {
   const factory SendFriendRequestData({
-    /// Target user's username
-    required String targetUsername,
+    /// Target user's username (sent as target_username to API)
+    @JsonKey(name: 'target_username') required String targetUsername,
     
     /// Optional message to include with request
     String? message,

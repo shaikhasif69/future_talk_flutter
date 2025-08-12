@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/theme/app_theme.dart';
 import 'routing/app_router.dart';
 
@@ -12,7 +13,11 @@ class FutureTalkApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     
-    return MaterialApp.router(
+    return ScreenUtilInit(
+      designSize: const Size(375, 812), // iPhone 12 Pro size as reference
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) => MaterialApp.router(
       // ==================== APP METADATA ====================
       title: 'Future Talk',
       debugShowCheckedModeBanner: false,
@@ -44,6 +49,7 @@ class FutureTalkApp extends ConsumerWidget {
           child: child ?? const SizedBox.shrink(),
         );
       },
+    ),
     );
   }
 }

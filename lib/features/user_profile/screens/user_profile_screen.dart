@@ -1,36 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
+import '../../../core/constants/app_text_styles.dart';
 import '../models/user_profile_model.dart';
-import '../widgets/collapsible_profile_header.dart';
-import '../widgets/connection_status_card.dart';
+import '../services/user_profile_service.dart';
 
-/// Premium user profile screen with advanced scrolling behavior
-/// Features unified scrolling, collapsible header, and rich content sections
-class UserProfileScreen extends StatefulWidget {
+/// Provider for UserProfileService instance
+final userProfileServiceProvider = Provider<UserProfileService>((ref) {
+  return UserProfileService();
+});
+
+/// Provider for user profile data
+final userProfileProvider = FutureProvider.family<UserProfileModel, String>((ref, userId) async {
+  final service = ref.read(userProfileServiceProvider);
+  final result = await service.getUserProfile(userId);
+  
+  return result.when(
+    success: (profile) => profile,
+    failure: (error) {
+      // Create a special exception that includes the status code for better error handling
+      throw UserProfileException(error.message, error.statusCode);
+    },
+  );
+});
+
+/// Custom exception for user profile errors
+class UserProfileException implements Exception {
+  final String message;
+  final int? statusCode;
+  
+  const UserProfileException(this.message, this.statusCode);
+  
+  @override
+  String toString() => message;
+  
+  bool get isNotFound => statusCode == 404;
+  bool get isUnauthorized => statusCode == 401 || statusCode == 403;
+}
+
+/// Stunning user profile screen with privacy-aware content
+/// Features beautiful design, friend/non-friend states, and premium interactions
+class UserProfileScreen extends ConsumerStatefulWidget {
   final String userId;
-  final UserProfileModel? userProfile;
 
   const UserProfileScreen({
     super.key,
     required this.userId,
-    this.userProfile,
   });
 
   @override
-  State<UserProfileScreen> createState() => _UserProfileScreenState();
+  ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen>
+class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
     with TickerProviderStateMixin {
   late ScrollController _scrollController;
-  late AnimationController _contentAnimationController;
-  late Animation<double> _contentFadeAnimation;
-  late Animation<Offset> _contentSlideAnimation;
-  
-  // Mock user profile data - in real app, this would come from a provider
-  late UserProfileModel userProfile;
+  late AnimationController _fadeController;
+  late Animation<double> _fadeAnimation;
   
   double _scrollOffset = 0.0;
   bool _isHeaderCollapsed = false;
@@ -38,14 +68,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   @override
   void initState() {
     super.initState();
-    _initializeData();
     _setupScrollController();
     _setupAnimations();
-  }
-
-  void _initializeData() {
-    // Use provided profile or load mock data
-    userProfile = widget.userProfile ?? UserProfileMockData.sarahProfile;
   }
 
   void _setupScrollController() {
@@ -54,39 +78,26 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   }
 
   void _setupAnimations() {
-    _contentAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 1200),
+    _fadeController = AnimationController(
+      duration: const Duration(milliseconds: 800),
       vsync: this,
     );
 
-    _contentFadeAnimation = Tween<double>(
+    _fadeAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
     ).animate(CurvedAnimation(
-      parent: _contentAnimationController,
-      curve: const Interval(0.3, 1.0, curve: Curves.easeOut),
+      parent: _fadeController,
+      curve: Curves.easeOutCubic,
     ));
 
-    _contentSlideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.5),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _contentAnimationController,
-      curve: const Interval(0.2, 0.8, curve: Curves.easeOutCubic),
-    ));
-
-    // Start content animation after a brief delay
-    Future.delayed(const Duration(milliseconds: 300), () {
-      if (mounted) {
-        _contentAnimationController.forward();
-      }
-    });
+    _fadeController.forward();
   }
 
   void _onScroll() {
     setState(() {
       _scrollOffset = _scrollController.offset;
-      _isHeaderCollapsed = _scrollOffset > 150;
+      _isHeaderCollapsed = _scrollOffset > 200;
     });
   }
 
@@ -94,395 +105,154 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   void dispose() {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
-    _contentAnimationController.dispose();
+    _fadeController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final profileAsync = ref.watch(userProfileProvider(widget.userId));
+
     return Scaffold(
       backgroundColor: AppColors.warmCream,
-      body: CustomScrollView(
-        controller: _scrollController,
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
-        slivers: [
-          // Collapsible Header with Parallax Effects
-          CollapsibleProfileHeader(
-            userProfile: userProfile,
-            scrollController: _scrollController,
-            onBackPressed: () => Navigator.of(context).pop(),
-            onMessagePressed: _onMessagePressed,
-            onMorePressed: _onMorePressed,
-          ),
-          
-          // Connection Status Card (Overlaps header)
-          SliverToBoxAdapter(
-            child: ConnectionStatusCard(
-              userProfile: userProfile,
-              onTouchStone: _onTouchStone,
-              onSendMessage: _onMessagePressed,
-            ),
-          ),
-          
-          // Main Content Sections
-          SliverToBoxAdapter(
-            child: AnimatedBuilder(
-              animation: _contentAnimationController,
-              builder: (context, child) {
-                return FadeTransition(
-                  opacity: _contentFadeAnimation,
-                  child: SlideTransition(
-                    position: _contentSlideAnimation,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppDimensions.screenPadding,
-                      ),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: AppDimensions.spacingXL),
-                          _buildSharedExperiencesSection(),
-                          const SizedBox(height: AppDimensions.spacingXL),
-                          _buildTimeCapsuleSection(),
-                          const SizedBox(height: AppDimensions.spacingXL),
-                          _buildReadingTogetherSection(),
-                          const SizedBox(height: AppDimensions.spacingXL),
-                          _buildComfortStonesSection(),
-                          const SizedBox(height: AppDimensions.spacingXL),
-                          _buildFriendshipStatsSection(),
-                          const SizedBox(height: AppDimensions.spacingXXXL),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+      body: profileAsync.when(
+        data: (profile) => _buildProfileContent(profile),
+        loading: () => _buildLoadingState(),
+        error: (error, stack) => _buildErrorState(error),
       ),
     );
   }
 
-  Widget _buildSharedExperiencesSection() {
-    return _buildContentSection(
-      title: 'Shared Experiences',
-      subtitle: '${userProfile.sharedExperiences.length} together',
-      icon: '🤝',
-      child: _buildExperiencesGrid(),
-    );
-  }
-
-  Widget _buildExperiencesGrid() {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1.1,
-        crossAxisSpacing: AppDimensions.spacingM,
-        mainAxisSpacing: AppDimensions.spacingM,
-      ),
-      itemCount: userProfile.sharedExperiences.length,
-      itemBuilder: (context, index) {
-        final experience = userProfile.sharedExperiences[index];
-        return _buildExperienceCard(experience);
-      },
-    );
-  }
-
-  Widget _buildExperienceCard(SharedExperience experience) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        onTap: () {
-          HapticFeedback.lightImpact();
-          _onExperienceTapped(experience);
-        },
-        child: Container(
-          padding: const EdgeInsets.all(AppDimensions.spacingL),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [AppColors.warmCream, AppColors.pearlWhite],
+  Widget _buildProfileContent(UserProfileModel profile) {
+    return CustomScrollView(
+      controller: _scrollController,
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        // Stunning Profile Header
+        _buildSliverProfileHeader(profile),
+        
+        // Profile Content
+        SliverToBoxAdapter(
+          child: FadeTransition(
+            opacity: _fadeAnimation,
+            child: Column(
+              children: [
+                const SizedBox(height: AppDimensions.spacingL),
+                
+                // Bio Section (visible to friends)
+                if (profile.isFriend && profile.bio != null)
+                  _buildBioSection(profile),
+                
+                // Interests Section (visible to friends)
+                if (profile.isFriend && profile.interests != null)
+                  _buildInterestsSection(profile),
+                
+                // Profile Stats Section
+                _buildProfileStatsSection(profile),
+                
+                // Action Buttons
+                _buildActionButtonsSection(profile),
+                
+                // Privacy Notice for Non-Friends
+                if (profile.isNotFriend)
+                  _buildPrivacyNoticeSection(),
+                
+                const SizedBox(height: AppDimensions.spacingXXXL),
+              ],
             ),
-            borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-            border: Border.all(
-              color: AppColors.sageGreen.withAlpha(26),
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.cardShadow,
-                blurRadius: 16,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                experience.icon,
-                style: const TextStyle(fontSize: 24),
-              ),
-              const SizedBox(height: AppDimensions.spacingS),
-              Text(
-                experience.title,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.softCharcoal,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: AppDimensions.spacingXS),
-              Text(
-                experience.subtitle,
-                style: const TextStyle(
-                  fontSize: 11,
-                  color: AppColors.softCharcoalLight,
-                ),
-              ),
-            ],
           ),
         ),
-      ),
+      ],
     );
   }
 
-  Widget _buildTimeCapsuleSection() {
-    return _buildContentSection(
-      title: 'Time Capsule History',
-      subtitle: '${userProfile.timeCapsules.length} messages',
-      icon: '⏰',
-      child: Column(
-        children: userProfile.timeCapsules.map((capsule) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: AppDimensions.spacingM),
-            child: _buildTimeCapsuleCard(capsule),
-          );
-        }).toList(),
+  // Profile Header - Stunning gradient with parallax effects
+  Widget _buildSliverProfileHeader(UserProfileModel profile) {
+    return SliverAppBar(
+      expandedHeight: 300.h,
+      floating: false,
+      pinned: true,
+      elevation: 0,
+      backgroundColor: AppColors.sageGreen,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios, color: AppColors.pearlWhite),
+        onPressed: () => Navigator.of(context).pop(),
       ),
-    );
-  }
-
-  Widget _buildTimeCapsuleCard(TimeCapsuleItem capsule) {
-    final isDelivered = capsule.status == CapsuleStatus.delivered;
-    final borderColor = capsule.isFromCurrentUser 
-        ? AppColors.sageGreen 
-        : AppColors.lavenderMist;
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        onTap: () {
-          HapticFeedback.lightImpact();
-          _onTimeCapsuleTapped(capsule);
-        },
-        child: Container(
-          padding: const EdgeInsets.all(AppDimensions.spacingL),
-          decoration: BoxDecoration(
+      flexibleSpace: FlexibleSpaceBar(
+        background: Container(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                borderColor.withAlpha(13),
-                AppColors.pearlWhite,
+                AppColors.sageGreen,
+                AppColors.lavenderMist,
+                AppColors.warmPeach,
               ],
+              stops: [0.0, 0.6, 1.0],
             ),
-            borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-            border: Border(
-              left: BorderSide(
-                color: borderColor,
-                width: 4,
-              ),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.cardShadow,
-                blurRadius: 12,
-                offset: const Offset(0, 2),
-              ),
-            ],
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    capsule.isFromCurrentUser ? 'To ${userProfile.name}' : 'From ${userProfile.name}',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: borderColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(
-                    _formatCapsuleDate(capsule),
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: AppColors.softCharcoalLight,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppDimensions.spacingS),
-              Text(
-                capsule.preview,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: AppColors.softCharcoal,
-                  height: 1.4,
-                  fontStyle: FontStyle.italic,
-                  fontFamily: 'Crimson Pro',
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildReadingTogetherSection() {
-    return _buildContentSection(
-      title: 'Reading Together',
-      subtitle: 'Currently: ${userProfile.readingSessions.where((s) => s.status == ReadingStatus.active).length} active',
-      icon: '📖',
-      child: Column(
-        children: userProfile.readingSessions.map((session) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: AppDimensions.spacingM),
-            child: _buildReadingSessionCard(session),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  Widget _buildReadingSessionCard(ReadingSession session) {
-    final isActive = session.status == ReadingStatus.active;
-    
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        onTap: () {
-          HapticFeedback.lightImpact();
-          _onReadingSessionTapped(session);
-        },
-        child: Container(
-          padding: const EdgeInsets.all(AppDimensions.spacingL),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                AppColors.warmPeach.withAlpha(13),
-                AppColors.pearlWhite,
-              ],
-            ),
-            borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-            border: Border(
-              left: BorderSide(
-                color: AppColors.warmPeach,
-                width: 4,
-              ),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.cardShadow,
-                blurRadius: 12,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              // Book cover
-              Container(
-                width: 48,
-                height: 64,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AppColors.warmPeach, AppColors.dustyRose],
-                  ),
-                  borderRadius: BorderRadius.circular(AppDimensions.radiusS),
-                ),
-                child: Center(
-                  child: Text(
-                    session.bookCover,
-                    style: const TextStyle(fontSize: 20),
+              // Background patterns
+              Positioned(
+                top: -50,
+                right: -50,
+                child: Container(
+                  width: 200.w,
+                  height: 200.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(0.1),
                   ),
                 ),
               ),
-              const SizedBox(width: AppDimensions.spacingL),
               
-              // Book info
-              Expanded(
+              // Profile content
+              Center(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      session.bookTitle,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.softCharcoal,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      '${session.author} • Chapter ${session.currentChapter} of ${session.totalChapters}',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppColors.softCharcoalLight,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      isActive 
-                          ? 'Last read: ${_formatLastRead(session.lastReadAt)}'
-                          : 'Finished: ${_formatLastRead(session.lastReadAt)}',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppColors.softCharcoalLight,
-                      ),
-                    ),
-                    const SizedBox(height: AppDimensions.spacingS),
+                    SizedBox(height: 60.h),
                     
-                    // Progress bar
-                    Container(
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: AppColors.whisperGray,
-                        borderRadius: BorderRadius.circular(2),
+                    // Profile Picture with elegant border
+                    _buildProfilePicture(profile),
+                    
+                    SizedBox(height: AppDimensions.spacingL),
+                    
+                    // Display Name
+                    Text(
+                      profile.displayName,
+                      style: AppTextStyles.headlineLarge.copyWith(
+                        color: AppColors.pearlWhite,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 28.sp,
                       ),
-                      child: FractionallySizedBox(
-                        alignment: Alignment.centerLeft,
-                        widthFactor: session.progressPercentage / 100,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [AppColors.warmPeach, AppColors.dustyRose],
-                            ),
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
+                    ).animate()
+                     .fadeIn(duration: 600.ms, delay: 200.ms)
+                     .slideY(begin: 0.3, end: 0),
+                    
+                    SizedBox(height: 4.h),
+                    
+                    // Username
+                    Text(
+                      '@${profile.username}',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.pearlWhite.withOpacity(0.9),
+                        fontSize: 16.sp,
                       ),
-                    ),
+                    ).animate()
+                     .fadeIn(duration: 600.ms, delay: 400.ms)
+                     .slideY(begin: 0.3, end: 0),
+                    
+                    SizedBox(height: AppDimensions.spacingM),
+                    
+                    // Online Status & Social Battery (Friends only)
+                    if (profile.isFriend)
+                      _buildStatusIndicators(profile)
+                        .animate()
+                        .fadeIn(duration: 600.ms, delay: 600.ms)
+                        .slideY(begin: 0.3, end: 0),
                   ],
                 ),
               ),
@@ -492,232 +262,145 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       ),
     );
   }
-
-  Widget _buildComfortStonesSection() {
-    return _buildContentSection(
-      title: '${userProfile.name}\'s Comfort Stones',
-      subtitle: '${userProfile.comfortStones.length} shared with you',
-      icon: '🪨',
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 0.9,
-          crossAxisSpacing: AppDimensions.spacingM,
-          mainAxisSpacing: AppDimensions.spacingM,
-        ),
-        itemCount: userProfile.comfortStones.length,
-        itemBuilder: (context, index) {
-          final stone = userProfile.comfortStones[index];
-          return _buildComfortStoneCard(stone);
-        },
-      ),
-    );
-  }
-
-  Widget _buildComfortStoneCard(ComfortStone stone) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        onTap: () {
-          HapticFeedback.mediumImpact();
-          _onComfortStoneTapped(stone);
-        },
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          padding: const EdgeInsets.all(AppDimensions.spacingM),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                AppColors.dustyRose.withAlpha(26),
-                AppColors.warmPeach.withAlpha(26),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-            boxShadow: stone.isActive 
-                ? [
-                    BoxShadow(
-                      color: AppColors.dustyRose.withAlpha(77),
-                      blurRadius: 16,
-                      spreadRadius: 2,
-                    ),
-                  ]
-                : [
-                    BoxShadow(
-                      color: AppColors.cardShadow,
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                transform: stone.isActive 
-                    ? (Matrix4.identity()..scale(1.1))
-                    : Matrix4.identity(),
-                child: Text(
-                  stone.icon,
-                  style: const TextStyle(fontSize: 28),
-                ),
-              ),
-              const SizedBox(height: AppDimensions.spacingS),
-              Text(
-                stone.name,
-                style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.softCharcoal,
-                ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 2),
-              Text(
-                stone.isActive 
-                    ? 'Touched ${_formatLastTouched(stone.lastTouchedAt!)}'
-                    : '${stone.totalTouches} touches today',
-                style: const TextStyle(
-                  fontSize: 9,
-                  color: AppColors.softCharcoalLight,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFriendshipStatsSection() {
+  
+  // Profile Picture with beautiful border effects
+  Widget _buildProfilePicture(UserProfileModel profile) {
     return Container(
-      padding: const EdgeInsets.all(AppDimensions.cardPaddingLarge),
+      width: 120.w,
+      height: 120.w,
       decoration: BoxDecoration(
+        shape: BoxShape.circle,
         gradient: const LinearGradient(
-          colors: [AppColors.sageGreen, AppColors.sageGreenLight],
+          colors: [AppColors.warmPeach, AppColors.dustyRose],
         ),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
         boxShadow: [
           BoxShadow(
-            color: AppColors.sageGreen.withAlpha(77),
-            blurRadius: 24,
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 20,
             offset: const Offset(0, 8),
           ),
         ],
       ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const Text(
-                'Your Friendship Journey',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  fontFamily: 'Playfair Display',
+      child: Container(
+        margin: EdgeInsets.all(4.w),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: AppColors.pearlWhite,
+          image: profile.profilePictureUrl != null
+              ? DecorationImage(
+                  image: NetworkImage(profile.profilePictureUrl!),
+                  fit: BoxFit.cover,
+                )
+              : null,
+        ),
+        child: profile.profilePictureUrl == null
+            ? Center(
+                child: Text(
+                  profile.initials,
+                  style: AppTextStyles.headlineLarge.copyWith(
+                    color: AppColors.sageGreen,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 36.sp,
+                  ),
                 ),
+              )
+            : null,
+      ),
+    ).animate()
+     .scale(duration: 800.ms, curve: Curves.easeOutCubic)
+     .fadeIn(duration: 600.ms);
+  }
+  
+  // Status Indicators for friends
+  Widget _buildStatusIndicators(UserProfileModel profile) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // Online Status
+        if (profile.isOnline == true) ...[
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: AppColors.sageGreen.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(20.r),
+              border: Border.all(
+                color: AppColors.sageGreen,
+                width: 1,
               ),
-              const Spacer(),
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withAlpha(51),
-                  borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 8.w,
+                  height: 8.h,
+                  decoration: const BoxDecoration(
+                    color: AppColors.sageGreen,
+                    shape: BoxShape.circle,
+                  ),
                 ),
-                child: const Text(
-                  '✨',
-                  style: TextStyle(fontSize: 16),
+                SizedBox(width: 6.w),
+                Text(
+                  'Online',
+                  style: AppTextStyles.labelSmall.copyWith(
+                    color: AppColors.pearlWhite,
+                    fontSize: 12.sp,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          const SizedBox(height: AppDimensions.spacingXL),
-          _buildStatsGrid(),
+          SizedBox(width: 12.w),
         ],
-      ),
+        
+        // Social Battery
+        if (profile.socialBatteryLevel != null) ...[
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(20.r),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.battery_charging_full,
+                  size: 14.w,
+                  color: AppColors.pearlWhite,
+                ),
+                SizedBox(width: 6.w),
+                Text(
+                  '${profile.socialBatteryLevel}%',
+                  style: AppTextStyles.labelSmall.copyWith(
+                    color: AppColors.pearlWhite,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ],
     );
   }
-
-  Widget _buildStatsGrid() {
-    final stats = [
-      ('${userProfile.friendshipStats.totalDays}', 'Days of friendship'),
-      ('${userProfile.friendshipStats.meaningfulConversations}', 'Thoughtful conversations'),
-      ('${userProfile.friendshipStats.hoursReadingTogether}h', 'Reading together'),
-      ('${userProfile.friendshipStats.comfortTouchesShared}', 'Comfort touches shared'),
-    ];
-
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1.8,
-        crossAxisSpacing: AppDimensions.spacingL,
-        mainAxisSpacing: AppDimensions.spacingL,
-      ),
-      itemCount: stats.length,
-      itemBuilder: (context, index) {
-        final (number, label) = stats[index];
-        return Container(
-          padding: const EdgeInsets.all(AppDimensions.spacingL),
-          decoration: BoxDecoration(
-            color: Colors.white.withAlpha(26),
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                number,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  fontFamily: 'Playfair Display',
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 11,
-                  color: Colors.white.withAlpha(230),
-                ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildContentSection({
-    required String title,
-    required String subtitle,
-    required String icon,
-    required Widget child,
-  }) {
+  
+  // Bio Section for friends
+  Widget _buildBioSection(UserProfileModel profile) {
     return Container(
-      padding: const EdgeInsets.all(AppDimensions.cardPaddingLarge),
+      margin: EdgeInsets.symmetric(horizontal: AppDimensions.screenPadding),
+      padding: EdgeInsets.all(AppDimensions.cardPaddingLarge),
       decoration: BoxDecoration(
         color: AppColors.pearlWhite,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
         boxShadow: [
           BoxShadow(
             color: AppColors.cardShadow,
-            blurRadius: 20,
+            blurRadius: 12,
             offset: const Offset(0, 4),
           ),
         ],
@@ -725,239 +408,539 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    icon,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  const SizedBox(width: AppDimensions.spacingS),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.softCharcoal,
-                      fontFamily: 'Playfair Display',
-                    ),
+          Text(
+            'About',
+            style: AppTextStyles.titleMedium.copyWith(
+              color: AppColors.softCharcoal,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(height: AppDimensions.spacingS),
+          Text(
+            profile.bio!,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.softCharcoal,
+              height: 1.5,
+            ),
+          ),
+        ],
+      ),
+    ).animate()
+     .fadeIn(duration: 600.ms, delay: 200.ms)
+     .slideY(begin: 0.3, end: 0);
+  }
+  
+  // Interests Section for friends
+  Widget _buildInterestsSection(UserProfileModel profile) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: AppDimensions.screenPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: AppDimensions.spacingL),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppDimensions.spacingM),
+            child: Text(
+              'Interests',
+              style: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.softCharcoal,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          SizedBox(height: AppDimensions.spacingM),
+          Wrap(
+            spacing: 8.w,
+            runSpacing: 8.h,
+            children: profile.interests!.map((interest) => Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [AppColors.sageGreen, AppColors.sageGreenLight],
+                ),
+                borderRadius: BorderRadius.circular(20.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.sageGreen.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
                 ],
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppDimensions.spacingS,
-                  vertical: AppDimensions.spacingXS,
+              child: Text(
+                interest,
+                style: AppTextStyles.labelMedium.copyWith(
+                  color: AppColors.pearlWhite,
+                  fontWeight: FontWeight.w500,
                 ),
-                decoration: BoxDecoration(
-                  color: AppColors.sageGreen.withAlpha(26),
-                  borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-                ),
-                child: Text(
-                  subtitle,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.softCharcoalLight,
-                  ),
+              ),
+            )).toList(),
+          ),
+        ],
+      ),
+    ).animate()
+     .fadeIn(duration: 600.ms, delay: 400.ms)
+     .slideY(begin: 0.3, end: 0);
+  }
+  
+  // Profile Stats Section
+  Widget _buildProfileStatsSection(UserProfileModel profile) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: AppDimensions.screenPadding),
+      padding: EdgeInsets.all(AppDimensions.cardPaddingLarge),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.whisperGray.withOpacity(0.3),
+            AppColors.pearlWhite,
+          ],
+        ),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+        border: Border.all(
+          color: AppColors.whisperGray.withOpacity(0.5),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.person_outline,
+                color: AppColors.softCharcoalLight,
+                size: 20.w,
+              ),
+              SizedBox(width: AppDimensions.spacingS),
+              Text(
+                'Profile Stats',
+                style: AppTextStyles.titleSmall.copyWith(
+                  color: AppColors.softCharcoal,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: AppDimensions.spacingXL),
-          child,
+          SizedBox(height: AppDimensions.spacingL),
+          Row(
+            children: [
+              Expanded(
+                child: _buildStatItem(
+                  icon: Icons.calendar_today,
+                  label: 'Member since',
+                  value: profile.memberSince,
+                ),
+              ),
+              SizedBox(width: AppDimensions.spacingL),
+              Expanded(
+                child: _buildStatItem(
+                  icon: Icons.people_outline,
+                  label: 'Mutual friends',
+                  value: profile.mutualFriendsCount.toString(),
+                ),
+              ),
+            ],
+          ),
         ],
+      ),
+    ).animate()
+     .fadeIn(duration: 600.ms, delay: 600.ms)
+     .slideY(begin: 0.3, end: 0);
+  }
+  
+  Widget _buildStatItem({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Column(
+      children: [
+        Icon(
+          icon,
+          color: AppColors.sageGreen,
+          size: 24.w,
+        ),
+        SizedBox(height: 4.h),
+        Text(
+          value,
+          style: AppTextStyles.titleSmall.copyWith(
+            color: AppColors.softCharcoal,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        Text(
+          label,
+          style: AppTextStyles.labelSmall.copyWith(
+            color: AppColors.softCharcoalLight,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+  
+  // Action Buttons Section based on friendship status
+  Widget _buildActionButtonsSection(UserProfileModel profile) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: AppDimensions.screenPadding),
+      child: Column(
+        children: [
+          SizedBox(height: AppDimensions.spacingL),
+          
+          if (profile.isFriend) ...[
+            // Friend Actions
+            Row(
+              children: [
+                Expanded(
+                  child: _buildActionButton(
+                    icon: Icons.message,
+                    label: 'Send Message',
+                    color: AppColors.sageGreen,
+                    onTap: () => _onSendMessage(profile),
+                  ),
+                ),
+                SizedBox(width: AppDimensions.spacingM),
+                Expanded(
+                  child: _buildActionButton(
+                    icon: Icons.schedule,
+                    label: 'Time Capsule',
+                    color: AppColors.warmPeach,
+                    onTap: () => _onSendTimeCapsule(profile),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: AppDimensions.spacingM),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildActionButton(
+                    icon: Icons.link,
+                    label: 'Connection Stone',
+                    color: AppColors.dustyRose,
+                    onTap: () => _onShareConnectionStone(profile),
+                  ),
+                ),
+                SizedBox(width: AppDimensions.spacingM),
+                Expanded(
+                  child: _buildActionButton(
+                    icon: Icons.menu_book,
+                    label: 'Reading Invite',
+                    color: AppColors.lavenderMist,
+                    onTap: () => _onSendReadingInvite(profile),
+                  ),
+                ),
+              ],
+            ),
+          ] else if (profile.isPending) ...[
+            // Pending Request
+            _buildActionButton(
+              icon: Icons.hourglass_empty,
+              label: 'Request Sent',
+              color: AppColors.softCharcoalLight,
+              onTap: null, // Disabled
+            ),
+          ] else ...[
+            // Non-Friend Actions
+            _buildActionButton(
+              icon: Icons.person_add,
+              label: 'Add Friend',
+              color: AppColors.sageGreen,
+              onTap: () => _onAddFriend(profile),
+            ),
+            SizedBox(height: AppDimensions.spacingM),
+            _buildActionButton(
+              icon: Icons.message,
+              label: 'Send Message',
+              color: AppColors.warmPeach,
+              onTap: () => _onSendMessage(profile),
+            ),
+          ],
+        ],
+      ),
+    ).animate()
+     .fadeIn(duration: 600.ms, delay: 800.ms)
+     .slideY(begin: 0.3, end: 0);
+  }
+  
+  Widget _buildActionButton({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback? onTap,
+  }) {
+    final isDisabled = onTap == null;
+    
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppDimensions.spacingL,
+            vertical: AppDimensions.spacingM,
+          ),
+          decoration: BoxDecoration(
+            gradient: isDisabled 
+              ? null 
+              : LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [color, color.withOpacity(0.8)],
+                ),
+            color: isDisabled ? AppColors.whisperGray.withOpacity(0.5) : null,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+            boxShadow: isDisabled ? null : [
+              BoxShadow(
+                color: color.withOpacity(0.3),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: isDisabled ? AppColors.softCharcoalLight : AppColors.pearlWhite,
+                size: 20.w,
+              ),
+              SizedBox(width: AppDimensions.spacingS),
+              Text(
+                label,
+                style: AppTextStyles.labelMedium.copyWith(
+                  color: isDisabled ? AppColors.softCharcoalLight : AppColors.pearlWhite,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
-
-  // Event handlers
-  void _onMessagePressed() {
-    HapticFeedback.lightImpact();
-    // Navigate to chat screen
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Opening chat...')),
+  
+  // Privacy Notice for Non-Friends
+  Widget _buildPrivacyNoticeSection() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: AppDimensions.screenPadding),
+      padding: EdgeInsets.all(AppDimensions.cardPaddingLarge),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.whisperGray.withOpacity(0.3),
+            AppColors.stoneGray.withOpacity(0.1),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+        border: Border.all(
+          color: AppColors.whisperGray.withOpacity(0.5),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            Icons.lock_outline,
+            color: AppColors.softCharcoalLight,
+            size: 32.w,
+          ),
+          SizedBox(height: AppDimensions.spacingM),
+          Text(
+            'Privacy Protected',
+            style: AppTextStyles.titleSmall.copyWith(
+              color: AppColors.softCharcoal,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(height: AppDimensions.spacingS),
+          Text(
+            'This user keeps their personal information private. Become friends to see more details about their interests and activities.',
+            style: AppTextStyles.bodySmall.copyWith(
+              color: AppColors.softCharcoalLight,
+              height: 1.4,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    ).animate()
+     .fadeIn(duration: 600.ms, delay: 1000.ms)
+     .slideY(begin: 0.3, end: 0);
+  }
+  
+  // Loading State
+  Widget _buildLoadingState() {
+    return Scaffold(
+      backgroundColor: AppColors.warmCream,
+      body: const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(AppColors.sageGreen),
+        ),
+      ),
     );
   }
-
-  void _onMorePressed() {
-    HapticFeedback.lightImpact();
-    // Show more options
-    _showMoreOptionsBottomSheet();
+  
+  // Error State
+  Widget _buildErrorState(Object error) {
+    // Handle different types of errors
+    String title;
+    String message;
+    IconData icon;
+    
+    if (error is UserProfileException) {
+      if (error.isNotFound) {
+        title = 'Profile Not Found';
+        message = 'This user profile could not be found or is no longer available.';
+        icon = Icons.person_off_outlined;
+      } else if (error.isUnauthorized) {
+        title = 'Access Denied';
+        message = 'You don\'t have permission to view this profile.';
+        icon = Icons.lock_outline;
+      } else {
+        title = 'Unable to Load Profile';
+        message = error.message;
+        icon = Icons.error_outline;
+      }
+    } else {
+      title = 'Unable to Load Profile';
+      message = error.toString();
+      icon = Icons.error_outline;
+    }
+    
+    return Scaffold(
+      backgroundColor: AppColors.warmCream,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: AppColors.softCharcoal),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppDimensions.screenPadding),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 64.w,
+                color: AppColors.dustyRose,
+              ),
+              SizedBox(height: AppDimensions.spacingL),
+              Text(
+                title,
+                style: AppTextStyles.headlineSmall.copyWith(
+                  color: AppColors.softCharcoal,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: AppDimensions.spacingS),
+              Text(
+                message,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.softCharcoalLight,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: AppDimensions.spacingXL),
+              
+              // Action buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Go back button
+                  Flexible(
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.whisperGray,
+                        foregroundColor: AppColors.softCharcoal,
+                      ),
+                      child: const Text('Go Back'),
+                    ),
+                  ),
+                  
+                  // Only show retry for non-404 errors
+                  if (error is! UserProfileException || !error.isNotFound) ...[
+                    SizedBox(width: AppDimensions.spacingM),
+                    Flexible(
+                      child: ElevatedButton(
+                        onPressed: () => ref.refresh(userProfileProvider(widget.userId)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.sageGreen,
+                          foregroundColor: AppColors.pearlWhite,
+                        ),
+                        child: const Text('Retry'),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
-
-  void _onTouchStone() {
-    HapticFeedback.mediumImpact();
-    // Trigger stone touch animation
+  
+  // Action Handlers
+  void _onSendMessage(UserProfileModel profile) {
+    HapticFeedback.lightImpact();
+    // Navigate to chat
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('You touched ${userProfile.name}\'s comfort stone ✨'),
+        content: Text('Opening chat with ${profile.displayName}...'),
         backgroundColor: AppColors.sageGreen,
       ),
     );
   }
-
-  void _onExperienceTapped(SharedExperience experience) {
-    // Navigate to experience details
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Viewing ${experience.title}')),
-    );
-  }
-
-  void _onTimeCapsuleTapped(TimeCapsuleItem capsule) {
-    // Open time capsule
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Opening time capsule from ${_formatCapsuleDate(capsule)}')),
-    );
-  }
-
-  void _onReadingSessionTapped(ReadingSession session) {
-    // Navigate to reading session
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Opening ${session.bookTitle}')),
-    );
-  }
-
-  void _onComfortStoneTapped(ComfortStone stone) {
-    // Touch comfort stone
-    setState(() {
-      // In real app, this would update via provider
-      final updatedStone = stone.copyWith(
-        isActive: true,
-        lastTouchedAt: DateTime.now(),
-        totalTouches: stone.totalTouches + 1,
-      );
-      final stoneIndex = userProfile.comfortStones.indexOf(stone);
-      userProfile = userProfile.copyWith(
-        comfortStones: [
-          ...userProfile.comfortStones.sublist(0, stoneIndex),
-          updatedStone,
-          ...userProfile.comfortStones.sublist(stoneIndex + 1),
-        ],
-      );
-    });
-
-    // Reset stone active state after animation
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        setState(() {
-          final stoneIndex = userProfile.comfortStones.indexWhere((s) => s.id == stone.id);
-          if (stoneIndex != -1) {
-            final updatedStone = userProfile.comfortStones[stoneIndex].copyWith(isActive: false);
-            userProfile = userProfile.copyWith(
-              comfortStones: [
-                ...userProfile.comfortStones.sublist(0, stoneIndex),
-                updatedStone,
-                ...userProfile.comfortStones.sublist(stoneIndex + 1),
-              ],
-            );
-          }
-        });
-      }
-    });
-
-    HapticFeedback.mediumImpact();
+  
+  void _onSendTimeCapsule(UserProfileModel profile) {
+    HapticFeedback.lightImpact();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('You touched the ${stone.name} stone 🪨'),
+        content: Text('Creating time capsule for ${profile.displayName}...'),
+        backgroundColor: AppColors.warmPeach,
+      ),
+    );
+  }
+  
+  void _onShareConnectionStone(UserProfileModel profile) {
+    HapticFeedback.lightImpact();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Sharing connection stone with ${profile.displayName}...'),
         backgroundColor: AppColors.dustyRose,
       ),
     );
   }
-
-  void _showMoreOptionsBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(AppDimensions.cardPaddingLarge),
-        decoration: const BoxDecoration(
-          color: AppColors.pearlWhite,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(AppDimensions.radiusXXL),
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: AppColors.whisperGray,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const SizedBox(height: AppDimensions.spacingXL),
-            const Text(
-              'Profile Options',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: AppColors.softCharcoal,
-              ),
-            ),
-            const SizedBox(height: AppDimensions.spacingXL),
-            _buildOptionTile('Block User', Icons.block, AppColors.error),
-            _buildOptionTile('Report Profile', Icons.report, AppColors.error),
-            _buildOptionTile('Share Profile', Icons.share, AppColors.sageGreen),
-            const SizedBox(height: AppDimensions.spacingXL),
-          ],
-        ),
+  
+  void _onSendReadingInvite(UserProfileModel profile) {
+    HapticFeedback.lightImpact();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Sending reading invite to ${profile.displayName}...'),
+        backgroundColor: AppColors.lavenderMist,
       ),
     );
   }
-
-  Widget _buildOptionTile(String title, IconData icon, Color color) {
-    return ListTile(
-      leading: Icon(icon, color: color),
-      title: Text(title),
-      onTap: () {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('$title selected')),
-        );
-      },
+  
+  void _onAddFriend(UserProfileModel profile) {
+    HapticFeedback.mediumImpact();
+    // Send friend request
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Friend request sent to ${profile.displayName}!'),
+        backgroundColor: AppColors.sageGreen,
+      ),
     );
-  }
-
-  // Utility methods
-  String _formatCapsuleDate(TimeCapsuleItem capsule) {
-    final now = DateTime.now();
-    final difference = now.difference(capsule.deliveryDate);
-    
-    if (capsule.status == CapsuleStatus.scheduled) {
-      final daysUntil = capsule.deliveryDate.difference(now).inDays;
-      return 'Opens in $daysUntil days';
-    } else if (difference.inDays == 0) {
-      return 'Delivered today';
-    } else {
-      return 'Delivered ${difference.inDays} days ago';
-    }
-  }
-
-  String _formatLastRead(DateTime lastRead) {
-    final now = DateTime.now();
-    final difference = now.difference(lastRead);
-    
-    if (difference.inDays > 0) {
-      return '${difference.inDays} days ago';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours} hours ago';
-    } else {
-      return '${difference.inMinutes} minutes ago';
-    }
-  }
-
-  String _formatLastTouched(DateTime lastTouched) {
-    final now = DateTime.now();
-    final difference = now.difference(lastTouched);
-    
-    if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
-    } else {
-      return '${difference.inMinutes}m ago';
-    }
   }
 }

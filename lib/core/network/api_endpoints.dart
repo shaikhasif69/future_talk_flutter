@@ -23,22 +23,23 @@ class ApiEndpoints {
   static const String userLookup = '$users/lookup';
   static const String userSuggestions = '$users/search/suggestions';
   
-  // Social/Friends endpoints
+  // Social/Friends endpoints - matching actual backend paths
   static const String social = '/social';
   static const String friends = '$social/friends';
-  static const String friendRequests = '$friends/request';
-  static const String acceptFriendRequest = '$friends/accept';
-  static const String rejectFriendRequest = '$friends/reject';
-  static const String cancelFriendRequest = '$friends/cancel';
-  static const String blockUser = '$friends/block';
-  static const String unblockUser = '$friends/unblock';
-  static const String friendsList = '$friends/list';
-  static const String friendRequestsList = '$friends/requests';
+  static const String friendRequests = '$social/friend-requests';
+  static const String acceptFriendRequest = '$social/friend-requests/accept';
+  static const String rejectFriendRequest = '$social/friend-requests/reject';
+  static const String cancelFriendRequest = '$social/friend-requests/cancel';
+  static const String blockUser = '$social/block';
+  static const String unblockUser = '$social/unblock';
+  static const String friendsList = '$social/friends'; // This is the correct path!
+  static const String friendRequestsList = '$social/friend-requests';
   
   static String userById(String userId) => '$users/$userId';
-  static String acceptFriendRequestById(String requestId) => '$friends/accept/$requestId';
-  static String rejectFriendRequestById(String requestId) => '$friends/reject/$requestId';
-  static String cancelFriendRequestById(String requestId) => '$friends/cancel/$requestId';
-  static String blockUserById(String userId) => '$friends/block/$userId';
-  static String unblockUserById(String userId) => '$friends/unblock/$userId';
+  static String userProfileById(String userId) => '$users/profile/$userId';
+  static String acceptFriendRequestById(String requestId) => '$acceptFriendRequest/$requestId';
+  static String rejectFriendRequestById(String requestId) => '$rejectFriendRequest/$requestId';
+  static String cancelFriendRequestById(String requestId) => '$cancelFriendRequest/$requestId';
+  static String blockUserById(String userId) => '$blockUser/$userId';
+  static String unblockUserById(String userId) => '$unblockUser/$userId';
 }

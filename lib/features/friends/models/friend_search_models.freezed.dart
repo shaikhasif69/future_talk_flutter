@@ -1436,7 +1436,8 @@ SendFriendRequestData _$SendFriendRequestDataFromJson(
 
 /// @nodoc
 mixin _$SendFriendRequestData {
-  /// Target user's username
+  /// Target user's username (sent as target_username to API)
+  @JsonKey(name: 'target_username')
   String get targetUsername => throw _privateConstructorUsedError;
 
   /// Optional message to include with request
@@ -1458,7 +1459,9 @@ abstract class $SendFriendRequestDataCopyWith<$Res> {
           $Res Function(SendFriendRequestData) then) =
       _$SendFriendRequestDataCopyWithImpl<$Res, SendFriendRequestData>;
   @useResult
-  $Res call({String targetUsername, String? message});
+  $Res call(
+      {@JsonKey(name: 'target_username') String targetUsername,
+      String? message});
 }
 
 /// @nodoc
@@ -1502,7 +1505,9 @@ abstract class _$$SendFriendRequestDataImplCopyWith<$Res>
       __$$SendFriendRequestDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String targetUsername, String? message});
+  $Res call(
+      {@JsonKey(name: 'target_username') String targetUsername,
+      String? message});
 }
 
 /// @nodoc
@@ -1539,13 +1544,15 @@ class __$$SendFriendRequestDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SendFriendRequestDataImpl implements _SendFriendRequestData {
   const _$SendFriendRequestDataImpl(
-      {required this.targetUsername, this.message});
+      {@JsonKey(name: 'target_username') required this.targetUsername,
+      this.message});
 
   factory _$SendFriendRequestDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$SendFriendRequestDataImplFromJson(json);
 
-  /// Target user's username
+  /// Target user's username (sent as target_username to API)
   @override
+  @JsonKey(name: 'target_username')
   final String targetUsername;
 
   /// Optional message to include with request
@@ -1590,14 +1597,15 @@ class _$SendFriendRequestDataImpl implements _SendFriendRequestData {
 
 abstract class _SendFriendRequestData implements SendFriendRequestData {
   const factory _SendFriendRequestData(
-      {required final String targetUsername,
+      {@JsonKey(name: 'target_username') required final String targetUsername,
       final String? message}) = _$SendFriendRequestDataImpl;
 
   factory _SendFriendRequestData.fromJson(Map<String, dynamic> json) =
       _$SendFriendRequestDataImpl.fromJson;
 
-  /// Target user's username
+  /// Target user's username (sent as target_username to API)
   @override
+  @JsonKey(name: 'target_username')
   String get targetUsername;
 
   /// Optional message to include with request

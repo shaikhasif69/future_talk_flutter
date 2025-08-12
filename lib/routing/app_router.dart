@@ -21,7 +21,7 @@ import '../features/capsule_creation/screens/anonymous_user_search_screen.dart';
 import '../features/capsule_creation/screens/create_capsule_page2_screen.dart';
 import '../features/capsule_creation/screens/create_capsule_page3_screen_simple.dart';
 import '../features/capsule_creation/screens/create_capsule_final_screen.dart';
-import '../features/profile/screens/dynamic_profile_screen.dart';
+import '../features/profile/screens/profile_screen.dart';
 import '../features/user_profile/screens/user_profile_screen.dart';
 import '../features/user_profile/models/user_profile_model.dart';
 import '../features/settings/screens/settings_screen.dart';
@@ -33,6 +33,7 @@ import '../features/navigation/screens/parallel_reading_screen.dart';
 import '../features/navigation/screens/chat_tab_screen.dart';
 import '../features/navigation/screens/capsule_tab_screen.dart';
 import '../features/navigation/screens/read_tab_screen.dart';
+import '../features/friends/screens/friends_screen.dart';
 
 /// Router provider that handles authentication-aware routing  
 final routerProvider = Provider<GoRouter>((ref) {
@@ -322,7 +323,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/profile',
         name: 'profile',
         builder: (context, state) => AuthGuard(
-          child: const DynamicProfileScreen(),
+          child: const ResponsiveProfileScreen(),
           unauthorizedBuilder: () => const SignInScreen(),
         ),
       ),
@@ -333,17 +334,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'user_profile',
         builder: (context, state) {
           final userId = state.pathParameters['userId']!;
-          final userProfileJson = state.extra as Map<String, dynamic>?;
-          
-          UserProfileModel? userProfile;
-          if (userProfileJson != null) {
-            userProfile = UserProfileModel.fromJson(userProfileJson);
-          }
           
           return AuthGuard(
             child: UserProfileScreen(
               userId: userId,
-              userProfile: userProfile,
             ),
             unauthorizedBuilder: () => const SignInScreen(),
           );
@@ -356,6 +350,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'notifications',
         builder: (context, state) => AuthGuard(
           child: const NotificationScreen(),
+          unauthorizedBuilder: () => const SignInScreen(),
+        ),
+      ),
+
+      // ==================== FRIENDS ROUTES ====================
+      GoRoute(
+        path: '/friends',
+        name: 'friends',
+        builder: (context, state) => AuthGuard(
+          child: const FriendsScreen(),
           unauthorizedBuilder: () => const SignInScreen(),
         ),
       ),
@@ -442,6 +446,7 @@ class Routes {
   static const String createCapsuleReview = '/capsule/create/review';
   static const String profile = '/profile';
   static const String userProfile = '/user-profile';
+  static const String friends = '/friends';
   static const String notifications = '/notifications';
   static const String settings = '/settings';
 }
@@ -505,10 +510,13 @@ extension AppNavigation on BuildContext {
   void goToProfile() => go(Routes.profile);
 
   /// Navigate to user profile screen
-  void goToUserProfile(String userId, {UserProfileModel? userProfile}) {
+  void goToUserProfile(String userId) {
     final path = '/user-profile/$userId';
-    go(path, extra: userProfile?.toJson());
+    go(path);
   }
+
+  /// Navigate to friends screen
+  void goToFriends() => go(Routes.friends);
 
   /// Navigate to notifications screen
   void goToNotifications() => go(Routes.notifications);
