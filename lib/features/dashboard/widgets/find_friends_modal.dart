@@ -221,15 +221,48 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
 
   @override
   Widget build(BuildContext context) {
+    // Listen to provider state changes
+    ref.listen<FriendSearchState>(friendSearchNotifierProvider, (previous, next) {
+      if (!mounted) return;
+      
+      debugPrint('🎧 [FindFriendsModal] Provider state changed - isLookingUpUser: ${next.isLookingUpUser}, error: ${next.lookupError}, user: ${next.lookedUpUser?.username}');
+      
+      // Handle lookup state changes
+      if (previous?.isLookingUpUser == true && !next.isLookingUpUser) {
+        debugPrint('🎧 [FindFriendsModal] Lookup operation completed');
+        // Lookup operation completed
+        if (next.lookupError != null) {
+          // Handle lookup error
+          debugPrint('🎧 [FindFriendsModal] Showing error: ${next.lookupError}');
+          _showError(next.lookupError!);
+          HapticFeedback.lightImpact();
+        } else if (next.lookedUpUser != null) {
+          // User found successfully
+          debugPrint('🎧 [FindFriendsModal] User found: ${next.lookedUpUser!.displayName}');
+          setState(() {
+            _foundUser = next.lookedUpUser;
+            _currentState = FindFriendsState.found;
+          });
+          HapticFeedback.mediumImpact();
+        } else {
+          // No user found
+          debugPrint('🎧 [FindFriendsModal] No user found');
+          setState(() {
+            _currentState = FindFriendsState.notFound;
+          });
+          HapticFeedback.lightImpact();
+        }
+      }
+    });
+    
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0,
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.85,
-        constraints: const BoxConstraints(
-          maxWidth: 320,
-          minHeight: 500,
-          maxHeight: 600,
+        width: MediaQuery.of(context).size.width * 0.9,
+        constraints: BoxConstraints(
+          maxWidth: 380,
+          maxHeight: MediaQuery.of(context).size.height * 0.75,
         ),
         decoration: BoxDecoration(
           color: AppColors.pearlWhite,
@@ -248,7 +281,10 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
           children: [
             _buildModalHeader(),
             Flexible(
-              child: _buildModalContent(),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: _buildModalContent(),
+              ),
             ),
           ],
         ),
@@ -266,12 +302,23 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
 
   Widget _buildModalHeader() {
     return Container(
-      padding: const EdgeInsets.all(AppDimensions.spacingXXL),
-      decoration: const BoxDecoration(
-        border: Border(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppDimensions.spacingL,
+        vertical: AppDimensions.spacingM,
+      ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.sageGreen.withValues(alpha: 0.05),
+            AppColors.warmPeach.withValues(alpha: 0.03),
+          ],
+        ),
+        border: const Border(
           bottom: BorderSide(
             color: AppColors.whisperGray,
-            width: 1.0,
+            width: 0.5,
           ),
         ),
       ),
@@ -449,7 +496,7 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
 
   Widget _buildModalContent() {
     return Padding(
-      padding: const EdgeInsets.all(AppDimensions.spacingXXL),
+      padding: const EdgeInsets.all(AppDimensions.spacingL),
       child: AnimatedSwitcher(
         duration: AppDurations.mediumSlow,
         child: _buildStateContent(),
@@ -612,147 +659,420 @@ class _FindFriendsModalState extends ConsumerState<FindFriendsModal>
   Widget _buildUserProfile(UserLookupResult user) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.pearlWhite,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.cardShadow,
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.sageGreen.withValues(alpha: 0.05),
+            AppColors.warmPeach.withValues(alpha: 0.03),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
+        border: Border.all(
+          color: AppColors.whisperGray.withValues(alpha: 0.5),
+          width: 0.5,
+        ),
       ),
-      child: Column(
-        children: [
-          // Profile Header
-          Container(
-            padding: const EdgeInsets.fromLTRB(
-              AppDimensions.spacingL, 
-              AppDimensions.spacingXL, 
-              AppDimensions.spacingL, 
-              AppDimensions.spacingXXL + 8,
-            ),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [AppColors.sageGreen, AppColors.sageGreenLight],
-              ),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(AppDimensions.radiusL),
-                topRight: Radius.circular(AppDimensions.radiusL),
-              ),
-            ),
-            child: Column(
-              children: [
-                // Clear search button
-                Align(
-                  alignment: Alignment.topRight,
-                  child: GestureDetector(
-                    onTap: _clearSearch,
-                    child: Container(
-                      width: 28,
-                      height: 28,
-                      decoration: BoxDecoration(
-                        color: AppColors.pearlWhite.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: const Icon(
-                        Icons.close,
-                        size: 12,
-                        color: AppColors.pearlWhite,
-                      ),
-                    ),
+      child: Padding(
+        padding: const EdgeInsets.all(AppDimensions.spacingL),
+        child: Column(
+          children: [
+            // Clear search button at top right
+            Align(
+              alignment: Alignment.topRight,
+              child: GestureDetector(
+                onTap: _clearSearch,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: AppColors.softCharcoal.withValues(alpha: 0.05),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    Icons.close_rounded,
+                    size: 16,
+                    color: AppColors.softCharcoal.withValues(alpha: 0.4),
                   ),
                 ),
-                const SizedBox(height: AppDimensions.spacingS),
+              ),
+            ),
+            // Compact profile header
+            Row(
+              children: [
                 // Avatar
                 Container(
-                  width: 64,
-                  height: 64,
+                  width: 56,
+                  height: 56,
                   decoration: BoxDecoration(
-                    color: AppColors.pearlWhite.withValues(alpha: 0.9),
-                    borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        AppColors.sageGreen.withValues(alpha: 0.15),
+                        AppColors.sageGreen.withValues(alpha: 0.05),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(28),
                     border: Border.all(
-                      color: AppColors.pearlWhite.withValues(alpha: 0.3),
-                      width: 3,
+                      color: AppColors.sageGreen.withValues(alpha: 0.2),
+                      width: 1.5,
                     ),
                   ),
                   child: Center(
                     child: Text(
                       user.initials,
-                      style: AppTextStyles.titleLarge.copyWith(
+                      style: AppTextStyles.titleMedium.copyWith(
                         color: AppColors.sageGreen,
                         fontWeight: FontWeight.w600,
-                        fontFamily: AppTextStyles.headingFont,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: AppDimensions.spacingM),
-                // Name
-                Text(
-                  user.displayName,
-                  style: AppTextStyles.headlineSmall.copyWith(
-                    color: AppColors.pearlWhite,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: AppDimensions.spacingXS),
-                // Username
-                Text(
-                  '@${user.username}',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.pearlWhite.withValues(alpha: 0.8),
+                const SizedBox(width: AppDimensions.spacingM),
+                // Name and username
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user.displayName,
+                        style: AppTextStyles.titleMedium.copyWith(
+                          color: AppColors.softCharcoal,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '@${user.username}',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.softCharcoalLight,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
+            const SizedBox(height: AppDimensions.spacingM),
+            // Bio (if exists)
+            if (user.bio != null && user.bio!.isNotEmpty) ...[
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(AppDimensions.spacingS),
+                decoration: BoxDecoration(
+                  color: AppColors.whisperGray.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                ),
+                child: Text(
+                  user.bio!,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.softCharcoal,
+                    height: 1.4,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(height: AppDimensions.spacingM),
+            ],
+            // Compact status badges
+            Row(
+              children: [
+                Expanded(child: _buildCompactSocialBattery(user)),
+                const SizedBox(width: AppDimensions.spacingS),
+                _buildCompactFriendshipBadge(user),
+              ],
+            ),
+            const SizedBox(height: AppDimensions.spacingL),
+            // Streamlined action buttons
+            _buildStreamlinedActions(user),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCompactSocialBattery(UserLookupResult user) {
+    Color batteryColor;
+    IconData batteryIcon;
+    String batteryLevel;
+    
+    if (user.socialBattery >= 80) {
+      batteryColor = AppColors.sageGreen;
+      batteryIcon = Icons.battery_full_rounded;
+      batteryLevel = 'High';
+    } else if (user.socialBattery >= 50) {
+      batteryColor = AppColors.warmPeach;
+      batteryIcon = Icons.battery_5_bar_rounded;
+      batteryLevel = 'Medium';
+    } else {
+      batteryColor = AppColors.dustyRose;
+      batteryIcon = Icons.battery_2_bar_rounded;
+      batteryLevel = 'Low';
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppDimensions.spacingS,
+        vertical: 6,
+      ),
+      decoration: BoxDecoration(
+        color: batteryColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusS),
+        border: Border.all(
+          color: batteryColor.withValues(alpha: 0.2),
+          width: 0.5,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            batteryIcon,
+            size: 14,
+            color: batteryColor,
           ),
-          // Profile Content
-          Transform.translate(
-            offset: const Offset(0, -20),
-            child: Container(
-              padding: const EdgeInsets.all(AppDimensions.spacingXL),
-              margin: const EdgeInsets.symmetric(horizontal: 0),
-              decoration: const BoxDecoration(
-                color: AppColors.pearlWhite,
-                borderRadius: BorderRadius.all(Radius.circular(AppDimensions.radiusL)),
+          const SizedBox(width: 4),
+          Text(
+            batteryLevel,
+            style: AppTextStyles.labelSmall.copyWith(
+              color: batteryColor,
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCompactFriendshipBadge(UserLookupResult user) {
+    final status = user.friendshipStatus;
+    Color badgeColor;
+    IconData statusIcon;
+    
+    switch (status) {
+      case FriendshipStatus.none:
+        badgeColor = AppColors.cloudBlue;
+        statusIcon = Icons.person_add_rounded;
+        break;
+      case FriendshipStatus.pending:
+        badgeColor = AppColors.warmPeach;
+        statusIcon = Icons.schedule_rounded;
+        break;
+      case FriendshipStatus.accepted:
+        badgeColor = AppColors.sageGreen;
+        statusIcon = Icons.check_circle_rounded;
+        break;
+      case FriendshipStatus.blocked:
+        badgeColor = AppColors.dustyRose;
+        statusIcon = Icons.block_rounded;
+        break;
+    }
+    
+    return Container(
+      padding: const EdgeInsets.all(6),
+      decoration: BoxDecoration(
+        color: badgeColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusS),
+        border: Border.all(
+          color: badgeColor.withValues(alpha: 0.2),
+          width: 0.5,
+        ),
+      ),
+      child: Icon(
+        statusIcon,
+        size: 14,
+        color: badgeColor,
+      ),
+    );
+  }
+
+  Widget _buildStreamlinedActions(UserLookupResult user) {
+    final status = user.friendshipStatus;
+    final isRequestPending = ref.watch(friendSearchNotifierProvider).isSendingFriendRequest;
+    
+    return Column(
+      children: [
+        // Main action based on status
+        if (status == FriendshipStatus.none) ...[
+          _buildPrimaryActionButton(
+            label: isRequestPending ? 'Sending...' : 'Add Friend',
+            icon: Icons.person_add_rounded,
+            onTap: isRequestPending ? null : () => _handleUserAction(FriendAction.addFriend),
+            isLoading: isRequestPending,
+          ),
+        ] else if (status == FriendshipStatus.pending) ...[
+          _buildStatusIndicator(
+            label: 'Request Sent',
+            icon: Icons.schedule_rounded,
+            color: AppColors.warmPeach,
+          ),
+        ] else if (status == FriendshipStatus.blocked) ...[
+          _buildStatusIndicator(
+            label: 'Blocked',
+            icon: Icons.block_rounded,
+            color: AppColors.dustyRose,
+          ),
+        ],
+        
+        // Secondary actions row
+        if (status == FriendshipStatus.accepted || status == FriendshipStatus.none) ...[
+          const SizedBox(height: AppDimensions.spacingS),
+          Row(
+            children: [
+              Expanded(
+                child: _buildSecondaryActionButton(
+                  label: 'Message',
+                  icon: Icons.chat_bubble_outline_rounded,
+                  onTap: () => _handleUserAction(FriendAction.sendMessage),
+                ),
               ),
-              child: Column(
-                children: [
-                  // Bio
-                  if (user.bio != null && user.bio!.isNotEmpty) ...[
-                    Text(
-                      user.bio!,
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.softCharcoal,
-                        height: 1.5,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: AppDimensions.spacingL),
-                  ] else ...[
-                    Text(
-                      'No bio available',
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.softCharcoalLight,
-                        fontStyle: FontStyle.italic,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: AppDimensions.spacingL),
-                  ],
-                  // Social Battery Status
-                  _buildSocialBatteryStatus(user),
-                  const SizedBox(height: AppDimensions.spacingL),
-                  // Friendship Status
-                  _buildFriendshipStatusBadge(user),
-                  const SizedBox(height: AppDimensions.spacingXL),
-                  // Action Buttons
-                  _buildActionButtons(user),
-                ],
+              const SizedBox(width: AppDimensions.spacingS),
+              Expanded(
+                child: _buildSecondaryActionButton(
+                  label: 'Capsule',
+                  icon: Icons.access_time_rounded,
+                  onTap: () => _handleUserAction(FriendAction.sendTimeCapsule),
+                ),
               ),
+            ],
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildPrimaryActionButton({
+    required String label,
+    required IconData icon,
+    VoidCallback? onTap,
+    bool isLoading = false,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          gradient: onTap != null && !isLoading ? LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColors.sageGreen,
+              AppColors.sageGreen.withValues(alpha: 0.85),
+            ],
+          ) : null,
+          color: onTap == null || isLoading ? AppColors.whisperGray : null,
+          borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+          boxShadow: onTap != null && !isLoading ? [
+            BoxShadow(
+              color: AppColors.sageGreen.withValues(alpha: 0.15),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ] : [],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (!isLoading) ...[
+              Icon(
+                icon,
+                size: 16,
+                color: onTap != null ? AppColors.pearlWhite : AppColors.softCharcoalLight,
+              ),
+              const SizedBox(width: 6),
+            ],
+            Text(
+              label,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: onTap != null ? AppColors.pearlWhite : AppColors.softCharcoalLight,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSecondaryActionButton({
+    required String label,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.whisperGray.withValues(alpha: 0.5),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          border: Border.all(
+            color: AppColors.stoneGray.withValues(alpha: 0.1),
+            width: 0.5,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 14,
+              color: AppColors.softCharcoal,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: AppTextStyles.labelSmall.copyWith(
+                color: AppColors.softCharcoal,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusIndicator({
+    required String label,
+    required IconData icon,
+    required Color color,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+        border: Border.all(
+          color: color.withValues(alpha: 0.15),
+          width: 0.5,
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 14,
+            color: color,
+          ),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: AppTextStyles.labelSmall.copyWith(
+              color: color,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],
