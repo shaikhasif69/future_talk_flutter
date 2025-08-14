@@ -6,14 +6,12 @@ import 'dart:io';
 class ApiClient {
   // Dynamic base URL based on platform
   // Environment configuration
-  static const bool _useProduction = true; // Change to false for development
+  static const bool _useProduction = false; // Change to false for development
   
   static String get baseUrl {
     if (_useProduction) {
       // Production backend URL
-      // return 'https://future.bytefuse.in/api/v1';
-      return 'http://10.0.2.2:8000/api/v1';
-
+      return 'https://future.bytefuse.in/api/v1';
     }
     
     // Development URLs based on platform

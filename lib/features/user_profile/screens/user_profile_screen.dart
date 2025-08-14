@@ -3,11 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../models/user_profile_model.dart';
 import '../services/user_profile_service.dart';
+import '../../chat/services/chat_repository.dart';
+import '../../chat/models/chat_conversation.dart';
+import '../../chat/models/chat_message.dart';
 
 /// Provider for UserProfileService instance
 final userProfileServiceProvider = Provider<UserProfileService>((ref) {
@@ -892,15 +896,197 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
   }
   
   // Action Handlers
-  void _onSendMessage(UserProfileModel profile) {
+  void _onSendMessage(UserProfileModel profile) async {
     HapticFeedback.lightImpact();
-    // Navigate to chat
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Opening chat with ${profile.displayName}...'),
-        backgroundColor: AppColors.sageGreen,
-      ),
-    );
+    
+    try {
+      // Show loading indicator
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Opening chat with ${profile.displayName}...'),
+          backgroundColor: AppColors.sageGreen,
+          duration: const Duration(seconds: 1),
+        ),
+      );
+      
+      // Find or create conversation with this user
+      final conversation = await _findOrCreateConversation(profile);
+      
+      if (conversation != null && mounted) {
+        // Navigate to individual chat screen
+        context.pushNamed(
+          'individual_chat_direct',
+          pathParameters: {'conversationId': conversation.id},
+          extra: conversation.toJson(),
+        );
+      } else if (mounted) {
+        // Show error
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Unable to start chat with ${profile.displayName}'),
+            backgroundColor: AppColors.dustyRose,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error starting chat: $e'),
+            backgroundColor: AppColors.dustyRose,
+          ),
+        );
+      }
+    }
+  }
+  
+  /// Find existing conversation or create a new one with the user
+  Future<ChatConversation?> _findOrCreateConversation(UserProfileModel profile) async {
+    try {
+      // First, try to find existing conversation with this user
+      final existingConversation = await _findExistingConversation(profile.userId);
+      if (existingConversation != null) {
+        debugPrint('Found existing conversation: ${existingConversation.id}');
+        return existingConversation;
+      }
+      
+      // If no existing conversation, create a new one
+      final newConversation = await _createNewConversation(profile);
+      debugPrint('Created new conversation: ${newConversation?.id}');
+      return newConversation;
+    } catch (e) {
+      debugPrint('Error finding/creating conversation: $e');
+      return null;
+    }
+  }
+  
+  /// Find existing conversation with the user
+  Future<ChatConversation?> _findExistingConversation(String userId) async {
+    try {
+      // Use the chat repository singleton
+      final result = await chatRepository.getConversations();
+      
+      return result.when(
+        success: (conversations) {
+          // Look for direct conversation with this user
+          for (final conversation in conversations) {
+            if (conversation.isDirect) {
+              // Check if this conversation includes the target user
+              final targetParticipant = conversation.participants
+                  .where((p) => p.userId == userId)
+                  .toList();
+              if (targetParticipant.isNotEmpty) {
+                // Convert to ChatConversation
+                return _convertToUiConversation(conversation, userId);
+              }
+            }
+          }
+          return null;
+        },
+        failure: (error) {
+          debugPrint('Error fetching conversations: ${error.message}');
+          return null;
+        },
+      );
+    } catch (e) {
+      debugPrint('Error finding existing conversation: $e');
+      return null;
+    }
+  }
+  
+  /// Create a new conversation with the user
+  Future<ChatConversation?> _createNewConversation(UserProfileModel profile) async {
+    try {
+      final result = await chatRepository.createConversation(
+        participantIds: [profile.userId],
+        conversationType: 'direct',
+      );
+      
+      return result.when(
+        success: (conversation) {
+          // Convert to ChatConversation
+          return _convertToUiConversation(conversation, profile.userId);
+        },
+        failure: (error) {
+          debugPrint('Error creating conversation: ${error.message}');
+          return null;
+        },
+      );
+    } catch (e) {
+      debugPrint('Error creating new conversation: $e');
+      return null;
+    }
+  }
+  
+  /// Convert Conversation model to ChatConversation for UI
+  ChatConversation _convertToUiConversation(dynamic conversation, String otherUserId) {
+    try {
+      debugPrint('🔄 [Convert] Converting conversation: ${conversation.id}');
+      debugPrint('🔄 [Convert] Looking for participant with ID: $otherUserId');
+      debugPrint('🔄 [Convert] Conversation participants: ${conversation.participants?.map((p) => '${p.userId}:${p.username}').join(', ') ?? 'null'}');
+      
+      // Find the other participant
+      final otherParticipants = conversation.participants
+          ?.where((p) => p.userId == otherUserId)
+          ?.toList() ?? [];
+      
+      final otherParticipant = otherParticipants.isNotEmpty ? otherParticipants.first : null;
+      final participantName = otherParticipant?.username ?? 'Unknown User';
+      
+      debugPrint('🔄 [Convert] Found participant: $participantName');
+      
+      return ChatConversation(
+        id: conversation.id,
+        name: participantName,
+        type: conversation.conversationType,
+        participants: [
+          ChatParticipant(
+            id: otherUserId,
+            name: participantName,
+            avatarColor: _getAvatarColorForUser(participantName),
+          ),
+        ],
+        lastMessage: conversation.lastMessage,
+        updatedAt: conversation.lastMessageAt,
+        unreadCount: conversation.unreadCount,
+        isPinned: conversation.isPinned,
+        isMuted: conversation.isMuted,
+      );
+    } catch (e) {
+      debugPrint('❌ [Convert] Error converting conversation: $e');
+      // Fallback - create a basic conversation
+      return ChatConversation(
+        id: conversation.id ?? 'unknown',
+        name: 'Chat User',
+        type: ConversationType.direct,
+        participants: [
+          ChatParticipant(
+            id: otherUserId,
+            name: 'Chat User',
+            avatarColor: _getAvatarColorForUser('Chat User'),
+          ),
+        ],
+        lastMessage: null,
+        updatedAt: DateTime.now(),
+        unreadCount: 0,
+        isPinned: false,
+        isMuted: false,
+      );
+    }
+  }
+  
+  /// Get avatar color for user (simple hash-based color selection)
+  Color _getAvatarColorForUser(String name) {
+    final colors = [
+      AppColors.sageGreen,
+      AppColors.warmPeach,
+      AppColors.dustyRose,
+      AppColors.lavenderMist,
+      const Color(0xFF7A9761),
+      const Color(0xFFB08D7A),
+    ];
+    final index = name.hashCode % colors.length;
+    return colors[index.abs()];
   }
   
   void _onSendTimeCapsule(UserProfileModel profile) {
