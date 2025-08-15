@@ -217,7 +217,7 @@ class WebSocketMessage {
 /// Comprehensive WebSocket service matching API documentation
 class ChatWebSocketService extends ChangeNotifier {
   // Environment configuration
-  static const bool _useProduction = false; // Change to false for development
+  static const bool _useProduction = true; // Change to false for development
   
   // Connection configuration
   static String get _baseUrl {

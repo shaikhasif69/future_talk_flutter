@@ -35,6 +35,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   String? _errorMessage;
   int _resendCooldown = 0;
   int _totalResendAttempts = 0;
+  bool _shouldClearOtp = false;
 
   @override
   void initState() {
@@ -100,8 +101,10 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
         },
         failure: (error) {
           HapticFeedback.vibrate();
-          setState(() => _errorMessage = error.message);
-          _otpController.clear();
+          setState(() {
+            _errorMessage = error.message;
+            _shouldClearOtp = true;
+          });
         },
       );
     }
@@ -212,6 +215,10 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
             }
           },
           enabled: !_isLoading,
+          shouldClear: _shouldClearOtp,
+          onClearComplete: () {
+            setState(() => _shouldClearOtp = false);
+          },
         ),
       ],
     );
@@ -298,7 +305,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
             if (_totalResendAttempts > 0) ...[
               const SizedBox(height: AppDimensions.spacingS),
               Text(
-                'Code resent ${_totalResendAttempts} time${_totalResendAttempts > 1 ? 's' : ''}',
+                'Code resent $_totalResendAttempts time${_totalResendAttempts > 1 ? 's' : ''}',
                 style: AppTextStyles.labelMedium.copyWith(
                   color: AppColors.sageGreen,
                 ),

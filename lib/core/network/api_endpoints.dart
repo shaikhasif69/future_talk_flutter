@@ -26,14 +26,14 @@ class ApiEndpoints {
   // Social/Friends endpoints - matching actual backend paths
   static const String social = '/social';
   static const String friends = '$social/friends';
-  static const String friendRequests = '$social/friend-requests';
-  static const String acceptFriendRequest = '$social/friend-requests/accept';
-  static const String rejectFriendRequest = '$social/friend-requests/reject';
-  static const String cancelFriendRequest = '$social/friend-requests/cancel';
+  static const String friendRequests = '$social/friends/request';
+  static const String acceptFriendRequest = '$social/friends/requests/accept';
+  static const String rejectFriendRequest = '$social/friends/requests/reject';
+  static const String cancelFriendRequest = '$social/friends/requests/cancel';
   static const String blockUser = '$social/block';
   static const String unblockUser = '$social/unblock';
   static const String friendsList = '$social/friends'; // This is the correct path!
-  static const String friendRequestsList = '$social/friend-requests';
+  static const String friendRequestsList = '$social/friends/requests';
   
   static String userById(String userId) => '$users/$userId';
   static String userProfileById(String userId) => '$users/profile/$userId';

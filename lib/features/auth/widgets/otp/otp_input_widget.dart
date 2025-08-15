@@ -10,6 +10,8 @@ class OtpInputWidget extends StatefulWidget {
   final Function(String)? onChanged;
   final bool enabled;
   final int length;
+  final bool shouldClear;
+  final VoidCallback? onClearComplete;
 
   const OtpInputWidget({
     super.key,
@@ -18,6 +20,8 @@ class OtpInputWidget extends StatefulWidget {
     this.onChanged,
     this.enabled = true,
     this.length = 6,
+    this.shouldClear = false,
+    this.onClearComplete,
   });
 
   @override
@@ -53,7 +57,7 @@ class _OtpInputWidgetState extends State<OtpInputWidget> with TickerProviderStat
       final controller = TextEditingController();
       
       focusNode.addListener(() => _onFocusChange(i));
-      controller.addListener(() => _onTextChange(i));
+      // Text change is now handled in onChanged callback
       
       _focusNodes.add(focusNode);
       _controllers.add(controller);
@@ -62,6 +66,17 @@ class _OtpInputWidgetState extends State<OtpInputWidget> with TickerProviderStat
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _focusNodes[0].requestFocus();
     });
+  }
+
+  @override
+  void didUpdateWidget(OtpInputWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    
+    // Handle clear request
+    if (widget.shouldClear && !oldWidget.shouldClear) {
+      clearOtp();
+      widget.onClearComplete?.call();
+    }
   }
 
   @override
@@ -91,17 +106,63 @@ class _OtpInputWidgetState extends State<OtpInputWidget> with TickerProviderStat
     final text = _controllers[index].text;
     
     if (text.length == 1) {
+      // Move to next field if not the last one
       if (index < widget.length - 1) {
         _focusNodes[index + 1].requestFocus();
       } else {
+        // Last field, unfocus to complete input
         _focusNodes[index].unfocus();
       }
       
       _updateMainController();
       HapticFeedback.lightImpact();
-    } else if (text.isEmpty && index > 0) {
-      _focusNodes[index - 1].requestFocus();
+    } else if (text.isEmpty) {
+      // Update main controller when field is cleared
+      _updateMainController();
     }
+  }
+
+  /// Clear all OTP fields
+  void clearOtp() {
+    for (int i = 0; i < _controllers.length; i++) {
+      _controllers[i].clear();
+    }
+    _updateMainController();
+    _focusNodes[0].requestFocus();
+  }
+
+  /// Handle paste operation for full OTP
+  void _handlePasteOperation(String pastedText, int startIndex) {
+    // Remove non-digits and take only the required length
+    final digits = pastedText.replaceAll(RegExp(r'[^0-9]'), '');
+    final maxLength = widget.length - startIndex;
+    final validDigits = digits.length > maxLength ? digits.substring(0, maxLength) : digits;
+    
+    // Fill the fields starting from the current index
+    for (int i = 0; i < validDigits.length && (startIndex + i) < widget.length; i++) {
+      _controllers[startIndex + i].text = validDigits[i];
+    }
+    
+    // Focus the next empty field or the last field if all are filled
+    final nextEmptyIndex = _findNextEmptyField();
+    if (nextEmptyIndex != -1) {
+      _focusNodes[nextEmptyIndex].requestFocus();
+    } else {
+      _focusNodes[widget.length - 1].unfocus();
+    }
+    
+    _updateMainController();
+    HapticFeedback.lightImpact();
+  }
+
+  /// Find the next empty field index
+  int _findNextEmptyField() {
+    for (int i = 0; i < _controllers.length; i++) {
+      if (_controllers[i].text.isEmpty) {
+        return i;
+      }
+    }
+    return -1; // All fields are filled
   }
 
   void _updateMainController() {
@@ -116,13 +177,15 @@ class _OtpInputWidgetState extends State<OtpInputWidget> with TickerProviderStat
     }
   }
 
-  void _onKeyDown(RawKeyEvent event, int index) {
-    if (event is RawKeyDownEvent) {
+  void _onKeyDown(KeyEvent event, int index) {
+    if (event is KeyDownEvent) {
       if (event.logicalKey == LogicalKeyboardKey.backspace) {
         if (_controllers[index].text.isEmpty && index > 0) {
+          // Clear previous field and move focus there
           _controllers[index - 1].clear();
           _focusNodes[index - 1].requestFocus();
           _updateMainController();
+          HapticFeedback.lightImpact();
         }
       }
     }
@@ -175,9 +238,9 @@ class _OtpInputWidgetState extends State<OtpInputWidget> with TickerProviderStat
                 ),
               ],
             ),
-            child: RawKeyboardListener(
+            child: KeyboardListener(
               focusNode: FocusNode(),
-              onKey: (event) => _onKeyDown(event, index),
+              onKeyEvent: (event) => _onKeyDown(event, index),
               child: TextFormField(
                 controller: _controllers[index],
                 focusNode: _focusNodes[index],
@@ -191,6 +254,7 @@ class _OtpInputWidgetState extends State<OtpInputWidget> with TickerProviderStat
                 ),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                 ],
                 decoration: const InputDecoration(
                   border: InputBorder.none,
@@ -203,9 +267,34 @@ class _OtpInputWidgetState extends State<OtpInputWidget> with TickerProviderStat
                   contentPadding: EdgeInsets.zero,
                 ),
                 onChanged: (value) {
+                  // Handle text input properly
                   if (value.length > 1) {
-                    _controllers[index].text = value[value.length - 1];
+                    // Check if it's a paste operation with multiple digits
+                    final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
+                    if (digits.length > 1) {
+                      // Handle paste operation
+                      _handlePasteOperation(digits, index);
+                      return;
+                    } else {
+                      // Multiple characters but only one digit, use it
+                      final lastChar = digits.isNotEmpty ? digits[0] : '';
+                      if (lastChar.isNotEmpty && RegExp(r'^[0-9]$').hasMatch(lastChar)) {
+                        _controllers[index].text = lastChar;
+                        _controllers[index].selection = TextSelection.collapsed(offset: 1);
+                      } else {
+                        _controllers[index].text = '';
+                      }
+                    }
+                  } else if (value.length == 1) {
+                    // Single character input - validate it's a digit
+                    if (!RegExp(r'^[0-9]$').hasMatch(value)) {
+                      _controllers[index].text = '';
+                      return;
+                    }
                   }
+                  
+                  // Trigger the text change handler after processing
+                  Future.microtask(() => _onTextChange(index));
                 },
               ),
             ),

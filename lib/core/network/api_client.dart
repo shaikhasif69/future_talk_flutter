@@ -6,7 +6,7 @@ import 'dart:io';
 class ApiClient {
   // Dynamic base URL based on platform
   // Environment configuration
-  static const bool _useProduction = false; // Change to false for development
+  static const bool _useProduction = true; // Change to false for development
   
   static String get baseUrl {
     if (_useProduction) {

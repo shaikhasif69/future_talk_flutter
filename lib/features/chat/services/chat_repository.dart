@@ -57,7 +57,7 @@ class SendMessageRequest {
 /// Repository for chat-related API calls
 class ChatRepository {
   // Environment configuration
-  static const bool _useProduction = false; // Change to false for development
+  static const bool _useProduction = true; // Change to false for development
   
   // Dynamic base URL that matches ApiClient configuration
   static String get _baseUrl {

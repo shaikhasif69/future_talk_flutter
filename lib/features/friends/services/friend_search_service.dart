@@ -165,19 +165,30 @@ class FriendSearchService {
       debugPrint('🔍 [FriendSearchService] Lookup response status: ${response.statusCode}');
       
       if (response.statusCode == 200) {
-        debugPrint('🔍 [FriendSearchService] User found successfully');
+        debugPrint('🔍 [FriendSearchService] User lookup response received');
         
         try {
           final responseData = response.data as Map<String, dynamic>;
-          final userData = responseData['user'] as Map<String, dynamic>;
+          final bool found = responseData['found'] as bool? ?? false;
+          final userData = responseData['user'];
           
-          // Handle null friendship_status
-          if (userData['friendship_status'] == null) {
-            userData['friendship_status'] = 'none';
+          if (!found || userData == null) {
+            debugPrint('🔍 [FriendSearchService] User not found');
+            return ApiResult.failure(ApiError(
+              message: responseData['message'] as String? ?? 'User not found',
+              statusCode: 404,
+            ));
           }
           
-          final user = UserLookupResult.fromJson(userData);
-          debugPrint('🔍 [FriendSearchService] Parsed user: ${user.username}');
+          final userMap = userData as Map<String, dynamic>;
+          
+          // Handle null friendship_status
+          if (userMap['friendship_status'] == null) {
+            userMap['friendship_status'] = 'none';
+          }
+          
+          final user = UserLookupResult.fromJson(userMap);
+          debugPrint('🔍 [FriendSearchService] User found successfully: ${user.username}');
           return ApiResult.success(user);
         } catch (parseError) {
           debugPrint('🔍 [FriendSearchService] JSON parsing error: $parseError');
