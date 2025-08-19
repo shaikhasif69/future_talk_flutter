@@ -18,10 +18,21 @@ final friendsProvider = FutureProvider<List<UserSearchResult>>((ref) async {
   );
 });
 
-/// Provider for friend requests list
+/// Provider for friend requests list (received requests only)
 final friendRequestsProvider = FutureProvider<List<FriendRequest>>((ref) async {
   final service = ref.read(friendSearchServiceProvider);
   final result = await service.getFriendRequests();
+  
+  return result.when(
+    success: (requests) => requests,
+    failure: (error) => throw Exception(error.message),
+  );
+});
+
+/// Provider for sent friend requests list
+final sentFriendRequestsProvider = FutureProvider<List<FriendRequest>>((ref) async {
+  final service = ref.read(friendSearchServiceProvider);
+  final result = await service.getSentFriendRequests();
   
   return result.when(
     success: (requests) => requests,
@@ -49,6 +60,7 @@ class FriendRequestActionsNotifier extends StateNotifier<AsyncValue<String?>> {
           // Refresh both friends and friend requests lists
           ref.invalidate(friendsProvider);
           ref.invalidate(friendRequestsProvider);
+          ref.invalidate(sentFriendRequestsProvider);
           return true;
         },
         failure: (error) {
@@ -75,6 +87,7 @@ class FriendRequestActionsNotifier extends StateNotifier<AsyncValue<String?>> {
           state = AsyncValue.data(response.message);
           // Refresh friend requests list
           ref.invalidate(friendRequestsProvider);
+          ref.invalidate(sentFriendRequestsProvider);
           return true;
         },
         failure: (error) {
@@ -113,6 +126,16 @@ final friendsCountProvider = Provider<int>((ref) {
 /// Provider for friend requests count (computed from friend requests list)
 final friendRequestsCountProvider = Provider<int>((ref) {
   final requests = ref.watch(friendRequestsProvider);
+  return requests.when(
+    data: (requests) => requests.length,
+    loading: () => 0,
+    error: (error, stack) => 0,
+  );
+});
+
+/// Provider for sent friend requests count
+final sentFriendRequestsCountProvider = Provider<int>((ref) {
+  final requests = ref.watch(sentFriendRequestsProvider);
   return requests.when(
     data: (requests) => requests.length,
     loading: () => 0,

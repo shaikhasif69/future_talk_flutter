@@ -644,12 +644,36 @@ class _FriendsListTab extends ConsumerWidget {
   }
 }
 
-/// Friend requests tab with accept/reject actions
-class _FriendRequestsTab extends ConsumerWidget {
+/// Friend requests tab with sub-tabs for received and sent requests
+class _FriendRequestsTab extends ConsumerStatefulWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final requestsAsync = ref.watch(friendRequestsProvider);
-    final requestsCount = ref.watch(friendRequestsCountProvider);
+  ConsumerState<_FriendRequestsTab> createState() => _FriendRequestsTabState();
+}
+
+class _FriendRequestsTabState extends ConsumerState<_FriendRequestsTab>
+    with TickerProviderStateMixin {
+  late TabController _requestsTabController;
+  
+  @override
+  void initState() {
+    super.initState();
+    _requestsTabController = TabController(length: 2, vsync: this);
+    
+    _requestsTabController.addListener(() {
+      if (_requestsTabController.indexIsChanging) {
+        HapticFeedback.selectionClick();
+      }
+    });
+  }
+  
+  @override
+  void dispose() {
+    _requestsTabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // Listen for action errors and show snackbars
     ref.listen(friendRequestActionsProvider, (previous, next) {
       if (next.hasError && next.error != null) {
@@ -674,37 +698,99 @@ class _FriendRequestsTab extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(
         AppDimensions.screenPadding,
-        AppDimensions.spacingXL,
+        AppDimensions.spacingL,
         AppDimensions.screenPadding,
         AppDimensions.spacingL,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Section header
-          Text(
-            'Friend requests ($requestsCount)',
-            style: AppTextStyles.titleMedium.copyWith(
-              color: AppColors.softCharcoal,
-              fontWeight: FontWeight.w600,
+          // Sub-tabs for Received and Sent
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.whisperGray.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+            ),
+            child: TabBar(
+              controller: _requestsTabController,
+              indicator: BoxDecoration(
+                color: AppColors.sageGreen,
+                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.sageGreen.withValues(alpha: 0.2),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              indicatorSize: TabBarIndicatorSize.tab,
+              dividerColor: Colors.transparent,
+              labelColor: AppColors.pearlWhite,
+              unselectedLabelColor: AppColors.softCharcoalLight,
+              labelStyle: AppTextStyles.bodyMedium.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+              unselectedLabelStyle: AppTextStyles.bodyMedium.copyWith(
+                fontWeight: FontWeight.w400,
+              ),
+              tabs: const [
+                Tab(text: 'Received'),
+                Tab(text: 'Sent'),
+              ],
             ),
           ),
+          
           const SizedBox(height: AppDimensions.spacingL),
           
-          // Requests list
+          // Content area for sub-tabs
           Expanded(
-            child: requestsAsync.when(
-              data: (requests) => _buildRequestsList(requests),
-              loading: () => _buildLoadingState(),
-              error: (error, stack) => _buildErrorState(error.toString()),
+            child: TabBarView(
+              controller: _requestsTabController,
+              children: [
+                _ReceivedRequestsTab(),
+                _SentRequestsTab(),
+              ],
             ),
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildRequestsList(List<FriendRequest> requests) {
+/// Received friend requests tab 
+class _ReceivedRequestsTab extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final requestsAsync = ref.watch(friendRequestsProvider);
+    final requestsCount = ref.watch(friendRequestsCountProvider);
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Section header
+        Text(
+          'Received requests ($requestsCount)',
+          style: AppTextStyles.titleMedium.copyWith(
+            color: AppColors.softCharcoal,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: AppDimensions.spacingL),
+        
+        // Requests list
+        Expanded(
+          child: requestsAsync.when(
+            data: (requests) => _buildRequestsList(requests, ref),
+            loading: () => _buildLoadingState(),
+            error: (error, stack) => _buildErrorState(error.toString()),
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget _buildRequestsList(List<FriendRequest> requests, WidgetRef ref) {
     if (requests.isEmpty) {
       return _buildEmptyState('No pending requests', 'Friend requests will appear here');
     }
@@ -714,19 +800,61 @@ class _FriendRequestsTab extends ConsumerWidget {
       itemCount: requests.length,
       itemBuilder: (context, index) {
         final request = requests[index];
-        return Consumer(
-          builder: (context, ref, _) {
-            return _FriendRequestTile(
-              request: request,
-              onAccept: () => _handleAcceptRequest(request, context, ref),
-              onReject: () => _handleRejectRequest(request, context, ref),
-            ).animate(delay: Duration(milliseconds: 50 * index))
-             .fadeIn(duration: 400.ms)
-             .slideX(begin: 0.2);
-          },
-        );
+        return _FriendRequestTile(
+          request: request,
+          onAccept: () => _handleAcceptRequest(request, context, ref),
+          onReject: () => _handleRejectRequest(request, context, ref),
+        ).animate(delay: Duration(milliseconds: 50 * index))
+         .fadeIn(duration: 400.ms)
+         .slideX(begin: 0.2);
       },
     );
+  }
+  
+  void _handleAcceptRequest(FriendRequest request, BuildContext context, WidgetRef ref) async {
+    HapticFeedback.mediumImpact();
+    final success = await ref.read(friendRequestActionsProvider.notifier).acceptFriendRequest(request.id);
+    
+    if (success && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Friend request accepted!',
+            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
+          ),
+          backgroundColor: AppColors.sageGreen,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          ),
+          margin: const EdgeInsets.all(AppDimensions.spacingM),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  void _handleRejectRequest(FriendRequest request, BuildContext context, WidgetRef ref) async {
+    HapticFeedback.lightImpact();
+    final success = await ref.read(friendRequestActionsProvider.notifier).rejectFriendRequest(request.id);
+    
+    if (success && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Friend request declined',
+            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
+          ),
+          backgroundColor: AppColors.dustyRose,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          ),
+          margin: const EdgeInsets.all(AppDimensions.spacingM),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
   }
   
   Widget _buildLoadingState() {
@@ -906,54 +1034,206 @@ class _FriendRequestsTab extends ConsumerWidget {
       ),
     );
   }
-
-
-  void _handleAcceptRequest(FriendRequest request, BuildContext context, WidgetRef ref) async {
-    HapticFeedback.mediumImpact();
-    final success = await ref.read(friendRequestActionsProvider.notifier).acceptFriendRequest(request.id);
-    
-    if (success && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Friend request accepted!',
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
+  
+  Widget _buildEmptyState(String title, String subtitle) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: AppColors.whisperGray.withValues(alpha: 0.5),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.person_add_outlined,
+              size: 40,
+              color: AppColors.softCharcoalLight,
+            ),
           ),
-          backgroundColor: AppColors.sageGreen,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          
+          const SizedBox(height: AppDimensions.spacingL),
+          
+          Text(
+            title,
+            style: AppTextStyles.titleMedium.copyWith(
+              color: AppColors.softCharcoal,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-          margin: const EdgeInsets.all(AppDimensions.spacingM),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    }
+          
+          const SizedBox(height: AppDimensions.spacingS),
+          
+          Text(
+            subtitle,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.softCharcoalLight,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
   }
+}
 
-  void _handleRejectRequest(FriendRequest request, BuildContext context, WidgetRef ref) async {
-    HapticFeedback.lightImpact();
-    final success = await ref.read(friendRequestActionsProvider.notifier).rejectFriendRequest(request.id);
+/// Sent friend requests tab 
+class _SentRequestsTab extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sentRequestsAsync = ref.watch(sentFriendRequestsProvider);
+    final sentRequestsCount = ref.watch(sentFriendRequestsCountProvider);
     
-    if (success && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Friend request declined',
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pearlWhite),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Section header
+        Text(
+          'Sent requests ($sentRequestsCount)',
+          style: AppTextStyles.titleMedium.copyWith(
+            color: AppColors.softCharcoal,
+            fontWeight: FontWeight.w600,
           ),
-          backgroundColor: AppColors.dustyRose,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-          ),
-          margin: const EdgeInsets.all(AppDimensions.spacingM),
-          duration: const Duration(seconds: 2),
         ),
-      );
-    }
+        const SizedBox(height: AppDimensions.spacingL),
+        
+        // Sent requests list
+        Expanded(
+          child: sentRequestsAsync.when(
+            data: (requests) => _buildSentRequestsList(requests),
+            loading: () => _buildLoadingState(),
+            error: (error, stack) => _buildErrorState(error.toString()),
+          ),
+        ),
+      ],
+    );
   }
-
+  
+  Widget _buildSentRequestsList(List<FriendRequest> requests) {
+    if (requests.isEmpty) {
+      return _buildEmptyState('No sent requests', 'Requests you send will appear here');
+    }
+    
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      itemCount: requests.length,
+      itemBuilder: (context, index) {
+        final request = requests[index];
+        return _SentRequestTile(
+          request: request,
+        ).animate(delay: Duration(milliseconds: 50 * index))
+         .fadeIn(duration: 400.ms)
+         .slideX(begin: 0.2);
+      },
+    );
+  }
+  
+  Widget _buildLoadingState() {
+    return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: 2,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: const EdgeInsets.only(bottom: AppDimensions.spacingM),
+          padding: const EdgeInsets.all(AppDimensions.spacingM),
+          decoration: BoxDecoration(
+            color: AppColors.whisperGray.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+          ),
+          child: Row(
+            children: [
+              // Avatar shimmer
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: AppColors.stoneGray.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(28),
+                ),
+              ).animate(onPlay: (controller) => controller.repeat())
+               .shimmer(duration: 1200.ms, color: AppColors.pearlWhite.withValues(alpha: 0.3)),
+              
+              const SizedBox(width: AppDimensions.spacingM),
+              
+              // Content shimmer
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 16,
+                      width: double.infinity * 0.6,
+                      decoration: BoxDecoration(
+                        color: AppColors.stoneGray.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ).animate(onPlay: (controller) => controller.repeat())
+                     .shimmer(duration: 1200.ms, color: AppColors.pearlWhite.withValues(alpha: 0.3)),
+                    const SizedBox(height: 4),
+                    Container(
+                      height: 12,
+                      width: double.infinity * 0.4,
+                      decoration: BoxDecoration(
+                        color: AppColors.stoneGray.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ).animate(onPlay: (controller) => controller.repeat())
+                     .shimmer(duration: 1200.ms, color: AppColors.pearlWhite.withValues(alpha: 0.3)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+  
+  Widget _buildErrorState(String error) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: AppColors.dustyRose.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.error_outline_rounded,
+              size: 40,
+              color: AppColors.dustyRose,
+            ),
+          ),
+          
+          const SizedBox(height: AppDimensions.spacingL),
+          
+          Text(
+            'Unable to load sent requests',
+            style: AppTextStyles.titleMedium.copyWith(
+              color: AppColors.softCharcoal,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          
+          const SizedBox(height: AppDimensions.spacingS),
+          
+          Text(
+            'Please check your connection and try again',
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.softCharcoalLight,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+  
   Widget _buildEmptyState(String title, String subtitle) {
     return Center(
       child: Column(
@@ -1415,6 +1695,171 @@ class _FriendRequestTile extends ConsumerWidget {
     return AppColors.dustyRose;
   }
   
+  String _formatTimeAgo(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+    
+    if (difference.inDays > 0) {
+      return '${difference.inDays}d ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}h ago';
+    } else {
+      return '${difference.inMinutes}m ago';
+    }
+  }
+}
+
+/// Sent friend request tile - shows requests user has sent to others
+class _SentRequestTile extends StatelessWidget {
+  final FriendRequest request;
+
+  const _SentRequestTile({
+    required this.request,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppDimensions.spacingM),
+      padding: const EdgeInsets.all(AppDimensions.spacingM),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.warmPeach.withValues(alpha: 0.05),
+            AppColors.sageGreen.withValues(alpha: 0.02),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+        border: Border.all(
+          color: AppColors.warmPeach.withValues(alpha: 0.1),
+          width: 0.5,
+        ),
+      ),
+      child: Column(
+        children: [
+          // User info row
+          Row(
+            children: [
+              // Avatar
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      AppColors.warmPeach.withValues(alpha: 0.2),
+                      AppColors.sageGreen.withValues(alpha: 0.1),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(28),
+                  border: Border.all(
+                    color: AppColors.warmPeach.withValues(alpha: 0.3),
+                    width: 2,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    request.receiver?.initials ?? 'U',
+                    style: AppTextStyles.titleMedium.copyWith(
+                      color: AppColors.warmPeach,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              
+              const SizedBox(width: AppDimensions.spacingM),
+              
+              // User info
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      request.receiver?.displayName ?? 'Unknown User',
+                      style: AppTextStyles.titleSmall.copyWith(
+                        color: AppColors.softCharcoal,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      '@${request.receiver?.username ?? 'unknown'}',
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.softCharcoalLight,
+                      ),
+                    ),
+                    Text(
+                      _formatTimeAgo(request.createdAt),
+                      style: AppTextStyles.labelSmall.copyWith(
+                        color: AppColors.softCharcoalLight,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              // Status indicator
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.warmPeach.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusS),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.schedule_rounded,
+                      size: 12,
+                      color: AppColors.warmPeach,
+                    ),
+                    const SizedBox(width: 2),
+                    Text(
+                      'Pending',
+                      style: AppTextStyles.labelSmall.copyWith(
+                        color: AppColors.warmPeach,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          
+          // Message if present
+          if (request.message != null && request.message!.isNotEmpty) ...[
+            const SizedBox(height: AppDimensions.spacingS),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(AppDimensions.spacingS),
+              decoration: BoxDecoration(
+                color: AppColors.whisperGray.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+              ),
+              child: Text(
+                '"${request.message!}"',
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.softCharcoal,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
   String _formatTimeAgo(DateTime dateTime) {
     final now = DateTime.now();
     final difference = now.difference(dateTime);

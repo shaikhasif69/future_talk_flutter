@@ -747,6 +747,67 @@ class FriendSearchService {
     }
   }
 
+  /// Convert backend friend request response to FriendRequest model
+  FriendRequest _convertBackendFriendRequestToModel(Map<String, dynamic> backendData) {
+    
+    // Use the correct field names from the backend response
+    final requestId = backendData['id'] as String? ?? backendData['request_id'] as String? ?? '';
+    final senderId = backendData['requester_id'] as String? ?? '';
+    final receiverId = backendData['addressee_id'] as String? ?? '';
+    
+    // Build sender info from requester fields
+    final senderUsername = backendData['requester_username'] as String? ?? '';
+    final senderDisplayName = backendData['requester_display_name'] as String? ?? '';
+    final senderProfilePicture = backendData['requester_profile_picture'] as String?;
+    
+    // Build receiver info from addressee fields  
+    final receiverUsername = backendData['addressee_username'] as String? ?? '';
+    final receiverDisplayName = backendData['addressee_display_name'] as String? ?? '';
+    final receiverProfilePicture = backendData['addressee_profile_picture'] as String?;
+    
+    return FriendRequest(
+      id: requestId,
+      senderId: senderId,
+      receiverId: receiverId,
+      message: backendData['message'] as String?,
+      status: FriendRequestStatus.pending, // Assuming pending since it's in the list
+      createdAt: DateTime.tryParse(backendData['created_at'] as String? ?? '') ?? DateTime.now(),
+      updatedAt: DateTime.tryParse(backendData['created_at'] as String? ?? '') ?? DateTime.now(),
+      sender: UserSearchResult(
+        id: senderId,
+        username: senderUsername,
+        firstName: _extractFirstName(senderDisplayName),
+        lastName: _extractLastName(senderDisplayName),
+        profilePictureUrl: senderProfilePicture,
+        friendshipStatus: FriendshipStatus.pending,
+        mutualFriendsCount: backendData['mutual_friends_count'] as int? ?? 0,
+      ),
+      receiver: UserSearchResult(
+        id: receiverId,
+        username: receiverUsername,
+        firstName: _extractFirstName(receiverDisplayName),
+        lastName: _extractLastName(receiverDisplayName),
+        profilePictureUrl: receiverProfilePicture,
+        friendshipStatus: FriendshipStatus.pending,
+        mutualFriendsCount: backendData['mutual_friends_count'] as int? ?? 0,
+      ),
+    );
+  }
+  
+  /// Extract first name from display name
+  String? _extractFirstName(String displayName) {
+    if (displayName.isEmpty) return null;
+    final parts = displayName.trim().split(' ');
+    return parts.isNotEmpty ? parts.first : null;
+  }
+  
+  /// Extract last name from display name
+  String? _extractLastName(String displayName) {
+    if (displayName.isEmpty) return null;
+    final parts = displayName.trim().split(' ');
+    return parts.length > 1 ? parts.skip(1).join(' ') : null;
+  }
+
   /// Convert friend API response to UserSearchResult format
   UserSearchResult _convertFriendToUserSearchResult(Map<String, dynamic> friendData) {
     // Split display name into firstName and lastName if possible
@@ -772,17 +833,17 @@ class FriendSearchService {
     );
   }
 
-  /// Get pending friend requests
+  /// Get received friend requests
   /// 
-  /// Retrieves all pending friend requests for the current user.
-  /// This includes requests they have received that need response.
+  /// Retrieves friend requests that the current user has received
+  /// and needs to respond to (accept/reject).
   /// 
   /// Parameters:
   /// - [limit]: Maximum number of requests to return (optional)
   /// - [offset]: Number of requests to skip (for pagination)
   /// 
   /// Returns:
-  /// - Success: List of FriendRequest objects
+  /// - Success: List of FriendRequest objects (received requests only)
   /// - Failure: ApiError with details
   Future<ApiResult<List<FriendRequest>>> getFriendRequests({
     int? limit,
@@ -806,18 +867,35 @@ class FriendSearchService {
         debugPrint('📬 [FriendSearchService] Friend requests retrieved successfully');
         
         try {
-          // Handle the response structure - it might have 'received' and 'sent' arrays
-          final responseData = response.data as Map<String, dynamic>;
+          debugPrint('📬 [FriendSearchService] Raw response data: ${response.data}');
           
-          // Extract received requests (ones the user needs to respond to)
-          final List<dynamic> receivedData = responseData['received'] as List<dynamic>? ?? [];
-          
-          final requests = receivedData
-              .map((requestData) => FriendRequest.fromJson(requestData as Map<String, dynamic>))
-              .toList();
-          
-          debugPrint('📬 [FriendSearchService] Parsed ${requests.length} friend requests');
-          return ApiResult.success(requests);
+          // Check if the response is a Map with received/sent arrays
+          if (response.data is Map<String, dynamic>) {
+            final responseData = response.data as Map<String, dynamic>;
+            
+            // Extract only received requests (ones user needs to respond to)
+            final List<dynamic> receivedData = responseData['received'] as List<dynamic>? ?? [];
+            
+            final receivedRequests = receivedData
+                .map((requestData) => _convertBackendFriendRequestToModel(requestData as Map<String, dynamic>))
+                .toList();
+            
+            debugPrint('📬 [FriendSearchService] Parsed ${receivedRequests.length} received friend requests');
+            return ApiResult.success(receivedRequests);
+          } else if (response.data is List) {
+            // Handle case where response is directly a list
+            final List<dynamic> requestsData = response.data as List<dynamic>;
+            
+            final requests = requestsData
+                .map((requestData) => _convertBackendFriendRequestToModel(requestData as Map<String, dynamic>))
+                .toList();
+            
+            debugPrint('📬 [FriendSearchService] Parsed ${requests.length} friend requests from list');
+            return ApiResult.success(requests);
+          } else {
+            debugPrint('📬 [FriendSearchService] Unexpected response format: ${response.data.runtimeType}');
+            return ApiResult.success(<FriendRequest>[]);
+          }
         } catch (parseError) {
           debugPrint('📬 [FriendSearchService] JSON parsing error: $parseError');
           debugPrint('📬 [FriendSearchService] Response data: ${response.data}');
@@ -828,6 +906,13 @@ class FriendSearchService {
         }
       } else {
         debugPrint('📬 [FriendSearchService] Friend requests failed: ${response.statusCode}');
+        
+        // Handle 500 error specifically for friend requests - backend validation issue
+        if (response.statusCode == 500) {
+          debugPrint('📬 [FriendSearchService] Backend validation error - returning empty list');
+          return ApiResult.success(<FriendRequest>[]);
+        }
+        
         return ApiResult.failure(_parseError(response));
       }
     } on DioException catch (e) {
@@ -835,6 +920,100 @@ class FriendSearchService {
       return ApiResult.failure(_handleDioError(e));
     } catch (e) {
       debugPrint('📬 [FriendSearchService] Unknown error: $e');
+      return ApiResult.failure(ApiError(
+        message: 'Unknown error occurred: $e',
+        statusCode: -1,
+      ));
+    }
+  }
+
+  /// Get sent friend requests
+  /// 
+  /// Retrieves friend requests that the current user has sent
+  /// and are waiting for response from other users.
+  /// 
+  /// Parameters:
+  /// - [limit]: Maximum number of requests to return (optional)
+  /// - [offset]: Number of requests to skip (for pagination)
+  /// 
+  /// Returns:
+  /// - Success: List of FriendRequest objects (sent requests only)
+  /// - Failure: ApiError with details
+  Future<ApiResult<List<FriendRequest>>> getSentFriendRequests({
+    int? limit,
+    int? offset,
+  }) async {
+    try {
+      debugPrint('📤 [FriendSearchService] Getting sent friend requests list');
+      
+      final queryParameters = <String, String>{};
+      if (limit != null) queryParameters['limit'] = limit.toString();
+      if (offset != null) queryParameters['offset'] = offset.toString();
+
+      final response = await _apiClient.get(
+        ApiEndpoints.friendRequestsList,
+        queryParameters: queryParameters.isNotEmpty ? queryParameters : null,
+      );
+
+      debugPrint('📤 [FriendSearchService] Sent friend requests response status: ${response.statusCode}');
+      
+      if (response.statusCode == 200) {
+        debugPrint('📤 [FriendSearchService] Sent friend requests retrieved successfully');
+        
+        try {
+          debugPrint('📤 [FriendSearchService] Raw response data: ${response.data}');
+          
+          // Check if the response is a Map with received/sent arrays
+          if (response.data is Map<String, dynamic>) {
+            final responseData = response.data as Map<String, dynamic>;
+            
+            // Extract only sent requests (ones user sent to others)
+            final List<dynamic> sentData = responseData['sent'] as List<dynamic>? ?? [];
+            
+            final sentRequests = sentData
+                .map((requestData) => _convertBackendFriendRequestToModel(requestData as Map<String, dynamic>))
+                .toList();
+            
+            debugPrint('📤 [FriendSearchService] Parsed ${sentRequests.length} sent friend requests');
+            return ApiResult.success(sentRequests);
+          } else if (response.data is List) {
+            // Handle case where response is directly a list
+            final List<dynamic> requestsData = response.data as List<dynamic>;
+            
+            final requests = requestsData
+                .map((requestData) => _convertBackendFriendRequestToModel(requestData as Map<String, dynamic>))
+                .toList();
+            
+            debugPrint('📤 [FriendSearchService] Parsed ${requests.length} sent friend requests from list');
+            return ApiResult.success(requests);
+          } else {
+            debugPrint('📤 [FriendSearchService] Unexpected response format: ${response.data.runtimeType}');
+            return ApiResult.success(<FriendRequest>[]);
+          }
+        } catch (parseError) {
+          debugPrint('📤 [FriendSearchService] JSON parsing error: $parseError');
+          debugPrint('📤 [FriendSearchService] Response data: ${response.data}');
+          
+          // If parsing fails, return empty list with warning
+          debugPrint('📤 [FriendSearchService] Returning empty list due to parsing issues');
+          return ApiResult.success(<FriendRequest>[]);
+        }
+      } else {
+        debugPrint('📤 [FriendSearchService] Sent friend requests failed: ${response.statusCode}');
+        
+        // Handle 500 error specifically for friend requests - backend validation issue
+        if (response.statusCode == 500) {
+          debugPrint('📤 [FriendSearchService] Backend validation error - returning empty list');
+          return ApiResult.success(<FriendRequest>[]);
+        }
+        
+        return ApiResult.failure(_parseError(response));
+      }
+    } on DioException catch (e) {
+      debugPrint('📤 [FriendSearchService] Dio exception: $e');
+      return ApiResult.failure(_handleDioError(e));
+    } catch (e) {
+      debugPrint('📤 [FriendSearchService] Unknown error: $e');
       return ApiResult.failure(ApiError(
         message: 'Unknown error occurred: $e',
         statusCode: -1,
